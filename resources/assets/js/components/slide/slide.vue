@@ -4,7 +4,7 @@
             <!--I'm Slide {{ slide }}-->
             <router-link class="slide-link" to="/">
                 <span class="slide-title">{{ slide.title }}</span>
-                <img :src="slide.thumb">
+                <img class="slide-thumb" :src="slide.thumb">
             </router-link>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
@@ -41,12 +41,6 @@
                 ]
             }
         },
-//        mounted() {
-//            setInterval(() => {
-////                let swiperSlides = this.swiperSlides
-////                if (swiperSlides.length < 10) swiperSlides.push(swiperSlides.length + 1)
-//            }, 3000)
-//        }
     }
 </script>
 
@@ -59,14 +53,25 @@
             position: relative
             overflow: hidden
             .slide-link
-                p
-
-                img
+                span.slide-title
+                    position: absolute
+                    right: 17px
+                    top: 12px
+                    z-index: 2
+                    padding: 7px 10px
+                    display: block
+                    background: rgba(183, 191, 197, 0.25)
+                    color: #00030d
+                    font-size: 15px
+                img.slide-thumb
                     width: 100%
                     transform: rotate(0) scale(1)
                     transition: transform 1s
-                img:hover
+                img.slide-thumb:hover
                     transition: transform 1s;
                     transform: rotate(2deg) scale(1.1);
+        .swiper-pagination
+            .swiper-pagination-bullet-active
+                background: #00030d !important
 
 </style>
