@@ -25,6 +25,7 @@
     "sass-loader": "^6.0.6",
     "particle-api-js": "^6.5.0",
     "particle.js": "^1.0.7",
-    "vue-particles": "^1.0.9"
+    "vue-particles": "^1.0.9",
+    "vue-awesome-swiper":"^2.6.2"
   }
 }

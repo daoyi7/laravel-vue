@@ -39,7 +39,7 @@
 
 </script>
 
-<style type="text/sass" lang="sass" rel="stylesheet/sass">
+<style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .nav
         .nav-wrap

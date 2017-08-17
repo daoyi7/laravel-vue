@@ -4,12 +4,17 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
+require('swiper/dist/css/swiper.css')
+
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 Vue.use(VueRouter)
+Vue.use(VueAwesomeSwiper)
 
-import Home from './components/app.vue'
+import Home from './components/app'
 
 const routes = [
     {

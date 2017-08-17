@@ -13,23 +13,22 @@
 
 </script>
 
-<style type="text/sass" lang="sass" rel="stylesheet/sass">
+<style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     $height: 4.375em
 
     .header
         width: 100%
-        height: $height
-        line-height: $height
-        background-color: rgba(183, 191, 197, 0.6)
-        color: #00030d
-        position: fixed
-        top: 0
-        left: 0
         .header-wrap
+            position: fixed
+            top: 0
+            left: 0
+            z-index: 9999
             width: 100%
             height: $height
             line-height: $height
+            background-color: rgba(183, 191, 197, 0.6)
+            color: #00030d
             .header-nav
                 height: $height
                 line-height: $height

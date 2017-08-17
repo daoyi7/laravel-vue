@@ -245,7 +245,7 @@
     /* eslint-disable */
 </script>
 
-<style type="text/sass" lang="sass" rel="stylesheet/sass">
+<style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .bg-canvas
         .bg-img
@@ -253,7 +253,7 @@
             width: 100%
             height: 100%
             opacity: .2
-            background-image: url("./bg3.png")
+            background-image: url("./bg5.png")
             background-size: cover
         #bg
             position: fixed

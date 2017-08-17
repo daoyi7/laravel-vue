@@ -1,34 +1,30 @@
 <template>
     <main class="main">
         <vnav></vnav>
+        <middle></middle>
     </main>
 </template>
 
 <script type="text/ecmascript-6">
     import vnav from '../nav/nav'
+    import middle from '../middle/middle'
 
     export default {
         components: {
-            vnav
+            vnav,
+            middle,
         }
     }
 
 </script>
 
-<style type="text/sass" lang="sass" rel="stylesheet/sass">
+<style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .main
-        width: 100%
-        /*.main-wrap*/
-            /*margin: 0 auto*/
-            /*position: relative*/
-        /*@media (min-width: 1024px)*/
-            /*.main-wrap*/
-                /*width: 960px*/
-        /*@media (min-width: 1100px)*/
-            /*.main-wrap*/
-                /*width: 960px*/
-        /*@media (min-width: 1920px)*/
-            /*.main-wrap*/
-                /*width: 1200px*/
+        position: relative
+        top: 5em
+        display: block
+        width: 75em
+        margin: 0 auto
+
 </style>
