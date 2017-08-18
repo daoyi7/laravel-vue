@@ -49,20 +49,20 @@
     .slide-wrap
         .slide-item
             width: 100%
-            height: 300px
+            height: 18.75em
             position: relative
             overflow: hidden
             .slide-link
                 span.slide-title
                     position: absolute
-                    right: 17px
-                    top: 12px
+                    right: 1.0625em
+                    top: 0.75em
                     z-index: 2
-                    padding: 7px 10px
+                    padding: 0.4375em 0.625em
                     display: block
                     background: rgba(183, 191, 197, 0.25)
-                    color: #00030d
-                    font-size: 15px
+                    color: #fff
+                    font-size: 0.9375em
                 img.slide-thumb
                     width: 100%
                     transform: rotate(0) scale(1)
@@ -70,8 +70,5 @@
                 img.slide-thumb:hover
                     transition: transform 1s;
                     transform: rotate(2deg) scale(1.1);
-        .swiper-pagination
-            .swiper-pagination-bullet-active
-                background: #00030d !important
 
 </style>

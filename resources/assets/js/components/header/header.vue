@@ -35,7 +35,7 @@
                 .header-link
                     display: inline-block
                     width: auto
-                    height: 3.75em
+                    height: 100%
                     color: #00030d
                     font-size: 1.875em
                 .motto

@@ -60,11 +60,108 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 /*
@@ -146,7 +243,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -165,7 +262,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(11)
+var listToStyles = __webpack_require__(21)
 
 /*
 type StyleObject = {
@@ -367,116 +464,5379 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/* globals __VUE_SSR_CONTEXT__ */
+/**
+ * Swiper 3.4.2
+ * Most modern mobile touch slider and framework with hardware accelerated transitions
+ * 
+ * http://www.idangero.us/swiper/
+ * 
+ * Copyright 2017, Vladimir Kharlampidi
+ * The iDangero.us
+ * http://www.idangero.us/
+ * 
+ * Licensed under MIT
+ * 
+ * Released on: March 10, 2017
+ */
+(function () {
+    'use strict';
+    var $;
 
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
+    /*===========================
+    Swiper
+    ===========================*/
+    var Swiper = function (container, params) {
+        if (!(this instanceof Swiper)) return new Swiper(container, params);
+    
 
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
+        var defaults = {
+            direction: 'horizontal',
+            touchEventsTarget: 'container',
+            initialSlide: 0,
+            speed: 300,
+            // autoplay
+            autoplay: false,
+            autoplayDisableOnInteraction: true,
+            autoplayStopOnLast: false,
+            // To support iOS's swipe-to-go-back gesture (when being used in-app, with UIWebView).
+            iOSEdgeSwipeDetection: false,
+            iOSEdgeSwipeThreshold: 20,
+            // Free mode
+            freeMode: false,
+            freeModeMomentum: true,
+            freeModeMomentumRatio: 1,
+            freeModeMomentumBounce: true,
+            freeModeMomentumBounceRatio: 1,
+            freeModeMomentumVelocityRatio: 1,
+            freeModeSticky: false,
+            freeModeMinimumVelocity: 0.02,
+            // Autoheight
+            autoHeight: false,
+            // Set wrapper width
+            setWrapperSize: false,
+            // Virtual Translate
+            virtualTranslate: false,
+            // Effects
+            effect: 'slide', // 'slide' or 'fade' or 'cube' or 'coverflow' or 'flip'
+            coverflow: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows : true
+            },
+            flip: {
+                slideShadows : true,
+                limitRotation: true
+            },
+            cube: {
+                slideShadows: true,
+                shadow: true,
+                shadowOffset: 20,
+                shadowScale: 0.94
+            },
+            fade: {
+                crossFade: false
+            },
+            // Parallax
+            parallax: false,
+            // Zoom
+            zoom: false,
+            zoomMax: 3,
+            zoomMin: 1,
+            zoomToggle: true,
+            // Scrollbar
+            scrollbar: null,
+            scrollbarHide: true,
+            scrollbarDraggable: false,
+            scrollbarSnapOnRelease: false,
+            // Keyboard Mousewheel
+            keyboardControl: false,
+            mousewheelControl: false,
+            mousewheelReleaseOnEdges: false,
+            mousewheelInvert: false,
+            mousewheelForceToAxis: false,
+            mousewheelSensitivity: 1,
+            mousewheelEventsTarged: 'container',
+            // Hash Navigation
+            hashnav: false,
+            hashnavWatchState: false,
+            // History
+            history: false,
+            // Commong Nav State
+            replaceState: false,
+            // Breakpoints
+            breakpoints: undefined,
+            // Slides grid
+            spaceBetween: 0,
+            slidesPerView: 1,
+            slidesPerColumn: 1,
+            slidesPerColumnFill: 'column',
+            slidesPerGroup: 1,
+            centeredSlides: false,
+            slidesOffsetBefore: 0, // in px
+            slidesOffsetAfter: 0, // in px
+            // Round length
+            roundLengths: false,
+            // Touches
+            touchRatio: 1,
+            touchAngle: 45,
+            simulateTouch: true,
+            shortSwipes: true,
+            longSwipes: true,
+            longSwipesRatio: 0.5,
+            longSwipesMs: 300,
+            followFinger: true,
+            onlyExternal: false,
+            threshold: 0,
+            touchMoveStopPropagation: true,
+            touchReleaseOnEdges: false,
+            // Unique Navigation Elements
+            uniqueNavElements: true,
+            // Pagination
+            pagination: null,
+            paginationElement: 'span',
+            paginationClickable: false,
+            paginationHide: false,
+            paginationBulletRender: null,
+            paginationProgressRender: null,
+            paginationFractionRender: null,
+            paginationCustomRender: null,
+            paginationType: 'bullets', // 'bullets' or 'progress' or 'fraction' or 'custom'
+            // Resistance
+            resistance: true,
+            resistanceRatio: 0.85,
+            // Next/prev buttons
+            nextButton: null,
+            prevButton: null,
+            // Progress
+            watchSlidesProgress: false,
+            watchSlidesVisibility: false,
+            // Cursor
+            grabCursor: false,
+            // Clicks
+            preventClicks: true,
+            preventClicksPropagation: true,
+            slideToClickedSlide: false,
+            // Lazy Loading
+            lazyLoading: false,
+            lazyLoadingInPrevNext: false,
+            lazyLoadingInPrevNextAmount: 1,
+            lazyLoadingOnTransitionStart: false,
+            // Images
+            preloadImages: true,
+            updateOnImagesReady: true,
+            // loop
+            loop: false,
+            loopAdditionalSlides: 0,
+            loopedSlides: null,
+            // Control
+            control: undefined,
+            controlInverse: false,
+            controlBy: 'slide', //or 'container'
+            normalizeSlideIndex: true,
+            // Swiping/no swiping
+            allowSwipeToPrev: true,
+            allowSwipeToNext: true,
+            swipeHandler: null, //'.swipe-handler',
+            noSwiping: true,
+            noSwipingClass: 'swiper-no-swiping',
+            // Passive Listeners
+            passiveListeners: true,
+            // NS
+            containerModifierClass: 'swiper-container-', // NEW
+            slideClass: 'swiper-slide',
+            slideActiveClass: 'swiper-slide-active',
+            slideDuplicateActiveClass: 'swiper-slide-duplicate-active',
+            slideVisibleClass: 'swiper-slide-visible',
+            slideDuplicateClass: 'swiper-slide-duplicate',
+            slideNextClass: 'swiper-slide-next',
+            slideDuplicateNextClass: 'swiper-slide-duplicate-next',
+            slidePrevClass: 'swiper-slide-prev',
+            slideDuplicatePrevClass: 'swiper-slide-duplicate-prev',
+            wrapperClass: 'swiper-wrapper',
+            bulletClass: 'swiper-pagination-bullet',
+            bulletActiveClass: 'swiper-pagination-bullet-active',
+            buttonDisabledClass: 'swiper-button-disabled',
+            paginationCurrentClass: 'swiper-pagination-current',
+            paginationTotalClass: 'swiper-pagination-total',
+            paginationHiddenClass: 'swiper-pagination-hidden',
+            paginationProgressbarClass: 'swiper-pagination-progressbar',
+            paginationClickableClass: 'swiper-pagination-clickable', // NEW
+            paginationModifierClass: 'swiper-pagination-', // NEW
+            lazyLoadingClass: 'swiper-lazy',
+            lazyStatusLoadingClass: 'swiper-lazy-loading',
+            lazyStatusLoadedClass: 'swiper-lazy-loaded',
+            lazyPreloaderClass: 'swiper-lazy-preloader',
+            notificationClass: 'swiper-notification',
+            preloaderClass: 'preloader',
+            zoomContainerClass: 'swiper-zoom-container',
+        
+            // Observer
+            observer: false,
+            observeParents: false,
+            // Accessibility
+            a11y: false,
+            prevSlideMessage: 'Previous slide',
+            nextSlideMessage: 'Next slide',
+            firstSlideMessage: 'This is the first slide',
+            lastSlideMessage: 'This is the last slide',
+            paginationBulletMessage: 'Go to slide {{index}}',
+            // Callbacks
+            runCallbacksOnInit: true
+            /*
+            Callbacks:
+            onInit: function (swiper)
+            onDestroy: function (swiper)
+            onBeforeResize: function (swiper)
+            onAfterResize: function (swiper)
+            onClick: function (swiper, e)
+            onTap: function (swiper, e)
+            onDoubleTap: function (swiper, e)
+            onSliderMove: function (swiper, e)
+            onSlideChangeStart: function (swiper)
+            onSlideChangeEnd: function (swiper)
+            onTransitionStart: function (swiper)
+            onTransitionEnd: function (swiper)
+            onImagesReady: function (swiper)
+            onProgress: function (swiper, progress)
+            onTouchStart: function (swiper, e)
+            onTouchMove: function (swiper, e)
+            onTouchMoveOpposite: function (swiper, e)
+            onTouchEnd: function (swiper, e)
+            onReachBeginning: function (swiper)
+            onReachEnd: function (swiper)
+            onSetTransition: function (swiper, duration)
+            onSetTranslate: function (swiper, translate)
+            onAutoplayStart: function (swiper)
+            onAutoplayStop: function (swiper),
+            onLazyImageLoad: function (swiper, slide, image)
+            onLazyImageReady: function (swiper, slide, image)
+            onKeyPress: function (swiper, keyCode)
+            */
+        
+        };
+        var initialVirtualTranslate = params && params.virtualTranslate;
+        
+        params = params || {};
+        var originalParams = {};
+        for (var param in params) {
+            if (typeof params[param] === 'object' && params[param] !== null && !(params[param].nodeType || params[param] === window || params[param] === document || (typeof Dom7 !== 'undefined' && params[param] instanceof Dom7) || (typeof jQuery !== 'undefined' && params[param] instanceof jQuery))) {
+                originalParams[param] = {};
+                for (var deepParam in params[param]) {
+                    originalParams[param][deepParam] = params[param][deepParam];
+                }
+            }
+            else {
+                originalParams[param] = params[param];
+            }
+        }
+        for (var def in defaults) {
+            if (typeof params[def] === 'undefined') {
+                params[def] = defaults[def];
+            }
+            else if (typeof params[def] === 'object') {
+                for (var deepDef in defaults[def]) {
+                    if (typeof params[def][deepDef] === 'undefined') {
+                        params[def][deepDef] = defaults[def][deepDef];
+                    }
+                }
+            }
+        }
+        
+        // Swiper
+        var s = this;
+        
+        // Params
+        s.params = params;
+        s.originalParams = originalParams;
+        
+        // Classname
+        s.classNames = [];
+        /*=========================
+          Dom Library and plugins
+          ===========================*/
+        if (typeof $ !== 'undefined' && typeof Dom7 !== 'undefined'){
+            $ = Dom7;
+        }
+        if (typeof $ === 'undefined') {
+            if (typeof Dom7 === 'undefined') {
+                $ = window.Dom7 || window.Zepto || window.jQuery;
+            }
+            else {
+                $ = Dom7;
+            }
+            if (!$) return;
+        }
+        // Export it to Swiper instance
+        s.$ = $;
+        
+        /*=========================
+          Breakpoints
+          ===========================*/
+        s.currentBreakpoint = undefined;
+        s.getActiveBreakpoint = function () {
+            //Get breakpoint for window width
+            if (!s.params.breakpoints) return false;
+            var breakpoint = false;
+            var points = [], point;
+            for ( point in s.params.breakpoints ) {
+                if (s.params.breakpoints.hasOwnProperty(point)) {
+                    points.push(point);
+                }
+            }
+            points.sort(function (a, b) {
+                return parseInt(a, 10) > parseInt(b, 10);
+            });
+            for (var i = 0; i < points.length; i++) {
+                point = points[i];
+                if (point >= window.innerWidth && !breakpoint) {
+                    breakpoint = point;
+                }
+            }
+            return breakpoint || 'max';
+        };
+        s.setBreakpoint = function () {
+            //Set breakpoint for window width and update parameters
+            var breakpoint = s.getActiveBreakpoint();
+            if (breakpoint && s.currentBreakpoint !== breakpoint) {
+                var breakPointsParams = breakpoint in s.params.breakpoints ? s.params.breakpoints[breakpoint] : s.originalParams;
+                var needsReLoop = s.params.loop && (breakPointsParams.slidesPerView !== s.params.slidesPerView);
+                for ( var param in breakPointsParams ) {
+                    s.params[param] = breakPointsParams[param];
+                }
+                s.currentBreakpoint = breakpoint;
+                if(needsReLoop && s.destroyLoop) {
+                    s.reLoop(true);
+                }
+            }
+        };
+        // Set breakpoint on load
+        if (s.params.breakpoints) {
+            s.setBreakpoint();
+        }
+        
+        /*=========================
+          Preparation - Define Container, Wrapper and Pagination
+          ===========================*/
+        s.container = $(container);
+        if (s.container.length === 0) return;
+        if (s.container.length > 1) {
+            var swipers = [];
+            s.container.each(function () {
+                var container = this;
+                swipers.push(new Swiper(this, params));
+            });
+            return swipers;
+        }
+        
+        // Save instance in container HTML Element and in data
+        s.container[0].swiper = s;
+        s.container.data('swiper', s);
+        
+        s.classNames.push(s.params.containerModifierClass + s.params.direction);
+        
+        if (s.params.freeMode) {
+            s.classNames.push(s.params.containerModifierClass + 'free-mode');
+        }
+        if (!s.support.flexbox) {
+            s.classNames.push(s.params.containerModifierClass + 'no-flexbox');
+            s.params.slidesPerColumn = 1;
+        }
+        if (s.params.autoHeight) {
+            s.classNames.push(s.params.containerModifierClass + 'autoheight');
+        }
+        // Enable slides progress when required
+        if (s.params.parallax || s.params.watchSlidesVisibility) {
+            s.params.watchSlidesProgress = true;
+        }
+        // Max resistance when touchReleaseOnEdges
+        if (s.params.touchReleaseOnEdges) {
+            s.params.resistanceRatio = 0;
+        }
+        // Coverflow / 3D
+        if (['cube', 'coverflow', 'flip'].indexOf(s.params.effect) >= 0) {
+            if (s.support.transforms3d) {
+                s.params.watchSlidesProgress = true;
+                s.classNames.push(s.params.containerModifierClass + '3d');
+            }
+            else {
+                s.params.effect = 'slide';
+            }
+        }
+        if (s.params.effect !== 'slide') {
+            s.classNames.push(s.params.containerModifierClass + s.params.effect);
+        }
+        if (s.params.effect === 'cube') {
+            s.params.resistanceRatio = 0;
+            s.params.slidesPerView = 1;
+            s.params.slidesPerColumn = 1;
+            s.params.slidesPerGroup = 1;
+            s.params.centeredSlides = false;
+            s.params.spaceBetween = 0;
+            s.params.virtualTranslate = true;
+        }
+        if (s.params.effect === 'fade' || s.params.effect === 'flip') {
+            s.params.slidesPerView = 1;
+            s.params.slidesPerColumn = 1;
+            s.params.slidesPerGroup = 1;
+            s.params.watchSlidesProgress = true;
+            s.params.spaceBetween = 0;
+            if (typeof initialVirtualTranslate === 'undefined') {
+                s.params.virtualTranslate = true;
+            }
+        }
+        
+        // Grab Cursor
+        if (s.params.grabCursor && s.support.touch) {
+            s.params.grabCursor = false;
+        }
+        
+        // Wrapper
+        s.wrapper = s.container.children('.' + s.params.wrapperClass);
+        
+        // Pagination
+        if (s.params.pagination) {
+            s.paginationContainer = $(s.params.pagination);
+            if (s.params.uniqueNavElements && typeof s.params.pagination === 'string' && s.paginationContainer.length > 1 && s.container.find(s.params.pagination).length === 1) {
+                s.paginationContainer = s.container.find(s.params.pagination);
+            }
+        
+            if (s.params.paginationType === 'bullets' && s.params.paginationClickable) {
+                s.paginationContainer.addClass(s.params.paginationModifierClass + 'clickable');
+            }
+            else {
+                s.params.paginationClickable = false;
+            }
+            s.paginationContainer.addClass(s.params.paginationModifierClass + s.params.paginationType);
+        }
+        // Next/Prev Buttons
+        if (s.params.nextButton || s.params.prevButton) {
+            if (s.params.nextButton) {
+                s.nextButton = $(s.params.nextButton);
+                if (s.params.uniqueNavElements && typeof s.params.nextButton === 'string' && s.nextButton.length > 1 && s.container.find(s.params.nextButton).length === 1) {
+                    s.nextButton = s.container.find(s.params.nextButton);
+                }
+            }
+            if (s.params.prevButton) {
+                s.prevButton = $(s.params.prevButton);
+                if (s.params.uniqueNavElements && typeof s.params.prevButton === 'string' && s.prevButton.length > 1 && s.container.find(s.params.prevButton).length === 1) {
+                    s.prevButton = s.container.find(s.params.prevButton);
+                }
+            }
+        }
+        
+        // Is Horizontal
+        s.isHorizontal = function () {
+            return s.params.direction === 'horizontal';
+        };
+        // s.isH = isH;
+        
+        // RTL
+        s.rtl = s.isHorizontal() && (s.container[0].dir.toLowerCase() === 'rtl' || s.container.css('direction') === 'rtl');
+        if (s.rtl) {
+            s.classNames.push(s.params.containerModifierClass + 'rtl');
+        }
+        
+        // Wrong RTL support
+        if (s.rtl) {
+            s.wrongRTL = s.wrapper.css('display') === '-webkit-box';
+        }
+        
+        // Columns
+        if (s.params.slidesPerColumn > 1) {
+            s.classNames.push(s.params.containerModifierClass + 'multirow');
+        }
+        
+        // Check for Android
+        if (s.device.android) {
+            s.classNames.push(s.params.containerModifierClass + 'android');
+        }
+        
+        // Add classes
+        s.container.addClass(s.classNames.join(' '));
+        
+        // Translate
+        s.translate = 0;
+        
+        // Progress
+        s.progress = 0;
+        
+        // Velocity
+        s.velocity = 0;
+        
+        /*=========================
+          Locks, unlocks
+          ===========================*/
+        s.lockSwipeToNext = function () {
+            s.params.allowSwipeToNext = false;
+            if (s.params.allowSwipeToPrev === false && s.params.grabCursor) {
+                s.unsetGrabCursor();
+            }
+        };
+        s.lockSwipeToPrev = function () {
+            s.params.allowSwipeToPrev = false;
+            if (s.params.allowSwipeToNext === false && s.params.grabCursor) {
+                s.unsetGrabCursor();
+            }
+        };
+        s.lockSwipes = function () {
+            s.params.allowSwipeToNext = s.params.allowSwipeToPrev = false;
+            if (s.params.grabCursor) s.unsetGrabCursor();
+        };
+        s.unlockSwipeToNext = function () {
+            s.params.allowSwipeToNext = true;
+            if (s.params.allowSwipeToPrev === true && s.params.grabCursor) {
+                s.setGrabCursor();
+            }
+        };
+        s.unlockSwipeToPrev = function () {
+            s.params.allowSwipeToPrev = true;
+            if (s.params.allowSwipeToNext === true && s.params.grabCursor) {
+                s.setGrabCursor();
+            }
+        };
+        s.unlockSwipes = function () {
+            s.params.allowSwipeToNext = s.params.allowSwipeToPrev = true;
+            if (s.params.grabCursor) s.setGrabCursor();
+        };
+        
+        /*=========================
+          Round helper
+          ===========================*/
+        function round(a) {
+            return Math.floor(a);
+        }
+        /*=========================
+          Set grab cursor
+          ===========================*/
+        s.setGrabCursor = function(moving) {
+            s.container[0].style.cursor = 'move';
+            s.container[0].style.cursor = moving ? '-webkit-grabbing' : '-webkit-grab';
+            s.container[0].style.cursor = moving ? '-moz-grabbin' : '-moz-grab';
+            s.container[0].style.cursor = moving ? 'grabbing': 'grab';
+        };
+        s.unsetGrabCursor = function () {
+            s.container[0].style.cursor = '';
+        };
+        if (s.params.grabCursor) {
+            s.setGrabCursor();
+        }
+        /*=========================
+          Update on Images Ready
+          ===========================*/
+        s.imagesToLoad = [];
+        s.imagesLoaded = 0;
+        
+        s.loadImage = function (imgElement, src, srcset, sizes, checkForComplete, callback) {
+            var image;
+            function onReady () {
+                if (callback) callback();
+            }
+            if (!imgElement.complete || !checkForComplete) {
+                if (src) {
+                    image = new window.Image();
+                    image.onload = onReady;
+                    image.onerror = onReady;
+                    if (sizes) {
+                        image.sizes = sizes;
+                    }
+                    if (srcset) {
+                        image.srcset = srcset;
+                    }
+                    if (src) {
+                        image.src = src;
+                    }
+                } else {
+                    onReady();
+                }
+        
+            } else {//image already loaded...
+                onReady();
+            }
+        };
+        s.preloadImages = function () {
+            s.imagesToLoad = s.container.find('img');
+            function _onReady() {
+                if (typeof s === 'undefined' || s === null || !s) return;
+                if (s.imagesLoaded !== undefined) s.imagesLoaded++;
+                if (s.imagesLoaded === s.imagesToLoad.length) {
+                    if (s.params.updateOnImagesReady) s.update();
+                    s.emit('onImagesReady', s);
+                }
+            }
+            for (var i = 0; i < s.imagesToLoad.length; i++) {
+                s.loadImage(s.imagesToLoad[i], (s.imagesToLoad[i].currentSrc || s.imagesToLoad[i].getAttribute('src')), (s.imagesToLoad[i].srcset || s.imagesToLoad[i].getAttribute('srcset')), s.imagesToLoad[i].sizes || s.imagesToLoad[i].getAttribute('sizes'), true, _onReady);
+            }
+        };
+        
+        /*=========================
+          Autoplay
+          ===========================*/
+        s.autoplayTimeoutId = undefined;
+        s.autoplaying = false;
+        s.autoplayPaused = false;
+        function autoplay() {
+            var autoplayDelay = s.params.autoplay;
+            var activeSlide = s.slides.eq(s.activeIndex);
+            if (activeSlide.attr('data-swiper-autoplay')) {
+                autoplayDelay = activeSlide.attr('data-swiper-autoplay') || s.params.autoplay;
+            }
+            s.autoplayTimeoutId = setTimeout(function () {
+                if (s.params.loop) {
+                    s.fixLoop();
+                    s._slideNext();
+                    s.emit('onAutoplay', s);
+                }
+                else {
+                    if (!s.isEnd) {
+                        s._slideNext();
+                        s.emit('onAutoplay', s);
+                    }
+                    else {
+                        if (!params.autoplayStopOnLast) {
+                            s._slideTo(0);
+                            s.emit('onAutoplay', s);
+                        }
+                        else {
+                            s.stopAutoplay();
+                        }
+                    }
+                }
+            }, autoplayDelay);
+        }
+        s.startAutoplay = function () {
+            if (typeof s.autoplayTimeoutId !== 'undefined') return false;
+            if (!s.params.autoplay) return false;
+            if (s.autoplaying) return false;
+            s.autoplaying = true;
+            s.emit('onAutoplayStart', s);
+            autoplay();
+        };
+        s.stopAutoplay = function (internal) {
+            if (!s.autoplayTimeoutId) return;
+            if (s.autoplayTimeoutId) clearTimeout(s.autoplayTimeoutId);
+            s.autoplaying = false;
+            s.autoplayTimeoutId = undefined;
+            s.emit('onAutoplayStop', s);
+        };
+        s.pauseAutoplay = function (speed) {
+            if (s.autoplayPaused) return;
+            if (s.autoplayTimeoutId) clearTimeout(s.autoplayTimeoutId);
+            s.autoplayPaused = true;
+            if (speed === 0) {
+                s.autoplayPaused = false;
+                autoplay();
+            }
+            else {
+                s.wrapper.transitionEnd(function () {
+                    if (!s) return;
+                    s.autoplayPaused = false;
+                    if (!s.autoplaying) {
+                        s.stopAutoplay();
+                    }
+                    else {
+                        autoplay();
+                    }
+                });
+            }
+        };
+        /*=========================
+          Min/Max Translate
+          ===========================*/
+        s.minTranslate = function () {
+            return (-s.snapGrid[0]);
+        };
+        s.maxTranslate = function () {
+            return (-s.snapGrid[s.snapGrid.length - 1]);
+        };
+        /*=========================
+          Slider/slides sizes
+          ===========================*/
+        s.updateAutoHeight = function () {
+            var activeSlides = [];
+            var newHeight = 0;
+            var i;
+        
+            // Find slides currently in view
+            if(s.params.slidesPerView !== 'auto' && s.params.slidesPerView > 1) {
+                for (i = 0; i < Math.ceil(s.params.slidesPerView); i++) {
+                    var index = s.activeIndex + i;
+                    if(index > s.slides.length) break;
+                    activeSlides.push(s.slides.eq(index)[0]);
+                }
+            } else {
+                activeSlides.push(s.slides.eq(s.activeIndex)[0]);
+            }
+        
+            // Find new height from heighest slide in view
+            for (i = 0; i < activeSlides.length; i++) {
+                if (typeof activeSlides[i] !== 'undefined') {
+                    var height = activeSlides[i].offsetHeight;
+                    newHeight = height > newHeight ? height : newHeight;
+                }
+            }
+        
+            // Update Height
+            if (newHeight) s.wrapper.css('height', newHeight + 'px');
+        };
+        s.updateContainerSize = function () {
+            var width, height;
+            if (typeof s.params.width !== 'undefined') {
+                width = s.params.width;
+            }
+            else {
+                width = s.container[0].clientWidth;
+            }
+            if (typeof s.params.height !== 'undefined') {
+                height = s.params.height;
+            }
+            else {
+                height = s.container[0].clientHeight;
+            }
+            if (width === 0 && s.isHorizontal() || height === 0 && !s.isHorizontal()) {
+                return;
+            }
+        
+            //Subtract paddings
+            width = width - parseInt(s.container.css('padding-left'), 10) - parseInt(s.container.css('padding-right'), 10);
+            height = height - parseInt(s.container.css('padding-top'), 10) - parseInt(s.container.css('padding-bottom'), 10);
+        
+            // Store values
+            s.width = width;
+            s.height = height;
+            s.size = s.isHorizontal() ? s.width : s.height;
+        };
+        
+        s.updateSlidesSize = function () {
+            s.slides = s.wrapper.children('.' + s.params.slideClass);
+            s.snapGrid = [];
+            s.slidesGrid = [];
+            s.slidesSizesGrid = [];
+        
+            var spaceBetween = s.params.spaceBetween,
+                slidePosition = -s.params.slidesOffsetBefore,
+                i,
+                prevSlideSize = 0,
+                index = 0;
+            if (typeof s.size === 'undefined') return;
+            if (typeof spaceBetween === 'string' && spaceBetween.indexOf('%') >= 0) {
+                spaceBetween = parseFloat(spaceBetween.replace('%', '')) / 100 * s.size;
+            }
+        
+            s.virtualSize = -spaceBetween;
+            // reset margins
+            if (s.rtl) s.slides.css({marginLeft: '', marginTop: ''});
+            else s.slides.css({marginRight: '', marginBottom: ''});
+        
+            var slidesNumberEvenToRows;
+            if (s.params.slidesPerColumn > 1) {
+                if (Math.floor(s.slides.length / s.params.slidesPerColumn) === s.slides.length / s.params.slidesPerColumn) {
+                    slidesNumberEvenToRows = s.slides.length;
+                }
+                else {
+                    slidesNumberEvenToRows = Math.ceil(s.slides.length / s.params.slidesPerColumn) * s.params.slidesPerColumn;
+                }
+                if (s.params.slidesPerView !== 'auto' && s.params.slidesPerColumnFill === 'row') {
+                    slidesNumberEvenToRows = Math.max(slidesNumberEvenToRows, s.params.slidesPerView * s.params.slidesPerColumn);
+                }
+            }
+        
+            // Calc slides
+            var slideSize;
+            var slidesPerColumn = s.params.slidesPerColumn;
+            var slidesPerRow = slidesNumberEvenToRows / slidesPerColumn;
+            var numFullColumns = slidesPerRow - (s.params.slidesPerColumn * slidesPerRow - s.slides.length);
+            for (i = 0; i < s.slides.length; i++) {
+                slideSize = 0;
+                var slide = s.slides.eq(i);
+                if (s.params.slidesPerColumn > 1) {
+                    // Set slides order
+                    var newSlideOrderIndex;
+                    var column, row;
+                    if (s.params.slidesPerColumnFill === 'column') {
+                        column = Math.floor(i / slidesPerColumn);
+                        row = i - column * slidesPerColumn;
+                        if (column > numFullColumns || (column === numFullColumns && row === slidesPerColumn-1)) {
+                            if (++row >= slidesPerColumn) {
+                                row = 0;
+                                column++;
+                            }
+                        }
+                        newSlideOrderIndex = column + row * slidesNumberEvenToRows / slidesPerColumn;
+                        slide
+                            .css({
+                                '-webkit-box-ordinal-group': newSlideOrderIndex,
+                                '-moz-box-ordinal-group': newSlideOrderIndex,
+                                '-ms-flex-order': newSlideOrderIndex,
+                                '-webkit-order': newSlideOrderIndex,
+                                'order': newSlideOrderIndex
+                            });
+                    }
+                    else {
+                        row = Math.floor(i / slidesPerRow);
+                        column = i - row * slidesPerRow;
+                    }
+                    slide
+                        .css(
+                            'margin-' + (s.isHorizontal() ? 'top' : 'left'),
+                            (row !== 0 && s.params.spaceBetween) && (s.params.spaceBetween + 'px')
+                        )
+                        .attr('data-swiper-column', column)
+                        .attr('data-swiper-row', row);
+        
+                }
+                if (slide.css('display') === 'none') continue;
+                if (s.params.slidesPerView === 'auto') {
+                    slideSize = s.isHorizontal() ? slide.outerWidth(true) : slide.outerHeight(true);
+                    if (s.params.roundLengths) slideSize = round(slideSize);
+                }
+                else {
+                    slideSize = (s.size - (s.params.slidesPerView - 1) * spaceBetween) / s.params.slidesPerView;
+                    if (s.params.roundLengths) slideSize = round(slideSize);
+        
+                    if (s.isHorizontal()) {
+                        s.slides[i].style.width = slideSize + 'px';
+                    }
+                    else {
+                        s.slides[i].style.height = slideSize + 'px';
+                    }
+                }
+                s.slides[i].swiperSlideSize = slideSize;
+                s.slidesSizesGrid.push(slideSize);
+        
+        
+                if (s.params.centeredSlides) {
+                    slidePosition = slidePosition + slideSize / 2 + prevSlideSize / 2 + spaceBetween;
+                    if(prevSlideSize === 0 && i !== 0) slidePosition = slidePosition - s.size / 2 - spaceBetween;
+                    if (i === 0) slidePosition = slidePosition - s.size / 2 - spaceBetween;
+                    if (Math.abs(slidePosition) < 1 / 1000) slidePosition = 0;
+                    if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
+                    s.slidesGrid.push(slidePosition);
+                }
+                else {
+                    if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
+                    s.slidesGrid.push(slidePosition);
+                    slidePosition = slidePosition + slideSize + spaceBetween;
+                }
+        
+                s.virtualSize += slideSize + spaceBetween;
+        
+                prevSlideSize = slideSize;
+        
+                index ++;
+            }
+            s.virtualSize = Math.max(s.virtualSize, s.size) + s.params.slidesOffsetAfter;
+            var newSlidesGrid;
+        
+            if (
+                s.rtl && s.wrongRTL && (s.params.effect === 'slide' || s.params.effect === 'coverflow')) {
+                s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
+            }
+            if (!s.support.flexbox || s.params.setWrapperSize) {
+                if (s.isHorizontal()) s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
+                else s.wrapper.css({height: s.virtualSize + s.params.spaceBetween + 'px'});
+            }
+        
+            if (s.params.slidesPerColumn > 1) {
+                s.virtualSize = (slideSize + s.params.spaceBetween) * slidesNumberEvenToRows;
+                s.virtualSize = Math.ceil(s.virtualSize / s.params.slidesPerColumn) - s.params.spaceBetween;
+                if (s.isHorizontal()) s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
+                else s.wrapper.css({height: s.virtualSize + s.params.spaceBetween + 'px'});
+                if (s.params.centeredSlides) {
+                    newSlidesGrid = [];
+                    for (i = 0; i < s.snapGrid.length; i++) {
+                        if (s.snapGrid[i] < s.virtualSize + s.snapGrid[0]) newSlidesGrid.push(s.snapGrid[i]);
+                    }
+                    s.snapGrid = newSlidesGrid;
+                }
+            }
+        
+            // Remove last grid elements depending on width
+            if (!s.params.centeredSlides) {
+                newSlidesGrid = [];
+                for (i = 0; i < s.snapGrid.length; i++) {
+                    if (s.snapGrid[i] <= s.virtualSize - s.size) {
+                        newSlidesGrid.push(s.snapGrid[i]);
+                    }
+                }
+                s.snapGrid = newSlidesGrid;
+                if (Math.floor(s.virtualSize - s.size) - Math.floor(s.snapGrid[s.snapGrid.length - 1]) > 1) {
+                    s.snapGrid.push(s.virtualSize - s.size);
+                }
+            }
+            if (s.snapGrid.length === 0) s.snapGrid = [0];
+        
+            if (s.params.spaceBetween !== 0) {
+                if (s.isHorizontal()) {
+                    if (s.rtl) s.slides.css({marginLeft: spaceBetween + 'px'});
+                    else s.slides.css({marginRight: spaceBetween + 'px'});
+                }
+                else s.slides.css({marginBottom: spaceBetween + 'px'});
+            }
+            if (s.params.watchSlidesProgress) {
+                s.updateSlidesOffset();
+            }
+        };
+        s.updateSlidesOffset = function () {
+            for (var i = 0; i < s.slides.length; i++) {
+                s.slides[i].swiperSlideOffset = s.isHorizontal() ? s.slides[i].offsetLeft : s.slides[i].offsetTop;
+            }
+        };
+        
+        /*=========================
+          Dynamic Slides Per View
+          ===========================*/
+        s.currentSlidesPerView = function () {
+            var spv = 1, i, j;
+            if (s.params.centeredSlides) {
+                var size = s.slides[s.activeIndex].swiperSlideSize;
+                var breakLoop;
+                for (i = s.activeIndex + 1; i < s.slides.length; i++) {
+                    if (s.slides[i] && !breakLoop) {
+                        size += s.slides[i].swiperSlideSize;
+                        spv ++;
+                        if (size > s.size) breakLoop = true;
+                    }
+                }
+                for (j = s.activeIndex - 1; j >= 0; j--) {
+                    if (s.slides[j] && !breakLoop) {
+                        size += s.slides[j].swiperSlideSize;
+                        spv ++;
+                        if (size > s.size) breakLoop = true;
+                    }
+                }
+            }
+            else {
+                for (i = s.activeIndex + 1; i < s.slides.length; i++) {
+                    if (s.slidesGrid[i] - s.slidesGrid[s.activeIndex] < s.size) {
+                        spv++;
+                    }
+                }
+            }
+            return spv;
+        };
+        /*=========================
+          Slider/slides progress
+          ===========================*/
+        s.updateSlidesProgress = function (translate) {
+            if (typeof translate === 'undefined') {
+                translate = s.translate || 0;
+            }
+            if (s.slides.length === 0) return;
+            if (typeof s.slides[0].swiperSlideOffset === 'undefined') s.updateSlidesOffset();
+        
+            var offsetCenter = -translate;
+            if (s.rtl) offsetCenter = translate;
+        
+            // Visible Slides
+            s.slides.removeClass(s.params.slideVisibleClass);
+            for (var i = 0; i < s.slides.length; i++) {
+                var slide = s.slides[i];
+                var slideProgress = (offsetCenter + (s.params.centeredSlides ? s.minTranslate() : 0) - slide.swiperSlideOffset) / (slide.swiperSlideSize + s.params.spaceBetween);
+                if (s.params.watchSlidesVisibility) {
+                    var slideBefore = -(offsetCenter - slide.swiperSlideOffset);
+                    var slideAfter = slideBefore + s.slidesSizesGrid[i];
+                    var isVisible =
+                        (slideBefore >= 0 && slideBefore < s.size) ||
+                        (slideAfter > 0 && slideAfter <= s.size) ||
+                        (slideBefore <= 0 && slideAfter >= s.size);
+                    if (isVisible) {
+                        s.slides.eq(i).addClass(s.params.slideVisibleClass);
+                    }
+                }
+                slide.progress = s.rtl ? -slideProgress : slideProgress;
+            }
+        };
+        s.updateProgress = function (translate) {
+            if (typeof translate === 'undefined') {
+                translate = s.translate || 0;
+            }
+            var translatesDiff = s.maxTranslate() - s.minTranslate();
+            var wasBeginning = s.isBeginning;
+            var wasEnd = s.isEnd;
+            if (translatesDiff === 0) {
+                s.progress = 0;
+                s.isBeginning = s.isEnd = true;
+            }
+            else {
+                s.progress = (translate - s.minTranslate()) / (translatesDiff);
+                s.isBeginning = s.progress <= 0;
+                s.isEnd = s.progress >= 1;
+            }
+            if (s.isBeginning && !wasBeginning) s.emit('onReachBeginning', s);
+            if (s.isEnd && !wasEnd) s.emit('onReachEnd', s);
+        
+            if (s.params.watchSlidesProgress) s.updateSlidesProgress(translate);
+            s.emit('onProgress', s, s.progress);
+        };
+        s.updateActiveIndex = function () {
+            var translate = s.rtl ? s.translate : -s.translate;
+            var newActiveIndex, i, snapIndex;
+            for (i = 0; i < s.slidesGrid.length; i ++) {
+                if (typeof s.slidesGrid[i + 1] !== 'undefined') {
+                    if (translate >= s.slidesGrid[i] && translate < s.slidesGrid[i + 1] - (s.slidesGrid[i + 1] - s.slidesGrid[i]) / 2) {
+                        newActiveIndex = i;
+                    }
+                    else if (translate >= s.slidesGrid[i] && translate < s.slidesGrid[i + 1]) {
+                        newActiveIndex = i + 1;
+                    }
+                }
+                else {
+                    if (translate >= s.slidesGrid[i]) {
+                        newActiveIndex = i;
+                    }
+                }
+            }
+            // Normalize slideIndex
+            if(s.params.normalizeSlideIndex){
+                if (newActiveIndex < 0 || typeof newActiveIndex === 'undefined') newActiveIndex = 0;
+            }
+            // for (i = 0; i < s.slidesGrid.length; i++) {
+                // if (- translate >= s.slidesGrid[i]) {
+                    // newActiveIndex = i;
+                // }
+            // }
+            snapIndex = Math.floor(newActiveIndex / s.params.slidesPerGroup);
+            if (snapIndex >= s.snapGrid.length) snapIndex = s.snapGrid.length - 1;
+        
+            if (newActiveIndex === s.activeIndex) {
+                return;
+            }
+            s.snapIndex = snapIndex;
+            s.previousIndex = s.activeIndex;
+            s.activeIndex = newActiveIndex;
+            s.updateClasses();
+            s.updateRealIndex();
+        };
+        s.updateRealIndex = function(){
+            s.realIndex = parseInt(s.slides.eq(s.activeIndex).attr('data-swiper-slide-index') || s.activeIndex, 10);
+        };
+        
+        /*=========================
+          Classes
+          ===========================*/
+        s.updateClasses = function () {
+            s.slides.removeClass(s.params.slideActiveClass + ' ' + s.params.slideNextClass + ' ' + s.params.slidePrevClass + ' ' + s.params.slideDuplicateActiveClass + ' ' + s.params.slideDuplicateNextClass + ' ' + s.params.slideDuplicatePrevClass);
+            var activeSlide = s.slides.eq(s.activeIndex);
+            // Active classes
+            activeSlide.addClass(s.params.slideActiveClass);
+            if (params.loop) {
+                // Duplicate to all looped slides
+                if (activeSlide.hasClass(s.params.slideDuplicateClass)) {
+                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + s.realIndex + '"]').addClass(s.params.slideDuplicateActiveClass);
+                }
+                else {
+                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + s.realIndex + '"]').addClass(s.params.slideDuplicateActiveClass);
+                }
+            }
+            // Next Slide
+            var nextSlide = activeSlide.next('.' + s.params.slideClass).addClass(s.params.slideNextClass);
+            if (s.params.loop && nextSlide.length === 0) {
+                nextSlide = s.slides.eq(0);
+                nextSlide.addClass(s.params.slideNextClass);
+            }
+            // Prev Slide
+            var prevSlide = activeSlide.prev('.' + s.params.slideClass).addClass(s.params.slidePrevClass);
+            if (s.params.loop && prevSlide.length === 0) {
+                prevSlide = s.slides.eq(-1);
+                prevSlide.addClass(s.params.slidePrevClass);
+            }
+            if (params.loop) {
+                // Duplicate to all looped slides
+                if (nextSlide.hasClass(s.params.slideDuplicateClass)) {
+                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + nextSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicateNextClass);
+                }
+                else {
+                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + nextSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicateNextClass);
+                }
+                if (prevSlide.hasClass(s.params.slideDuplicateClass)) {
+                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + prevSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicatePrevClass);
+                }
+                else {
+                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + prevSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicatePrevClass);
+                }
+            }
+        
+            // Pagination
+            if (s.paginationContainer && s.paginationContainer.length > 0) {
+                // Current/Total
+                var current,
+                    total = s.params.loop ? Math.ceil((s.slides.length - s.loopedSlides * 2) / s.params.slidesPerGroup) : s.snapGrid.length;
+                if (s.params.loop) {
+                    current = Math.ceil((s.activeIndex - s.loopedSlides)/s.params.slidesPerGroup);
+                    if (current > s.slides.length - 1 - s.loopedSlides * 2) {
+                        current = current - (s.slides.length - s.loopedSlides * 2);
+                    }
+                    if (current > total - 1) current = current - total;
+                    if (current < 0 && s.params.paginationType !== 'bullets') current = total + current;
+                }
+                else {
+                    if (typeof s.snapIndex !== 'undefined') {
+                        current = s.snapIndex;
+                    }
+                    else {
+                        current = s.activeIndex || 0;
+                    }
+                }
+                // Types
+                if (s.params.paginationType === 'bullets' && s.bullets && s.bullets.length > 0) {
+                    s.bullets.removeClass(s.params.bulletActiveClass);
+                    if (s.paginationContainer.length > 1) {
+                        s.bullets.each(function () {
+                            if ($(this).index() === current) $(this).addClass(s.params.bulletActiveClass);
+                        });
+                    }
+                    else {
+                        s.bullets.eq(current).addClass(s.params.bulletActiveClass);
+                    }
+                }
+                if (s.params.paginationType === 'fraction') {
+                    s.paginationContainer.find('.' + s.params.paginationCurrentClass).text(current + 1);
+                    s.paginationContainer.find('.' + s.params.paginationTotalClass).text(total);
+                }
+                if (s.params.paginationType === 'progress') {
+                    var scale = (current + 1) / total,
+                        scaleX = scale,
+                        scaleY = 1;
+                    if (!s.isHorizontal()) {
+                        scaleY = scale;
+                        scaleX = 1;
+                    }
+                    s.paginationContainer.find('.' + s.params.paginationProgressbarClass).transform('translate3d(0,0,0) scaleX(' + scaleX + ') scaleY(' + scaleY + ')').transition(s.params.speed);
+                }
+                if (s.params.paginationType === 'custom' && s.params.paginationCustomRender) {
+                    s.paginationContainer.html(s.params.paginationCustomRender(s, current + 1, total));
+                    s.emit('onPaginationRendered', s, s.paginationContainer[0]);
+                }
+            }
+        
+            // Next/active buttons
+            if (!s.params.loop) {
+                if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
+                    if (s.isBeginning) {
+                        s.prevButton.addClass(s.params.buttonDisabledClass);
+                        if (s.params.a11y && s.a11y) s.a11y.disable(s.prevButton);
+                    }
+                    else {
+                        s.prevButton.removeClass(s.params.buttonDisabledClass);
+                        if (s.params.a11y && s.a11y) s.a11y.enable(s.prevButton);
+                    }
+                }
+                if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
+                    if (s.isEnd) {
+                        s.nextButton.addClass(s.params.buttonDisabledClass);
+                        if (s.params.a11y && s.a11y) s.a11y.disable(s.nextButton);
+                    }
+                    else {
+                        s.nextButton.removeClass(s.params.buttonDisabledClass);
+                        if (s.params.a11y && s.a11y) s.a11y.enable(s.nextButton);
+                    }
+                }
+            }
+        };
+        
+        /*=========================
+          Pagination
+          ===========================*/
+        s.updatePagination = function () {
+            if (!s.params.pagination) return;
+            if (s.paginationContainer && s.paginationContainer.length > 0) {
+                var paginationHTML = '';
+                if (s.params.paginationType === 'bullets') {
+                    var numberOfBullets = s.params.loop ? Math.ceil((s.slides.length - s.loopedSlides * 2) / s.params.slidesPerGroup) : s.snapGrid.length;
+                    for (var i = 0; i < numberOfBullets; i++) {
+                        if (s.params.paginationBulletRender) {
+                            paginationHTML += s.params.paginationBulletRender(s, i, s.params.bulletClass);
+                        }
+                        else {
+                            paginationHTML += '<' + s.params.paginationElement+' class="' + s.params.bulletClass + '"></' + s.params.paginationElement + '>';
+                        }
+                    }
+                    s.paginationContainer.html(paginationHTML);
+                    s.bullets = s.paginationContainer.find('.' + s.params.bulletClass);
+                    if (s.params.paginationClickable && s.params.a11y && s.a11y) {
+                        s.a11y.initPagination();
+                    }
+                }
+                if (s.params.paginationType === 'fraction') {
+                    if (s.params.paginationFractionRender) {
+                        paginationHTML = s.params.paginationFractionRender(s, s.params.paginationCurrentClass, s.params.paginationTotalClass);
+                    }
+                    else {
+                        paginationHTML =
+                            '<span class="' + s.params.paginationCurrentClass + '"></span>' +
+                            ' / ' +
+                            '<span class="' + s.params.paginationTotalClass+'"></span>';
+                    }
+                    s.paginationContainer.html(paginationHTML);
+                }
+                if (s.params.paginationType === 'progress') {
+                    if (s.params.paginationProgressRender) {
+                        paginationHTML = s.params.paginationProgressRender(s, s.params.paginationProgressbarClass);
+                    }
+                    else {
+                        paginationHTML = '<span class="' + s.params.paginationProgressbarClass + '"></span>';
+                    }
+                    s.paginationContainer.html(paginationHTML);
+                }
+                if (s.params.paginationType !== 'custom') {
+                    s.emit('onPaginationRendered', s, s.paginationContainer[0]);
+                }
+            }
+        };
+        /*=========================
+          Common update method
+          ===========================*/
+        s.update = function (updateTranslate) {
+            if (!s) return;
+            s.updateContainerSize();
+            s.updateSlidesSize();
+            s.updateProgress();
+            s.updatePagination();
+            s.updateClasses();
+            if (s.params.scrollbar && s.scrollbar) {
+                s.scrollbar.set();
+            }
+            var newTranslate;
+            function forceSetTranslate() {
+                var translate = s.rtl ? -s.translate : s.translate;
+                newTranslate = Math.min(Math.max(s.translate, s.maxTranslate()), s.minTranslate());
+                s.setWrapperTranslate(newTranslate);
+                s.updateActiveIndex();
+                s.updateClasses();
+            }
+            if (updateTranslate) {
+                var translated;
+                if (s.controller && s.controller.spline) {
+                    s.controller.spline = undefined;
+                }
+                if (s.params.freeMode) {
+                    forceSetTranslate();
+                    if (s.params.autoHeight) {
+                        s.updateAutoHeight();
+                    }
+                }
+                else {
+                    if ((s.params.slidesPerView === 'auto' || s.params.slidesPerView > 1) && s.isEnd && !s.params.centeredSlides) {
+                        translated = s.slideTo(s.slides.length - 1, 0, false, true);
+                    }
+                    else {
+                        translated = s.slideTo(s.activeIndex, 0, false, true);
+                    }
+                    if (!translated) {
+                        forceSetTranslate();
+                    }
+                }
+            }
+            else if (s.params.autoHeight) {
+                s.updateAutoHeight();
+            }
+        };
+        
+        /*=========================
+          Resize Handler
+          ===========================*/
+        s.onResize = function (forceUpdatePagination) {
+            if (s.params.onBeforeResize) s.params.onBeforeResize(s);
+            //Breakpoints
+            if (s.params.breakpoints) {
+                s.setBreakpoint();
+            }
+        
+            // Disable locks on resize
+            var allowSwipeToPrev = s.params.allowSwipeToPrev;
+            var allowSwipeToNext = s.params.allowSwipeToNext;
+            s.params.allowSwipeToPrev = s.params.allowSwipeToNext = true;
+        
+            s.updateContainerSize();
+            s.updateSlidesSize();
+            if (s.params.slidesPerView === 'auto' || s.params.freeMode || forceUpdatePagination) s.updatePagination();
+            if (s.params.scrollbar && s.scrollbar) {
+                s.scrollbar.set();
+            }
+            if (s.controller && s.controller.spline) {
+                s.controller.spline = undefined;
+            }
+            var slideChangedBySlideTo = false;
+            if (s.params.freeMode) {
+                var newTranslate = Math.min(Math.max(s.translate, s.maxTranslate()), s.minTranslate());
+                s.setWrapperTranslate(newTranslate);
+                s.updateActiveIndex();
+                s.updateClasses();
+        
+                if (s.params.autoHeight) {
+                    s.updateAutoHeight();
+                }
+            }
+            else {
+                s.updateClasses();
+                if ((s.params.slidesPerView === 'auto' || s.params.slidesPerView > 1) && s.isEnd && !s.params.centeredSlides) {
+                    slideChangedBySlideTo = s.slideTo(s.slides.length - 1, 0, false, true);
+                }
+                else {
+                    slideChangedBySlideTo = s.slideTo(s.activeIndex, 0, false, true);
+                }
+            }
+            if (s.params.lazyLoading && !slideChangedBySlideTo && s.lazy) {
+                s.lazy.load();
+            }
+            // Return locks after resize
+            s.params.allowSwipeToPrev = allowSwipeToPrev;
+            s.params.allowSwipeToNext = allowSwipeToNext;
+            if (s.params.onAfterResize) s.params.onAfterResize(s);
+        };
+        
+        /*=========================
+          Events
+          ===========================*/
+        
+        //Define Touch Events
+        s.touchEventsDesktop = {start: 'mousedown', move: 'mousemove', end: 'mouseup'};
+        if (window.navigator.pointerEnabled) s.touchEventsDesktop = {start: 'pointerdown', move: 'pointermove', end: 'pointerup'};
+        else if (window.navigator.msPointerEnabled) s.touchEventsDesktop = {start: 'MSPointerDown', move: 'MSPointerMove', end: 'MSPointerUp'};
+        s.touchEvents = {
+            start : s.support.touch || !s.params.simulateTouch  ? 'touchstart' : s.touchEventsDesktop.start,
+            move : s.support.touch || !s.params.simulateTouch ? 'touchmove' : s.touchEventsDesktop.move,
+            end : s.support.touch || !s.params.simulateTouch ? 'touchend' : s.touchEventsDesktop.end
+        };
+        
+        
+        // WP8 Touch Events Fix
+        if (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) {
+            (s.params.touchEventsTarget === 'container' ? s.container : s.wrapper).addClass('swiper-wp8-' + s.params.direction);
+        }
+        
+        // Attach/detach events
+        s.initEvents = function (detach) {
+            var actionDom = detach ? 'off' : 'on';
+            var action = detach ? 'removeEventListener' : 'addEventListener';
+            var touchEventsTarget = s.params.touchEventsTarget === 'container' ? s.container[0] : s.wrapper[0];
+            var target = s.support.touch ? touchEventsTarget : document;
+        
+            var moveCapture = s.params.nested ? true : false;
+        
+            //Touch Events
+            if (s.browser.ie) {
+                touchEventsTarget[action](s.touchEvents.start, s.onTouchStart, false);
+                target[action](s.touchEvents.move, s.onTouchMove, moveCapture);
+                target[action](s.touchEvents.end, s.onTouchEnd, false);
+            }
+            else {
+                if (s.support.touch) {
+                    var passiveListener = s.touchEvents.start === 'touchstart' && s.support.passiveListener && s.params.passiveListeners ? {passive: true, capture: false} : false;
+                    touchEventsTarget[action](s.touchEvents.start, s.onTouchStart, passiveListener);
+                    touchEventsTarget[action](s.touchEvents.move, s.onTouchMove, moveCapture);
+                    touchEventsTarget[action](s.touchEvents.end, s.onTouchEnd, passiveListener);
+                }
+                if ((params.simulateTouch && !s.device.ios && !s.device.android) || (params.simulateTouch && !s.support.touch && s.device.ios)) {
+                    touchEventsTarget[action]('mousedown', s.onTouchStart, false);
+                    document[action]('mousemove', s.onTouchMove, moveCapture);
+                    document[action]('mouseup', s.onTouchEnd, false);
+                }
+            }
+            window[action]('resize', s.onResize);
+        
+            // Next, Prev, Index
+            if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
+                s.nextButton[actionDom]('click', s.onClickNext);
+                if (s.params.a11y && s.a11y) s.nextButton[actionDom]('keydown', s.a11y.onEnterKey);
+            }
+            if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
+                s.prevButton[actionDom]('click', s.onClickPrev);
+                if (s.params.a11y && s.a11y) s.prevButton[actionDom]('keydown', s.a11y.onEnterKey);
+            }
+            if (s.params.pagination && s.params.paginationClickable) {
+                s.paginationContainer[actionDom]('click', '.' + s.params.bulletClass, s.onClickIndex);
+                if (s.params.a11y && s.a11y) s.paginationContainer[actionDom]('keydown', '.' + s.params.bulletClass, s.a11y.onEnterKey);
+            }
+        
+            // Prevent Links Clicks
+            if (s.params.preventClicks || s.params.preventClicksPropagation) touchEventsTarget[action]('click', s.preventClicks, true);
+        };
+        s.attachEvents = function () {
+            s.initEvents();
+        };
+        s.detachEvents = function () {
+            s.initEvents(true);
+        };
+        
+        /*=========================
+          Handle Clicks
+          ===========================*/
+        // Prevent Clicks
+        s.allowClick = true;
+        s.preventClicks = function (e) {
+            if (!s.allowClick) {
+                if (s.params.preventClicks) e.preventDefault();
+                if (s.params.preventClicksPropagation && s.animating) {
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+            }
+        };
+        // Clicks
+        s.onClickNext = function (e) {
+            e.preventDefault();
+            if (s.isEnd && !s.params.loop) return;
+            s.slideNext();
+        };
+        s.onClickPrev = function (e) {
+            e.preventDefault();
+            if (s.isBeginning && !s.params.loop) return;
+            s.slidePrev();
+        };
+        s.onClickIndex = function (e) {
+            e.preventDefault();
+            var index = $(this).index() * s.params.slidesPerGroup;
+            if (s.params.loop) index = index + s.loopedSlides;
+            s.slideTo(index);
+        };
+        
+        /*=========================
+          Handle Touches
+          ===========================*/
+        function findElementInEvent(e, selector) {
+            var el = $(e.target);
+            if (!el.is(selector)) {
+                if (typeof selector === 'string') {
+                    el = el.parents(selector);
+                }
+                else if (selector.nodeType) {
+                    var found;
+                    el.parents().each(function (index, _el) {
+                        if (_el === selector) found = selector;
+                    });
+                    if (!found) return undefined;
+                    else return selector;
+                }
+            }
+            if (el.length === 0) {
+                return undefined;
+            }
+            return el[0];
+        }
+        s.updateClickedSlide = function (e) {
+            var slide = findElementInEvent(e, '.' + s.params.slideClass);
+            var slideFound = false;
+            if (slide) {
+                for (var i = 0; i < s.slides.length; i++) {
+                    if (s.slides[i] === slide) slideFound = true;
+                }
+            }
+        
+            if (slide && slideFound) {
+                s.clickedSlide = slide;
+                s.clickedIndex = $(slide).index();
+            }
+            else {
+                s.clickedSlide = undefined;
+                s.clickedIndex = undefined;
+                return;
+            }
+            if (s.params.slideToClickedSlide && s.clickedIndex !== undefined && s.clickedIndex !== s.activeIndex) {
+                var slideToIndex = s.clickedIndex,
+                    realIndex,
+                    duplicatedSlides,
+                    slidesPerView = s.params.slidesPerView === 'auto' ? s.currentSlidesPerView() : s.params.slidesPerView;
+                if (s.params.loop) {
+                    if (s.animating) return;
+                    realIndex = parseInt($(s.clickedSlide).attr('data-swiper-slide-index'), 10);
+                    if (s.params.centeredSlides) {
+                        if ((slideToIndex < s.loopedSlides - slidesPerView/2) || (slideToIndex > s.slides.length - s.loopedSlides + slidesPerView/2)) {
+                            s.fixLoop();
+                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.' + s.params.slideDuplicateClass + ')').eq(0).index();
+                            setTimeout(function () {
+                                s.slideTo(slideToIndex);
+                            }, 0);
+                        }
+                        else {
+                            s.slideTo(slideToIndex);
+                        }
+                    }
+                    else {
+                        if (slideToIndex > s.slides.length - slidesPerView) {
+                            s.fixLoop();
+                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.' + s.params.slideDuplicateClass + ')').eq(0).index();
+                            setTimeout(function () {
+                                s.slideTo(slideToIndex);
+                            }, 0);
+                        }
+                        else {
+                            s.slideTo(slideToIndex);
+                        }
+                    }
+                }
+                else {
+                    s.slideTo(slideToIndex);
+                }
+            }
+        };
+        
+        var isTouched,
+            isMoved,
+            allowTouchCallbacks,
+            touchStartTime,
+            isScrolling,
+            currentTranslate,
+            startTranslate,
+            allowThresholdMove,
+            // Form elements to match
+            formElements = 'input, select, textarea, button, video',
+            // Last click time
+            lastClickTime = Date.now(), clickTimeout,
+            //Velocities
+            velocities = [],
+            allowMomentumBounce;
+        
+        // Animating Flag
+        s.animating = false;
+        
+        // Touches information
+        s.touches = {
+            startX: 0,
+            startY: 0,
+            currentX: 0,
+            currentY: 0,
+            diff: 0
+        };
+        
+        // Touch handlers
+        var isTouchEvent, startMoving;
+        s.onTouchStart = function (e) {
+            if (e.originalEvent) e = e.originalEvent;
+            isTouchEvent = e.type === 'touchstart';
+            if (!isTouchEvent && 'which' in e && e.which === 3) return;
+            if (s.params.noSwiping && findElementInEvent(e, '.' + s.params.noSwipingClass)) {
+                s.allowClick = true;
+                return;
+            }
+            if (s.params.swipeHandler) {
+                if (!findElementInEvent(e, s.params.swipeHandler)) return;
+            }
+        
+            var startX = s.touches.currentX = e.type === 'touchstart' ? e.targetTouches[0].pageX : e.pageX;
+            var startY = s.touches.currentY = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
+        
+            // Do NOT start if iOS edge swipe is detected. Otherwise iOS app (UIWebView) cannot swipe-to-go-back anymore
+            if(s.device.ios && s.params.iOSEdgeSwipeDetection && startX <= s.params.iOSEdgeSwipeThreshold) {
+                return;
+            }
+        
+            isTouched = true;
+            isMoved = false;
+            allowTouchCallbacks = true;
+            isScrolling = undefined;
+            startMoving = undefined;
+            s.touches.startX = startX;
+            s.touches.startY = startY;
+            touchStartTime = Date.now();
+            s.allowClick = true;
+            s.updateContainerSize();
+            s.swipeDirection = undefined;
+            if (s.params.threshold > 0) allowThresholdMove = false;
+            if (e.type !== 'touchstart') {
+                var preventDefault = true;
+                if ($(e.target).is(formElements)) preventDefault = false;
+                if (document.activeElement && $(document.activeElement).is(formElements)) {
+                    document.activeElement.blur();
+                }
+                if (preventDefault) {
+                    e.preventDefault();
+                }
+            }
+            s.emit('onTouchStart', s, e);
+        };
+        
+        s.onTouchMove = function (e) {
+            if (e.originalEvent) e = e.originalEvent;
+            if (isTouchEvent && e.type === 'mousemove') return;
+            if (e.preventedByNestedSwiper) {
+                s.touches.startX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
+                s.touches.startY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
+                return;
+            }
+            if (s.params.onlyExternal) {
+                // isMoved = true;
+                s.allowClick = false;
+                if (isTouched) {
+                    s.touches.startX = s.touches.currentX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
+                    s.touches.startY = s.touches.currentY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
+                    touchStartTime = Date.now();
+                }
+                return;
+            }
+            if (isTouchEvent && s.params.touchReleaseOnEdges && !s.params.loop) {
+                if (!s.isHorizontal()) {
+                    // Vertical
+                    if (
+                        (s.touches.currentY < s.touches.startY && s.translate <= s.maxTranslate()) ||
+                        (s.touches.currentY > s.touches.startY && s.translate >= s.minTranslate())
+                        ) {
+                        return;
+                    }
+                }
+                else {
+                    if (
+                        (s.touches.currentX < s.touches.startX && s.translate <= s.maxTranslate()) ||
+                        (s.touches.currentX > s.touches.startX && s.translate >= s.minTranslate())
+                        ) {
+                        return;
+                    }
+                }
+            }
+            if (isTouchEvent && document.activeElement) {
+                if (e.target === document.activeElement && $(e.target).is(formElements)) {
+                    isMoved = true;
+                    s.allowClick = false;
+                    return;
+                }
+            }
+            if (allowTouchCallbacks) {
+                s.emit('onTouchMove', s, e);
+            }
+            if (e.targetTouches && e.targetTouches.length > 1) return;
+        
+            s.touches.currentX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
+            s.touches.currentY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
+        
+            if (typeof isScrolling === 'undefined') {
+                var touchAngle;
+                if (s.isHorizontal() && s.touches.currentY === s.touches.startY || !s.isHorizontal() && s.touches.currentX === s.touches.startX) {
+                    isScrolling = false;
+                }
+                else {
+                    touchAngle = Math.atan2(Math.abs(s.touches.currentY - s.touches.startY), Math.abs(s.touches.currentX - s.touches.startX)) * 180 / Math.PI;
+                    isScrolling = s.isHorizontal() ? touchAngle > s.params.touchAngle : (90 - touchAngle > s.params.touchAngle);
+                }
+            }
+            if (isScrolling) {
+                s.emit('onTouchMoveOpposite', s, e);
+            }
+            if (typeof startMoving === 'undefined') {
+                if (s.touches.currentX !== s.touches.startX || s.touches.currentY !== s.touches.startY) {
+                    startMoving = true;
+                }
+            }
+            if (!isTouched) return;
+            if (isScrolling)  {
+                isTouched = false;
+                return;
+            }
+            if (!startMoving) {
+                return;
+            }
+            s.allowClick = false;
+            s.emit('onSliderMove', s, e);
+            e.preventDefault();
+            if (s.params.touchMoveStopPropagation && !s.params.nested) {
+                e.stopPropagation();
+            }
+        
+            if (!isMoved) {
+                if (params.loop) {
+                    s.fixLoop();
+                }
+                startTranslate = s.getWrapperTranslate();
+                s.setWrapperTransition(0);
+                if (s.animating) {
+                    s.wrapper.trigger('webkitTransitionEnd transitionend oTransitionEnd MSTransitionEnd msTransitionEnd');
+                }
+                if (s.params.autoplay && s.autoplaying) {
+                    if (s.params.autoplayDisableOnInteraction) {
+                        s.stopAutoplay();
+                    }
+                    else {
+                        s.pauseAutoplay();
+                    }
+                }
+                allowMomentumBounce = false;
+                //Grab Cursor
+                if (s.params.grabCursor && (s.params.allowSwipeToNext === true || s.params.allowSwipeToPrev === true)) {
+                    s.setGrabCursor(true);
+                }
+            }
+            isMoved = true;
+        
+            var diff = s.touches.diff = s.isHorizontal() ? s.touches.currentX - s.touches.startX : s.touches.currentY - s.touches.startY;
+        
+            diff = diff * s.params.touchRatio;
+            if (s.rtl) diff = -diff;
+        
+            s.swipeDirection = diff > 0 ? 'prev' : 'next';
+            currentTranslate = diff + startTranslate;
+        
+            var disableParentSwiper = true;
+            if ((diff > 0 && currentTranslate > s.minTranslate())) {
+                disableParentSwiper = false;
+                if (s.params.resistance) currentTranslate = s.minTranslate() - 1 + Math.pow(-s.minTranslate() + startTranslate + diff, s.params.resistanceRatio);
+            }
+            else if (diff < 0 && currentTranslate < s.maxTranslate()) {
+                disableParentSwiper = false;
+                if (s.params.resistance) currentTranslate = s.maxTranslate() + 1 - Math.pow(s.maxTranslate() - startTranslate - diff, s.params.resistanceRatio);
+            }
+        
+            if (disableParentSwiper) {
+                e.preventedByNestedSwiper = true;
+            }
+        
+            // Directions locks
+            if (!s.params.allowSwipeToNext && s.swipeDirection === 'next' && currentTranslate < startTranslate) {
+                currentTranslate = startTranslate;
+            }
+            if (!s.params.allowSwipeToPrev && s.swipeDirection === 'prev' && currentTranslate > startTranslate) {
+                currentTranslate = startTranslate;
+            }
+        
+        
+            // Threshold
+            if (s.params.threshold > 0) {
+                if (Math.abs(diff) > s.params.threshold || allowThresholdMove) {
+                    if (!allowThresholdMove) {
+                        allowThresholdMove = true;
+                        s.touches.startX = s.touches.currentX;
+                        s.touches.startY = s.touches.currentY;
+                        currentTranslate = startTranslate;
+                        s.touches.diff = s.isHorizontal() ? s.touches.currentX - s.touches.startX : s.touches.currentY - s.touches.startY;
+                        return;
+                    }
+                }
+                else {
+                    currentTranslate = startTranslate;
+                    return;
+                }
+            }
+        
+            if (!s.params.followFinger) return;
+        
+            // Update active index in free mode
+            if (s.params.freeMode || s.params.watchSlidesProgress) {
+                s.updateActiveIndex();
+            }
+            if (s.params.freeMode) {
+                //Velocity
+                if (velocities.length === 0) {
+                    velocities.push({
+                        position: s.touches[s.isHorizontal() ? 'startX' : 'startY'],
+                        time: touchStartTime
+                    });
+                }
+                velocities.push({
+                    position: s.touches[s.isHorizontal() ? 'currentX' : 'currentY'],
+                    time: (new window.Date()).getTime()
+                });
+            }
+            // Update progress
+            s.updateProgress(currentTranslate);
+            // Update translate
+            s.setWrapperTranslate(currentTranslate);
+        };
+        s.onTouchEnd = function (e) {
+            if (e.originalEvent) e = e.originalEvent;
+            if (allowTouchCallbacks) {
+                s.emit('onTouchEnd', s, e);
+            }
+            allowTouchCallbacks = false;
+            if (!isTouched) return;
+            //Return Grab Cursor
+            if (s.params.grabCursor && isMoved && isTouched  && (s.params.allowSwipeToNext === true || s.params.allowSwipeToPrev === true)) {
+                s.setGrabCursor(false);
+            }
+        
+            // Time diff
+            var touchEndTime = Date.now();
+            var timeDiff = touchEndTime - touchStartTime;
+        
+            // Tap, doubleTap, Click
+            if (s.allowClick) {
+                s.updateClickedSlide(e);
+                s.emit('onTap', s, e);
+                if (timeDiff < 300 && (touchEndTime - lastClickTime) > 300) {
+                    if (clickTimeout) clearTimeout(clickTimeout);
+                    clickTimeout = setTimeout(function () {
+                        if (!s) return;
+                        if (s.params.paginationHide && s.paginationContainer.length > 0 && !$(e.target).hasClass(s.params.bulletClass)) {
+                            s.paginationContainer.toggleClass(s.params.paginationHiddenClass);
+                        }
+                        s.emit('onClick', s, e);
+                    }, 300);
+        
+                }
+                if (timeDiff < 300 && (touchEndTime - lastClickTime) < 300) {
+                    if (clickTimeout) clearTimeout(clickTimeout);
+                    s.emit('onDoubleTap', s, e);
+                }
+            }
+        
+            lastClickTime = Date.now();
+            setTimeout(function () {
+                if (s) s.allowClick = true;
+            }, 0);
+        
+            if (!isTouched || !isMoved || !s.swipeDirection || s.touches.diff === 0 || currentTranslate === startTranslate) {
+                isTouched = isMoved = false;
+                return;
+            }
+            isTouched = isMoved = false;
+        
+            var currentPos;
+            if (s.params.followFinger) {
+                currentPos = s.rtl ? s.translate : -s.translate;
+            }
+            else {
+                currentPos = -currentTranslate;
+            }
+            if (s.params.freeMode) {
+                if (currentPos < -s.minTranslate()) {
+                    s.slideTo(s.activeIndex);
+                    return;
+                }
+                else if (currentPos > -s.maxTranslate()) {
+                    if (s.slides.length < s.snapGrid.length) {
+                        s.slideTo(s.snapGrid.length - 1);
+                    }
+                    else {
+                        s.slideTo(s.slides.length - 1);
+                    }
+                    return;
+                }
+        
+                if (s.params.freeModeMomentum) {
+                    if (velocities.length > 1) {
+                        var lastMoveEvent = velocities.pop(), velocityEvent = velocities.pop();
+        
+                        var distance = lastMoveEvent.position - velocityEvent.position;
+                        var time = lastMoveEvent.time - velocityEvent.time;
+                        s.velocity = distance / time;
+                        s.velocity = s.velocity / 2;
+                        if (Math.abs(s.velocity) < s.params.freeModeMinimumVelocity) {
+                            s.velocity = 0;
+                        }
+                        // this implies that the user stopped moving a finger then released.
+                        // There would be no events with distance zero, so the last event is stale.
+                        if (time > 150 || (new window.Date().getTime() - lastMoveEvent.time) > 300) {
+                            s.velocity = 0;
+                        }
+                    } else {
+                        s.velocity = 0;
+                    }
+                    s.velocity = s.velocity * s.params.freeModeMomentumVelocityRatio;
+        
+                    velocities.length = 0;
+                    var momentumDuration = 1000 * s.params.freeModeMomentumRatio;
+                    var momentumDistance = s.velocity * momentumDuration;
+        
+                    var newPosition = s.translate + momentumDistance;
+                    if (s.rtl) newPosition = - newPosition;
+                    var doBounce = false;
+                    var afterBouncePosition;
+                    var bounceAmount = Math.abs(s.velocity) * 20 * s.params.freeModeMomentumBounceRatio;
+                    if (newPosition < s.maxTranslate()) {
+                        if (s.params.freeModeMomentumBounce) {
+                            if (newPosition + s.maxTranslate() < -bounceAmount) {
+                                newPosition = s.maxTranslate() - bounceAmount;
+                            }
+                            afterBouncePosition = s.maxTranslate();
+                            doBounce = true;
+                            allowMomentumBounce = true;
+                        }
+                        else {
+                            newPosition = s.maxTranslate();
+                        }
+                    }
+                    else if (newPosition > s.minTranslate()) {
+                        if (s.params.freeModeMomentumBounce) {
+                            if (newPosition - s.minTranslate() > bounceAmount) {
+                                newPosition = s.minTranslate() + bounceAmount;
+                            }
+                            afterBouncePosition = s.minTranslate();
+                            doBounce = true;
+                            allowMomentumBounce = true;
+                        }
+                        else {
+                            newPosition = s.minTranslate();
+                        }
+                    }
+                    else if (s.params.freeModeSticky) {
+                        var j = 0,
+                            nextSlide;
+                        for (j = 0; j < s.snapGrid.length; j += 1) {
+                            if (s.snapGrid[j] > -newPosition) {
+                                nextSlide = j;
+                                break;
+                            }
+        
+                        }
+                        if (Math.abs(s.snapGrid[nextSlide] - newPosition) < Math.abs(s.snapGrid[nextSlide - 1] - newPosition) || s.swipeDirection === 'next') {
+                            newPosition = s.snapGrid[nextSlide];
+                        } else {
+                            newPosition = s.snapGrid[nextSlide - 1];
+                        }
+                        if (!s.rtl) newPosition = - newPosition;
+                    }
+                    //Fix duration
+                    if (s.velocity !== 0) {
+                        if (s.rtl) {
+                            momentumDuration = Math.abs((-newPosition - s.translate) / s.velocity);
+                        }
+                        else {
+                            momentumDuration = Math.abs((newPosition - s.translate) / s.velocity);
+                        }
+                    }
+                    else if (s.params.freeModeSticky) {
+                        s.slideReset();
+                        return;
+                    }
+        
+                    if (s.params.freeModeMomentumBounce && doBounce) {
+                        s.updateProgress(afterBouncePosition);
+                        s.setWrapperTransition(momentumDuration);
+                        s.setWrapperTranslate(newPosition);
+                        s.onTransitionStart();
+                        s.animating = true;
+                        s.wrapper.transitionEnd(function () {
+                            if (!s || !allowMomentumBounce) return;
+                            s.emit('onMomentumBounce', s);
+        
+                            s.setWrapperTransition(s.params.speed);
+                            s.setWrapperTranslate(afterBouncePosition);
+                            s.wrapper.transitionEnd(function () {
+                                if (!s) return;
+                                s.onTransitionEnd();
+                            });
+                        });
+                    } else if (s.velocity) {
+                        s.updateProgress(newPosition);
+                        s.setWrapperTransition(momentumDuration);
+                        s.setWrapperTranslate(newPosition);
+                        s.onTransitionStart();
+                        if (!s.animating) {
+                            s.animating = true;
+                            s.wrapper.transitionEnd(function () {
+                                if (!s) return;
+                                s.onTransitionEnd();
+                            });
+                        }
+        
+                    } else {
+                        s.updateProgress(newPosition);
+                    }
+        
+                    s.updateActiveIndex();
+                }
+                if (!s.params.freeModeMomentum || timeDiff >= s.params.longSwipesMs) {
+                    s.updateProgress();
+                    s.updateActiveIndex();
+                }
+                return;
+            }
+        
+            // Find current slide
+            var i, stopIndex = 0, groupSize = s.slidesSizesGrid[0];
+            for (i = 0; i < s.slidesGrid.length; i += s.params.slidesPerGroup) {
+                if (typeof s.slidesGrid[i + s.params.slidesPerGroup] !== 'undefined') {
+                    if (currentPos >= s.slidesGrid[i] && currentPos < s.slidesGrid[i + s.params.slidesPerGroup]) {
+                        stopIndex = i;
+                        groupSize = s.slidesGrid[i + s.params.slidesPerGroup] - s.slidesGrid[i];
+                    }
+                }
+                else {
+                    if (currentPos >= s.slidesGrid[i]) {
+                        stopIndex = i;
+                        groupSize = s.slidesGrid[s.slidesGrid.length - 1] - s.slidesGrid[s.slidesGrid.length - 2];
+                    }
+                }
+            }
+        
+            // Find current slide size
+            var ratio = (currentPos - s.slidesGrid[stopIndex]) / groupSize;
+        
+            if (timeDiff > s.params.longSwipesMs) {
+                // Long touches
+                if (!s.params.longSwipes) {
+                    s.slideTo(s.activeIndex);
+                    return;
+                }
+                if (s.swipeDirection === 'next') {
+                    if (ratio >= s.params.longSwipesRatio) s.slideTo(stopIndex + s.params.slidesPerGroup);
+                    else s.slideTo(stopIndex);
+        
+                }
+                if (s.swipeDirection === 'prev') {
+                    if (ratio > (1 - s.params.longSwipesRatio)) s.slideTo(stopIndex + s.params.slidesPerGroup);
+                    else s.slideTo(stopIndex);
+                }
+            }
+            else {
+                // Short swipes
+                if (!s.params.shortSwipes) {
+                    s.slideTo(s.activeIndex);
+                    return;
+                }
+                if (s.swipeDirection === 'next') {
+                    s.slideTo(stopIndex + s.params.slidesPerGroup);
+        
+                }
+                if (s.swipeDirection === 'prev') {
+                    s.slideTo(stopIndex);
+                }
+            }
+        };
+        /*=========================
+          Transitions
+          ===========================*/
+        s._slideTo = function (slideIndex, speed) {
+            return s.slideTo(slideIndex, speed, true, true);
+        };
+        s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
+            if (typeof runCallbacks === 'undefined') runCallbacks = true;
+            if (typeof slideIndex === 'undefined') slideIndex = 0;
+            if (slideIndex < 0) slideIndex = 0;
+            s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
+            if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
+        
+            var translate = - s.snapGrid[s.snapIndex];
+            // Stop autoplay
+            if (s.params.autoplay && s.autoplaying) {
+                if (internal || !s.params.autoplayDisableOnInteraction) {
+                    s.pauseAutoplay(speed);
+                }
+                else {
+                    s.stopAutoplay();
+                }
+            }
+            // Update progress
+            s.updateProgress(translate);
+        
+            // Normalize slideIndex
+            if(s.params.normalizeSlideIndex){
+                for (var i = 0; i < s.slidesGrid.length; i++) {
+                    if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
+                        slideIndex = i;
+                    }
+                }
+            }
+        
+            // Directions locks
+            if (!s.params.allowSwipeToNext && translate < s.translate && translate < s.minTranslate()) {
+                return false;
+            }
+            if (!s.params.allowSwipeToPrev && translate > s.translate && translate > s.maxTranslate()) {
+                if ((s.activeIndex || 0) !== slideIndex ) return false;
+            }
+        
+            // Update Index
+            if (typeof speed === 'undefined') speed = s.params.speed;
+            s.previousIndex = s.activeIndex || 0;
+            s.activeIndex = slideIndex;
+            s.updateRealIndex();
+            if ((s.rtl && -translate === s.translate) || (!s.rtl && translate === s.translate)) {
+                // Update Height
+                if (s.params.autoHeight) {
+                    s.updateAutoHeight();
+                }
+                s.updateClasses();
+                if (s.params.effect !== 'slide') {
+                    s.setWrapperTranslate(translate);
+                }
+                return false;
+            }
+            s.updateClasses();
+            s.onTransitionStart(runCallbacks);
+        
+            if (speed === 0 || s.browser.lteIE9) {
+                s.setWrapperTranslate(translate);
+                s.setWrapperTransition(0);
+                s.onTransitionEnd(runCallbacks);
+            }
+            else {
+                s.setWrapperTranslate(translate);
+                s.setWrapperTransition(speed);
+                if (!s.animating) {
+                    s.animating = true;
+                    s.wrapper.transitionEnd(function () {
+                        if (!s) return;
+                        s.onTransitionEnd(runCallbacks);
+                    });
+                }
+        
+            }
+        
+            return true;
+        };
+        
+        s.onTransitionStart = function (runCallbacks) {
+            if (typeof runCallbacks === 'undefined') runCallbacks = true;
+            if (s.params.autoHeight) {
+                s.updateAutoHeight();
+            }
+            if (s.lazy) s.lazy.onTransitionStart();
+            if (runCallbacks) {
+                s.emit('onTransitionStart', s);
+                if (s.activeIndex !== s.previousIndex) {
+                    s.emit('onSlideChangeStart', s);
+                    if (s.activeIndex > s.previousIndex) {
+                        s.emit('onSlideNextStart', s);
+                    }
+                    else {
+                        s.emit('onSlidePrevStart', s);
+                    }
+                }
+        
+            }
+        };
+        s.onTransitionEnd = function (runCallbacks) {
+            s.animating = false;
+            s.setWrapperTransition(0);
+            if (typeof runCallbacks === 'undefined') runCallbacks = true;
+            if (s.lazy) s.lazy.onTransitionEnd();
+            if (runCallbacks) {
+                s.emit('onTransitionEnd', s);
+                if (s.activeIndex !== s.previousIndex) {
+                    s.emit('onSlideChangeEnd', s);
+                    if (s.activeIndex > s.previousIndex) {
+                        s.emit('onSlideNextEnd', s);
+                    }
+                    else {
+                        s.emit('onSlidePrevEnd', s);
+                    }
+                }
+            }
+            if (s.params.history && s.history) {
+                s.history.setHistory(s.params.history, s.activeIndex);
+            }
+            if (s.params.hashnav && s.hashnav) {
+                s.hashnav.setHash();
+            }
+        
+        };
+        s.slideNext = function (runCallbacks, speed, internal) {
+            if (s.params.loop) {
+                if (s.animating) return false;
+                s.fixLoop();
+                var clientLeft = s.container[0].clientLeft;
+                return s.slideTo(s.activeIndex + s.params.slidesPerGroup, speed, runCallbacks, internal);
+            }
+            else return s.slideTo(s.activeIndex + s.params.slidesPerGroup, speed, runCallbacks, internal);
+        };
+        s._slideNext = function (speed) {
+            return s.slideNext(true, speed, true);
+        };
+        s.slidePrev = function (runCallbacks, speed, internal) {
+            if (s.params.loop) {
+                if (s.animating) return false;
+                s.fixLoop();
+                var clientLeft = s.container[0].clientLeft;
+                return s.slideTo(s.activeIndex - 1, speed, runCallbacks, internal);
+            }
+            else return s.slideTo(s.activeIndex - 1, speed, runCallbacks, internal);
+        };
+        s._slidePrev = function (speed) {
+            return s.slidePrev(true, speed, true);
+        };
+        s.slideReset = function (runCallbacks, speed, internal) {
+            return s.slideTo(s.activeIndex, speed, runCallbacks);
+        };
+        
+        s.disableTouchControl = function () {
+            s.params.onlyExternal = true;
+            return true;
+        };
+        s.enableTouchControl = function () {
+            s.params.onlyExternal = false;
+            return true;
+        };
+        
+        /*=========================
+          Translate/transition helpers
+          ===========================*/
+        s.setWrapperTransition = function (duration, byController) {
+            s.wrapper.transition(duration);
+            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
+                s.effects[s.params.effect].setTransition(duration);
+            }
+            if (s.params.parallax && s.parallax) {
+                s.parallax.setTransition(duration);
+            }
+            if (s.params.scrollbar && s.scrollbar) {
+                s.scrollbar.setTransition(duration);
+            }
+            if (s.params.control && s.controller) {
+                s.controller.setTransition(duration, byController);
+            }
+            s.emit('onSetTransition', s, duration);
+        };
+        s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
+            var x = 0, y = 0, z = 0;
+            if (s.isHorizontal()) {
+                x = s.rtl ? -translate : translate;
+            }
+            else {
+                y = translate;
+            }
+        
+            if (s.params.roundLengths) {
+                x = round(x);
+                y = round(y);
+            }
+        
+            if (!s.params.virtualTranslate) {
+                if (s.support.transforms3d) s.wrapper.transform('translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)');
+                else s.wrapper.transform('translate(' + x + 'px, ' + y + 'px)');
+            }
+        
+            s.translate = s.isHorizontal() ? x : y;
+        
+            // Check if we need to update progress
+            var progress;
+            var translatesDiff = s.maxTranslate() - s.minTranslate();
+            if (translatesDiff === 0) {
+                progress = 0;
+            }
+            else {
+                progress = (translate - s.minTranslate()) / (translatesDiff);
+            }
+            if (progress !== s.progress) {
+                s.updateProgress(translate);
+            }
+        
+            if (updateActiveIndex) s.updateActiveIndex();
+            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
+                s.effects[s.params.effect].setTranslate(s.translate);
+            }
+            if (s.params.parallax && s.parallax) {
+                s.parallax.setTranslate(s.translate);
+            }
+            if (s.params.scrollbar && s.scrollbar) {
+                s.scrollbar.setTranslate(s.translate);
+            }
+            if (s.params.control && s.controller) {
+                s.controller.setTranslate(s.translate, byController);
+            }
+            s.emit('onSetTranslate', s, s.translate);
+        };
+        
+        s.getTranslate = function (el, axis) {
+            var matrix, curTransform, curStyle, transformMatrix;
+        
+            // automatic axis detection
+            if (typeof axis === 'undefined') {
+                axis = 'x';
+            }
+        
+            if (s.params.virtualTranslate) {
+                return s.rtl ? -s.translate : s.translate;
+            }
+        
+            curStyle = window.getComputedStyle(el, null);
+            if (window.WebKitCSSMatrix) {
+                curTransform = curStyle.transform || curStyle.webkitTransform;
+                if (curTransform.split(',').length > 6) {
+                    curTransform = curTransform.split(', ').map(function(a){
+                        return a.replace(',','.');
+                    }).join(', ');
+                }
+                // Some old versions of Webkit choke when 'none' is passed; pass
+                // empty string instead in this case
+                transformMatrix = new window.WebKitCSSMatrix(curTransform === 'none' ? '' : curTransform);
+            }
+            else {
+                transformMatrix = curStyle.MozTransform || curStyle.OTransform || curStyle.MsTransform || curStyle.msTransform  || curStyle.transform || curStyle.getPropertyValue('transform').replace('translate(', 'matrix(1, 0, 0, 1,');
+                matrix = transformMatrix.toString().split(',');
+            }
+        
+            if (axis === 'x') {
+                //Latest Chrome and webkits Fix
+                if (window.WebKitCSSMatrix)
+                    curTransform = transformMatrix.m41;
+                //Crazy IE10 Matrix
+                else if (matrix.length === 16)
+                    curTransform = parseFloat(matrix[12]);
+                //Normal Browsers
+                else
+                    curTransform = parseFloat(matrix[4]);
+            }
+            if (axis === 'y') {
+                //Latest Chrome and webkits Fix
+                if (window.WebKitCSSMatrix)
+                    curTransform = transformMatrix.m42;
+                //Crazy IE10 Matrix
+                else if (matrix.length === 16)
+                    curTransform = parseFloat(matrix[13]);
+                //Normal Browsers
+                else
+                    curTransform = parseFloat(matrix[5]);
+            }
+            if (s.rtl && curTransform) curTransform = -curTransform;
+            return curTransform || 0;
+        };
+        s.getWrapperTranslate = function (axis) {
+            if (typeof axis === 'undefined') {
+                axis = s.isHorizontal() ? 'x' : 'y';
+            }
+            return s.getTranslate(s.wrapper[0], axis);
+        };
+        
+        /*=========================
+          Observer
+          ===========================*/
+        s.observers = [];
+        function initObserver(target, options) {
+            options = options || {};
+            // create an observer instance
+            var ObserverFunc = window.MutationObserver || window.WebkitMutationObserver;
+            var observer = new ObserverFunc(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    s.onResize(true);
+                    s.emit('onObserverUpdate', s, mutation);
+                });
+            });
+        
+            observer.observe(target, {
+                attributes: typeof options.attributes === 'undefined' ? true : options.attributes,
+                childList: typeof options.childList === 'undefined' ? true : options.childList,
+                characterData: typeof options.characterData === 'undefined' ? true : options.characterData
+            });
+        
+            s.observers.push(observer);
+        }
+        s.initObservers = function () {
+            if (s.params.observeParents) {
+                var containerParents = s.container.parents();
+                for (var i = 0; i < containerParents.length; i++) {
+                    initObserver(containerParents[i]);
+                }
+            }
+        
+            // Observe container
+            initObserver(s.container[0], {childList: false});
+        
+            // Observe wrapper
+            initObserver(s.wrapper[0], {attributes: false});
+        };
+        s.disconnectObservers = function () {
+            for (var i = 0; i < s.observers.length; i++) {
+                s.observers[i].disconnect();
+            }
+            s.observers = [];
+        };
+        /*=========================
+          Loop
+          ===========================*/
+        // Create looped slides
+        s.createLoop = function () {
+            // Remove duplicated slides
+            s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
+        
+            var slides = s.wrapper.children('.' + s.params.slideClass);
+        
+            if(s.params.slidesPerView === 'auto' && !s.params.loopedSlides) s.params.loopedSlides = slides.length;
+        
+            s.loopedSlides = parseInt(s.params.loopedSlides || s.params.slidesPerView, 10);
+            s.loopedSlides = s.loopedSlides + s.params.loopAdditionalSlides;
+            if (s.loopedSlides > slides.length) {
+                s.loopedSlides = slides.length;
+            }
+        
+            var prependSlides = [], appendSlides = [], i;
+            slides.each(function (index, el) {
+                var slide = $(this);
+                if (index < s.loopedSlides) appendSlides.push(el);
+                if (index < slides.length && index >= slides.length - s.loopedSlides) prependSlides.push(el);
+                slide.attr('data-swiper-slide-index', index);
+            });
+            for (i = 0; i < appendSlides.length; i++) {
+                s.wrapper.append($(appendSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
+            }
+            for (i = prependSlides.length - 1; i >= 0; i--) {
+                s.wrapper.prepend($(prependSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
+            }
+        };
+        s.destroyLoop = function () {
+            s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
+            s.slides.removeAttr('data-swiper-slide-index');
+        };
+        s.reLoop = function (updatePosition) {
+            var oldIndex = s.activeIndex - s.loopedSlides;
+            s.destroyLoop();
+            s.createLoop();
+            s.updateSlidesSize();
+            if (updatePosition) {
+                s.slideTo(oldIndex + s.loopedSlides, 0, false);
+            }
+        
+        };
+        s.fixLoop = function () {
+            var newIndex;
+            //Fix For Negative Oversliding
+            if (s.activeIndex < s.loopedSlides) {
+                newIndex = s.slides.length - s.loopedSlides * 3 + s.activeIndex;
+                newIndex = newIndex + s.loopedSlides;
+                s.slideTo(newIndex, 0, false, true);
+            }
+            //Fix For Positive Oversliding
+            else if ((s.params.slidesPerView === 'auto' && s.activeIndex >= s.loopedSlides * 2) || (s.activeIndex > s.slides.length - s.params.slidesPerView * 2)) {
+                newIndex = -s.slides.length + s.activeIndex + s.loopedSlides;
+                newIndex = newIndex + s.loopedSlides;
+                s.slideTo(newIndex, 0, false, true);
+            }
+        };
+        /*=========================
+          Append/Prepend/Remove Slides
+          ===========================*/
+        s.appendSlide = function (slides) {
+            if (s.params.loop) {
+                s.destroyLoop();
+            }
+            if (typeof slides === 'object' && slides.length) {
+                for (var i = 0; i < slides.length; i++) {
+                    if (slides[i]) s.wrapper.append(slides[i]);
+                }
+            }
+            else {
+                s.wrapper.append(slides);
+            }
+            if (s.params.loop) {
+                s.createLoop();
+            }
+            if (!(s.params.observer && s.support.observer)) {
+                s.update(true);
+            }
+        };
+        s.prependSlide = function (slides) {
+            if (s.params.loop) {
+                s.destroyLoop();
+            }
+            var newActiveIndex = s.activeIndex + 1;
+            if (typeof slides === 'object' && slides.length) {
+                for (var i = 0; i < slides.length; i++) {
+                    if (slides[i]) s.wrapper.prepend(slides[i]);
+                }
+                newActiveIndex = s.activeIndex + slides.length;
+            }
+            else {
+                s.wrapper.prepend(slides);
+            }
+            if (s.params.loop) {
+                s.createLoop();
+            }
+            if (!(s.params.observer && s.support.observer)) {
+                s.update(true);
+            }
+            s.slideTo(newActiveIndex, 0, false);
+        };
+        s.removeSlide = function (slidesIndexes) {
+            if (s.params.loop) {
+                s.destroyLoop();
+                s.slides = s.wrapper.children('.' + s.params.slideClass);
+            }
+            var newActiveIndex = s.activeIndex,
+                indexToRemove;
+            if (typeof slidesIndexes === 'object' && slidesIndexes.length) {
+                for (var i = 0; i < slidesIndexes.length; i++) {
+                    indexToRemove = slidesIndexes[i];
+                    if (s.slides[indexToRemove]) s.slides.eq(indexToRemove).remove();
+                    if (indexToRemove < newActiveIndex) newActiveIndex--;
+                }
+                newActiveIndex = Math.max(newActiveIndex, 0);
+            }
+            else {
+                indexToRemove = slidesIndexes;
+                if (s.slides[indexToRemove]) s.slides.eq(indexToRemove).remove();
+                if (indexToRemove < newActiveIndex) newActiveIndex--;
+                newActiveIndex = Math.max(newActiveIndex, 0);
+            }
+        
+            if (s.params.loop) {
+                s.createLoop();
+            }
+        
+            if (!(s.params.observer && s.support.observer)) {
+                s.update(true);
+            }
+            if (s.params.loop) {
+                s.slideTo(newActiveIndex + s.loopedSlides, 0, false);
+            }
+            else {
+                s.slideTo(newActiveIndex, 0, false);
+            }
+        
+        };
+        s.removeAllSlides = function () {
+            var slidesIndexes = [];
+            for (var i = 0; i < s.slides.length; i++) {
+                slidesIndexes.push(i);
+            }
+            s.removeSlide(slidesIndexes);
+        };
+        
 
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
+        /*=========================
+          Effects
+          ===========================*/
+        s.effects = {
+            fade: {
+                setTranslate: function () {
+                    for (var i = 0; i < s.slides.length; i++) {
+                        var slide = s.slides.eq(i);
+                        var offset = slide[0].swiperSlideOffset;
+                        var tx = -offset;
+                        if (!s.params.virtualTranslate) tx = tx - s.translate;
+                        var ty = 0;
+                        if (!s.isHorizontal()) {
+                            ty = tx;
+                            tx = 0;
+                        }
+                        var slideOpacity = s.params.fade.crossFade ?
+                                Math.max(1 - Math.abs(slide[0].progress), 0) :
+                                1 + Math.min(Math.max(slide[0].progress, -1), 0);
+                        slide
+                            .css({
+                                opacity: slideOpacity
+                            })
+                            .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px)');
+        
+                    }
+        
+                },
+                setTransition: function (duration) {
+                    s.slides.transition(duration);
+                    if (s.params.virtualTranslate && duration !== 0) {
+                        var eventTriggered = false;
+                        s.slides.transitionEnd(function () {
+                            if (eventTriggered) return;
+                            if (!s) return;
+                            eventTriggered = true;
+                            s.animating = false;
+                            var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
+                            for (var i = 0; i < triggerEvents.length; i++) {
+                                s.wrapper.trigger(triggerEvents[i]);
+                            }
+                        });
+                    }
+                }
+            },
+            flip: {
+                setTranslate: function () {
+                    for (var i = 0; i < s.slides.length; i++) {
+                        var slide = s.slides.eq(i);
+                        var progress = slide[0].progress;
+                        if (s.params.flip.limitRotation) {
+                            progress = Math.max(Math.min(slide[0].progress, 1), -1);
+                        }
+                        var offset = slide[0].swiperSlideOffset;
+                        var rotate = -180 * progress,
+                            rotateY = rotate,
+                            rotateX = 0,
+                            tx = -offset,
+                            ty = 0;
+                        if (!s.isHorizontal()) {
+                            ty = tx;
+                            tx = 0;
+                            rotateX = -rotateY;
+                            rotateY = 0;
+                        }
+                        else if (s.rtl) {
+                            rotateY = -rotateY;
+                        }
+        
+                        slide[0].style.zIndex = -Math.abs(Math.round(progress)) + s.slides.length;
+        
+                        if (s.params.flip.slideShadows) {
+                            //Set shadows
+                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                            if (shadowBefore.length === 0) {
+                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                slide.append(shadowBefore);
+                            }
+                            if (shadowAfter.length === 0) {
+                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                slide.append(shadowAfter);
+                            }
+                            if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
+                            if (shadowAfter.length) shadowAfter[0].style.opacity = Math.max(progress, 0);
+                        }
+        
+                        slide
+                            .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
+                    }
+                },
+                setTransition: function (duration) {
+                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
+                    if (s.params.virtualTranslate && duration !== 0) {
+                        var eventTriggered = false;
+                        s.slides.eq(s.activeIndex).transitionEnd(function () {
+                            if (eventTriggered) return;
+                            if (!s) return;
+                            if (!$(this).hasClass(s.params.slideActiveClass)) return;
+                            eventTriggered = true;
+                            s.animating = false;
+                            var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
+                            for (var i = 0; i < triggerEvents.length; i++) {
+                                s.wrapper.trigger(triggerEvents[i]);
+                            }
+                        });
+                    }
+                }
+            },
+            cube: {
+                setTranslate: function () {
+                    var wrapperRotate = 0, cubeShadow;
+                    if (s.params.cube.shadow) {
+                        if (s.isHorizontal()) {
+                            cubeShadow = s.wrapper.find('.swiper-cube-shadow');
+                            if (cubeShadow.length === 0) {
+                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
+                                s.wrapper.append(cubeShadow);
+                            }
+                            cubeShadow.css({height: s.width + 'px'});
+                        }
+                        else {
+                            cubeShadow = s.container.find('.swiper-cube-shadow');
+                            if (cubeShadow.length === 0) {
+                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
+                                s.container.append(cubeShadow);
+                            }
+                        }
+                    }
+                    for (var i = 0; i < s.slides.length; i++) {
+                        var slide = s.slides.eq(i);
+                        var slideAngle = i * 90;
+                        var round = Math.floor(slideAngle / 360);
+                        if (s.rtl) {
+                            slideAngle = -slideAngle;
+                            round = Math.floor(-slideAngle / 360);
+                        }
+                        var progress = Math.max(Math.min(slide[0].progress, 1), -1);
+                        var tx = 0, ty = 0, tz = 0;
+                        if (i % 4 === 0) {
+                            tx = - round * 4 * s.size;
+                            tz = 0;
+                        }
+                        else if ((i - 1) % 4 === 0) {
+                            tx = 0;
+                            tz = - round * 4 * s.size;
+                        }
+                        else if ((i - 2) % 4 === 0) {
+                            tx = s.size + round * 4 * s.size;
+                            tz = s.size;
+                        }
+                        else if ((i - 3) % 4 === 0) {
+                            tx = - s.size;
+                            tz = 3 * s.size + s.size * 4 * round;
+                        }
+                        if (s.rtl) {
+                            tx = -tx;
+                        }
+        
+                        if (!s.isHorizontal()) {
+                            ty = tx;
+                            tx = 0;
+                        }
+        
+                        var transform = 'rotateX(' + (s.isHorizontal() ? 0 : -slideAngle) + 'deg) rotateY(' + (s.isHorizontal() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
+                        if (progress <= 1 && progress > -1) {
+                            wrapperRotate = i * 90 + progress * 90;
+                            if (s.rtl) wrapperRotate = -i * 90 - progress * 90;
+                        }
+                        slide.transform(transform);
+                        if (s.params.cube.slideShadows) {
+                            //Set shadows
+                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                            if (shadowBefore.length === 0) {
+                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                slide.append(shadowBefore);
+                            }
+                            if (shadowAfter.length === 0) {
+                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                slide.append(shadowAfter);
+                            }
+                            if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
+                            if (shadowAfter.length) shadowAfter[0].style.opacity = Math.max(progress, 0);
+                        }
+                    }
+                    s.wrapper.css({
+                        '-webkit-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
+                        '-moz-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
+                        '-ms-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
+                        'transform-origin': '50% 50% -' + (s.size / 2) + 'px'
+                    });
+        
+                    if (s.params.cube.shadow) {
+                        if (s.isHorizontal()) {
+                            cubeShadow.transform('translate3d(0px, ' + (s.width / 2 + s.params.cube.shadowOffset) + 'px, ' + (-s.width / 2) + 'px) rotateX(90deg) rotateZ(0deg) scale(' + (s.params.cube.shadowScale) + ')');
+                        }
+                        else {
+                            var shadowAngle = Math.abs(wrapperRotate) - Math.floor(Math.abs(wrapperRotate) / 90) * 90;
+                            var multiplier = 1.5 - (Math.sin(shadowAngle * 2 * Math.PI / 360) / 2 + Math.cos(shadowAngle * 2 * Math.PI / 360) / 2);
+                            var scale1 = s.params.cube.shadowScale,
+                                scale2 = s.params.cube.shadowScale / multiplier,
+                                offset = s.params.cube.shadowOffset;
+                            cubeShadow.transform('scale3d(' + scale1 + ', 1, ' + scale2 + ') translate3d(0px, ' + (s.height / 2 + offset) + 'px, ' + (-s.height / 2 / scale2) + 'px) rotateX(-90deg)');
+                        }
+                    }
+                    var zFactor = (s.isSafari || s.isUiWebView) ? (-s.size / 2) : 0;
+                    s.wrapper.transform('translate3d(0px,0,' + zFactor + 'px) rotateX(' + (s.isHorizontal() ? 0 : wrapperRotate) + 'deg) rotateY(' + (s.isHorizontal() ? -wrapperRotate : 0) + 'deg)');
+                },
+                setTransition: function (duration) {
+                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
+                    if (s.params.cube.shadow && !s.isHorizontal()) {
+                        s.container.find('.swiper-cube-shadow').transition(duration);
+                    }
+                }
+            },
+            coverflow: {
+                setTranslate: function () {
+                    var transform = s.translate;
+                    var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
+                    var rotate = s.isHorizontal() ? s.params.coverflow.rotate: -s.params.coverflow.rotate;
+                    var translate = s.params.coverflow.depth;
+                    //Each slide offset from center
+                    for (var i = 0, length = s.slides.length; i < length; i++) {
+                        var slide = s.slides.eq(i);
+                        var slideSize = s.slidesSizesGrid[i];
+                        var slideOffset = slide[0].swiperSlideOffset;
+                        var offsetMultiplier = (center - slideOffset - slideSize / 2) / slideSize * s.params.coverflow.modifier;
+        
+                        var rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
+                        var rotateX = s.isHorizontal() ? 0 : rotate * offsetMultiplier;
+                        // var rotateZ = 0
+                        var translateZ = -translate * Math.abs(offsetMultiplier);
+        
+                        var translateY = s.isHorizontal() ? 0 : s.params.coverflow.stretch * (offsetMultiplier);
+                        var translateX = s.isHorizontal() ? s.params.coverflow.stretch * (offsetMultiplier) : 0;
+        
+                        //Fix for ultra small values
+                        if (Math.abs(translateX) < 0.001) translateX = 0;
+                        if (Math.abs(translateY) < 0.001) translateY = 0;
+                        if (Math.abs(translateZ) < 0.001) translateZ = 0;
+                        if (Math.abs(rotateY) < 0.001) rotateY = 0;
+                        if (Math.abs(rotateX) < 0.001) rotateX = 0;
+        
+                        var slideTransform = 'translate3d(' + translateX + 'px,' + translateY + 'px,' + translateZ + 'px)  rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+        
+                        slide.transform(slideTransform);
+                        slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
+                        if (s.params.coverflow.slideShadows) {
+                            //Set shadows
+                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                            if (shadowBefore.length === 0) {
+                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                slide.append(shadowBefore);
+                            }
+                            if (shadowAfter.length === 0) {
+                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                slide.append(shadowAfter);
+                            }
+                            if (shadowBefore.length) shadowBefore[0].style.opacity = offsetMultiplier > 0 ? offsetMultiplier : 0;
+                            if (shadowAfter.length) shadowAfter[0].style.opacity = (-offsetMultiplier) > 0 ? -offsetMultiplier : 0;
+                        }
+                    }
+        
+                    //Set correct perspective for IE10
+                    if (s.browser.ie) {
+                        var ws = s.wrapper[0].style;
+                        ws.perspectiveOrigin = center + 'px 50%';
+                    }
+                },
+                setTransition: function (duration) {
+                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
+                }
+            }
+        };
+        
 
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
+        /*=========================
+          Images Lazy Loading
+          ===========================*/
+        s.lazy = {
+            initialImageLoaded: false,
+            loadImageInSlide: function (index, loadInDuplicate) {
+                if (typeof index === 'undefined') return;
+                if (typeof loadInDuplicate === 'undefined') loadInDuplicate = true;
+                if (s.slides.length === 0) return;
+        
+                var slide = s.slides.eq(index);
+                var img = slide.find('.' + s.params.lazyLoadingClass + ':not(.' + s.params.lazyStatusLoadedClass + '):not(.' + s.params.lazyStatusLoadingClass + ')');
+                if (slide.hasClass(s.params.lazyLoadingClass) && !slide.hasClass(s.params.lazyStatusLoadedClass) && !slide.hasClass(s.params.lazyStatusLoadingClass)) {
+                    img = img.add(slide[0]);
+                }
+                if (img.length === 0) return;
+        
+                img.each(function () {
+                    var _img = $(this);
+                    _img.addClass(s.params.lazyStatusLoadingClass);
+                    var background = _img.attr('data-background');
+                    var src = _img.attr('data-src'),
+                        srcset = _img.attr('data-srcset'),
+                        sizes = _img.attr('data-sizes');
+                    s.loadImage(_img[0], (src || background), srcset, sizes, false, function () {
+                        if (typeof s === 'undefined' || s === null || !s) return;
+                        if (background) {
+                            _img.css('background-image', 'url("' + background + '")');
+                            _img.removeAttr('data-background');
+                        }
+                        else {
+                            if (srcset) {
+                                _img.attr('srcset', srcset);
+                                _img.removeAttr('data-srcset');
+                            }
+                            if (sizes) {
+                                _img.attr('sizes', sizes);
+                                _img.removeAttr('data-sizes');
+                            }
+                            if (src) {
+                                _img.attr('src', src);
+                                _img.removeAttr('data-src');
+                            }
+        
+                        }
+        
+                        _img.addClass(s.params.lazyStatusLoadedClass).removeClass(s.params.lazyStatusLoadingClass);
+                        slide.find('.' + s.params.lazyPreloaderClass + ', .' + s.params.preloaderClass).remove();
+                        if (s.params.loop && loadInDuplicate) {
+                            var slideOriginalIndex = slide.attr('data-swiper-slide-index');
+                            if (slide.hasClass(s.params.slideDuplicateClass)) {
+                                var originalSlide = s.wrapper.children('[data-swiper-slide-index="' + slideOriginalIndex + '"]:not(.' + s.params.slideDuplicateClass + ')');
+                                s.lazy.loadImageInSlide(originalSlide.index(), false);
+                            }
+                            else {
+                                var duplicatedSlide = s.wrapper.children('.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + slideOriginalIndex + '"]');
+                                s.lazy.loadImageInSlide(duplicatedSlide.index(), false);
+                            }
+                        }
+                        s.emit('onLazyImageReady', s, slide[0], _img[0]);
+                    });
+        
+                    s.emit('onLazyImageLoad', s, slide[0], _img[0]);
+                });
+        
+            },
+            load: function () {
+                var i;
+                var slidesPerView = s.params.slidesPerView;
+                if (slidesPerView === 'auto') {
+                    slidesPerView = 0;
+                }
+                if (!s.lazy.initialImageLoaded) s.lazy.initialImageLoaded = true;
+                if (s.params.watchSlidesVisibility) {
+                    s.wrapper.children('.' + s.params.slideVisibleClass).each(function () {
+                        s.lazy.loadImageInSlide($(this).index());
+                    });
+                }
+                else {
+                    if (slidesPerView > 1) {
+                        for (i = s.activeIndex; i < s.activeIndex + slidesPerView ; i++) {
+                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
+                        }
+                    }
+                    else {
+                        s.lazy.loadImageInSlide(s.activeIndex);
+                    }
+                }
+                if (s.params.lazyLoadingInPrevNext) {
+                    if (slidesPerView > 1 || (s.params.lazyLoadingInPrevNextAmount && s.params.lazyLoadingInPrevNextAmount > 1)) {
+                        var amount = s.params.lazyLoadingInPrevNextAmount;
+                        var spv = slidesPerView;
+                        var maxIndex = Math.min(s.activeIndex + spv + Math.max(amount, spv), s.slides.length);
+                        var minIndex = Math.max(s.activeIndex - Math.max(spv, amount), 0);
+                        // Next Slides
+                        for (i = s.activeIndex + slidesPerView; i < maxIndex; i++) {
+                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
+                        }
+                        // Prev Slides
+                        for (i = minIndex; i < s.activeIndex ; i++) {
+                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
+                        }
+                    }
+                    else {
+                        var nextSlide = s.wrapper.children('.' + s.params.slideNextClass);
+                        if (nextSlide.length > 0) s.lazy.loadImageInSlide(nextSlide.index());
+        
+                        var prevSlide = s.wrapper.children('.' + s.params.slidePrevClass);
+                        if (prevSlide.length > 0) s.lazy.loadImageInSlide(prevSlide.index());
+                    }
+                }
+            },
+            onTransitionStart: function () {
+                if (s.params.lazyLoading) {
+                    if (s.params.lazyLoadingOnTransitionStart || (!s.params.lazyLoadingOnTransitionStart && !s.lazy.initialImageLoaded)) {
+                        s.lazy.load();
+                    }
+                }
+            },
+            onTransitionEnd: function () {
+                if (s.params.lazyLoading && !s.params.lazyLoadingOnTransitionStart) {
+                    s.lazy.load();
+                }
+            }
+        };
+        
 
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
+        /*=========================
+          Scrollbar
+          ===========================*/
+        s.scrollbar = {
+            isTouched: false,
+            setDragPosition: function (e) {
+                var sb = s.scrollbar;
+                var x = 0, y = 0;
+                var translate;
+                var pointerPosition = s.isHorizontal() ?
+                    ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageX : e.pageX || e.clientX) :
+                    ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageY : e.pageY || e.clientY) ;
+                var position = (pointerPosition) - sb.track.offset()[s.isHorizontal() ? 'left' : 'top'] - sb.dragSize / 2;
+                var positionMin = -s.minTranslate() * sb.moveDivider;
+                var positionMax = -s.maxTranslate() * sb.moveDivider;
+                if (position < positionMin) {
+                    position = positionMin;
+                }
+                else if (position > positionMax) {
+                    position = positionMax;
+                }
+                position = -position / sb.moveDivider;
+                s.updateProgress(position);
+                s.setWrapperTranslate(position, true);
+            },
+            dragStart: function (e) {
+                var sb = s.scrollbar;
+                sb.isTouched = true;
+                e.preventDefault();
+                e.stopPropagation();
+        
+                sb.setDragPosition(e);
+                clearTimeout(sb.dragTimeout);
+        
+                sb.track.transition(0);
+                if (s.params.scrollbarHide) {
+                    sb.track.css('opacity', 1);
+                }
+                s.wrapper.transition(100);
+                sb.drag.transition(100);
+                s.emit('onScrollbarDragStart', s);
+            },
+            dragMove: function (e) {
+                var sb = s.scrollbar;
+                if (!sb.isTouched) return;
+                if (e.preventDefault) e.preventDefault();
+                else e.returnValue = false;
+                sb.setDragPosition(e);
+                s.wrapper.transition(0);
+                sb.track.transition(0);
+                sb.drag.transition(0);
+                s.emit('onScrollbarDragMove', s);
+            },
+            dragEnd: function (e) {
+                var sb = s.scrollbar;
+                if (!sb.isTouched) return;
+                sb.isTouched = false;
+                if (s.params.scrollbarHide) {
+                    clearTimeout(sb.dragTimeout);
+                    sb.dragTimeout = setTimeout(function () {
+                        sb.track.css('opacity', 0);
+                        sb.track.transition(400);
+                    }, 1000);
+        
+                }
+                s.emit('onScrollbarDragEnd', s);
+                if (s.params.scrollbarSnapOnRelease) {
+                    s.slideReset();
+                }
+            },
+            draggableEvents: (function () {
+                if ((s.params.simulateTouch === false && !s.support.touch)) return s.touchEventsDesktop;
+                else return s.touchEvents;
+            })(),
+            enableDraggable: function () {
+                var sb = s.scrollbar;
+                var target = s.support.touch ? sb.track : document;
+                $(sb.track).on(sb.draggableEvents.start, sb.dragStart);
+                $(target).on(sb.draggableEvents.move, sb.dragMove);
+                $(target).on(sb.draggableEvents.end, sb.dragEnd);
+            },
+            disableDraggable: function () {
+                var sb = s.scrollbar;
+                var target = s.support.touch ? sb.track : document;
+                $(sb.track).off(sb.draggableEvents.start, sb.dragStart);
+                $(target).off(sb.draggableEvents.move, sb.dragMove);
+                $(target).off(sb.draggableEvents.end, sb.dragEnd);
+            },
+            set: function () {
+                if (!s.params.scrollbar) return;
+                var sb = s.scrollbar;
+                sb.track = $(s.params.scrollbar);
+                if (s.params.uniqueNavElements && typeof s.params.scrollbar === 'string' && sb.track.length > 1 && s.container.find(s.params.scrollbar).length === 1) {
+                    sb.track = s.container.find(s.params.scrollbar);
+                }
+                sb.drag = sb.track.find('.swiper-scrollbar-drag');
+                if (sb.drag.length === 0) {
+                    sb.drag = $('<div class="swiper-scrollbar-drag"></div>');
+                    sb.track.append(sb.drag);
+                }
+                sb.drag[0].style.width = '';
+                sb.drag[0].style.height = '';
+                sb.trackSize = s.isHorizontal() ? sb.track[0].offsetWidth : sb.track[0].offsetHeight;
+        
+                sb.divider = s.size / s.virtualSize;
+                sb.moveDivider = sb.divider * (sb.trackSize / s.size);
+                sb.dragSize = sb.trackSize * sb.divider;
+        
+                if (s.isHorizontal()) {
+                    sb.drag[0].style.width = sb.dragSize + 'px';
+                }
+                else {
+                    sb.drag[0].style.height = sb.dragSize + 'px';
+                }
+        
+                if (sb.divider >= 1) {
+                    sb.track[0].style.display = 'none';
+                }
+                else {
+                    sb.track[0].style.display = '';
+                }
+                if (s.params.scrollbarHide) {
+                    sb.track[0].style.opacity = 0;
+                }
+            },
+            setTranslate: function () {
+                if (!s.params.scrollbar) return;
+                var diff;
+                var sb = s.scrollbar;
+                var translate = s.translate || 0;
+                var newPos;
+        
+                var newSize = sb.dragSize;
+                newPos = (sb.trackSize - sb.dragSize) * s.progress;
+                if (s.rtl && s.isHorizontal()) {
+                    newPos = -newPos;
+                    if (newPos > 0) {
+                        newSize = sb.dragSize - newPos;
+                        newPos = 0;
+                    }
+                    else if (-newPos + sb.dragSize > sb.trackSize) {
+                        newSize = sb.trackSize + newPos;
+                    }
+                }
+                else {
+                    if (newPos < 0) {
+                        newSize = sb.dragSize + newPos;
+                        newPos = 0;
+                    }
+                    else if (newPos + sb.dragSize > sb.trackSize) {
+                        newSize = sb.trackSize - newPos;
+                    }
+                }
+                if (s.isHorizontal()) {
+                    if (s.support.transforms3d) {
+                        sb.drag.transform('translate3d(' + (newPos) + 'px, 0, 0)');
+                    }
+                    else {
+                        sb.drag.transform('translateX(' + (newPos) + 'px)');
+                    }
+                    sb.drag[0].style.width = newSize + 'px';
+                }
+                else {
+                    if (s.support.transforms3d) {
+                        sb.drag.transform('translate3d(0px, ' + (newPos) + 'px, 0)');
+                    }
+                    else {
+                        sb.drag.transform('translateY(' + (newPos) + 'px)');
+                    }
+                    sb.drag[0].style.height = newSize + 'px';
+                }
+                if (s.params.scrollbarHide) {
+                    clearTimeout(sb.timeout);
+                    sb.track[0].style.opacity = 1;
+                    sb.timeout = setTimeout(function () {
+                        sb.track[0].style.opacity = 0;
+                        sb.track.transition(400);
+                    }, 1000);
+                }
+            },
+            setTransition: function (duration) {
+                if (!s.params.scrollbar) return;
+                s.scrollbar.drag.transition(duration);
+            }
+        };
+        
 
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
+        /*=========================
+          Controller
+          ===========================*/
+        s.controller = {
+            LinearSpline: function (x, y) {
+                var binarySearch = (function() {
+                    var maxIndex, minIndex, guess;
+                    return function(array, val) {
+                        minIndex = -1;
+                        maxIndex = array.length;
+                        while (maxIndex - minIndex > 1)
+                            if (array[guess = maxIndex + minIndex >> 1] <= val) {
+                                minIndex = guess;
+                            } else {
+                                maxIndex = guess;
+                            }
+                        return maxIndex;
+                    };
+                })();
+                this.x = x;
+                this.y = y;
+                this.lastIndex = x.length - 1;
+                // Given an x value (x2), return the expected y2 value:
+                // (x1,y1) is the known point before given value,
+                // (x3,y3) is the known point after given value.
+                var i1, i3;
+                var l = this.x.length;
+        
+                this.interpolate = function (x2) {
+                    if (!x2) return 0;
+        
+                    // Get the indexes of x1 and x3 (the array indexes before and after given x2):
+                    i3 = binarySearch(this.x, x2);
+                    i1 = i3 - 1;
+        
+                    // We have our indexes i1 & i3, so we can calculate already:
+                    // y2 := ((x2−x1) × (y3−y1)) ÷ (x3−x1) + y1
+                    return ((x2 - this.x[i1]) * (this.y[i3] - this.y[i1])) / (this.x[i3] - this.x[i1]) + this.y[i1];
+                };
+            },
+            //xxx: for now i will just save one spline function to to
+            getInterpolateFunction: function(c){
+                if(!s.controller.spline) s.controller.spline = s.params.loop ?
+                    new s.controller.LinearSpline(s.slidesGrid, c.slidesGrid) :
+                    new s.controller.LinearSpline(s.snapGrid, c.snapGrid);
+            },
+            setTranslate: function (translate, byController) {
+               var controlled = s.params.control;
+               var multiplier, controlledTranslate;
+               function setControlledTranslate(c) {
+                    // this will create an Interpolate function based on the snapGrids
+                    // x is the Grid of the scrolled scroller and y will be the controlled scroller
+                    // it makes sense to create this only once and recall it for the interpolation
+                    // the function does a lot of value caching for performance
+                    translate = c.rtl && c.params.direction === 'horizontal' ? -s.translate : s.translate;
+                    if (s.params.controlBy === 'slide') {
+                        s.controller.getInterpolateFunction(c);
+                        // i am not sure why the values have to be multiplicated this way, tried to invert the snapGrid
+                        // but it did not work out
+                        controlledTranslate = -s.controller.spline.interpolate(-translate);
+                    }
+        
+                    if(!controlledTranslate || s.params.controlBy === 'container'){
+                        multiplier = (c.maxTranslate() - c.minTranslate()) / (s.maxTranslate() - s.minTranslate());
+                        controlledTranslate = (translate - s.minTranslate()) * multiplier + c.minTranslate();
+                    }
+        
+                    if (s.params.controlInverse) {
+                        controlledTranslate = c.maxTranslate() - controlledTranslate;
+                    }
+                    c.updateProgress(controlledTranslate);
+                    c.setWrapperTranslate(controlledTranslate, false, s);
+                    c.updateActiveIndex();
+               }
+               if (Array.isArray(controlled)) {
+                   for (var i = 0; i < controlled.length; i++) {
+                       if (controlled[i] !== byController && controlled[i] instanceof Swiper) {
+                           setControlledTranslate(controlled[i]);
+                       }
+                   }
+               }
+               else if (controlled instanceof Swiper && byController !== controlled) {
+        
+                   setControlledTranslate(controlled);
+               }
+            },
+            setTransition: function (duration, byController) {
+                var controlled = s.params.control;
+                var i;
+                function setControlledTransition(c) {
+                    c.setWrapperTransition(duration, s);
+                    if (duration !== 0) {
+                        c.onTransitionStart();
+                        c.wrapper.transitionEnd(function(){
+                            if (!controlled) return;
+                            if (c.params.loop && s.params.controlBy === 'slide') {
+                                c.fixLoop();
+                            }
+                            c.onTransitionEnd();
+        
+                        });
+                    }
+                }
+                if (Array.isArray(controlled)) {
+                    for (i = 0; i < controlled.length; i++) {
+                        if (controlled[i] !== byController && controlled[i] instanceof Swiper) {
+                            setControlledTransition(controlled[i]);
+                        }
+                    }
+                }
+                else if (controlled instanceof Swiper && byController !== controlled) {
+                    setControlledTransition(controlled);
+                }
+            }
+        };
+        
 
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
+        /*=========================
+          Hash Navigation
+          ===========================*/
+        s.hashnav = {
+            onHashCange: function (e, a) {
+                var newHash = document.location.hash.replace('#', '');
+                var activeSlideHash = s.slides.eq(s.activeIndex).attr('data-hash');
+                if (newHash !== activeSlideHash) {
+                    s.slideTo(s.wrapper.children('.' + s.params.slideClass + '[data-hash="' + (newHash) + '"]').index());
+                }
+            },
+            attachEvents: function (detach) {
+                var action = detach ? 'off' : 'on';
+                $(window)[action]('hashchange', s.hashnav.onHashCange);
+            },
+            setHash: function () {
+                if (!s.hashnav.initialized || !s.params.hashnav) return;
+                if (s.params.replaceState && window.history && window.history.replaceState) {
+                    window.history.replaceState(null, null, ('#' + s.slides.eq(s.activeIndex).attr('data-hash') || ''));
+                } else {
+                    var slide = s.slides.eq(s.activeIndex);
+                    var hash = slide.attr('data-hash') || slide.attr('data-history');
+                    document.location.hash = hash || '';
+                }
+            },
+            init: function () {
+                if (!s.params.hashnav || s.params.history) return;
+                s.hashnav.initialized = true;
+                var hash = document.location.hash.replace('#', '');
+                if (hash) {
+                    var speed = 0;
+                    for (var i = 0, length = s.slides.length; i < length; i++) {
+                        var slide = s.slides.eq(i);
+                        var slideHash = slide.attr('data-hash') || slide.attr('data-history');
+                        if (slideHash === hash && !slide.hasClass(s.params.slideDuplicateClass)) {
+                            var index = slide.index();
+                            s.slideTo(index, speed, s.params.runCallbacksOnInit, true);
+                        }
+                    }
+                }
+                if (s.params.hashnavWatchState) s.hashnav.attachEvents();
+            },
+            destroy: function () {
+                if (s.params.hashnavWatchState) s.hashnav.attachEvents(true);
+            }
+        };
+        
+
+        /*=========================
+          History Api with fallback to Hashnav
+          ===========================*/
+        s.history = {
+            init: function () {
+                if (!s.params.history) return;
+                if (!window.history || !window.history.pushState) {
+                    s.params.history = false;
+                    s.params.hashnav = true;
+                    return;
+                }
+                s.history.initialized = true;
+                this.paths = this.getPathValues();
+                if (!this.paths.key && !this.paths.value) return;
+                this.scrollToSlide(0, this.paths.value, s.params.runCallbacksOnInit);
+                if (!s.params.replaceState) {
+                    window.addEventListener('popstate', this.setHistoryPopState);
+                }
+            },
+            setHistoryPopState: function() {
+                s.history.paths = s.history.getPathValues();
+                s.history.scrollToSlide(s.params.speed, s.history.paths.value, false);
+            },
+            getPathValues: function() {
+                var pathArray = window.location.pathname.slice(1).split('/');
+                var total = pathArray.length;
+                var key = pathArray[total - 2];
+                var value = pathArray[total - 1];
+                return { key: key, value: value };
+            },
+            setHistory: function (key, index) {
+                if (!s.history.initialized || !s.params.history) return;
+                var slide = s.slides.eq(index);
+                var value = this.slugify(slide.attr('data-history'));
+                if (!window.location.pathname.includes(key)) {
+                    value = key + '/' + value;
+                }
+                if (s.params.replaceState) {
+                    window.history.replaceState(null, null, value);
+                } else {
+                    window.history.pushState(null, null, value);
+                }
+            },
+            slugify: function(text) {
+                return text.toString().toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '')
+                    .replace(/-+$/, '');
+            },
+            scrollToSlide: function(speed, value, runCallbacks) {
+                if (value) {
+                    for (var i = 0, length = s.slides.length; i < length; i++) {
+                        var slide = s.slides.eq(i);
+                        var slideHistory = this.slugify(slide.attr('data-history'));
+                        if (slideHistory === value && !slide.hasClass(s.params.slideDuplicateClass)) {
+                            var index = slide.index();
+                            s.slideTo(index, speed, runCallbacks);
+                        }
+                    }
+                } else {
+                    s.slideTo(0, speed, runCallbacks);
+                }
+            }
+        };
+        
+
+        /*=========================
+          Keyboard Control
+          ===========================*/
+        function handleKeyboard(e) {
+            if (e.originalEvent) e = e.originalEvent; //jquery fix
+            var kc = e.keyCode || e.charCode;
+            // Directions locks
+            if (!s.params.allowSwipeToNext && (s.isHorizontal() && kc === 39 || !s.isHorizontal() && kc === 40)) {
+                return false;
+            }
+            if (!s.params.allowSwipeToPrev && (s.isHorizontal() && kc === 37 || !s.isHorizontal() && kc === 38)) {
+                return false;
+            }
+            if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
+                return;
+            }
+            if (document.activeElement && document.activeElement.nodeName && (document.activeElement.nodeName.toLowerCase() === 'input' || document.activeElement.nodeName.toLowerCase() === 'textarea')) {
+                return;
+            }
+            if (kc === 37 || kc === 39 || kc === 38 || kc === 40) {
+                var inView = false;
+                //Check that swiper should be inside of visible area of window
+                if (s.container.parents('.' + s.params.slideClass).length > 0 && s.container.parents('.' + s.params.slideActiveClass).length === 0) {
+                    return;
+                }
+                var windowScroll = {
+                    left: window.pageXOffset,
+                    top: window.pageYOffset
+                };
+                var windowWidth = window.innerWidth;
+                var windowHeight = window.innerHeight;
+                var swiperOffset = s.container.offset();
+                if (s.rtl) swiperOffset.left = swiperOffset.left - s.container[0].scrollLeft;
+                var swiperCoord = [
+                    [swiperOffset.left, swiperOffset.top],
+                    [swiperOffset.left + s.width, swiperOffset.top],
+                    [swiperOffset.left, swiperOffset.top + s.height],
+                    [swiperOffset.left + s.width, swiperOffset.top + s.height]
+                ];
+                for (var i = 0; i < swiperCoord.length; i++) {
+                    var point = swiperCoord[i];
+                    if (
+                        point[0] >= windowScroll.left && point[0] <= windowScroll.left + windowWidth &&
+                        point[1] >= windowScroll.top && point[1] <= windowScroll.top + windowHeight
+                    ) {
+                        inView = true;
+                    }
+        
+                }
+                if (!inView) return;
+            }
+            if (s.isHorizontal()) {
+                if (kc === 37 || kc === 39) {
+                    if (e.preventDefault) e.preventDefault();
+                    else e.returnValue = false;
+                }
+                if ((kc === 39 && !s.rtl) || (kc === 37 && s.rtl)) s.slideNext();
+                if ((kc === 37 && !s.rtl) || (kc === 39 && s.rtl)) s.slidePrev();
+            }
+            else {
+                if (kc === 38 || kc === 40) {
+                    if (e.preventDefault) e.preventDefault();
+                    else e.returnValue = false;
+                }
+                if (kc === 40) s.slideNext();
+                if (kc === 38) s.slidePrev();
+            }
+            s.emit('onKeyPress', s, kc);
+        }
+        s.disableKeyboardControl = function () {
+            s.params.keyboardControl = false;
+            $(document).off('keydown', handleKeyboard);
+        };
+        s.enableKeyboardControl = function () {
+            s.params.keyboardControl = true;
+            $(document).on('keydown', handleKeyboard);
+        };
+        
+
+        /*=========================
+          Mousewheel Control
+          ===========================*/
+        s.mousewheel = {
+            event: false,
+            lastScrollTime: (new window.Date()).getTime()
+        };
+        function isEventSupported() {
+            var eventName = 'onwheel';
+            var isSupported = eventName in document;
+        
+            if (!isSupported) {
+                var element = document.createElement('div');
+                element.setAttribute(eventName, 'return;');
+                isSupported = typeof element[eventName] === 'function';
+            }
+        
+            if (!isSupported &&
+                document.implementation &&
+                document.implementation.hasFeature &&
+                    // always returns true in newer browsers as per the standard.
+                    // @see http://dom.spec.whatwg.org/#dom-domimplementation-hasfeature
+                document.implementation.hasFeature('', '') !== true ) {
+                // This is the only way to test support for the `wheel` event in IE9+.
+                isSupported = document.implementation.hasFeature('Events.wheel', '3.0');
+            }
+        
+            return isSupported;
+        }
+        /**
+         * Mouse wheel (and 2-finger trackpad) support on the web sucks.  It is
+         * complicated, thus this doc is long and (hopefully) detailed enough to answer
+         * your questions.
+         *
+         * If you need to react to the mouse wheel in a predictable way, this code is
+         * like your bestest friend. * hugs *
+         *
+         * As of today, there are 4 DOM event types you can listen to:
+         *
+         *   'wheel'                -- Chrome(31+), FF(17+), IE(9+)
+         *   'mousewheel'           -- Chrome, IE(6+), Opera, Safari
+         *   'MozMousePixelScroll'  -- FF(3.5 only!) (2010-2013) -- don't bother!
+         *   'DOMMouseScroll'       -- FF(0.9.7+) since 2003
+         *
+         * So what to do?  The is the best:
+         *
+         *   normalizeWheel.getEventType();
+         *
+         * In your event callback, use this code to get sane interpretation of the
+         * deltas.  This code will return an object with properties:
+         *
+         *   spinX   -- normalized spin speed (use for zoom) - x plane
+         *   spinY   -- " - y plane
+         *   pixelX  -- normalized distance (to pixels) - x plane
+         *   pixelY  -- " - y plane
+         *
+         * Wheel values are provided by the browser assuming you are using the wheel to
+         * scroll a web page by a number of lines or pixels (or pages).  Values can vary
+         * significantly on different platforms and browsers, forgetting that you can
+         * scroll at different speeds.  Some devices (like trackpads) emit more events
+         * at smaller increments with fine granularity, and some emit massive jumps with
+         * linear speed or acceleration.
+         *
+         * This code does its best to normalize the deltas for you:
+         *
+         *   - spin is trying to normalize how far the wheel was spun (or trackpad
+         *     dragged).  This is super useful for zoom support where you want to
+         *     throw away the chunky scroll steps on the PC and make those equal to
+         *     the slow and smooth tiny steps on the Mac. Key data: This code tries to
+         *     resolve a single slow step on a wheel to 1.
+         *
+         *   - pixel is normalizing the desired scroll delta in pixel units.  You'll
+         *     get the crazy differences between browsers, but at least it'll be in
+         *     pixels!
+         *
+         *   - positive value indicates scrolling DOWN/RIGHT, negative UP/LEFT.  This
+         *     should translate to positive value zooming IN, negative zooming OUT.
+         *     This matches the newer 'wheel' event.
+         *
+         * Why are there spinX, spinY (or pixels)?
+         *
+         *   - spinX is a 2-finger side drag on the trackpad, and a shift + wheel turn
+         *     with a mouse.  It results in side-scrolling in the browser by default.
+         *
+         *   - spinY is what you expect -- it's the classic axis of a mouse wheel.
+         *
+         *   - I dropped spinZ/pixelZ.  It is supported by the DOM 3 'wheel' event and
+         *     probably is by browsers in conjunction with fancy 3D controllers .. but
+         *     you know.
+         *
+         * Implementation info:
+         *
+         * Examples of 'wheel' event if you scroll slowly (down) by one step with an
+         * average mouse:
+         *
+         *   OS X + Chrome  (mouse)     -    4   pixel delta  (wheelDelta -120)
+         *   OS X + Safari  (mouse)     -  N/A   pixel delta  (wheelDelta  -12)
+         *   OS X + Firefox (mouse)     -    0.1 line  delta  (wheelDelta  N/A)
+         *   Win8 + Chrome  (mouse)     -  100   pixel delta  (wheelDelta -120)
+         *   Win8 + Firefox (mouse)     -    3   line  delta  (wheelDelta -120)
+         *
+         * On the trackpad:
+         *
+         *   OS X + Chrome  (trackpad)  -    2   pixel delta  (wheelDelta   -6)
+         *   OS X + Firefox (trackpad)  -    1   pixel delta  (wheelDelta  N/A)
+         *
+         * On other/older browsers.. it's more complicated as there can be multiple and
+         * also missing delta values.
+         *
+         * The 'wheel' event is more standard:
+         *
+         * http://www.w3.org/TR/DOM-Level-3-Events/#events-wheelevents
+         *
+         * The basics is that it includes a unit, deltaMode (pixels, lines, pages), and
+         * deltaX, deltaY and deltaZ.  Some browsers provide other values to maintain
+         * backward compatibility with older events.  Those other values help us
+         * better normalize spin speed.  Example of what the browsers provide:
+         *
+         *                          | event.wheelDelta | event.detail
+         *        ------------------+------------------+--------------
+         *          Safari v5/OS X  |       -120       |       0
+         *          Safari v5/Win7  |       -120       |       0
+         *         Chrome v17/OS X  |       -120       |       0
+         *         Chrome v17/Win7  |       -120       |       0
+         *                IE9/Win7  |       -120       |   undefined
+         *         Firefox v4/OS X  |     undefined    |       1
+         *         Firefox v4/Win7  |     undefined    |       3
+         *
+         */
+        function normalizeWheel( /*object*/ event ) /*object*/ {
+            // Reasonable defaults
+            var PIXEL_STEP = 10;
+            var LINE_HEIGHT = 40;
+            var PAGE_HEIGHT = 800;
+        
+            var sX = 0, sY = 0,       // spinX, spinY
+                pX = 0, pY = 0;       // pixelX, pixelY
+        
+            // Legacy
+            if( 'detail' in event ) {
+                sY = event.detail;
+            }
+            if( 'wheelDelta' in event ) {
+                sY = -event.wheelDelta / 120;
+            }
+            if( 'wheelDeltaY' in event ) {
+                sY = -event.wheelDeltaY / 120;
+            }
+            if( 'wheelDeltaX' in event ) {
+                sX = -event.wheelDeltaX / 120;
+            }
+        
+            // side scrolling on FF with DOMMouseScroll
+            if( 'axis' in event && event.axis === event.HORIZONTAL_AXIS ) {
+                sX = sY;
+                sY = 0;
+            }
+        
+            pX = sX * PIXEL_STEP;
+            pY = sY * PIXEL_STEP;
+        
+            if( 'deltaY' in event ) {
+                pY = event.deltaY;
+            }
+            if( 'deltaX' in event ) {
+                pX = event.deltaX;
+            }
+        
+            if( (pX || pY) && event.deltaMode ) {
+                if( event.deltaMode === 1 ) {          // delta in LINE units
+                    pX *= LINE_HEIGHT;
+                    pY *= LINE_HEIGHT;
+                } else {                             // delta in PAGE units
+                    pX *= PAGE_HEIGHT;
+                    pY *= PAGE_HEIGHT;
+                }
+            }
+        
+            // Fall-back if spin cannot be determined
+            if( pX && !sX ) {
+                sX = (pX < 1) ? -1 : 1;
+            }
+            if( pY && !sY ) {
+                sY = (pY < 1) ? -1 : 1;
+            }
+        
+            return {
+                spinX: sX,
+                spinY: sY,
+                pixelX: pX,
+                pixelY: pY
+            };
+        }
+        if (s.params.mousewheelControl) {
+            /**
+             * The best combination if you prefer spinX + spinY normalization.  It favors
+             * the older DOMMouseScroll for Firefox, as FF does not include wheelDelta with
+             * 'wheel' event, making spin speed determination impossible.
+             */
+            s.mousewheel.event = (navigator.userAgent.indexOf('firefox') > -1) ?
+                'DOMMouseScroll' :
+                isEventSupported() ?
+                    'wheel' : 'mousewheel';
+        }
+        function handleMousewheel(e) {
+            if (e.originalEvent) e = e.originalEvent; //jquery fix
+            var delta = 0;
+            var rtlFactor = s.rtl ? -1 : 1;
+        
+            var data = normalizeWheel( e );
+        
+            if (s.params.mousewheelForceToAxis) {
+                if (s.isHorizontal()) {
+                    if (Math.abs(data.pixelX) > Math.abs(data.pixelY)) delta = data.pixelX * rtlFactor;
+                    else return;
+                }
+                else {
+                    if (Math.abs(data.pixelY) > Math.abs(data.pixelX)) delta = data.pixelY;
+                    else return;
+                }
+            }
+            else {
+                delta = Math.abs(data.pixelX) > Math.abs(data.pixelY) ? - data.pixelX * rtlFactor : - data.pixelY;
+            }
+        
+            if (delta === 0) return;
+        
+            if (s.params.mousewheelInvert) delta = -delta;
+        
+            if (!s.params.freeMode) {
+                if ((new window.Date()).getTime() - s.mousewheel.lastScrollTime > 60) {
+                    if (delta < 0) {
+                        if ((!s.isEnd || s.params.loop) && !s.animating) {
+                            s.slideNext();
+                            s.emit('onScroll', s, e);
+                        }
+                        else if (s.params.mousewheelReleaseOnEdges) return true;
+                    }
+                    else {
+                        if ((!s.isBeginning || s.params.loop) && !s.animating) {
+                            s.slidePrev();
+                            s.emit('onScroll', s, e);
+                        }
+                        else if (s.params.mousewheelReleaseOnEdges) return true;
+                    }
+                }
+                s.mousewheel.lastScrollTime = (new window.Date()).getTime();
+        
+            }
+            else {
+                //Freemode or scrollContainer:
+                var position = s.getWrapperTranslate() + delta * s.params.mousewheelSensitivity;
+                var wasBeginning = s.isBeginning,
+                    wasEnd = s.isEnd;
+        
+                if (position >= s.minTranslate()) position = s.minTranslate();
+                if (position <= s.maxTranslate()) position = s.maxTranslate();
+        
+                s.setWrapperTransition(0);
+                s.setWrapperTranslate(position);
+                s.updateProgress();
+                s.updateActiveIndex();
+        
+                if (!wasBeginning && s.isBeginning || !wasEnd && s.isEnd) {
+                    s.updateClasses();
+                }
+        
+                if (s.params.freeModeSticky) {
+                    clearTimeout(s.mousewheel.timeout);
+                    s.mousewheel.timeout = setTimeout(function () {
+                        s.slideReset();
+                    }, 300);
+                }
+                else {
+                    if (s.params.lazyLoading && s.lazy) {
+                        s.lazy.load();
+                    }
+                }
+                // Emit event
+                s.emit('onScroll', s, e);
+        
+                // Stop autoplay
+                if (s.params.autoplay && s.params.autoplayDisableOnInteraction) s.stopAutoplay();
+        
+                // Return page scroll on edge positions
+                if (position === 0 || position === s.maxTranslate()) return;
+            }
+        
+            if (e.preventDefault) e.preventDefault();
+            else e.returnValue = false;
+            return false;
+        }
+        s.disableMousewheelControl = function () {
+            if (!s.mousewheel.event) return false;
+            var target = s.container;
+            if (s.params.mousewheelEventsTarged !== 'container') {
+                target = $(s.params.mousewheelEventsTarged);
+            }
+            target.off(s.mousewheel.event, handleMousewheel);
+            s.params.mousewheelControl = false;
+            return true;
+        };
+        
+        s.enableMousewheelControl = function () {
+            if (!s.mousewheel.event) return false;
+            var target = s.container;
+            if (s.params.mousewheelEventsTarged !== 'container') {
+                target = $(s.params.mousewheelEventsTarged);
+            }
+            target.on(s.mousewheel.event, handleMousewheel);
+            s.params.mousewheelControl = true;
+            return true;
+        };
+        
+
+        /*=========================
+          Parallax
+          ===========================*/
+        function setParallaxTransform(el, progress) {
+            el = $(el);
+            var p, pX, pY;
+            var rtlFactor = s.rtl ? -1 : 1;
+        
+            p = el.attr('data-swiper-parallax') || '0';
+            pX = el.attr('data-swiper-parallax-x');
+            pY = el.attr('data-swiper-parallax-y');
+            if (pX || pY) {
+                pX = pX || '0';
+                pY = pY || '0';
+            }
+            else {
+                if (s.isHorizontal()) {
+                    pX = p;
+                    pY = '0';
+                }
+                else {
+                    pY = p;
+                    pX = '0';
+                }
+            }
+        
+            if ((pX).indexOf('%') >= 0) {
+                pX = parseInt(pX, 10) * progress * rtlFactor + '%';
+            }
+            else {
+                pX = pX * progress * rtlFactor + 'px' ;
+            }
+            if ((pY).indexOf('%') >= 0) {
+                pY = parseInt(pY, 10) * progress + '%';
+            }
+            else {
+                pY = pY * progress + 'px' ;
+            }
+        
+            el.transform('translate3d(' + pX + ', ' + pY + ',0px)');
+        }
+        s.parallax = {
+            setTranslate: function () {
+                s.container.children('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
+                    setParallaxTransform(this, s.progress);
+        
+                });
+                s.slides.each(function () {
+                    var slide = $(this);
+                    slide.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function () {
+                        var progress = Math.min(Math.max(slide[0].progress, -1), 1);
+                        setParallaxTransform(this, progress);
+                    });
+                });
+            },
+            setTransition: function (duration) {
+                if (typeof duration === 'undefined') duration = s.params.speed;
+                s.container.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
+                    var el = $(this);
+                    var parallaxDuration = parseInt(el.attr('data-swiper-parallax-duration'), 10) || duration;
+                    if (duration === 0) parallaxDuration = 0;
+                    el.transition(parallaxDuration);
+                });
+            }
+        };
+        
+
+        /*=========================
+          Zoom
+          ===========================*/
+        s.zoom = {
+            // "Global" Props
+            scale: 1,
+            currentScale: 1,
+            isScaling: false,
+            gesture: {
+                slide: undefined,
+                slideWidth: undefined,
+                slideHeight: undefined,
+                image: undefined,
+                imageWrap: undefined,
+                zoomMax: s.params.zoomMax
+            },
+            image: {
+                isTouched: undefined,
+                isMoved: undefined,
+                currentX: undefined,
+                currentY: undefined,
+                minX: undefined,
+                minY: undefined,
+                maxX: undefined,
+                maxY: undefined,
+                width: undefined,
+                height: undefined,
+                startX: undefined,
+                startY: undefined,
+                touchesStart: {},
+                touchesCurrent: {}
+            },
+            velocity: {
+                x: undefined,
+                y: undefined,
+                prevPositionX: undefined,
+                prevPositionY: undefined,
+                prevTime: undefined
+            },
+            // Calc Scale From Multi-touches
+            getDistanceBetweenTouches: function (e) {
+                if (e.targetTouches.length < 2) return 1;
+                var x1 = e.targetTouches[0].pageX,
+                    y1 = e.targetTouches[0].pageY,
+                    x2 = e.targetTouches[1].pageX,
+                    y2 = e.targetTouches[1].pageY;
+                var distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                return distance;
+            },
+            // Events
+            onGestureStart: function (e) {
+                var z = s.zoom;
+                if (!s.support.gestures) {
+                    if (e.type !== 'touchstart' || e.type === 'touchstart' && e.targetTouches.length < 2) {
+                        return;
+                    }
+                    z.gesture.scaleStart = z.getDistanceBetweenTouches(e);
+                }
+                if (!z.gesture.slide || !z.gesture.slide.length) {
+                    z.gesture.slide = $(this);
+                    if (z.gesture.slide.length === 0) z.gesture.slide = s.slides.eq(s.activeIndex);
+                    z.gesture.image = z.gesture.slide.find('img, svg, canvas');
+                    z.gesture.imageWrap = z.gesture.image.parent('.' + s.params.zoomContainerClass);
+                    z.gesture.zoomMax = z.gesture.imageWrap.attr('data-swiper-zoom') || s.params.zoomMax ;
+                    if (z.gesture.imageWrap.length === 0) {
+                        z.gesture.image = undefined;
+                        return;
+                    }
+                }
+                z.gesture.image.transition(0);
+                z.isScaling = true;
+            },
+            onGestureChange: function (e) {
+                var z = s.zoom;
+                if (!s.support.gestures) {
+                    if (e.type !== 'touchmove' || e.type === 'touchmove' && e.targetTouches.length < 2) {
+                        return;
+                    }
+                    z.gesture.scaleMove = z.getDistanceBetweenTouches(e);
+                }
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+                if (s.support.gestures) {
+                    z.scale = e.scale * z.currentScale;
+                }
+                else {
+                    z.scale = (z.gesture.scaleMove / z.gesture.scaleStart) * z.currentScale;
+                }
+                if (z.scale > z.gesture.zoomMax) {
+                    z.scale = z.gesture.zoomMax - 1 + Math.pow((z.scale - z.gesture.zoomMax + 1), 0.5);
+                }
+                if (z.scale < s.params.zoomMin) {
+                    z.scale =  s.params.zoomMin + 1 - Math.pow((s.params.zoomMin - z.scale + 1), 0.5);
+                }
+                z.gesture.image.transform('translate3d(0,0,0) scale(' + z.scale + ')');
+            },
+            onGestureEnd: function (e) {
+                var z = s.zoom;
+                if (!s.support.gestures) {
+                    if (e.type !== 'touchend' || e.type === 'touchend' && e.changedTouches.length < 2) {
+                        return;
+                    }
+                }
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+                z.scale = Math.max(Math.min(z.scale, z.gesture.zoomMax), s.params.zoomMin);
+                z.gesture.image.transition(s.params.speed).transform('translate3d(0,0,0) scale(' + z.scale + ')');
+                z.currentScale = z.scale;
+                z.isScaling = false;
+                if (z.scale === 1) z.gesture.slide = undefined;
+            },
+            onTouchStart: function (s, e) {
+                var z = s.zoom;
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+                if (z.image.isTouched) return;
+                if (s.device.os === 'android') e.preventDefault();
+                z.image.isTouched = true;
+                z.image.touchesStart.x = e.type === 'touchstart' ? e.targetTouches[0].pageX : e.pageX;
+                z.image.touchesStart.y = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
+            },
+            onTouchMove: function (e) {
+                var z = s.zoom;
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+                s.allowClick = false;
+                if (!z.image.isTouched || !z.gesture.slide) return;
+        
+                if (!z.image.isMoved) {
+                    z.image.width = z.gesture.image[0].offsetWidth;
+                    z.image.height = z.gesture.image[0].offsetHeight;
+                    z.image.startX = s.getTranslate(z.gesture.imageWrap[0], 'x') || 0;
+                    z.image.startY = s.getTranslate(z.gesture.imageWrap[0], 'y') || 0;
+                    z.gesture.slideWidth = z.gesture.slide[0].offsetWidth;
+                    z.gesture.slideHeight = z.gesture.slide[0].offsetHeight;
+                    z.gesture.imageWrap.transition(0);
+                    if (s.rtl) z.image.startX = -z.image.startX;
+                    if (s.rtl) z.image.startY = -z.image.startY;
+                }
+                // Define if we need image drag
+                var scaledWidth = z.image.width * z.scale;
+                var scaledHeight = z.image.height * z.scale;
+        
+                if (scaledWidth < z.gesture.slideWidth && scaledHeight < z.gesture.slideHeight) return;
+        
+                z.image.minX = Math.min((z.gesture.slideWidth / 2 - scaledWidth / 2), 0);
+                z.image.maxX = -z.image.minX;
+                z.image.minY = Math.min((z.gesture.slideHeight / 2 - scaledHeight / 2), 0);
+                z.image.maxY = -z.image.minY;
+        
+                z.image.touchesCurrent.x = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
+                z.image.touchesCurrent.y = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
+        
+                if (!z.image.isMoved && !z.isScaling) {
+                    if (s.isHorizontal() &&
+                        (Math.floor(z.image.minX) === Math.floor(z.image.startX) && z.image.touchesCurrent.x < z.image.touchesStart.x) ||
+                        (Math.floor(z.image.maxX) === Math.floor(z.image.startX) && z.image.touchesCurrent.x > z.image.touchesStart.x)
+                        ) {
+                        z.image.isTouched = false;
+                        return;
+                    }
+                    else if (!s.isHorizontal() &&
+                        (Math.floor(z.image.minY) === Math.floor(z.image.startY) && z.image.touchesCurrent.y < z.image.touchesStart.y) ||
+                        (Math.floor(z.image.maxY) === Math.floor(z.image.startY) && z.image.touchesCurrent.y > z.image.touchesStart.y)
+                        ) {
+                        z.image.isTouched = false;
+                        return;
+                    }
+                }
+                e.preventDefault();
+                e.stopPropagation();
+        
+                z.image.isMoved = true;
+                z.image.currentX = z.image.touchesCurrent.x - z.image.touchesStart.x + z.image.startX;
+                z.image.currentY = z.image.touchesCurrent.y - z.image.touchesStart.y + z.image.startY;
+        
+                if (z.image.currentX < z.image.minX) {
+                    z.image.currentX =  z.image.minX + 1 - Math.pow((z.image.minX - z.image.currentX + 1), 0.8);
+                }
+                if (z.image.currentX > z.image.maxX) {
+                    z.image.currentX = z.image.maxX - 1 + Math.pow((z.image.currentX - z.image.maxX + 1), 0.8);
+                }
+        
+                if (z.image.currentY < z.image.minY) {
+                    z.image.currentY =  z.image.minY + 1 - Math.pow((z.image.minY - z.image.currentY + 1), 0.8);
+                }
+                if (z.image.currentY > z.image.maxY) {
+                    z.image.currentY = z.image.maxY - 1 + Math.pow((z.image.currentY - z.image.maxY + 1), 0.8);
+                }
+        
+                //Velocity
+                if (!z.velocity.prevPositionX) z.velocity.prevPositionX = z.image.touchesCurrent.x;
+                if (!z.velocity.prevPositionY) z.velocity.prevPositionY = z.image.touchesCurrent.y;
+                if (!z.velocity.prevTime) z.velocity.prevTime = Date.now();
+                z.velocity.x = (z.image.touchesCurrent.x - z.velocity.prevPositionX) / (Date.now() - z.velocity.prevTime) / 2;
+                z.velocity.y = (z.image.touchesCurrent.y - z.velocity.prevPositionY) / (Date.now() - z.velocity.prevTime) / 2;
+                if (Math.abs(z.image.touchesCurrent.x - z.velocity.prevPositionX) < 2) z.velocity.x = 0;
+                if (Math.abs(z.image.touchesCurrent.y - z.velocity.prevPositionY) < 2) z.velocity.y = 0;
+                z.velocity.prevPositionX = z.image.touchesCurrent.x;
+                z.velocity.prevPositionY = z.image.touchesCurrent.y;
+                z.velocity.prevTime = Date.now();
+        
+                z.gesture.imageWrap.transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
+            },
+            onTouchEnd: function (s, e) {
+                var z = s.zoom;
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+                if (!z.image.isTouched || !z.image.isMoved) {
+                    z.image.isTouched = false;
+                    z.image.isMoved = false;
+                    return;
+                }
+                z.image.isTouched = false;
+                z.image.isMoved = false;
+                var momentumDurationX = 300;
+                var momentumDurationY = 300;
+                var momentumDistanceX = z.velocity.x * momentumDurationX;
+                var newPositionX = z.image.currentX + momentumDistanceX;
+                var momentumDistanceY = z.velocity.y * momentumDurationY;
+                var newPositionY = z.image.currentY + momentumDistanceY;
+        
+                //Fix duration
+                if (z.velocity.x !== 0) momentumDurationX = Math.abs((newPositionX - z.image.currentX) / z.velocity.x);
+                if (z.velocity.y !== 0) momentumDurationY = Math.abs((newPositionY - z.image.currentY) / z.velocity.y);
+                var momentumDuration = Math.max(momentumDurationX, momentumDurationY);
+        
+                z.image.currentX = newPositionX;
+                z.image.currentY = newPositionY;
+        
+                // Define if we need image drag
+                var scaledWidth = z.image.width * z.scale;
+                var scaledHeight = z.image.height * z.scale;
+                z.image.minX = Math.min((z.gesture.slideWidth / 2 - scaledWidth / 2), 0);
+                z.image.maxX = -z.image.minX;
+                z.image.minY = Math.min((z.gesture.slideHeight / 2 - scaledHeight / 2), 0);
+                z.image.maxY = -z.image.minY;
+                z.image.currentX = Math.max(Math.min(z.image.currentX, z.image.maxX), z.image.minX);
+                z.image.currentY = Math.max(Math.min(z.image.currentY, z.image.maxY), z.image.minY);
+        
+                z.gesture.imageWrap.transition(momentumDuration).transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
+            },
+            onTransitionEnd: function (s) {
+                var z = s.zoom;
+                if (z.gesture.slide && s.previousIndex !== s.activeIndex) {
+                    z.gesture.image.transform('translate3d(0,0,0) scale(1)');
+                    z.gesture.imageWrap.transform('translate3d(0,0,0)');
+                    z.gesture.slide = z.gesture.image = z.gesture.imageWrap = undefined;
+                    z.scale = z.currentScale = 1;
+                }
+            },
+            // Toggle Zoom
+            toggleZoom: function (s, e) {
+                var z = s.zoom;
+                if (!z.gesture.slide) {
+                    z.gesture.slide = s.clickedSlide ? $(s.clickedSlide) : s.slides.eq(s.activeIndex);
+                    z.gesture.image = z.gesture.slide.find('img, svg, canvas');
+                    z.gesture.imageWrap = z.gesture.image.parent('.' + s.params.zoomContainerClass);
+                }
+                if (!z.gesture.image || z.gesture.image.length === 0) return;
+        
+                var touchX, touchY, offsetX, offsetY, diffX, diffY, translateX, translateY, imageWidth, imageHeight, scaledWidth, scaledHeight, translateMinX, translateMinY, translateMaxX, translateMaxY, slideWidth, slideHeight;
+        
+                if (typeof z.image.touchesStart.x === 'undefined' && e) {
+                    touchX = e.type === 'touchend' ? e.changedTouches[0].pageX : e.pageX;
+                    touchY = e.type === 'touchend' ? e.changedTouches[0].pageY : e.pageY;
+                }
+                else {
+                    touchX = z.image.touchesStart.x;
+                    touchY = z.image.touchesStart.y;
+                }
+        
+                if (z.scale && z.scale !== 1) {
+                    // Zoom Out
+                    z.scale = z.currentScale = 1;
+                    z.gesture.imageWrap.transition(300).transform('translate3d(0,0,0)');
+                    z.gesture.image.transition(300).transform('translate3d(0,0,0) scale(1)');
+                    z.gesture.slide = undefined;
+                }
+                else {
+                    // Zoom In
+                    z.scale = z.currentScale = z.gesture.imageWrap.attr('data-swiper-zoom') || s.params.zoomMax;
+                    if (e) {
+                        slideWidth = z.gesture.slide[0].offsetWidth;
+                        slideHeight = z.gesture.slide[0].offsetHeight;
+                        offsetX = z.gesture.slide.offset().left;
+                        offsetY = z.gesture.slide.offset().top;
+                        diffX = offsetX + slideWidth/2 - touchX;
+                        diffY = offsetY + slideHeight/2 - touchY;
+        
+                        imageWidth = z.gesture.image[0].offsetWidth;
+                        imageHeight = z.gesture.image[0].offsetHeight;
+                        scaledWidth = imageWidth * z.scale;
+                        scaledHeight = imageHeight * z.scale;
+        
+                        translateMinX = Math.min((slideWidth / 2 - scaledWidth / 2), 0);
+                        translateMinY = Math.min((slideHeight / 2 - scaledHeight / 2), 0);
+                        translateMaxX = -translateMinX;
+                        translateMaxY = -translateMinY;
+        
+                        translateX = diffX * z.scale;
+                        translateY = diffY * z.scale;
+        
+                        if (translateX < translateMinX) {
+                            translateX =  translateMinX;
+                        }
+                        if (translateX > translateMaxX) {
+                            translateX = translateMaxX;
+                        }
+        
+                        if (translateY < translateMinY) {
+                            translateY =  translateMinY;
+                        }
+                        if (translateY > translateMaxY) {
+                            translateY = translateMaxY;
+                        }
+                    }
+                    else {
+                        translateX = 0;
+                        translateY = 0;
+                    }
+                    z.gesture.imageWrap.transition(300).transform('translate3d(' + translateX + 'px, ' + translateY + 'px,0)');
+                    z.gesture.image.transition(300).transform('translate3d(0,0,0) scale(' + z.scale + ')');
+                }
+            },
+            // Attach/Detach Events
+            attachEvents: function (detach) {
+                var action = detach ? 'off' : 'on';
+        
+                if (s.params.zoom) {
+                    var target = s.slides;
+                    var passiveListener = s.touchEvents.start === 'touchstart' && s.support.passiveListener && s.params.passiveListeners ? {passive: true, capture: false} : false;
+                    // Scale image
+                    if (s.support.gestures) {
+                        s.slides[action]('gesturestart', s.zoom.onGestureStart, passiveListener);
+                        s.slides[action]('gesturechange', s.zoom.onGestureChange, passiveListener);
+                        s.slides[action]('gestureend', s.zoom.onGestureEnd, passiveListener);
+                    }
+                    else if (s.touchEvents.start === 'touchstart') {
+                        s.slides[action](s.touchEvents.start, s.zoom.onGestureStart, passiveListener);
+                        s.slides[action](s.touchEvents.move, s.zoom.onGestureChange, passiveListener);
+                        s.slides[action](s.touchEvents.end, s.zoom.onGestureEnd, passiveListener);
+                    }
+        
+                    // Move image
+                    s[action]('touchStart', s.zoom.onTouchStart);
+                    s.slides.each(function (index, slide){
+                        if ($(slide).find('.' + s.params.zoomContainerClass).length > 0) {
+                            $(slide)[action](s.touchEvents.move, s.zoom.onTouchMove);
+                        }
+                    });
+                    s[action]('touchEnd', s.zoom.onTouchEnd);
+        
+                    // Scale Out
+                    s[action]('transitionEnd', s.zoom.onTransitionEnd);
+                    if (s.params.zoomToggle) {
+                        s.on('doubleTap', s.zoom.toggleZoom);
+                    }
+                }
+            },
+            init: function () {
+                s.zoom.attachEvents();
+            },
+            destroy: function () {
+                s.zoom.attachEvents(true);
+            }
+        };
+        
+
+        /*=========================
+          Plugins API. Collect all and init all plugins
+          ===========================*/
+        s._plugins = [];
+        for (var plugin in s.plugins) {
+            var p = s.plugins[plugin](s, s.params[plugin]);
+            if (p) s._plugins.push(p);
+        }
+        // Method to call all plugins event/method
+        s.callPlugins = function (eventName) {
+            for (var i = 0; i < s._plugins.length; i++) {
+                if (eventName in s._plugins[i]) {
+                    s._plugins[i][eventName](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+                }
+            }
+        };
+        
+
+        /*=========================
+          Events/Callbacks/Plugins Emitter
+          ===========================*/
+        function normalizeEventName (eventName) {
+            if (eventName.indexOf('on') !== 0) {
+                if (eventName[0] !== eventName[0].toUpperCase()) {
+                    eventName = 'on' + eventName[0].toUpperCase() + eventName.substring(1);
+                }
+                else {
+                    eventName = 'on' + eventName;
+                }
+            }
+            return eventName;
+        }
+        s.emitterEventListeners = {
+        
+        };
+        s.emit = function (eventName) {
+            // Trigger callbacks
+            if (s.params[eventName]) {
+                s.params[eventName](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+            }
+            var i;
+            // Trigger events
+            if (s.emitterEventListeners[eventName]) {
+                for (i = 0; i < s.emitterEventListeners[eventName].length; i++) {
+                    s.emitterEventListeners[eventName][i](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+                }
+            }
+            // Trigger plugins
+            if (s.callPlugins) s.callPlugins(eventName, arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+        };
+        s.on = function (eventName, handler) {
+            eventName = normalizeEventName(eventName);
+            if (!s.emitterEventListeners[eventName]) s.emitterEventListeners[eventName] = [];
+            s.emitterEventListeners[eventName].push(handler);
+            return s;
+        };
+        s.off = function (eventName, handler) {
+            var i;
+            eventName = normalizeEventName(eventName);
+            if (typeof handler === 'undefined') {
+                // Remove all handlers for such event
+                s.emitterEventListeners[eventName] = [];
+                return s;
+            }
+            if (!s.emitterEventListeners[eventName] || s.emitterEventListeners[eventName].length === 0) return;
+            for (i = 0; i < s.emitterEventListeners[eventName].length; i++) {
+                if(s.emitterEventListeners[eventName][i] === handler) s.emitterEventListeners[eventName].splice(i, 1);
+            }
+            return s;
+        };
+        s.once = function (eventName, handler) {
+            eventName = normalizeEventName(eventName);
+            var _handler = function () {
+                handler(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+                s.off(eventName, _handler);
+            };
+            s.on(eventName, _handler);
+            return s;
+        };
+        
+
+        // Accessibility tools
+        s.a11y = {
+            makeFocusable: function ($el) {
+                $el.attr('tabIndex', '0');
+                return $el;
+            },
+            addRole: function ($el, role) {
+                $el.attr('role', role);
+                return $el;
+            },
+        
+            addLabel: function ($el, label) {
+                $el.attr('aria-label', label);
+                return $el;
+            },
+        
+            disable: function ($el) {
+                $el.attr('aria-disabled', true);
+                return $el;
+            },
+        
+            enable: function ($el) {
+                $el.attr('aria-disabled', false);
+                return $el;
+            },
+        
+            onEnterKey: function (event) {
+                if (event.keyCode !== 13) return;
+                if ($(event.target).is(s.params.nextButton)) {
+                    s.onClickNext(event);
+                    if (s.isEnd) {
+                        s.a11y.notify(s.params.lastSlideMessage);
+                    }
+                    else {
+                        s.a11y.notify(s.params.nextSlideMessage);
+                    }
+                }
+                else if ($(event.target).is(s.params.prevButton)) {
+                    s.onClickPrev(event);
+                    if (s.isBeginning) {
+                        s.a11y.notify(s.params.firstSlideMessage);
+                    }
+                    else {
+                        s.a11y.notify(s.params.prevSlideMessage);
+                    }
+                }
+                if ($(event.target).is('.' + s.params.bulletClass)) {
+                    $(event.target)[0].click();
+                }
+            },
+        
+            liveRegion: $('<span class="' + s.params.notificationClass + '" aria-live="assertive" aria-atomic="true"></span>'),
+        
+            notify: function (message) {
+                var notification = s.a11y.liveRegion;
+                if (notification.length === 0) return;
+                notification.html('');
+                notification.html(message);
+            },
+            init: function () {
+                // Setup accessibility
+                if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
+                    s.a11y.makeFocusable(s.nextButton);
+                    s.a11y.addRole(s.nextButton, 'button');
+                    s.a11y.addLabel(s.nextButton, s.params.nextSlideMessage);
+                }
+                if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
+                    s.a11y.makeFocusable(s.prevButton);
+                    s.a11y.addRole(s.prevButton, 'button');
+                    s.a11y.addLabel(s.prevButton, s.params.prevSlideMessage);
+                }
+        
+                $(s.container).append(s.a11y.liveRegion);
+            },
+            initPagination: function () {
+                if (s.params.pagination && s.params.paginationClickable && s.bullets && s.bullets.length) {
+                    s.bullets.each(function () {
+                        var bullet = $(this);
+                        s.a11y.makeFocusable(bullet);
+                        s.a11y.addRole(bullet, 'button');
+                        s.a11y.addLabel(bullet, s.params.paginationBulletMessage.replace(/{{index}}/, bullet.index() + 1));
+                    });
+                }
+            },
+            destroy: function () {
+                if (s.a11y.liveRegion && s.a11y.liveRegion.length > 0) s.a11y.liveRegion.remove();
+            }
+        };
+        
+
+        /*=========================
+          Init/Destroy
+          ===========================*/
+        s.init = function () {
+            if (s.params.loop) s.createLoop();
+            s.updateContainerSize();
+            s.updateSlidesSize();
+            s.updatePagination();
+            if (s.params.scrollbar && s.scrollbar) {
+                s.scrollbar.set();
+                if (s.params.scrollbarDraggable) {
+                    s.scrollbar.enableDraggable();
+                }
+            }
+            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
+                if (!s.params.loop) s.updateProgress();
+                s.effects[s.params.effect].setTranslate();
+            }
+            if (s.params.loop) {
+                s.slideTo(s.params.initialSlide + s.loopedSlides, 0, s.params.runCallbacksOnInit);
+            }
+            else {
+                s.slideTo(s.params.initialSlide, 0, s.params.runCallbacksOnInit);
+                if (s.params.initialSlide === 0) {
+                    if (s.parallax && s.params.parallax) s.parallax.setTranslate();
+                    if (s.lazy && s.params.lazyLoading) {
+                        s.lazy.load();
+                        s.lazy.initialImageLoaded = true;
+                    }
+                }
+            }
+            s.attachEvents();
+            if (s.params.observer && s.support.observer) {
+                s.initObservers();
+            }
+            if (s.params.preloadImages && !s.params.lazyLoading) {
+                s.preloadImages();
+            }
+            if (s.params.zoom && s.zoom) {
+                s.zoom.init();
+            }
+            if (s.params.autoplay) {
+                s.startAutoplay();
+            }
+            if (s.params.keyboardControl) {
+                if (s.enableKeyboardControl) s.enableKeyboardControl();
+            }
+            if (s.params.mousewheelControl) {
+                if (s.enableMousewheelControl) s.enableMousewheelControl();
+            }
+            // Deprecated hashnavReplaceState changed to replaceState for use in hashnav and history
+            if (s.params.hashnavReplaceState) {
+                s.params.replaceState = s.params.hashnavReplaceState;
+            }
+            if (s.params.history) {
+                if (s.history) s.history.init();
+            }
+            if (s.params.hashnav) {
+                if (s.hashnav) s.hashnav.init();
+            }
+            if (s.params.a11y && s.a11y) s.a11y.init();
+            s.emit('onInit', s);
+        };
+        
+        // Cleanup dynamic styles
+        s.cleanupStyles = function () {
+            // Container
+            s.container.removeClass(s.classNames.join(' ')).removeAttr('style');
+        
+            // Wrapper
+            s.wrapper.removeAttr('style');
+        
+            // Slides
+            if (s.slides && s.slides.length) {
+                s.slides
+                    .removeClass([
+                      s.params.slideVisibleClass,
+                      s.params.slideActiveClass,
+                      s.params.slideNextClass,
+                      s.params.slidePrevClass
+                    ].join(' '))
+                    .removeAttr('style')
+                    .removeAttr('data-swiper-column')
+                    .removeAttr('data-swiper-row');
+            }
+        
+            // Pagination/Bullets
+            if (s.paginationContainer && s.paginationContainer.length) {
+                s.paginationContainer.removeClass(s.params.paginationHiddenClass);
+            }
+            if (s.bullets && s.bullets.length) {
+                s.bullets.removeClass(s.params.bulletActiveClass);
+            }
+        
+            // Buttons
+            if (s.params.prevButton) $(s.params.prevButton).removeClass(s.params.buttonDisabledClass);
+            if (s.params.nextButton) $(s.params.nextButton).removeClass(s.params.buttonDisabledClass);
+        
+            // Scrollbar
+            if (s.params.scrollbar && s.scrollbar) {
+                if (s.scrollbar.track && s.scrollbar.track.length) s.scrollbar.track.removeAttr('style');
+                if (s.scrollbar.drag && s.scrollbar.drag.length) s.scrollbar.drag.removeAttr('style');
+            }
+        };
+        
+        // Destroy
+        s.destroy = function (deleteInstance, cleanupStyles) {
+            // Detach evebts
+            s.detachEvents();
+            // Stop autoplay
+            s.stopAutoplay();
+            // Disable draggable
+            if (s.params.scrollbar && s.scrollbar) {
+                if (s.params.scrollbarDraggable) {
+                    s.scrollbar.disableDraggable();
+                }
+            }
+            // Destroy loop
+            if (s.params.loop) {
+                s.destroyLoop();
+            }
+            // Cleanup styles
+            if (cleanupStyles) {
+                s.cleanupStyles();
+            }
+            // Disconnect observer
+            s.disconnectObservers();
+        
+            // Destroy zoom
+            if (s.params.zoom && s.zoom) {
+                s.zoom.destroy();
+            }
+            // Disable keyboard/mousewheel
+            if (s.params.keyboardControl) {
+                if (s.disableKeyboardControl) s.disableKeyboardControl();
+            }
+            if (s.params.mousewheelControl) {
+                if (s.disableMousewheelControl) s.disableMousewheelControl();
+            }
+            // Disable a11y
+            if (s.params.a11y && s.a11y) s.a11y.destroy();
+            // Delete history popstate
+            if (s.params.history && !s.params.replaceState) {
+                window.removeEventListener('popstate', s.history.setHistoryPopState);
+            }
+            if (s.params.hashnav && s.hashnav)  {
+                s.hashnav.destroy();
+            }
+            // Destroy callback
+            s.emit('onDestroy');
+            // Delete instance
+            if (deleteInstance !== false) s = null;
+        };
+        
+        s.init();
+        
+
+    
+        // Return swiper instance
+        return s;
+    };
+    
+
+    /*==================================================
+        Prototype
+    ====================================================*/
+    Swiper.prototype = {
+        isSafari: (function () {
+            var ua = window.navigator.userAgent.toLowerCase();
+            return (ua.indexOf('safari') >= 0 && ua.indexOf('chrome') < 0 && ua.indexOf('android') < 0);
+        })(),
+        isUiWebView: /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(window.navigator.userAgent),
+        isArray: function (arr) {
+            return Object.prototype.toString.apply(arr) === '[object Array]';
+        },
+        /*==================================================
+        Browser
+        ====================================================*/
+        browser: {
+            ie: window.navigator.pointerEnabled || window.navigator.msPointerEnabled,
+            ieTouch: (window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints > 1) || (window.navigator.pointerEnabled && window.navigator.maxTouchPoints > 1),
+            lteIE9: (function() {
+                // create temporary DIV
+                var div = document.createElement('div');
+                // add content to tmp DIV which is wrapped into the IE HTML conditional statement
+                div.innerHTML = '<!--[if lte IE 9]><i></i><![endif]-->';
+                // return true / false value based on what will browser render
+                return div.getElementsByTagName('i').length === 1;
+            })()
+        },
+        /*==================================================
+        Devices
+        ====================================================*/
+        device: (function () {
+            var ua = window.navigator.userAgent;
+            var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+            var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+            var ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
+            var iphone = !ipad && ua.match(/(iPhone\sOS|iOS)\s([\d_]+)/);
+            return {
+                ios: ipad || iphone || ipod,
+                android: android
+            };
+        })(),
+        /*==================================================
+        Feature Detection
+        ====================================================*/
+        support: {
+            touch : (window.Modernizr && Modernizr.touch === true) || (function () {
+                return !!(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
+            })(),
+    
+            transforms3d : (window.Modernizr && Modernizr.csstransforms3d === true) || (function () {
+                var div = document.createElement('div').style;
+                return ('webkitPerspective' in div || 'MozPerspective' in div || 'OPerspective' in div || 'MsPerspective' in div || 'perspective' in div);
+            })(),
+    
+            flexbox: (function () {
+                var div = document.createElement('div').style;
+                var styles = ('alignItems webkitAlignItems webkitBoxAlign msFlexAlign mozBoxAlign webkitFlexDirection msFlexDirection mozBoxDirection mozBoxOrient webkitBoxDirection webkitBoxOrient').split(' ');
+                for (var i = 0; i < styles.length; i++) {
+                    if (styles[i] in div) return true;
+                }
+            })(),
+    
+            observer: (function () {
+                return ('MutationObserver' in window || 'WebkitMutationObserver' in window);
+            })(),
+    
+            passiveListener: (function () {
+                var supportsPassive = false;
+                try {
+                    var opts = Object.defineProperty({}, 'passive', {
+                        get: function() {
+                            supportsPassive = true;
+                        }
+                    });
+                    window.addEventListener('testPassiveListener', null, opts);
+                } catch (e) {}
+                return supportsPassive;
+            })(),
+    
+            gestures: (function () {
+                return 'ongesturestart' in window;
+            })()
+        },
+        /*==================================================
+        Plugins
+        ====================================================*/
+        plugins: {}
+    };
+    
+
+    /*===========================
+    Dom7 Library
+    ===========================*/
+    var Dom7 = (function () {
+        var Dom7 = function (arr) {
+            var _this = this, i = 0;
+            // Create array-like object
+            for (i = 0; i < arr.length; i++) {
+                _this[i] = arr[i];
+            }
+            _this.length = arr.length;
+            // Return collection with methods
+            return this;
+        };
+        var $ = function (selector, context) {
+            var arr = [], i = 0;
+            if (selector && !context) {
+                if (selector instanceof Dom7) {
+                    return selector;
+                }
+            }
+            if (selector) {
+                // String
+                if (typeof selector === 'string') {
+                    var els, tempParent, html = selector.trim();
+                    if (html.indexOf('<') >= 0 && html.indexOf('>') >= 0) {
+                        var toCreate = 'div';
+                        if (html.indexOf('<li') === 0) toCreate = 'ul';
+                        if (html.indexOf('<tr') === 0) toCreate = 'tbody';
+                        if (html.indexOf('<td') === 0 || html.indexOf('<th') === 0) toCreate = 'tr';
+                        if (html.indexOf('<tbody') === 0) toCreate = 'table';
+                        if (html.indexOf('<option') === 0) toCreate = 'select';
+                        tempParent = document.createElement(toCreate);
+                        tempParent.innerHTML = selector;
+                        for (i = 0; i < tempParent.childNodes.length; i++) {
+                            arr.push(tempParent.childNodes[i]);
+                        }
+                    }
+                    else {
+                        if (!context && selector[0] === '#' && !selector.match(/[ .<>:~]/)) {
+                            // Pure ID selector
+                            els = [document.getElementById(selector.split('#')[1])];
+                        }
+                        else {
+                            // Other selectors
+                            els = (context || document).querySelectorAll(selector);
+                        }
+                        for (i = 0; i < els.length; i++) {
+                            if (els[i]) arr.push(els[i]);
+                        }
+                    }
+                }
+                // Node/element
+                else if (selector.nodeType || selector === window || selector === document) {
+                    arr.push(selector);
+                }
+                //Array of elements or instance of Dom
+                else if (selector.length > 0 && selector[0].nodeType) {
+                    for (i = 0; i < selector.length; i++) {
+                        arr.push(selector[i]);
+                    }
+                }
+            }
+            return new Dom7(arr);
+        };
+        Dom7.prototype = {
+            // Classes and attriutes
+            addClass: function (className) {
+                if (typeof className === 'undefined') {
+                    return this;
+                }
+                var classes = className.split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    for (var j = 0; j < this.length; j++) {
+                        this[j].classList.add(classes[i]);
+                    }
+                }
+                return this;
+            },
+            removeClass: function (className) {
+                var classes = className.split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    for (var j = 0; j < this.length; j++) {
+                        this[j].classList.remove(classes[i]);
+                    }
+                }
+                return this;
+            },
+            hasClass: function (className) {
+                if (!this[0]) return false;
+                else return this[0].classList.contains(className);
+            },
+            toggleClass: function (className) {
+                var classes = className.split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    for (var j = 0; j < this.length; j++) {
+                        this[j].classList.toggle(classes[i]);
+                    }
+                }
+                return this;
+            },
+            attr: function (attrs, value) {
+                if (arguments.length === 1 && typeof attrs === 'string') {
+                    // Get attr
+                    if (this[0]) return this[0].getAttribute(attrs);
+                    else return undefined;
+                }
+                else {
+                    // Set attrs
+                    for (var i = 0; i < this.length; i++) {
+                        if (arguments.length === 2) {
+                            // String
+                            this[i].setAttribute(attrs, value);
+                        }
+                        else {
+                            // Object
+                            for (var attrName in attrs) {
+                                this[i][attrName] = attrs[attrName];
+                                this[i].setAttribute(attrName, attrs[attrName]);
+                            }
+                        }
+                    }
+                    return this;
+                }
+            },
+            removeAttr: function (attr) {
+                for (var i = 0; i < this.length; i++) {
+                    this[i].removeAttribute(attr);
+                }
+                return this;
+            },
+            data: function (key, value) {
+                if (typeof value === 'undefined') {
+                    // Get value
+                    if (this[0]) {
+                        var dataKey = this[0].getAttribute('data-' + key);
+                        if (dataKey) return dataKey;
+                        else if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) return this[0].dom7ElementDataStorage[key];
+                        else return undefined;
+                    }
+                    else return undefined;
+                }
+                else {
+                    // Set value
+                    for (var i = 0; i < this.length; i++) {
+                        var el = this[i];
+                        if (!el.dom7ElementDataStorage) el.dom7ElementDataStorage = {};
+                        el.dom7ElementDataStorage[key] = value;
+                    }
+                    return this;
+                }
+            },
+            // Transforms
+            transform : function (transform) {
+                for (var i = 0; i < this.length; i++) {
+                    var elStyle = this[i].style;
+                    elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
+                }
+                return this;
+            },
+            transition: function (duration) {
+                if (typeof duration !== 'string') {
+                    duration = duration + 'ms';
+                }
+                for (var i = 0; i < this.length; i++) {
+                    var elStyle = this[i].style;
+                    elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
+                }
+                return this;
+            },
+            //Events
+            on: function (eventName, targetSelector, listener, capture) {
+                function handleLiveEvent(e) {
+                    var target = e.target;
+                    if ($(target).is(targetSelector)) listener.call(target, e);
+                    else {
+                        var parents = $(target).parents();
+                        for (var k = 0; k < parents.length; k++) {
+                            if ($(parents[k]).is(targetSelector)) listener.call(parents[k], e);
+                        }
+                    }
+                }
+                var events = eventName.split(' ');
+                var i, j;
+                for (i = 0; i < this.length; i++) {
+                    if (typeof targetSelector === 'function' || targetSelector === false) {
+                        // Usual events
+                        if (typeof targetSelector === 'function') {
+                            listener = arguments[1];
+                            capture = arguments[2] || false;
+                        }
+                        for (j = 0; j < events.length; j++) {
+                            this[i].addEventListener(events[j], listener, capture);
+                        }
+                    }
+                    else {
+                        //Live events
+                        for (j = 0; j < events.length; j++) {
+                            if (!this[i].dom7LiveListeners) this[i].dom7LiveListeners = [];
+                            this[i].dom7LiveListeners.push({listener: listener, liveListener: handleLiveEvent});
+                            this[i].addEventListener(events[j], handleLiveEvent, capture);
+                        }
+                    }
+                }
+    
+                return this;
+            },
+            off: function (eventName, targetSelector, listener, capture) {
+                var events = eventName.split(' ');
+                for (var i = 0; i < events.length; i++) {
+                    for (var j = 0; j < this.length; j++) {
+                        if (typeof targetSelector === 'function' || targetSelector === false) {
+                            // Usual events
+                            if (typeof targetSelector === 'function') {
+                                listener = arguments[1];
+                                capture = arguments[2] || false;
+                            }
+                            this[j].removeEventListener(events[i], listener, capture);
+                        }
+                        else {
+                            // Live event
+                            if (this[j].dom7LiveListeners) {
+                                for (var k = 0; k < this[j].dom7LiveListeners.length; k++) {
+                                    if (this[j].dom7LiveListeners[k].listener === listener) {
+                                        this[j].removeEventListener(events[i], this[j].dom7LiveListeners[k].liveListener, capture);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return this;
+            },
+            once: function (eventName, targetSelector, listener, capture) {
+                var dom = this;
+                if (typeof targetSelector === 'function') {
+                    targetSelector = false;
+                    listener = arguments[1];
+                    capture = arguments[2];
+                }
+                function proxy(e) {
+                    listener(e);
+                    dom.off(eventName, targetSelector, proxy, capture);
+                }
+                dom.on(eventName, targetSelector, proxy, capture);
+            },
+            trigger: function (eventName, eventData) {
+                for (var i = 0; i < this.length; i++) {
+                    var evt;
+                    try {
+                        evt = new window.CustomEvent(eventName, {detail: eventData, bubbles: true, cancelable: true});
+                    }
+                    catch (e) {
+                        evt = document.createEvent('Event');
+                        evt.initEvent(eventName, true, true);
+                        evt.detail = eventData;
+                    }
+                    this[i].dispatchEvent(evt);
+                }
+                return this;
+            },
+            transitionEnd: function (callback) {
+                var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
+                    i, j, dom = this;
+                function fireCallBack(e) {
+                    /*jshint validthis:true */
+                    if (e.target !== this) return;
+                    callback.call(this, e);
+                    for (i = 0; i < events.length; i++) {
+                        dom.off(events[i], fireCallBack);
+                    }
+                }
+                if (callback) {
+                    for (i = 0; i < events.length; i++) {
+                        dom.on(events[i], fireCallBack);
+                    }
+                }
+                return this;
+            },
+            // Sizing/Styles
+            width: function () {
+                if (this[0] === window) {
+                    return window.innerWidth;
+                }
+                else {
+                    if (this.length > 0) {
+                        return parseFloat(this.css('width'));
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            },
+            outerWidth: function (includeMargins) {
+                if (this.length > 0) {
+                    if (includeMargins)
+                        return this[0].offsetWidth + parseFloat(this.css('margin-right')) + parseFloat(this.css('margin-left'));
+                    else
+                        return this[0].offsetWidth;
+                }
+                else return null;
+            },
+            height: function () {
+                if (this[0] === window) {
+                    return window.innerHeight;
+                }
+                else {
+                    if (this.length > 0) {
+                        return parseFloat(this.css('height'));
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            },
+            outerHeight: function (includeMargins) {
+                if (this.length > 0) {
+                    if (includeMargins)
+                        return this[0].offsetHeight + parseFloat(this.css('margin-top')) + parseFloat(this.css('margin-bottom'));
+                    else
+                        return this[0].offsetHeight;
+                }
+                else return null;
+            },
+            offset: function () {
+                if (this.length > 0) {
+                    var el = this[0];
+                    var box = el.getBoundingClientRect();
+                    var body = document.body;
+                    var clientTop  = el.clientTop  || body.clientTop  || 0;
+                    var clientLeft = el.clientLeft || body.clientLeft || 0;
+                    var scrollTop  = window.pageYOffset || el.scrollTop;
+                    var scrollLeft = window.pageXOffset || el.scrollLeft;
+                    return {
+                        top: box.top  + scrollTop  - clientTop,
+                        left: box.left + scrollLeft - clientLeft
+                    };
+                }
+                else {
+                    return null;
+                }
+            },
+            css: function (props, value) {
+                var i;
+                if (arguments.length === 1) {
+                    if (typeof props === 'string') {
+                        if (this[0]) return window.getComputedStyle(this[0], null).getPropertyValue(props);
+                    }
+                    else {
+                        for (i = 0; i < this.length; i++) {
+                            for (var prop in props) {
+                                this[i].style[prop] = props[prop];
+                            }
+                        }
+                        return this;
+                    }
+                }
+                if (arguments.length === 2 && typeof props === 'string') {
+                    for (i = 0; i < this.length; i++) {
+                        this[i].style[props] = value;
+                    }
+                    return this;
+                }
+                return this;
+            },
+    
+            //Dom manipulation
+            each: function (callback) {
+                for (var i = 0; i < this.length; i++) {
+                    callback.call(this[i], i, this[i]);
+                }
+                return this;
+            },
+            html: function (html) {
+                if (typeof html === 'undefined') {
+                    return this[0] ? this[0].innerHTML : undefined;
+                }
+                else {
+                    for (var i = 0; i < this.length; i++) {
+                        this[i].innerHTML = html;
+                    }
+                    return this;
+                }
+            },
+            text: function (text) {
+                if (typeof text === 'undefined') {
+                    if (this[0]) {
+                        return this[0].textContent.trim();
+                    }
+                    else return null;
+                }
+                else {
+                    for (var i = 0; i < this.length; i++) {
+                        this[i].textContent = text;
+                    }
+                    return this;
+                }
+            },
+            is: function (selector) {
+                if (!this[0]) return false;
+                var compareWith, i;
+                if (typeof selector === 'string') {
+                    var el = this[0];
+                    if (el === document) return selector === document;
+                    if (el === window) return selector === window;
+    
+                    if (el.matches) return el.matches(selector);
+                    else if (el.webkitMatchesSelector) return el.webkitMatchesSelector(selector);
+                    else if (el.mozMatchesSelector) return el.mozMatchesSelector(selector);
+                    else if (el.msMatchesSelector) return el.msMatchesSelector(selector);
+                    else {
+                        compareWith = $(selector);
+                        for (i = 0; i < compareWith.length; i++) {
+                            if (compareWith[i] === this[0]) return true;
+                        }
+                        return false;
+                    }
+                }
+                else if (selector === document) return this[0] === document;
+                else if (selector === window) return this[0] === window;
+                else {
+                    if (selector.nodeType || selector instanceof Dom7) {
+                        compareWith = selector.nodeType ? [selector] : selector;
+                        for (i = 0; i < compareWith.length; i++) {
+                            if (compareWith[i] === this[0]) return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                }
+    
+            },
+            index: function () {
+                if (this[0]) {
+                    var child = this[0];
+                    var i = 0;
+                    while ((child = child.previousSibling) !== null) {
+                        if (child.nodeType === 1) i++;
+                    }
+                    return i;
+                }
+                else return undefined;
+            },
+            eq: function (index) {
+                if (typeof index === 'undefined') return this;
+                var length = this.length;
+                var returnIndex;
+                if (index > length - 1) {
+                    return new Dom7([]);
+                }
+                if (index < 0) {
+                    returnIndex = length + index;
+                    if (returnIndex < 0) return new Dom7([]);
+                    else return new Dom7([this[returnIndex]]);
+                }
+                return new Dom7([this[index]]);
+            },
+            append: function (newChild) {
+                var i, j;
+                for (i = 0; i < this.length; i++) {
+                    if (typeof newChild === 'string') {
+                        var tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = newChild;
+                        while (tempDiv.firstChild) {
+                            this[i].appendChild(tempDiv.firstChild);
+                        }
+                    }
+                    else if (newChild instanceof Dom7) {
+                        for (j = 0; j < newChild.length; j++) {
+                            this[i].appendChild(newChild[j]);
+                        }
+                    }
+                    else {
+                        this[i].appendChild(newChild);
+                    }
+                }
+                return this;
+            },
+            prepend: function (newChild) {
+                var i, j;
+                for (i = 0; i < this.length; i++) {
+                    if (typeof newChild === 'string') {
+                        var tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = newChild;
+                        for (j = tempDiv.childNodes.length - 1; j >= 0; j--) {
+                            this[i].insertBefore(tempDiv.childNodes[j], this[i].childNodes[0]);
+                        }
+                        // this[i].insertAdjacentHTML('afterbegin', newChild);
+                    }
+                    else if (newChild instanceof Dom7) {
+                        for (j = 0; j < newChild.length; j++) {
+                            this[i].insertBefore(newChild[j], this[i].childNodes[0]);
+                        }
+                    }
+                    else {
+                        this[i].insertBefore(newChild, this[i].childNodes[0]);
+                    }
+                }
+                return this;
+            },
+            insertBefore: function (selector) {
+                var before = $(selector);
+                for (var i = 0; i < this.length; i++) {
+                    if (before.length === 1) {
+                        before[0].parentNode.insertBefore(this[i], before[0]);
+                    }
+                    else if (before.length > 1) {
+                        for (var j = 0; j < before.length; j++) {
+                            before[j].parentNode.insertBefore(this[i].cloneNode(true), before[j]);
+                        }
+                    }
+                }
+            },
+            insertAfter: function (selector) {
+                var after = $(selector);
+                for (var i = 0; i < this.length; i++) {
+                    if (after.length === 1) {
+                        after[0].parentNode.insertBefore(this[i], after[0].nextSibling);
+                    }
+                    else if (after.length > 1) {
+                        for (var j = 0; j < after.length; j++) {
+                            after[j].parentNode.insertBefore(this[i].cloneNode(true), after[j].nextSibling);
+                        }
+                    }
+                }
+            },
+            next: function (selector) {
+                if (this.length > 0) {
+                    if (selector) {
+                        if (this[0].nextElementSibling && $(this[0].nextElementSibling).is(selector)) return new Dom7([this[0].nextElementSibling]);
+                        else return new Dom7([]);
+                    }
+                    else {
+                        if (this[0].nextElementSibling) return new Dom7([this[0].nextElementSibling]);
+                        else return new Dom7([]);
+                    }
+                }
+                else return new Dom7([]);
+            },
+            nextAll: function (selector) {
+                var nextEls = [];
+                var el = this[0];
+                if (!el) return new Dom7([]);
+                while (el.nextElementSibling) {
+                    var next = el.nextElementSibling;
+                    if (selector) {
+                        if($(next).is(selector)) nextEls.push(next);
+                    }
+                    else nextEls.push(next);
+                    el = next;
+                }
+                return new Dom7(nextEls);
+            },
+            prev: function (selector) {
+                if (this.length > 0) {
+                    if (selector) {
+                        if (this[0].previousElementSibling && $(this[0].previousElementSibling).is(selector)) return new Dom7([this[0].previousElementSibling]);
+                        else return new Dom7([]);
+                    }
+                    else {
+                        if (this[0].previousElementSibling) return new Dom7([this[0].previousElementSibling]);
+                        else return new Dom7([]);
+                    }
+                }
+                else return new Dom7([]);
+            },
+            prevAll: function (selector) {
+                var prevEls = [];
+                var el = this[0];
+                if (!el) return new Dom7([]);
+                while (el.previousElementSibling) {
+                    var prev = el.previousElementSibling;
+                    if (selector) {
+                        if($(prev).is(selector)) prevEls.push(prev);
+                    }
+                    else prevEls.push(prev);
+                    el = prev;
+                }
+                return new Dom7(prevEls);
+            },
+            parent: function (selector) {
+                var parents = [];
+                for (var i = 0; i < this.length; i++) {
+                    if (selector) {
+                        if ($(this[i].parentNode).is(selector)) parents.push(this[i].parentNode);
+                    }
+                    else {
+                        parents.push(this[i].parentNode);
+                    }
+                }
+                return $($.unique(parents));
+            },
+            parents: function (selector) {
+                var parents = [];
+                for (var i = 0; i < this.length; i++) {
+                    var parent = this[i].parentNode;
+                    while (parent) {
+                        if (selector) {
+                            if ($(parent).is(selector)) parents.push(parent);
+                        }
+                        else {
+                            parents.push(parent);
+                        }
+                        parent = parent.parentNode;
+                    }
+                }
+                return $($.unique(parents));
+            },
+            find : function (selector) {
+                var foundElements = [];
+                for (var i = 0; i < this.length; i++) {
+                    var found = this[i].querySelectorAll(selector);
+                    for (var j = 0; j < found.length; j++) {
+                        foundElements.push(found[j]);
+                    }
+                }
+                return new Dom7(foundElements);
+            },
+            children: function (selector) {
+                var children = [];
+                for (var i = 0; i < this.length; i++) {
+                    var childNodes = this[i].childNodes;
+    
+                    for (var j = 0; j < childNodes.length; j++) {
+                        if (!selector) {
+                            if (childNodes[j].nodeType === 1) children.push(childNodes[j]);
+                        }
+                        else {
+                            if (childNodes[j].nodeType === 1 && $(childNodes[j]).is(selector)) children.push(childNodes[j]);
+                        }
+                    }
+                }
+                return new Dom7($.unique(children));
+            },
+            remove: function () {
+                for (var i = 0; i < this.length; i++) {
+                    if (this[i].parentNode) this[i].parentNode.removeChild(this[i]);
+                }
+                return this;
+            },
+            add: function () {
+                var dom = this;
+                var i, j;
+                for (i = 0; i < arguments.length; i++) {
+                    var toAdd = $(arguments[i]);
+                    for (j = 0; j < toAdd.length; j++) {
+                        dom[dom.length] = toAdd[j];
+                        dom.length++;
+                    }
+                }
+                return dom;
+            }
+        };
+        $.fn = Dom7.prototype;
+        $.unique = function (arr) {
+            var unique = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (unique.indexOf(arr[i]) === -1) unique.push(arr[i]);
+            }
+            return unique;
+        };
+    
+        return $;
+    })();
+    
+
+    /*===========================
+     Get Dom libraries
+     ===========================*/
+    var swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
+    for (var i = 0; i < swiperDomPlugins.length; i++) {
+    	if (window[swiperDomPlugins[i]]) {
+    		addLibraryPlugin(window[swiperDomPlugins[i]]);
+    	}
     }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
+    // Required DOM Plugins
+    var domLib;
+    if (typeof Dom7 === 'undefined') {
+    	domLib = window.Dom7 || window.Zepto || window.jQuery;
     }
-  }
+    else {
+    	domLib = Dom7;
+    }
+    
 
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
+    /*===========================
+    Add .swiper plugin from Dom libraries
+    ===========================*/
+    function addLibraryPlugin(lib) {
+        lib.fn.swiper = function (params) {
+            var firstInstance;
+            lib(this).each(function () {
+                var s = new Swiper(this, params);
+                if (!firstInstance) firstInstance = s;
+            });
+            return firstInstance;
+        };
+    }
+    
+    if (domLib) {
+        if (!('transitionEnd' in domLib.fn)) {
+            domLib.fn.transitionEnd = function (callback) {
+                var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
+                    i, j, dom = this;
+                function fireCallBack(e) {
+                    /*jshint validthis:true */
+                    if (e.target !== this) return;
+                    callback.call(this, e);
+                    for (i = 0; i < events.length; i++) {
+                        dom.off(events[i], fireCallBack);
+                    }
+                }
+                if (callback) {
+                    for (i = 0; i < events.length; i++) {
+                        dom.on(events[i], fireCallBack);
+                    }
+                }
+                return this;
+            };
+        }
+        if (!('transform' in domLib.fn)) {
+            domLib.fn.transform = function (transform) {
+                for (var i = 0; i < this.length; i++) {
+                    var elStyle = this[i].style;
+                    elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
+                }
+                return this;
+            };
+        }
+        if (!('transition' in domLib.fn)) {
+            domLib.fn.transition = function (duration) {
+                if (typeof duration !== 'string') {
+                    duration = duration + 'ms';
+                }
+                for (var i = 0; i < this.length; i++) {
+                    var elStyle = this[i].style;
+                    elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
+                }
+                return this;
+            };
+        }
+        if (!('outerWidth' in domLib.fn)) {
+            domLib.fn.outerWidth = function (includeMargins) {
+                if (this.length > 0) {
+                    if (includeMargins)
+                        return this[0].offsetWidth + parseFloat(this.css('margin-right')) + parseFloat(this.css('margin-left'));
+                    else
+                        return this[0].offsetWidth;
+                }
+                else return null;
+            };
+        }
+    }
+    
+
+    window.Swiper = Swiper;
+})();
+
+/*===========================
+Swiper AMD Export
+===========================*/
+if (true)
+{
+    module.exports = window.Swiper;
 }
+else if (typeof define === 'function' && define.amd) {
+    define([], function () {
+        'use strict';
+        return window.Swiper;
+    });
+}
+
+//# sourceMappingURL=maps/swiper.js.map
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(79)
+  __webpack_require__(19)
 }
-var Component = __webpack_require__(2)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(12),
+  __webpack_require__(22),
   /* template */
-  __webpack_require__(81),
+  __webpack_require__(55),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -484,7 +5844,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -508,23 +5868,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(5);
-module.exports = __webpack_require__(36);
+__webpack_require__(6);
+module.exports = __webpack_require__(58);
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_app__);
 
 /**
@@ -533,9 +5893,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(50);
+__webpack_require__(7);
 
-window.Vue = __webpack_require__(6);
+window.Vue = __webpack_require__(56);
 
 
 
@@ -559,7 +5919,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('app', __webpack_require__(3));
+Vue.component('app', __webpack_require__(4));
 
 var app = new Vue({
     el: '#app',
@@ -567,7 +5927,6077 @@ var app = new Vue({
 });
 
 /***/ }),
-/* 6 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(8);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(9)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../css-loader/index.js!./swiper.css", function() {
+			var newContent = require("!!../../../css-loader/index.js!./swiper.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "/**\n * Swiper 3.4.2\n * Most modern mobile touch slider and framework with hardware accelerated transitions\n * \n * http://www.idangero.us/swiper/\n * \n * Copyright 2017, Vladimir Kharlampidi\n * The iDangero.us\n * http://www.idangero.us/\n * \n * Licensed under MIT\n * \n * Released on: March 10, 2017\n */\n.swiper-container {\n  margin-left: auto;\n  margin-right: auto;\n  position: relative;\n  overflow: hidden;\n  /* Fix of Webkit flickering */\n  z-index: 1;\n}\n.swiper-container-no-flexbox .swiper-slide {\n  float: left;\n}\n.swiper-container-vertical > .swiper-wrapper {\n  -webkit-box-orient: vertical;\n  -moz-box-orient: vertical;\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  flex-direction: column;\n}\n.swiper-wrapper {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n  -webkit-transition-property: -webkit-transform;\n  -moz-transition-property: -moz-transform;\n  -o-transition-property: -o-transform;\n  -ms-transition-property: -ms-transform;\n  transition-property: transform;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n.swiper-container-android .swiper-slide,\n.swiper-wrapper {\n  -webkit-transform: translate3d(0px, 0, 0);\n  -moz-transform: translate3d(0px, 0, 0);\n  -o-transform: translate(0px, 0px);\n  -ms-transform: translate3d(0px, 0, 0);\n  transform: translate3d(0px, 0, 0);\n}\n.swiper-container-multirow > .swiper-wrapper {\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  -ms-flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n  flex-wrap: wrap;\n}\n.swiper-container-free-mode > .swiper-wrapper {\n  -webkit-transition-timing-function: ease-out;\n  -moz-transition-timing-function: ease-out;\n  -ms-transition-timing-function: ease-out;\n  -o-transition-timing-function: ease-out;\n  transition-timing-function: ease-out;\n  margin: 0 auto;\n}\n.swiper-slide {\n  -webkit-flex-shrink: 0;\n  -ms-flex: 0 0 auto;\n  flex-shrink: 0;\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n/* Auto Height */\n.swiper-container-autoheight,\n.swiper-container-autoheight .swiper-slide {\n  height: auto;\n}\n.swiper-container-autoheight .swiper-wrapper {\n  -webkit-box-align: start;\n  -ms-flex-align: start;\n  -webkit-align-items: flex-start;\n  align-items: flex-start;\n  -webkit-transition-property: -webkit-transform, height;\n  -moz-transition-property: -moz-transform;\n  -o-transition-property: -o-transform;\n  -ms-transition-property: -ms-transform;\n  transition-property: transform, height;\n}\n/* a11y */\n.swiper-container .swiper-notification {\n  position: absolute;\n  left: 0;\n  top: 0;\n  pointer-events: none;\n  opacity: 0;\n  z-index: -1000;\n}\n/* IE10 Windows Phone 8 Fixes */\n.swiper-wp8-horizontal {\n  -ms-touch-action: pan-y;\n  touch-action: pan-y;\n}\n.swiper-wp8-vertical {\n  -ms-touch-action: pan-x;\n  touch-action: pan-x;\n}\n/* Arrows */\n.swiper-button-prev,\n.swiper-button-next {\n  position: absolute;\n  top: 50%;\n  width: 27px;\n  height: 44px;\n  margin-top: -22px;\n  z-index: 10;\n  cursor: pointer;\n  -moz-background-size: 27px 44px;\n  -webkit-background-size: 27px 44px;\n  background-size: 27px 44px;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.swiper-button-prev.swiper-button-disabled,\n.swiper-button-next.swiper-button-disabled {\n  opacity: 0.35;\n  cursor: auto;\n  pointer-events: none;\n}\n.swiper-button-prev,\n.swiper-container-rtl .swiper-button-next {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E\");\n  left: 10px;\n  right: auto;\n}\n.swiper-button-prev.swiper-button-black,\n.swiper-container-rtl .swiper-button-next.swiper-button-black {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-prev.swiper-button-white,\n.swiper-container-rtl .swiper-button-next.swiper-button-white {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-next,\n.swiper-container-rtl .swiper-button-prev {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E\");\n  right: 10px;\n  left: auto;\n}\n.swiper-button-next.swiper-button-black,\n.swiper-container-rtl .swiper-button-prev.swiper-button-black {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-next.swiper-button-white,\n.swiper-container-rtl .swiper-button-prev.swiper-button-white {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E\");\n}\n/* Pagination Styles */\n.swiper-pagination {\n  position: absolute;\n  text-align: center;\n  -webkit-transition: 300ms;\n  -moz-transition: 300ms;\n  -o-transition: 300ms;\n  transition: 300ms;\n  -webkit-transform: translate3d(0, 0, 0);\n  -ms-transform: translate3d(0, 0, 0);\n  -o-transform: translate3d(0, 0, 0);\n  transform: translate3d(0, 0, 0);\n  z-index: 10;\n}\n.swiper-pagination.swiper-pagination-hidden {\n  opacity: 0;\n}\n/* Common Styles */\n.swiper-pagination-fraction,\n.swiper-pagination-custom,\n.swiper-container-horizontal > .swiper-pagination-bullets {\n  bottom: 10px;\n  left: 0;\n  width: 100%;\n}\n/* Bullets */\n.swiper-pagination-bullet {\n  width: 8px;\n  height: 8px;\n  display: inline-block;\n  border-radius: 100%;\n  background: #000;\n  opacity: 0.2;\n}\nbutton.swiper-pagination-bullet {\n  border: none;\n  margin: 0;\n  padding: 0;\n  box-shadow: none;\n  -moz-appearance: none;\n  -ms-appearance: none;\n  -webkit-appearance: none;\n  appearance: none;\n}\n.swiper-pagination-clickable .swiper-pagination-bullet {\n  cursor: pointer;\n}\n.swiper-pagination-white .swiper-pagination-bullet {\n  background: #fff;\n}\n.swiper-pagination-bullet-active {\n  opacity: 1;\n  background: #007aff;\n}\n.swiper-pagination-white .swiper-pagination-bullet-active {\n  background: #fff;\n}\n.swiper-pagination-black .swiper-pagination-bullet-active {\n  background: #000;\n}\n.swiper-container-vertical > .swiper-pagination-bullets {\n  right: 10px;\n  top: 50%;\n  -webkit-transform: translate3d(0px, -50%, 0);\n  -moz-transform: translate3d(0px, -50%, 0);\n  -o-transform: translate(0px, -50%);\n  -ms-transform: translate3d(0px, -50%, 0);\n  transform: translate3d(0px, -50%, 0);\n}\n.swiper-container-vertical > .swiper-pagination-bullets .swiper-pagination-bullet {\n  margin: 5px 0;\n  display: block;\n}\n.swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {\n  margin: 0 5px;\n}\n/* Progress */\n.swiper-pagination-progress {\n  background: rgba(0, 0, 0, 0.25);\n  position: absolute;\n}\n.swiper-pagination-progress .swiper-pagination-progressbar {\n  background: #007aff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  -webkit-transform: scale(0);\n  -ms-transform: scale(0);\n  -o-transform: scale(0);\n  transform: scale(0);\n  -webkit-transform-origin: left top;\n  -moz-transform-origin: left top;\n  -ms-transform-origin: left top;\n  -o-transform-origin: left top;\n  transform-origin: left top;\n}\n.swiper-container-rtl .swiper-pagination-progress .swiper-pagination-progressbar {\n  -webkit-transform-origin: right top;\n  -moz-transform-origin: right top;\n  -ms-transform-origin: right top;\n  -o-transform-origin: right top;\n  transform-origin: right top;\n}\n.swiper-container-horizontal > .swiper-pagination-progress {\n  width: 100%;\n  height: 4px;\n  left: 0;\n  top: 0;\n}\n.swiper-container-vertical > .swiper-pagination-progress {\n  width: 4px;\n  height: 100%;\n  left: 0;\n  top: 0;\n}\n.swiper-pagination-progress.swiper-pagination-white {\n  background: rgba(255, 255, 255, 0.5);\n}\n.swiper-pagination-progress.swiper-pagination-white .swiper-pagination-progressbar {\n  background: #fff;\n}\n.swiper-pagination-progress.swiper-pagination-black .swiper-pagination-progressbar {\n  background: #000;\n}\n/* 3D Container */\n.swiper-container-3d {\n  -webkit-perspective: 1200px;\n  -moz-perspective: 1200px;\n  -o-perspective: 1200px;\n  perspective: 1200px;\n}\n.swiper-container-3d .swiper-wrapper,\n.swiper-container-3d .swiper-slide,\n.swiper-container-3d .swiper-slide-shadow-left,\n.swiper-container-3d .swiper-slide-shadow-right,\n.swiper-container-3d .swiper-slide-shadow-top,\n.swiper-container-3d .swiper-slide-shadow-bottom,\n.swiper-container-3d .swiper-cube-shadow {\n  -webkit-transform-style: preserve-3d;\n  -moz-transform-style: preserve-3d;\n  -ms-transform-style: preserve-3d;\n  transform-style: preserve-3d;\n}\n.swiper-container-3d .swiper-slide-shadow-left,\n.swiper-container-3d .swiper-slide-shadow-right,\n.swiper-container-3d .swiper-slide-shadow-top,\n.swiper-container-3d .swiper-slide-shadow-bottom {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 10;\n}\n.swiper-container-3d .swiper-slide-shadow-left {\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-right {\n  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-top {\n  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-bottom {\n  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n/* Coverflow */\n.swiper-container-coverflow .swiper-wrapper,\n.swiper-container-flip .swiper-wrapper {\n  /* Windows 8 IE 10 fix */\n  -ms-perspective: 1200px;\n}\n/* Cube + Flip */\n.swiper-container-cube,\n.swiper-container-flip {\n  overflow: visible;\n}\n.swiper-container-cube .swiper-slide,\n.swiper-container-flip .swiper-slide {\n  pointer-events: none;\n  -webkit-backface-visibility: hidden;\n  -moz-backface-visibility: hidden;\n  -ms-backface-visibility: hidden;\n  backface-visibility: hidden;\n  z-index: 1;\n}\n.swiper-container-cube .swiper-slide .swiper-slide,\n.swiper-container-flip .swiper-slide .swiper-slide {\n  pointer-events: none;\n}\n.swiper-container-cube .swiper-slide-active,\n.swiper-container-flip .swiper-slide-active,\n.swiper-container-cube .swiper-slide-active .swiper-slide-active,\n.swiper-container-flip .swiper-slide-active .swiper-slide-active {\n  pointer-events: auto;\n}\n.swiper-container-cube .swiper-slide-shadow-top,\n.swiper-container-flip .swiper-slide-shadow-top,\n.swiper-container-cube .swiper-slide-shadow-bottom,\n.swiper-container-flip .swiper-slide-shadow-bottom,\n.swiper-container-cube .swiper-slide-shadow-left,\n.swiper-container-flip .swiper-slide-shadow-left,\n.swiper-container-cube .swiper-slide-shadow-right,\n.swiper-container-flip .swiper-slide-shadow-right {\n  z-index: 0;\n  -webkit-backface-visibility: hidden;\n  -moz-backface-visibility: hidden;\n  -ms-backface-visibility: hidden;\n  backface-visibility: hidden;\n}\n/* Cube */\n.swiper-container-cube .swiper-slide {\n  visibility: hidden;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -ms-transform-origin: 0 0;\n  transform-origin: 0 0;\n  width: 100%;\n  height: 100%;\n}\n.swiper-container-cube.swiper-container-rtl .swiper-slide {\n  -webkit-transform-origin: 100% 0;\n  -moz-transform-origin: 100% 0;\n  -ms-transform-origin: 100% 0;\n  transform-origin: 100% 0;\n}\n.swiper-container-cube .swiper-slide-active,\n.swiper-container-cube .swiper-slide-next,\n.swiper-container-cube .swiper-slide-prev,\n.swiper-container-cube .swiper-slide-next + .swiper-slide {\n  pointer-events: auto;\n  visibility: visible;\n}\n.swiper-container-cube .swiper-cube-shadow {\n  position: absolute;\n  left: 0;\n  bottom: 0px;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  opacity: 0.6;\n  -webkit-filter: blur(50px);\n  filter: blur(50px);\n  z-index: 0;\n}\n/* Fade */\n.swiper-container-fade.swiper-container-free-mode .swiper-slide {\n  -webkit-transition-timing-function: ease-out;\n  -moz-transition-timing-function: ease-out;\n  -ms-transition-timing-function: ease-out;\n  -o-transition-timing-function: ease-out;\n  transition-timing-function: ease-out;\n}\n.swiper-container-fade .swiper-slide {\n  pointer-events: none;\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  -o-transition-property: opacity;\n  transition-property: opacity;\n}\n.swiper-container-fade .swiper-slide .swiper-slide {\n  pointer-events: none;\n}\n.swiper-container-fade .swiper-slide-active,\n.swiper-container-fade .swiper-slide-active .swiper-slide-active {\n  pointer-events: auto;\n}\n.swiper-zoom-container {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -ms-flex-pack: center;\n  -webkit-justify-content: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -ms-flex-align: center;\n  -webkit-align-items: center;\n  align-items: center;\n  text-align: center;\n}\n.swiper-zoom-container > img,\n.swiper-zoom-container > svg,\n.swiper-zoom-container > canvas {\n  max-width: 100%;\n  max-height: 100%;\n  object-fit: contain;\n}\n/* Scrollbar */\n.swiper-scrollbar {\n  border-radius: 10px;\n  position: relative;\n  -ms-touch-action: none;\n  background: rgba(0, 0, 0, 0.1);\n}\n.swiper-container-horizontal > .swiper-scrollbar {\n  position: absolute;\n  left: 1%;\n  bottom: 3px;\n  z-index: 50;\n  height: 5px;\n  width: 98%;\n}\n.swiper-container-vertical > .swiper-scrollbar {\n  position: absolute;\n  right: 3px;\n  top: 1%;\n  z-index: 50;\n  width: 5px;\n  height: 98%;\n}\n.swiper-scrollbar-drag {\n  height: 100%;\n  width: 100%;\n  position: relative;\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 10px;\n  left: 0;\n  top: 0;\n}\n.swiper-scrollbar-cursor-drag {\n  cursor: move;\n}\n/* Preloader */\n.swiper-lazy-preloader {\n  width: 42px;\n  height: 42px;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin-left: -21px;\n  margin-top: -21px;\n  z-index: 10;\n  -webkit-transform-origin: 50%;\n  -moz-transform-origin: 50%;\n  transform-origin: 50%;\n  -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;\n  -moz-animation: swiper-preloader-spin 1s steps(12, end) infinite;\n  animation: swiper-preloader-spin 1s steps(12, end) infinite;\n}\n.swiper-lazy-preloader:after {\n  display: block;\n  content: \"\";\n  width: 100%;\n  height: 100%;\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\");\n  background-position: 50%;\n  -webkit-background-size: 100%;\n  background-size: 100%;\n  background-repeat: no-repeat;\n}\n.swiper-lazy-preloader-white:after {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\");\n}\n@-webkit-keyframes swiper-preloader-spin {\n  100% {\n    -webkit-transform: rotate(360deg);\n  }\n}\n@keyframes swiper-preloader-spin {\n  100% {\n    transform: rotate(360deg);\n  }\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(10);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+  * vue-router v2.7.0
+  * (c) 2017 Evan You
+  * @license MIT
+  */
+/*  */
+
+function assert (condition, message) {
+  if (!condition) {
+    throw new Error(("[vue-router] " + message))
+  }
+}
+
+function warn (condition, message) {
+  if ("development" !== 'production' && !condition) {
+    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
+  }
+}
+
+function isError (err) {
+  return Object.prototype.toString.call(err).indexOf('Error') > -1
+}
+
+var View = {
+  name: 'router-view',
+  functional: true,
+  props: {
+    name: {
+      type: String,
+      default: 'default'
+    }
+  },
+  render: function render (_, ref) {
+    var props = ref.props;
+    var children = ref.children;
+    var parent = ref.parent;
+    var data = ref.data;
+
+    data.routerView = true;
+
+    // directly use parent context's createElement() function
+    // so that components rendered by router-view can resolve named slots
+    var h = parent.$createElement;
+    var name = props.name;
+    var route = parent.$route;
+    var cache = parent._routerViewCache || (parent._routerViewCache = {});
+
+    // determine current view depth, also check to see if the tree
+    // has been toggled inactive but kept-alive.
+    var depth = 0;
+    var inactive = false;
+    while (parent && parent._routerRoot !== parent) {
+      if (parent.$vnode && parent.$vnode.data.routerView) {
+        depth++;
+      }
+      if (parent._inactive) {
+        inactive = true;
+      }
+      parent = parent.$parent;
+    }
+    data.routerViewDepth = depth;
+
+    // render previous view if the tree is inactive and kept-alive
+    if (inactive) {
+      return h(cache[name], data, children)
+    }
+
+    var matched = route.matched[depth];
+    // render empty node if no matched route
+    if (!matched) {
+      cache[name] = null;
+      return h()
+    }
+
+    var component = cache[name] = matched.components[name];
+
+    // attach instance registration hook
+    // this will be called in the instance's injected lifecycle hooks
+    data.registerRouteInstance = function (vm, val) {
+      // val could be undefined for unregistration
+      var current = matched.instances[name];
+      if (
+        (val && current !== vm) ||
+        (!val && current === vm)
+      ) {
+        matched.instances[name] = val;
+      }
+    }
+
+    // also regiseter instance in prepatch hook
+    // in case the same component instance is reused across different routes
+    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
+      matched.instances[name] = vnode.componentInstance;
+    };
+
+    // resolve props
+    data.props = resolveProps(route, matched.props && matched.props[name]);
+
+    return h(component, data, children)
+  }
+};
+
+function resolveProps (route, config) {
+  switch (typeof config) {
+    case 'undefined':
+      return
+    case 'object':
+      return config
+    case 'function':
+      return config(route)
+    case 'boolean':
+      return config ? route.params : undefined
+    default:
+      if (true) {
+        warn(
+          false,
+          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
+          "expecting an object, function or boolean."
+        );
+      }
+  }
+}
+
+/*  */
+
+var encodeReserveRE = /[!'()*]/g;
+var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
+var commaRE = /%2C/g;
+
+// fixed encodeURIComponent which is more conformant to RFC3986:
+// - escapes [!'()*]
+// - preserve commas
+var encode = function (str) { return encodeURIComponent(str)
+  .replace(encodeReserveRE, encodeReserveReplacer)
+  .replace(commaRE, ','); };
+
+var decode = decodeURIComponent;
+
+function resolveQuery (
+  query,
+  extraQuery,
+  _parseQuery
+) {
+  if ( extraQuery === void 0 ) extraQuery = {};
+
+  var parse = _parseQuery || parseQuery;
+  var parsedQuery;
+  try {
+    parsedQuery = parse(query || '');
+  } catch (e) {
+    "development" !== 'production' && warn(false, e.message);
+    parsedQuery = {};
+  }
+  for (var key in extraQuery) {
+    var val = extraQuery[key];
+    parsedQuery[key] = Array.isArray(val) ? val.slice() : val;
+  }
+  return parsedQuery
+}
+
+function parseQuery (query) {
+  var res = {};
+
+  query = query.trim().replace(/^(\?|#|&)/, '');
+
+  if (!query) {
+    return res
+  }
+
+  query.split('&').forEach(function (param) {
+    var parts = param.replace(/\+/g, ' ').split('=');
+    var key = decode(parts.shift());
+    var val = parts.length > 0
+      ? decode(parts.join('='))
+      : null;
+
+    if (res[key] === undefined) {
+      res[key] = val;
+    } else if (Array.isArray(res[key])) {
+      res[key].push(val);
+    } else {
+      res[key] = [res[key], val];
+    }
+  });
+
+  return res
+}
+
+function stringifyQuery (obj) {
+  var res = obj ? Object.keys(obj).map(function (key) {
+    var val = obj[key];
+
+    if (val === undefined) {
+      return ''
+    }
+
+    if (val === null) {
+      return encode(key)
+    }
+
+    if (Array.isArray(val)) {
+      var result = [];
+      val.forEach(function (val2) {
+        if (val2 === undefined) {
+          return
+        }
+        if (val2 === null) {
+          result.push(encode(key));
+        } else {
+          result.push(encode(key) + '=' + encode(val2));
+        }
+      });
+      return result.join('&')
+    }
+
+    return encode(key) + '=' + encode(val)
+  }).filter(function (x) { return x.length > 0; }).join('&') : null;
+  return res ? ("?" + res) : ''
+}
+
+/*  */
+
+
+var trailingSlashRE = /\/?$/;
+
+function createRoute (
+  record,
+  location,
+  redirectedFrom,
+  router
+) {
+  var stringifyQuery$$1 = router && router.options.stringifyQuery;
+  var route = {
+    name: location.name || (record && record.name),
+    meta: (record && record.meta) || {},
+    path: location.path || '/',
+    hash: location.hash || '',
+    query: location.query || {},
+    params: location.params || {},
+    fullPath: getFullPath(location, stringifyQuery$$1),
+    matched: record ? formatMatch(record) : []
+  };
+  if (redirectedFrom) {
+    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
+  }
+  return Object.freeze(route)
+}
+
+// the starting route that represents the initial state
+var START = createRoute(null, {
+  path: '/'
+});
+
+function formatMatch (record) {
+  var res = [];
+  while (record) {
+    res.unshift(record);
+    record = record.parent;
+  }
+  return res
+}
+
+function getFullPath (
+  ref,
+  _stringifyQuery
+) {
+  var path = ref.path;
+  var query = ref.query; if ( query === void 0 ) query = {};
+  var hash = ref.hash; if ( hash === void 0 ) hash = '';
+
+  var stringify = _stringifyQuery || stringifyQuery;
+  return (path || '/') + stringify(query) + hash
+}
+
+function isSameRoute (a, b) {
+  if (b === START) {
+    return a === b
+  } else if (!b) {
+    return false
+  } else if (a.path && b.path) {
+    return (
+      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query)
+    )
+  } else if (a.name && b.name) {
+    return (
+      a.name === b.name &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query) &&
+      isObjectEqual(a.params, b.params)
+    )
+  } else {
+    return false
+  }
+}
+
+function isObjectEqual (a, b) {
+  if ( a === void 0 ) a = {};
+  if ( b === void 0 ) b = {};
+
+  var aKeys = Object.keys(a);
+  var bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  return aKeys.every(function (key) {
+    var aVal = a[key];
+    var bVal = b[key];
+    // check nested equality
+    if (typeof aVal === 'object' && typeof bVal === 'object') {
+      return isObjectEqual(aVal, bVal)
+    }
+    return String(aVal) === String(bVal)
+  })
+}
+
+function isIncludedRoute (current, target) {
+  return (
+    current.path.replace(trailingSlashRE, '/').indexOf(
+      target.path.replace(trailingSlashRE, '/')
+    ) === 0 &&
+    (!target.hash || current.hash === target.hash) &&
+    queryIncludes(current.query, target.query)
+  )
+}
+
+function queryIncludes (current, target) {
+  for (var key in target) {
+    if (!(key in current)) {
+      return false
+    }
+  }
+  return true
+}
+
+/*  */
+
+// work around weird flow bug
+var toTypes = [String, Object];
+var eventTypes = [String, Array];
+
+var Link = {
+  name: 'router-link',
+  props: {
+    to: {
+      type: toTypes,
+      required: true
+    },
+    tag: {
+      type: String,
+      default: 'a'
+    },
+    exact: Boolean,
+    append: Boolean,
+    replace: Boolean,
+    activeClass: String,
+    exactActiveClass: String,
+    event: {
+      type: eventTypes,
+      default: 'click'
+    }
+  },
+  render: function render (h) {
+    var this$1 = this;
+
+    var router = this.$router;
+    var current = this.$route;
+    var ref = router.resolve(this.to, current, this.append);
+    var location = ref.location;
+    var route = ref.route;
+    var href = ref.href;
+
+    var classes = {};
+    var globalActiveClass = router.options.linkActiveClass;
+    var globalExactActiveClass = router.options.linkExactActiveClass;
+    // Support global empty active class
+    var activeClassFallback = globalActiveClass == null
+            ? 'router-link-active'
+            : globalActiveClass;
+    var exactActiveClassFallback = globalExactActiveClass == null
+            ? 'router-link-exact-active'
+            : globalExactActiveClass;
+    var activeClass = this.activeClass == null
+            ? activeClassFallback
+            : this.activeClass;
+    var exactActiveClass = this.exactActiveClass == null
+            ? exactActiveClassFallback
+            : this.exactActiveClass;
+    var compareTarget = location.path
+      ? createRoute(null, location, null, router)
+      : route;
+
+    classes[exactActiveClass] = isSameRoute(current, compareTarget);
+    classes[activeClass] = this.exact
+      ? classes[exactActiveClass]
+      : isIncludedRoute(current, compareTarget);
+
+    var handler = function (e) {
+      if (guardEvent(e)) {
+        if (this$1.replace) {
+          router.replace(location);
+        } else {
+          router.push(location);
+        }
+      }
+    };
+
+    var on = { click: guardEvent };
+    if (Array.isArray(this.event)) {
+      this.event.forEach(function (e) { on[e] = handler; });
+    } else {
+      on[this.event] = handler;
+    }
+
+    var data = {
+      class: classes
+    };
+
+    if (this.tag === 'a') {
+      data.on = on;
+      data.attrs = { href: href };
+    } else {
+      // find the first <a> child and apply listener and href
+      var a = findAnchor(this.$slots.default);
+      if (a) {
+        // in case the <a> is a static node
+        a.isStatic = false;
+        var extend = _Vue.util.extend;
+        var aData = a.data = extend({}, a.data);
+        aData.on = on;
+        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
+        aAttrs.href = href;
+      } else {
+        // doesn't have <a> child, apply listener to self
+        data.on = on;
+      }
+    }
+
+    return h(this.tag, data, this.$slots.default)
+  }
+};
+
+function guardEvent (e) {
+  // don't redirect with control keys
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
+  // don't redirect when preventDefault called
+  if (e.defaultPrevented) { return }
+  // don't redirect on right click
+  if (e.button !== undefined && e.button !== 0) { return }
+  // don't redirect if `target="_blank"`
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    var target = e.currentTarget.getAttribute('target');
+    if (/\b_blank\b/i.test(target)) { return }
+  }
+  // this may be a Weex event which doesn't have this method
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  return true
+}
+
+function findAnchor (children) {
+  if (children) {
+    var child;
+    for (var i = 0; i < children.length; i++) {
+      child = children[i];
+      if (child.tag === 'a') {
+        return child
+      }
+      if (child.children && (child = findAnchor(child.children))) {
+        return child
+      }
+    }
+  }
+}
+
+var _Vue;
+
+function install (Vue) {
+  if (install.installed) { return }
+  install.installed = true;
+
+  _Vue = Vue;
+
+  var isDef = function (v) { return v !== undefined; };
+
+  var registerInstance = function (vm, callVal) {
+    var i = vm.$options._parentVnode;
+    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
+      i(vm, callVal);
+    }
+  };
+
+  Vue.mixin({
+    beforeCreate: function beforeCreate () {
+      if (isDef(this.$options.router)) {
+        this._routerRoot = this;
+        this._router = this.$options.router;
+        this._router.init(this);
+        Vue.util.defineReactive(this, '_route', this._router.history.current);
+      } else {
+        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
+      }
+      registerInstance(this, this);
+    },
+    destroyed: function destroyed () {
+      registerInstance(this);
+    }
+  });
+
+  Object.defineProperty(Vue.prototype, '$router', {
+    get: function get () { return this._routerRoot._router }
+  });
+
+  Object.defineProperty(Vue.prototype, '$route', {
+    get: function get () { return this._routerRoot._route }
+  });
+
+  Vue.component('router-view', View);
+  Vue.component('router-link', Link);
+
+  var strats = Vue.config.optionMergeStrategies;
+  // use the same hook merging strategy for route hooks
+  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
+}
+
+/*  */
+
+var inBrowser = typeof window !== 'undefined';
+
+/*  */
+
+function resolvePath (
+  relative,
+  base,
+  append
+) {
+  var firstChar = relative.charAt(0);
+  if (firstChar === '/') {
+    return relative
+  }
+
+  if (firstChar === '?' || firstChar === '#') {
+    return base + relative
+  }
+
+  var stack = base.split('/');
+
+  // remove trailing segment if:
+  // - not appending
+  // - appending to trailing slash (last segment is empty)
+  if (!append || !stack[stack.length - 1]) {
+    stack.pop();
+  }
+
+  // resolve relative path
+  var segments = relative.replace(/^\//, '').split('/');
+  for (var i = 0; i < segments.length; i++) {
+    var segment = segments[i];
+    if (segment === '..') {
+      stack.pop();
+    } else if (segment !== '.') {
+      stack.push(segment);
+    }
+  }
+
+  // ensure leading slash
+  if (stack[0] !== '') {
+    stack.unshift('');
+  }
+
+  return stack.join('/')
+}
+
+function parsePath (path) {
+  var hash = '';
+  var query = '';
+
+  var hashIndex = path.indexOf('#');
+  if (hashIndex >= 0) {
+    hash = path.slice(hashIndex);
+    path = path.slice(0, hashIndex);
+  }
+
+  var queryIndex = path.indexOf('?');
+  if (queryIndex >= 0) {
+    query = path.slice(queryIndex + 1);
+    path = path.slice(0, queryIndex);
+  }
+
+  return {
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+function cleanPath (path) {
+  return path.replace(/\/\//g, '/')
+}
+
+var index$1 = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+/**
+ * Expose `pathToRegexp`.
+ */
+var index = pathToRegexp;
+var parse_1 = parse;
+var compile_1 = compile;
+var tokensToFunction_1 = tokensToFunction;
+var tokensToRegExp_1 = tokensToRegExp;
+
+/**
+ * The main path matching regexp utility.
+ *
+ * @type {RegExp}
+ */
+var PATH_REGEXP = new RegExp([
+  // Match escaped characters that would otherwise appear in future matches.
+  // This allows the user to escape special characters that won't transform.
+  '(\\\\.)',
+  // Match Express-style parameters and un-named parameters with a prefix
+  // and optional suffixes. Matches appear as:
+  //
+  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
+  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
+  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
+  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
+].join('|'), 'g');
+
+/**
+ * Parse a string for the raw tokens.
+ *
+ * @param  {string}  str
+ * @param  {Object=} options
+ * @return {!Array}
+ */
+function parse (str, options) {
+  var tokens = [];
+  var key = 0;
+  var index = 0;
+  var path = '';
+  var defaultDelimiter = options && options.delimiter || '/';
+  var res;
+
+  while ((res = PATH_REGEXP.exec(str)) != null) {
+    var m = res[0];
+    var escaped = res[1];
+    var offset = res.index;
+    path += str.slice(index, offset);
+    index = offset + m.length;
+
+    // Ignore already escaped sequences.
+    if (escaped) {
+      path += escaped[1];
+      continue
+    }
+
+    var next = str[index];
+    var prefix = res[2];
+    var name = res[3];
+    var capture = res[4];
+    var group = res[5];
+    var modifier = res[6];
+    var asterisk = res[7];
+
+    // Push the current path onto the tokens.
+    if (path) {
+      tokens.push(path);
+      path = '';
+    }
+
+    var partial = prefix != null && next != null && next !== prefix;
+    var repeat = modifier === '+' || modifier === '*';
+    var optional = modifier === '?' || modifier === '*';
+    var delimiter = res[2] || defaultDelimiter;
+    var pattern = capture || group;
+
+    tokens.push({
+      name: name || key++,
+      prefix: prefix || '',
+      delimiter: delimiter,
+      optional: optional,
+      repeat: repeat,
+      partial: partial,
+      asterisk: !!asterisk,
+      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
+    });
+  }
+
+  // Match any characters still remaining.
+  if (index < str.length) {
+    path += str.substr(index);
+  }
+
+  // If the path exists, push it onto the end.
+  if (path) {
+    tokens.push(path);
+  }
+
+  return tokens
+}
+
+/**
+ * Compile a string to a template function for the path.
+ *
+ * @param  {string}             str
+ * @param  {Object=}            options
+ * @return {!function(Object=, Object=)}
+ */
+function compile (str, options) {
+  return tokensToFunction(parse(str, options))
+}
+
+/**
+ * Prettier encoding of URI path segments.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeURIComponentPretty (str) {
+  return encodeURI(str).replace(/[\/?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeAsterisk (str) {
+  return encodeURI(str).replace(/[?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Expose a method for transforming tokens into the path function.
+ */
+function tokensToFunction (tokens) {
+  // Compile all the tokens into regexps.
+  var matches = new Array(tokens.length);
+
+  // Compile all the patterns before compilation.
+  for (var i = 0; i < tokens.length; i++) {
+    if (typeof tokens[i] === 'object') {
+      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
+    }
+  }
+
+  return function (obj, opts) {
+    var path = '';
+    var data = obj || {};
+    var options = opts || {};
+    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
+
+    for (var i = 0; i < tokens.length; i++) {
+      var token = tokens[i];
+
+      if (typeof token === 'string') {
+        path += token;
+
+        continue
+      }
+
+      var value = data[token.name];
+      var segment;
+
+      if (value == null) {
+        if (token.optional) {
+          // Prepend partial segment prefixes.
+          if (token.partial) {
+            path += token.prefix;
+          }
+
+          continue
+        } else {
+          throw new TypeError('Expected "' + token.name + '" to be defined')
+        }
+      }
+
+      if (index$1(value)) {
+        if (!token.repeat) {
+          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
+        }
+
+        if (value.length === 0) {
+          if (token.optional) {
+            continue
+          } else {
+            throw new TypeError('Expected "' + token.name + '" to not be empty')
+          }
+        }
+
+        for (var j = 0; j < value.length; j++) {
+          segment = encode(value[j]);
+
+          if (!matches[i].test(segment)) {
+            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
+          }
+
+          path += (j === 0 ? token.prefix : token.delimiter) + segment;
+        }
+
+        continue
+      }
+
+      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
+
+      if (!matches[i].test(segment)) {
+        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
+      }
+
+      path += token.prefix + segment;
+    }
+
+    return path
+  }
+}
+
+/**
+ * Escape a regular expression string.
+ *
+ * @param  {string} str
+ * @return {string}
+ */
+function escapeString (str) {
+  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
+}
+
+/**
+ * Escape the capturing group by escaping special characters and meaning.
+ *
+ * @param  {string} group
+ * @return {string}
+ */
+function escapeGroup (group) {
+  return group.replace(/([=!:$\/()])/g, '\\$1')
+}
+
+/**
+ * Attach the keys as a property of the regexp.
+ *
+ * @param  {!RegExp} re
+ * @param  {Array}   keys
+ * @return {!RegExp}
+ */
+function attachKeys (re, keys) {
+  re.keys = keys;
+  return re
+}
+
+/**
+ * Get the flags for a regexp from the options.
+ *
+ * @param  {Object} options
+ * @return {string}
+ */
+function flags (options) {
+  return options.sensitive ? '' : 'i'
+}
+
+/**
+ * Pull out keys from a regexp.
+ *
+ * @param  {!RegExp} path
+ * @param  {!Array}  keys
+ * @return {!RegExp}
+ */
+function regexpToRegexp (path, keys) {
+  // Use a negative lookahead to match only capturing groups.
+  var groups = path.source.match(/\((?!\?)/g);
+
+  if (groups) {
+    for (var i = 0; i < groups.length; i++) {
+      keys.push({
+        name: i,
+        prefix: null,
+        delimiter: null,
+        optional: false,
+        repeat: false,
+        partial: false,
+        asterisk: false,
+        pattern: null
+      });
+    }
+  }
+
+  return attachKeys(path, keys)
+}
+
+/**
+ * Transform an array into a regexp.
+ *
+ * @param  {!Array}  path
+ * @param  {Array}   keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function arrayToRegexp (path, keys, options) {
+  var parts = [];
+
+  for (var i = 0; i < path.length; i++) {
+    parts.push(pathToRegexp(path[i], keys, options).source);
+  }
+
+  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
+
+  return attachKeys(regexp, keys)
+}
+
+/**
+ * Create a path regexp from string input.
+ *
+ * @param  {string}  path
+ * @param  {!Array}  keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function stringToRegexp (path, keys, options) {
+  return tokensToRegExp(parse(path, options), keys, options)
+}
+
+/**
+ * Expose a function for taking tokens and returning a RegExp.
+ *
+ * @param  {!Array}          tokens
+ * @param  {(Array|Object)=} keys
+ * @param  {Object=}         options
+ * @return {!RegExp}
+ */
+function tokensToRegExp (tokens, keys, options) {
+  if (!index$1(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  var strict = options.strict;
+  var end = options.end !== false;
+  var route = '';
+
+  // Iterate over the tokens and create our regexp string.
+  for (var i = 0; i < tokens.length; i++) {
+    var token = tokens[i];
+
+    if (typeof token === 'string') {
+      route += escapeString(token);
+    } else {
+      var prefix = escapeString(token.prefix);
+      var capture = '(?:' + token.pattern + ')';
+
+      keys.push(token);
+
+      if (token.repeat) {
+        capture += '(?:' + prefix + capture + ')*';
+      }
+
+      if (token.optional) {
+        if (!token.partial) {
+          capture = '(?:' + prefix + '(' + capture + '))?';
+        } else {
+          capture = prefix + '(' + capture + ')?';
+        }
+      } else {
+        capture = prefix + '(' + capture + ')';
+      }
+
+      route += capture;
+    }
+  }
+
+  var delimiter = escapeString(options.delimiter || '/');
+  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
+
+  // In non-strict mode we allow a slash at the end of match. If the path to
+  // match already ends with a slash, we remove it for consistency. The slash
+  // is valid at the end of a path match, not in the middle. This is important
+  // in non-ending mode, where "/test/" shouldn't match "/test//route".
+  if (!strict) {
+    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
+  }
+
+  if (end) {
+    route += '$';
+  } else {
+    // In non-ending mode, we need the capturing groups to match as much as
+    // possible by using a positive lookahead to the end or next path segment.
+    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
+  }
+
+  return attachKeys(new RegExp('^' + route, flags(options)), keys)
+}
+
+/**
+ * Normalize the given path string, returning a regular expression.
+ *
+ * An empty array can be passed in for the keys, which will hold the
+ * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+ * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+ *
+ * @param  {(string|RegExp|Array)} path
+ * @param  {(Array|Object)=}       keys
+ * @param  {Object=}               options
+ * @return {!RegExp}
+ */
+function pathToRegexp (path, keys, options) {
+  if (!index$1(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  if (path instanceof RegExp) {
+    return regexpToRegexp(path, /** @type {!Array} */ (keys))
+  }
+
+  if (index$1(path)) {
+    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
+  }
+
+  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
+}
+
+index.parse = parse_1;
+index.compile = compile_1;
+index.tokensToFunction = tokensToFunction_1;
+index.tokensToRegExp = tokensToRegExp_1;
+
+/*  */
+
+var regexpCompileCache = Object.create(null);
+
+function fillParams (
+  path,
+  params,
+  routeMsg
+) {
+  try {
+    var filler =
+      regexpCompileCache[path] ||
+      (regexpCompileCache[path] = index.compile(path));
+    return filler(params || {}, { pretty: true })
+  } catch (e) {
+    if (true) {
+      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
+    }
+    return ''
+  }
+}
+
+/*  */
+
+function createRouteMap (
+  routes,
+  oldPathList,
+  oldPathMap,
+  oldNameMap
+) {
+  // the path list is used to control path matching priority
+  var pathList = oldPathList || [];
+  var pathMap = oldPathMap || Object.create(null);
+  var nameMap = oldNameMap || Object.create(null);
+
+  routes.forEach(function (route) {
+    addRouteRecord(pathList, pathMap, nameMap, route);
+  });
+
+  // ensure wildcard routes are always at the end
+  for (var i = 0, l = pathList.length; i < l; i++) {
+    if (pathList[i] === '*') {
+      pathList.push(pathList.splice(i, 1)[0]);
+      l--;
+      i--;
+    }
+  }
+
+  return {
+    pathList: pathList,
+    pathMap: pathMap,
+    nameMap: nameMap
+  }
+}
+
+function addRouteRecord (
+  pathList,
+  pathMap,
+  nameMap,
+  route,
+  parent,
+  matchAs
+) {
+  var path = route.path;
+  var name = route.name;
+  if (true) {
+    assert(path != null, "\"path\" is required in a route configuration.");
+    assert(
+      typeof route.component !== 'string',
+      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
+      "string id. Use an actual component instead."
+    );
+  }
+
+  var normalizedPath = normalizePath(path, parent);
+  var pathToRegexpOptions = route.pathToRegexpOptions || {};
+
+  if (typeof route.caseSensitive === 'boolean') {
+    pathToRegexpOptions.sensitive = route.caseSensitive;
+  }
+
+  var record = {
+    path: normalizedPath,
+    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
+    components: route.components || { default: route.component },
+    instances: {},
+    name: name,
+    parent: parent,
+    matchAs: matchAs,
+    redirect: route.redirect,
+    beforeEnter: route.beforeEnter,
+    meta: route.meta || {},
+    props: route.props == null
+      ? {}
+      : route.components
+        ? route.props
+        : { default: route.props }
+  };
+
+  if (route.children) {
+    // Warn if route is named, does not redirect and has a default child route.
+    // If users navigate to this route by name, the default child will
+    // not be rendered (GH Issue #629)
+    if (true) {
+      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
+        warn(
+          false,
+          "Named Route '" + (route.name) + "' has a default child route. " +
+          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
+          "the default child route will not be rendered. Remove the name from " +
+          "this route and use the name of the default child route for named " +
+          "links instead."
+        );
+      }
+    }
+    route.children.forEach(function (child) {
+      var childMatchAs = matchAs
+        ? cleanPath((matchAs + "/" + (child.path)))
+        : undefined;
+      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
+    });
+  }
+
+  if (route.alias !== undefined) {
+    var aliases = Array.isArray(route.alias)
+      ? route.alias
+      : [route.alias];
+
+    aliases.forEach(function (alias) {
+      var aliasRoute = {
+        path: alias,
+        children: route.children
+      };
+      addRouteRecord(
+        pathList,
+        pathMap,
+        nameMap,
+        aliasRoute,
+        parent,
+        record.path || '/' // matchAs
+      );
+    });
+  }
+
+  if (!pathMap[record.path]) {
+    pathList.push(record.path);
+    pathMap[record.path] = record;
+  }
+
+  if (name) {
+    if (!nameMap[name]) {
+      nameMap[name] = record;
+    } else if ("development" !== 'production' && !matchAs) {
+      warn(
+        false,
+        "Duplicate named routes definition: " +
+        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
+      );
+    }
+  }
+}
+
+function compileRouteRegex (path, pathToRegexpOptions) {
+  var regex = index(path, [], pathToRegexpOptions);
+  if (true) {
+    var keys = {};
+    regex.keys.forEach(function (key) {
+      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
+      keys[key.name] = true;
+    });
+  }
+  return regex
+}
+
+function normalizePath (path, parent) {
+  path = path.replace(/\/$/, '');
+  if (path[0] === '/') { return path }
+  if (parent == null) { return path }
+  return cleanPath(((parent.path) + "/" + path))
+}
+
+/*  */
+
+
+function normalizeLocation (
+  raw,
+  current,
+  append,
+  router
+) {
+  var next = typeof raw === 'string' ? { path: raw } : raw;
+  // named target
+  if (next.name || next._normalized) {
+    return next
+  }
+
+  // relative params
+  if (!next.path && next.params && current) {
+    next = assign({}, next);
+    next._normalized = true;
+    var params = assign(assign({}, current.params), next.params);
+    if (current.name) {
+      next.name = current.name;
+      next.params = params;
+    } else if (current.matched.length) {
+      var rawPath = current.matched[current.matched.length - 1].path;
+      next.path = fillParams(rawPath, params, ("path " + (current.path)));
+    } else if (true) {
+      warn(false, "relative params navigation requires a current route.");
+    }
+    return next
+  }
+
+  var parsedPath = parsePath(next.path || '');
+  var basePath = (current && current.path) || '/';
+  var path = parsedPath.path
+    ? resolvePath(parsedPath.path, basePath, append || next.append)
+    : basePath;
+
+  var query = resolveQuery(
+    parsedPath.query,
+    next.query,
+    router && router.options.parseQuery
+  );
+
+  var hash = next.hash || parsedPath.hash;
+  if (hash && hash.charAt(0) !== '#') {
+    hash = "#" + hash;
+  }
+
+  return {
+    _normalized: true,
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+function assign (a, b) {
+  for (var key in b) {
+    a[key] = b[key];
+  }
+  return a
+}
+
+/*  */
+
+
+function createMatcher (
+  routes,
+  router
+) {
+  var ref = createRouteMap(routes);
+  var pathList = ref.pathList;
+  var pathMap = ref.pathMap;
+  var nameMap = ref.nameMap;
+
+  function addRoutes (routes) {
+    createRouteMap(routes, pathList, pathMap, nameMap);
+  }
+
+  function match (
+    raw,
+    currentRoute,
+    redirectedFrom
+  ) {
+    var location = normalizeLocation(raw, currentRoute, false, router);
+    var name = location.name;
+
+    if (name) {
+      var record = nameMap[name];
+      if (true) {
+        warn(record, ("Route with name '" + name + "' does not exist"));
+      }
+      if (!record) { return _createRoute(null, location) }
+      var paramNames = record.regex.keys
+        .filter(function (key) { return !key.optional; })
+        .map(function (key) { return key.name; });
+
+      if (typeof location.params !== 'object') {
+        location.params = {};
+      }
+
+      if (currentRoute && typeof currentRoute.params === 'object') {
+        for (var key in currentRoute.params) {
+          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
+            location.params[key] = currentRoute.params[key];
+          }
+        }
+      }
+
+      if (record) {
+        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
+        return _createRoute(record, location, redirectedFrom)
+      }
+    } else if (location.path) {
+      location.params = {};
+      for (var i = 0; i < pathList.length; i++) {
+        var path = pathList[i];
+        var record$1 = pathMap[path];
+        if (matchRoute(record$1.regex, location.path, location.params)) {
+          return _createRoute(record$1, location, redirectedFrom)
+        }
+      }
+    }
+    // no match
+    return _createRoute(null, location)
+  }
+
+  function redirect (
+    record,
+    location
+  ) {
+    var originalRedirect = record.redirect;
+    var redirect = typeof originalRedirect === 'function'
+        ? originalRedirect(createRoute(record, location, null, router))
+        : originalRedirect;
+
+    if (typeof redirect === 'string') {
+      redirect = { path: redirect };
+    }
+
+    if (!redirect || typeof redirect !== 'object') {
+      if (true) {
+        warn(
+          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
+        );
+      }
+      return _createRoute(null, location)
+    }
+
+    var re = redirect;
+    var name = re.name;
+    var path = re.path;
+    var query = location.query;
+    var hash = location.hash;
+    var params = location.params;
+    query = re.hasOwnProperty('query') ? re.query : query;
+    hash = re.hasOwnProperty('hash') ? re.hash : hash;
+    params = re.hasOwnProperty('params') ? re.params : params;
+
+    if (name) {
+      // resolved named direct
+      var targetRecord = nameMap[name];
+      if (true) {
+        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
+      }
+      return match({
+        _normalized: true,
+        name: name,
+        query: query,
+        hash: hash,
+        params: params
+      }, undefined, location)
+    } else if (path) {
+      // 1. resolve relative redirect
+      var rawPath = resolveRecordPath(path, record);
+      // 2. resolve params
+      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
+      // 3. rematch with existing query and hash
+      return match({
+        _normalized: true,
+        path: resolvedPath,
+        query: query,
+        hash: hash
+      }, undefined, location)
+    } else {
+      if (true) {
+        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
+      }
+      return _createRoute(null, location)
+    }
+  }
+
+  function alias (
+    record,
+    location,
+    matchAs
+  ) {
+    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
+    var aliasedMatch = match({
+      _normalized: true,
+      path: aliasedPath
+    });
+    if (aliasedMatch) {
+      var matched = aliasedMatch.matched;
+      var aliasedRecord = matched[matched.length - 1];
+      location.params = aliasedMatch.params;
+      return _createRoute(aliasedRecord, location)
+    }
+    return _createRoute(null, location)
+  }
+
+  function _createRoute (
+    record,
+    location,
+    redirectedFrom
+  ) {
+    if (record && record.redirect) {
+      return redirect(record, redirectedFrom || location)
+    }
+    if (record && record.matchAs) {
+      return alias(record, location, record.matchAs)
+    }
+    return createRoute(record, location, redirectedFrom, router)
+  }
+
+  return {
+    match: match,
+    addRoutes: addRoutes
+  }
+}
+
+function matchRoute (
+  regex,
+  path,
+  params
+) {
+  var m = path.match(regex);
+
+  if (!m) {
+    return false
+  } else if (!params) {
+    return true
+  }
+
+  for (var i = 1, len = m.length; i < len; ++i) {
+    var key = regex.keys[i - 1];
+    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
+    if (key) {
+      params[key.name] = val;
+    }
+  }
+
+  return true
+}
+
+function resolveRecordPath (path, record) {
+  return resolvePath(path, record.parent ? record.parent.path : '/', true)
+}
+
+/*  */
+
+
+var positionStore = Object.create(null);
+
+function setupScroll () {
+  window.addEventListener('popstate', function (e) {
+    saveScrollPosition();
+    if (e.state && e.state.key) {
+      setStateKey(e.state.key);
+    }
+  });
+}
+
+function handleScroll (
+  router,
+  to,
+  from,
+  isPop
+) {
+  if (!router.app) {
+    return
+  }
+
+  var behavior = router.options.scrollBehavior;
+  if (!behavior) {
+    return
+  }
+
+  if (true) {
+    assert(typeof behavior === 'function', "scrollBehavior must be a function");
+  }
+
+  // wait until re-render finishes before scrolling
+  router.app.$nextTick(function () {
+    var position = getScrollPosition();
+    var shouldScroll = behavior(to, from, isPop ? position : null);
+    if (!shouldScroll) {
+      return
+    }
+    var isObject = typeof shouldScroll === 'object';
+    if (isObject && typeof shouldScroll.selector === 'string') {
+      var el = document.querySelector(shouldScroll.selector);
+      if (el) {
+        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
+        offset = normalizeOffset(offset);
+        position = getElementPosition(el, offset);
+      } else if (isValidPosition(shouldScroll)) {
+        position = normalizePosition(shouldScroll);
+      }
+    } else if (isObject && isValidPosition(shouldScroll)) {
+      position = normalizePosition(shouldScroll);
+    }
+
+    if (position) {
+      window.scrollTo(position.x, position.y);
+    }
+  });
+}
+
+function saveScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    positionStore[key] = {
+      x: window.pageXOffset,
+      y: window.pageYOffset
+    };
+  }
+}
+
+function getScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    return positionStore[key]
+  }
+}
+
+function getElementPosition (el, offset) {
+  var docEl = document.documentElement;
+  var docRect = docEl.getBoundingClientRect();
+  var elRect = el.getBoundingClientRect();
+  return {
+    x: elRect.left - docRect.left - offset.x,
+    y: elRect.top - docRect.top - offset.y
+  }
+}
+
+function isValidPosition (obj) {
+  return isNumber(obj.x) || isNumber(obj.y)
+}
+
+function normalizePosition (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
+    y: isNumber(obj.y) ? obj.y : window.pageYOffset
+  }
+}
+
+function normalizeOffset (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : 0,
+    y: isNumber(obj.y) ? obj.y : 0
+  }
+}
+
+function isNumber (v) {
+  return typeof v === 'number'
+}
+
+/*  */
+
+var supportsPushState = inBrowser && (function () {
+  var ua = window.navigator.userAgent;
+
+  if (
+    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
+    ua.indexOf('Mobile Safari') !== -1 &&
+    ua.indexOf('Chrome') === -1 &&
+    ua.indexOf('Windows Phone') === -1
+  ) {
+    return false
+  }
+
+  return window.history && 'pushState' in window.history
+})();
+
+// use User Timing api (if present) for more accurate key precision
+var Time = inBrowser && window.performance && window.performance.now
+  ? window.performance
+  : Date;
+
+var _key = genKey();
+
+function genKey () {
+  return Time.now().toFixed(3)
+}
+
+function getStateKey () {
+  return _key
+}
+
+function setStateKey (key) {
+  _key = key;
+}
+
+function pushState (url, replace) {
+  saveScrollPosition();
+  // try...catch the pushState call to get around Safari
+  // DOM Exception 18 where it limits to 100 pushState calls
+  var history = window.history;
+  try {
+    if (replace) {
+      history.replaceState({ key: _key }, '', url);
+    } else {
+      _key = genKey();
+      history.pushState({ key: _key }, '', url);
+    }
+  } catch (e) {
+    window.location[replace ? 'replace' : 'assign'](url);
+  }
+}
+
+function replaceState (url) {
+  pushState(url, true);
+}
+
+/*  */
+
+function runQueue (queue, fn, cb) {
+  var step = function (index) {
+    if (index >= queue.length) {
+      cb();
+    } else {
+      if (queue[index]) {
+        fn(queue[index], function () {
+          step(index + 1);
+        });
+      } else {
+        step(index + 1);
+      }
+    }
+  };
+  step(0);
+}
+
+/*  */
+
+function resolveAsyncComponents (matched) {
+  return function (to, from, next) {
+    var hasAsync = false;
+    var pending = 0;
+    var error = null;
+
+    flatMapComponents(matched, function (def, _, match, key) {
+      // if it's a function and doesn't have cid attached,
+      // assume it's an async component resolve function.
+      // we are not using Vue's default async resolving mechanism because
+      // we want to halt the navigation until the incoming component has been
+      // resolved.
+      if (typeof def === 'function' && def.cid === undefined) {
+        hasAsync = true;
+        pending++;
+
+        var resolve = once(function (resolvedDef) {
+          if (resolvedDef.__esModule && resolvedDef.default) {
+            resolvedDef = resolvedDef.default;
+          }
+          // save resolved on async factory in case it's used elsewhere
+          def.resolved = typeof resolvedDef === 'function'
+            ? resolvedDef
+            : _Vue.extend(resolvedDef);
+          match.components[key] = resolvedDef;
+          pending--;
+          if (pending <= 0) {
+            next();
+          }
+        });
+
+        var reject = once(function (reason) {
+          var msg = "Failed to resolve async component " + key + ": " + reason;
+          "development" !== 'production' && warn(false, msg);
+          if (!error) {
+            error = isError(reason)
+              ? reason
+              : new Error(msg);
+            next(error);
+          }
+        });
+
+        var res;
+        try {
+          res = def(resolve, reject);
+        } catch (e) {
+          reject(e);
+        }
+        if (res) {
+          if (typeof res.then === 'function') {
+            res.then(resolve, reject);
+          } else {
+            // new syntax in Vue 2.3
+            var comp = res.component;
+            if (comp && typeof comp.then === 'function') {
+              comp.then(resolve, reject);
+            }
+          }
+        }
+      }
+    });
+
+    if (!hasAsync) { next(); }
+  }
+}
+
+function flatMapComponents (
+  matched,
+  fn
+) {
+  return flatten(matched.map(function (m) {
+    return Object.keys(m.components).map(function (key) { return fn(
+      m.components[key],
+      m.instances[key],
+      m, key
+    ); })
+  }))
+}
+
+function flatten (arr) {
+  return Array.prototype.concat.apply([], arr)
+}
+
+// in Webpack 2, require.ensure now also returns a Promise
+// so the resolve/reject functions may get called an extra time
+// if the user uses an arrow function shorthand that happens to
+// return that Promise.
+function once (fn) {
+  var called = false;
+  return function () {
+    var args = [], len = arguments.length;
+    while ( len-- ) args[ len ] = arguments[ len ];
+
+    if (called) { return }
+    called = true;
+    return fn.apply(this, args)
+  }
+}
+
+/*  */
+
+var History = function History (router, base) {
+  this.router = router;
+  this.base = normalizeBase(base);
+  // start with a route object that stands for "nowhere"
+  this.current = START;
+  this.pending = null;
+  this.ready = false;
+  this.readyCbs = [];
+  this.readyErrorCbs = [];
+  this.errorCbs = [];
+};
+
+History.prototype.listen = function listen (cb) {
+  this.cb = cb;
+};
+
+History.prototype.onReady = function onReady (cb, errorCb) {
+  if (this.ready) {
+    cb();
+  } else {
+    this.readyCbs.push(cb);
+    if (errorCb) {
+      this.readyErrorCbs.push(errorCb);
+    }
+  }
+};
+
+History.prototype.onError = function onError (errorCb) {
+  this.errorCbs.push(errorCb);
+};
+
+History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
+    var this$1 = this;
+
+  var route = this.router.match(location, this.current);
+  this.confirmTransition(route, function () {
+    this$1.updateRoute(route);
+    onComplete && onComplete(route);
+    this$1.ensureURL();
+
+    // fire ready cbs once
+    if (!this$1.ready) {
+      this$1.ready = true;
+      this$1.readyCbs.forEach(function (cb) { cb(route); });
+    }
+  }, function (err) {
+    if (onAbort) {
+      onAbort(err);
+    }
+    if (err && !this$1.ready) {
+      this$1.ready = true;
+      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
+    }
+  });
+};
+
+History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
+    var this$1 = this;
+
+  var current = this.current;
+  var abort = function (err) {
+    if (isError(err)) {
+      if (this$1.errorCbs.length) {
+        this$1.errorCbs.forEach(function (cb) { cb(err); });
+      } else {
+        warn(false, 'uncaught error during route navigation:');
+        console.error(err);
+      }
+    }
+    onAbort && onAbort(err);
+  };
+  if (
+    isSameRoute(route, current) &&
+    // in the case the route map has been dynamically appended to
+    route.matched.length === current.matched.length
+  ) {
+    this.ensureURL();
+    return abort()
+  }
+
+  var ref = resolveQueue(this.current.matched, route.matched);
+    var updated = ref.updated;
+    var deactivated = ref.deactivated;
+    var activated = ref.activated;
+
+  var queue = [].concat(
+    // in-component leave guards
+    extractLeaveGuards(deactivated),
+    // global before hooks
+    this.router.beforeHooks,
+    // in-component update hooks
+    extractUpdateHooks(updated),
+    // in-config enter guards
+    activated.map(function (m) { return m.beforeEnter; }),
+    // async components
+    resolveAsyncComponents(activated)
+  );
+
+  this.pending = route;
+  var iterator = function (hook, next) {
+    if (this$1.pending !== route) {
+      return abort()
+    }
+    try {
+      hook(route, current, function (to) {
+        if (to === false || isError(to)) {
+          // next(false) -> abort navigation, ensure current URL
+          this$1.ensureURL(true);
+          abort(to);
+        } else if (
+          typeof to === 'string' ||
+          (typeof to === 'object' && (
+            typeof to.path === 'string' ||
+            typeof to.name === 'string'
+          ))
+        ) {
+          // next('/') or next({ path: '/' }) -> redirect
+          abort();
+          if (typeof to === 'object' && to.replace) {
+            this$1.replace(to);
+          } else {
+            this$1.push(to);
+          }
+        } else {
+          // confirm transition and pass on the value
+          next(to);
+        }
+      });
+    } catch (e) {
+      abort(e);
+    }
+  };
+
+  runQueue(queue, iterator, function () {
+    var postEnterCbs = [];
+    var isValid = function () { return this$1.current === route; };
+    // wait until async components are resolved before
+    // extracting in-component enter guards
+    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
+    var queue = enterGuards.concat(this$1.router.resolveHooks);
+    runQueue(queue, iterator, function () {
+      if (this$1.pending !== route) {
+        return abort()
+      }
+      this$1.pending = null;
+      onComplete(route);
+      if (this$1.router.app) {
+        this$1.router.app.$nextTick(function () {
+          postEnterCbs.forEach(function (cb) { cb(); });
+        });
+      }
+    });
+  });
+};
+
+History.prototype.updateRoute = function updateRoute (route) {
+  var prev = this.current;
+  this.current = route;
+  this.cb && this.cb(route);
+  this.router.afterHooks.forEach(function (hook) {
+    hook && hook(route, prev);
+  });
+};
+
+function normalizeBase (base) {
+  if (!base) {
+    if (inBrowser) {
+      // respect <base> tag
+      var baseEl = document.querySelector('base');
+      base = (baseEl && baseEl.getAttribute('href')) || '/';
+      // strip full URL origin
+      base = base.replace(/^https?:\/\/[^\/]+/, '');
+    } else {
+      base = '/';
+    }
+  }
+  // make sure there's the starting slash
+  if (base.charAt(0) !== '/') {
+    base = '/' + base;
+  }
+  // remove trailing slash
+  return base.replace(/\/$/, '')
+}
+
+function resolveQueue (
+  current,
+  next
+) {
+  var i;
+  var max = Math.max(current.length, next.length);
+  for (i = 0; i < max; i++) {
+    if (current[i] !== next[i]) {
+      break
+    }
+  }
+  return {
+    updated: next.slice(0, i),
+    activated: next.slice(i),
+    deactivated: current.slice(i)
+  }
+}
+
+function extractGuards (
+  records,
+  name,
+  bind,
+  reverse
+) {
+  var guards = flatMapComponents(records, function (def, instance, match, key) {
+    var guard = extractGuard(def, name);
+    if (guard) {
+      return Array.isArray(guard)
+        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
+        : bind(guard, instance, match, key)
+    }
+  });
+  return flatten(reverse ? guards.reverse() : guards)
+}
+
+function extractGuard (
+  def,
+  key
+) {
+  if (typeof def !== 'function') {
+    // extend now so that global mixins are applied.
+    def = _Vue.extend(def);
+  }
+  return def.options[key]
+}
+
+function extractLeaveGuards (deactivated) {
+  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
+}
+
+function extractUpdateHooks (updated) {
+  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
+}
+
+function bindGuard (guard, instance) {
+  if (instance) {
+    return function boundRouteGuard () {
+      return guard.apply(instance, arguments)
+    }
+  }
+}
+
+function extractEnterGuards (
+  activated,
+  cbs,
+  isValid
+) {
+  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
+    return bindEnterGuard(guard, match, key, cbs, isValid)
+  })
+}
+
+function bindEnterGuard (
+  guard,
+  match,
+  key,
+  cbs,
+  isValid
+) {
+  return function routeEnterGuard (to, from, next) {
+    return guard(to, from, function (cb) {
+      next(cb);
+      if (typeof cb === 'function') {
+        cbs.push(function () {
+          // #750
+          // if a router-view is wrapped with an out-in transition,
+          // the instance may not have been registered at this time.
+          // we will need to poll for registration until current route
+          // is no longer valid.
+          poll(cb, match.instances, key, isValid);
+        });
+      }
+    })
+  }
+}
+
+function poll (
+  cb, // somehow flow cannot infer this is a function
+  instances,
+  key,
+  isValid
+) {
+  if (instances[key]) {
+    cb(instances[key]);
+  } else if (isValid()) {
+    setTimeout(function () {
+      poll(cb, instances, key, isValid);
+    }, 16);
+  }
+}
+
+/*  */
+
+
+var HTML5History = (function (History$$1) {
+  function HTML5History (router, base) {
+    var this$1 = this;
+
+    History$$1.call(this, router, base);
+
+    var expectScroll = router.options.scrollBehavior;
+
+    if (expectScroll) {
+      setupScroll();
+    }
+
+    window.addEventListener('popstate', function (e) {
+      var current = this$1.current;
+      this$1.transitionTo(getLocation(this$1.base), function (route) {
+        if (expectScroll) {
+          handleScroll(router, route, current, true);
+        }
+      });
+    });
+  }
+
+  if ( History$$1 ) HTML5History.__proto__ = History$$1;
+  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
+  HTML5History.prototype.constructor = HTML5History;
+
+  HTML5History.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      pushState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      replaceState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.ensureURL = function ensureURL (push) {
+    if (getLocation(this.base) !== this.current.fullPath) {
+      var current = cleanPath(this.base + this.current.fullPath);
+      push ? pushState(current) : replaceState(current);
+    }
+  };
+
+  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getLocation(this.base)
+  };
+
+  return HTML5History;
+}(History));
+
+function getLocation (base) {
+  var path = window.location.pathname;
+  if (base && path.indexOf(base) === 0) {
+    path = path.slice(base.length);
+  }
+  return (path || '/') + window.location.search + window.location.hash
+}
+
+/*  */
+
+
+var HashHistory = (function (History$$1) {
+  function HashHistory (router, base, fallback) {
+    History$$1.call(this, router, base);
+    // check history fallback deeplinking
+    if (fallback && checkFallback(this.base)) {
+      return
+    }
+    ensureSlash();
+  }
+
+  if ( History$$1 ) HashHistory.__proto__ = History$$1;
+  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
+  HashHistory.prototype.constructor = HashHistory;
+
+  // this is delayed until the app mounts
+  // to avoid the hashchange listener being fired too early
+  HashHistory.prototype.setupListeners = function setupListeners () {
+    var this$1 = this;
+
+    window.addEventListener('hashchange', function () {
+      if (!ensureSlash()) {
+        return
+      }
+      this$1.transitionTo(getHash(), function (route) {
+        replaceHash(route.fullPath);
+      });
+    });
+  };
+
+  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
+    this.transitionTo(location, function (route) {
+      pushHash(route.fullPath);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    this.transitionTo(location, function (route) {
+      replaceHash(route.fullPath);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HashHistory.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HashHistory.prototype.ensureURL = function ensureURL (push) {
+    var current = this.current.fullPath;
+    if (getHash() !== current) {
+      push ? pushHash(current) : replaceHash(current);
+    }
+  };
+
+  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getHash()
+  };
+
+  return HashHistory;
+}(History));
+
+function checkFallback (base) {
+  var location = getLocation(base);
+  if (!/^\/#/.test(location)) {
+    window.location.replace(
+      cleanPath(base + '/#' + location)
+    );
+    return true
+  }
+}
+
+function ensureSlash () {
+  var path = getHash();
+  if (path.charAt(0) === '/') {
+    return true
+  }
+  replaceHash('/' + path);
+  return false
+}
+
+function getHash () {
+  // We can't use window.location.hash here because it's not
+  // consistent across browsers - Firefox will pre-decode it!
+  var href = window.location.href;
+  var index = href.indexOf('#');
+  return index === -1 ? '' : href.slice(index + 1)
+}
+
+function pushHash (path) {
+  window.location.hash = path;
+}
+
+function replaceHash (path) {
+  var href = window.location.href;
+  var i = href.indexOf('#');
+  var base = i >= 0 ? href.slice(0, i) : href;
+  window.location.replace((base + "#" + path));
+}
+
+/*  */
+
+
+var AbstractHistory = (function (History$$1) {
+  function AbstractHistory (router, base) {
+    History$$1.call(this, router, base);
+    this.stack = [];
+    this.index = -1;
+  }
+
+  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
+  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
+  AbstractHistory.prototype.constructor = AbstractHistory;
+
+  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(location, function (route) {
+      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
+      this$1.index++;
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(location, function (route) {
+      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  AbstractHistory.prototype.go = function go (n) {
+    var this$1 = this;
+
+    var targetIndex = this.index + n;
+    if (targetIndex < 0 || targetIndex >= this.stack.length) {
+      return
+    }
+    var route = this.stack[targetIndex];
+    this.confirmTransition(route, function () {
+      this$1.index = targetIndex;
+      this$1.updateRoute(route);
+    });
+  };
+
+  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    var current = this.stack[this.stack.length - 1];
+    return current ? current.fullPath : '/'
+  };
+
+  AbstractHistory.prototype.ensureURL = function ensureURL () {
+    // noop
+  };
+
+  return AbstractHistory;
+}(History));
+
+/*  */
+
+var VueRouter = function VueRouter (options) {
+  if ( options === void 0 ) options = {};
+
+  this.app = null;
+  this.apps = [];
+  this.options = options;
+  this.beforeHooks = [];
+  this.resolveHooks = [];
+  this.afterHooks = [];
+  this.matcher = createMatcher(options.routes || [], this);
+
+  var mode = options.mode || 'hash';
+  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
+  if (this.fallback) {
+    mode = 'hash';
+  }
+  if (!inBrowser) {
+    mode = 'abstract';
+  }
+  this.mode = mode;
+
+  switch (mode) {
+    case 'history':
+      this.history = new HTML5History(this, options.base);
+      break
+    case 'hash':
+      this.history = new HashHistory(this, options.base, this.fallback);
+      break
+    case 'abstract':
+      this.history = new AbstractHistory(this, options.base);
+      break
+    default:
+      if (true) {
+        assert(false, ("invalid mode: " + mode));
+      }
+  }
+};
+
+var prototypeAccessors = { currentRoute: {} };
+
+VueRouter.prototype.match = function match (
+  raw,
+  current,
+  redirectedFrom
+) {
+  return this.matcher.match(raw, current, redirectedFrom)
+};
+
+prototypeAccessors.currentRoute.get = function () {
+  return this.history && this.history.current
+};
+
+VueRouter.prototype.init = function init (app /* Vue component instance */) {
+    var this$1 = this;
+
+  "development" !== 'production' && assert(
+    install.installed,
+    "not installed. Make sure to call `Vue.use(VueRouter)` " +
+    "before creating root instance."
+  );
+
+  this.apps.push(app);
+
+  // main app already initialized.
+  if (this.app) {
+    return
+  }
+
+  this.app = app;
+
+  var history = this.history;
+
+  if (history instanceof HTML5History) {
+    history.transitionTo(history.getCurrentLocation());
+  } else if (history instanceof HashHistory) {
+    var setupHashListener = function () {
+      history.setupListeners();
+    };
+    history.transitionTo(
+      history.getCurrentLocation(),
+      setupHashListener,
+      setupHashListener
+    );
+  }
+
+  history.listen(function (route) {
+    this$1.apps.forEach(function (app) {
+      app._route = route;
+    });
+  });
+};
+
+VueRouter.prototype.beforeEach = function beforeEach (fn) {
+  return registerHook(this.beforeHooks, fn)
+};
+
+VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
+  return registerHook(this.resolveHooks, fn)
+};
+
+VueRouter.prototype.afterEach = function afterEach (fn) {
+  return registerHook(this.afterHooks, fn)
+};
+
+VueRouter.prototype.onReady = function onReady (cb, errorCb) {
+  this.history.onReady(cb, errorCb);
+};
+
+VueRouter.prototype.onError = function onError (errorCb) {
+  this.history.onError(errorCb);
+};
+
+VueRouter.prototype.push = function push (location, onComplete, onAbort) {
+  this.history.push(location, onComplete, onAbort);
+};
+
+VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
+  this.history.replace(location, onComplete, onAbort);
+};
+
+VueRouter.prototype.go = function go (n) {
+  this.history.go(n);
+};
+
+VueRouter.prototype.back = function back () {
+  this.go(-1);
+};
+
+VueRouter.prototype.forward = function forward () {
+  this.go(1);
+};
+
+VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
+  var route = to
+    ? to.matched
+      ? to
+      : this.resolve(to).route
+    : this.currentRoute;
+  if (!route) {
+    return []
+  }
+  return [].concat.apply([], route.matched.map(function (m) {
+    return Object.keys(m.components).map(function (key) {
+      return m.components[key]
+    })
+  }))
+};
+
+VueRouter.prototype.resolve = function resolve (
+  to,
+  current,
+  append
+) {
+  var location = normalizeLocation(
+    to,
+    current || this.history.current,
+    append,
+    this
+  );
+  var route = this.match(location, current);
+  var fullPath = route.redirectedFrom || route.fullPath;
+  var base = this.history.base;
+  var href = createHref(base, fullPath, this.mode);
+  return {
+    location: location,
+    route: route,
+    href: href,
+    // for backwards compat
+    normalizedTo: location,
+    resolved: route
+  }
+};
+
+VueRouter.prototype.addRoutes = function addRoutes (routes) {
+  this.matcher.addRoutes(routes);
+  if (this.history.current !== START) {
+    this.history.transitionTo(this.history.getCurrentLocation());
+  }
+};
+
+Object.defineProperties( VueRouter.prototype, prototypeAccessors );
+
+function registerHook (list, fn) {
+  list.push(fn);
+  return function () {
+    var i = list.indexOf(fn);
+    if (i > -1) { list.splice(i, 1); }
+  }
+}
+
+function createHref (base, fullPath, mode) {
+  var path = mode === 'hash' ? '#' + fullPath : fullPath;
+  return base ? cleanPath(base + '/' + path) : path
+}
+
+VueRouter.install = install;
+VueRouter.version = '2.7.0';
+
+if (inBrowser && window.Vue) {
+  window.Vue.use(VueRouter);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (VueRouter);
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Vue-awesome-swiper
+ * @author Surmon.me
+ */
+
+var Swiper = __webpack_require__(3)
+var SwiperComponent = __webpack_require__(13)
+var SlideComponent = __webpack_require__(16)
+SwiperComponent = SwiperComponent.default || SwiperComponent
+SlideComponent = SlideComponent.default || SlideComponent
+if (typeof window !== 'undefined') {
+	window.Swiper = Swiper
+}
+
+var swiper = {
+  swiperSlide: SlideComponent,
+  swiper: SwiperComponent,
+  swiperPlugins: Swiper.prototype.plugins,
+  install: function(Vue) {
+    Vue.component(SwiperComponent.name, SwiperComponent)
+    Vue.component(SlideComponent.name, SlideComponent)
+  }
+}
+
+module.exports = swiper
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(14),
+  /* template */
+  __webpack_require__(15),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] swiper.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-11ee8862", Component.options)
+  } else {
+    hotAPI.reload("data-v-11ee8862", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var browser = typeof window !== 'undefined';
+if (browser) window.Swiper = __webpack_require__(3);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'swiper',
+  props: {
+    options: {
+      type: Object,
+      default: function _default() {
+        return {
+          autoplay: 3500
+        };
+      }
+    },
+    notNextTick: {
+      type: Boolean,
+      default: function _default() {
+        return false;
+      }
+    }
+  },
+  data: function data() {
+    return {
+      defaultSwiperClasses: {
+        wrapperClass: 'swiper-wrapper'
+      }
+    };
+  },
+  ready: function ready() {
+    if (!this.swiper && browser) {
+      this.swiper = new Swiper(this.$el, this.options);
+    }
+  },
+  mounted: function mounted() {
+    var self = this;
+    var mount = function () {
+      if (!self.swiper && browser) {
+        delete self.options.notNextTick;
+        var setClassName = false;
+        for (var className in self.defaultSwiperClasses) {
+          if (self.defaultSwiperClasses.hasOwnProperty(className)) {
+            if (self.options[className]) {
+              setClassName = true;
+              self.defaultSwiperClasses[className] = self.options[className];
+            }
+          }
+        }
+        var mountInstance = function mountInstance() {
+          self.swiper = new Swiper(self.$el, self.options);
+        };
+        setClassName ? self.$nextTick(mountInstance) : mountInstance();
+      }
+    }(this.options.notNextTick || this.notNextTick) ? mount() : this.$nextTick(mount);
+  },
+  updated: function updated() {
+    if (this.swiper) {
+      this.swiper.update();
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    if (this.swiper) {
+      this.swiper.destroy();
+      delete this.swiper;
+    }
+  }
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "swiper-container"
+  }, [_vm._t("parallax-bg"), _vm._v(" "), _c('div', {
+    class: _vm.defaultSwiperClasses.wrapperClass
+  }, [_vm._t("default")], 2), _vm._v(" "), _vm._t("pagination"), _vm._v(" "), _vm._t("button-prev"), _vm._v(" "), _vm._t("button-next"), _vm._v(" "), _vm._t("scrollbar")], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-11ee8862", module.exports)
+  }
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(17),
+  /* template */
+  __webpack_require__(18),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-11583f2a", Component.options)
+  } else {
+    hotAPI.reload("data-v-11583f2a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'swiper-slide',
+  data: function data() {
+    return {
+      slideClass: 'swiper-slide'
+    };
+  },
+  ready: function ready() {
+    this.update();
+  },
+  mounted: function mounted() {
+    this.update();
+    if (this.$parent.options.slideClass) {
+      this.slideClass = this.$parent.options.slideClass;
+    }
+  },
+  updated: function updated() {
+    this.update();
+  },
+  attached: function attached() {
+    this.update();
+  },
+  methods: {
+    update: function update() {
+      if (this.$parent && this.$parent.swiper && this.$parent.swiper.update) {
+        this.$parent.swiper.update(true);
+        if (this.$parent.options.loop) {
+          this.$parent.swiper.reLoop();
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    class: _vm.slideClass
+  }, [_vm._t("default")], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-11583f2a", module.exports)
+  }
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(20);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("029e98de", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0b61cd2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./app.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0b61cd2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./app.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header_header__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header_header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header_header__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_main__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__back_background__);
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        vheader: __WEBPACK_IMPORTED_MODULE_0__header_header___default.a,
+        vmain: __WEBPACK_IMPORTED_MODULE_1__main_main___default.a,
+        particle: __WEBPACK_IMPORTED_MODULE_2__back_background___default.a
+    }
+});
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(24)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(26),
+  /* template */
+  __webpack_require__(27),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-7de66b45",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\header\\header.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7de66b45", Component.options)
+  } else {
+    hotAPI.reload("data-v-7de66b45", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(25);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("15e7066b", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7de66b45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7de66b45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.header[data-v-7de66b45] {\n  width: 100%;\n}\n.header .header-wrap[data-v-7de66b45] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;\n    width: 100%;\n    height: 4.375em;\n    line-height: 4.375em;\n    background-color: rgba(183, 191, 197, 0.6);\n    color: #00030d;\n}\n.header .header-wrap .header-nav[data-v-7de66b45] {\n      height: 4.375em;\n      line-height: 4.375em;\n}\n.header .header-wrap .header-nav .header-link[data-v-7de66b45] {\n        display: inline-block;\n        width: auto;\n        height: 100%;\n        color: #00030d;\n        font-size: 1.875em;\n}\n.header .header-wrap .header-nav .motto[data-v-7de66b45] {\n        margin-left: 3.75em;\n        font-size: 0.88em;\n}\n@media (min-width: 1024px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1100px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1920px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 75em;\n      margin: 0 auto;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('header', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "header-wrap"
+  }, [_c('nav', {
+    staticClass: "header-nav"
+  }, [_c('router-link', {
+    staticClass: "header-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_vm._v("kawhi.me")]), _vm._v(" "), _c('span', {
+    staticClass: "motto"
+  }, [_vm._v("\" I Can do all things \"")])], 1)])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7de66b45", module.exports)
+  }
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(29)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(31),
+  /* template */
+  __webpack_require__(47),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-fe76a376",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\main\\main.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fe76a376", Component.options)
+  } else {
+    hotAPI.reload("data-v-fe76a376", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(30);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("6e12fdc3", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fe76a376\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./main.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fe76a376\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./main.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n  margin-top: .25em;\n}\n@media (min-width: 1100px) {\n.main[data-v-fe76a376] {\n    width: 60em;\n}\n}\n@media (min-width: 1920px) {\n.main[data-v-fe76a376] {\n    width: 75em;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_nav__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_nav___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__nav_nav__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__middle_middle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__right_right__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__right_right___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__right_right__);
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        vnav: __WEBPACK_IMPORTED_MODULE_0__nav_nav___default.a,
+        middle: __WEBPACK_IMPORTED_MODULE_1__middle_middle___default.a,
+        right: __WEBPACK_IMPORTED_MODULE_2__right_right___default.a
+    }
+});
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(33)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(35),
+  /* template */
+  __webpack_require__(36),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-6ad9f8a6",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\nav\\nav.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6ad9f8a6", Component.options)
+  } else {
+    hotAPI.reload("data-v-6ad9f8a6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(34);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("7070775d", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ad9f8a6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./nav.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ad9f8a6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./nav.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.nav .nav-wrap[data-v-6ad9f8a6] {\n  height: auto;\n  background-color: rgba(183, 191, 197, 0.6);\n  position: fixed;\n  top: 5em;\n}\n.nav .nav-wrap .nav-item[data-v-6ad9f8a6] {\n    line-height: 40px;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6] {\n      font-size: 0.94em;\n      color: #fff;\n      display: block;\n      padding: 0 0 0 .6875em;\n      -webkit-transition: color .15s linear, background-color .15s linear;\n      -moz-transition: color .15s linear, background-color .15s linear;\n      -ms-transition: color .15s linear, background-color .15s linear;\n      -o-transition: color .15s linear, background-color .15s linear;\n      transition: color .15s linear, background-color .15s linear;\n}\n.nav .nav-wrap .nav-item .nav-link .lrn[data-v-6ad9f8a6] {\n        font-size: .875em;\n        vertical-align: top;\n}\n.nav .nav-wrap .nav-item .nav-link .nav-text[data-v-6ad9f8a6] {\n        font-size: .875em;\n        margin-left: .375em;\n        vertical-align: top;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6]:hover {\n      color: #00030d;\n      font-weight: 700;\n}\n@media (min-width: 1024px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 0;\n}\n}\n@media (min-width: 1100px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 12.28em;\n}\n}\n@media (min-width: 1920px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 8.75em;\n    left: 22.48em;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('nav', {
+    staticClass: "nav"
+  }, [_c('div', {
+    staticClass: "nav-wrap"
+  }, [_c('div', {
+    staticClass: "nav-item"
+  }, [_c('router-link', {
+    staticClass: "nav-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "lnr lnr-home"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "nav-text"
+  }, [_vm._v("HOME")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "nav-item"
+  }, [_c('router-link', {
+    staticClass: "nav-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "lnr lnr-book"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "nav-text"
+  }, [_vm._v("BLOG")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "nav-item"
+  }, [_c('router-link', {
+    staticClass: "nav-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "lnr lnr-code"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "nav-text"
+  }, [_vm._v("PROJECT")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "nav-item"
+  }, [_c('router-link', {
+    staticClass: "nav-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "lnr lnr-magic-wand"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "nav-text"
+  }, [_vm._v("THINK")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "nav-item"
+  }, [_c('router-link', {
+    staticClass: "nav-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "lnr lnr-user"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "nav-text"
+  }, [_vm._v("ABOUT")])])], 1)])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6ad9f8a6", module.exports)
+  }
+}
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(38)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(40),
+  /* template */
+  __webpack_require__(46),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-20007245",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\middle\\middle.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] middle.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-20007245", Component.options)
+  } else {
+    hotAPI.reload("data-v-20007245", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(39);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("9418235c", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-20007245\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./middle.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-20007245\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./middle.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.middle[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n@media (min-width: 1100px) {\n.middle[data-v-20007245] {\n    width: 39.3em;\n    margin: 0 0 0 8.5em;\n}\n}\n@media (min-width: 1920px) {\n.middle[data-v-20007245] {\n    width: 42.5em;\n    margin: 0 0 0 12.5em;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__slide_slide__);
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        vslide: __WEBPACK_IMPORTED_MODULE_0__slide_slide___default.a
+    }
+});
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(42)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(44),
+  /* template */
+  __webpack_require__(45),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-1a8c8849",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\slide\\slide.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a8c8849", Component.options)
+  } else {
+    hotAPI.reload("data-v-1a8c8849", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(43);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("38626d36", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a8c8849\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./slide.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a8c8849\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./slide.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.slide-wrap .slide-item[data-v-1a8c8849] {\n  width: 100%;\n  height: 18.75em;\n  position: relative;\n  overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n    position: absolute;\n    right: 1.0625em;\n    top: 0.75em;\n    z-index: 2;\n    padding: 0.4375em 0.625em;\n    display: block;\n    background: rgba(183, 191, 197, 0.25);\n    color: #fff;\n    font-size: 0.9375em;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n    width: 100%;\n    transform: rotate(0) scale(1);\n    transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n    transition: transform 1s;\n    transform: rotate(2deg) scale(1.1);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'carrousel',
+    data: function data() {
+        return {
+            swiperOption: {
+                autoplay: 3500,
+                setWrapperSize: true,
+                pagination: '.swiper-pagination',
+                paginationClickable: true,
+                mousewheelControl: false,
+                observeParents: true,
+                autoplayDisableOnInteraction: false
+            },
+            swiperSlides: [{
+                thumb: "../../../images/bg.png",
+                title: "bg1"
+            }, {
+                thumb: "../../../images/bg1.png",
+                title: "bg2"
+            }, {
+                thumb: "../../../images/bg2.png",
+                title: "bg3"
+            }]
+        };
+    }
+});
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('swiper', {
+    staticClass: "slide-wrap",
+    attrs: {
+      "options": _vm.swiperOption
+    }
+  }, [_vm._l((_vm.swiperSlides), function(slide, index) {
+    return _c('swiper-slide', {
+      key: "index",
+      staticClass: "slide-item"
+    }, [_c('router-link', {
+      staticClass: "slide-link",
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('span', {
+      staticClass: "slide-title"
+    }, [_vm._v(_vm._s(slide.title))]), _vm._v(" "), _c('img', {
+      staticClass: "slide-thumb",
+      attrs: {
+        "src": slide.thumb
+      }
+    })])], 1)
+  }), _vm._v(" "), _c('div', {
+    staticClass: "swiper-pagination",
+    slot: "pagination"
+  })], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1a8c8849", module.exports)
+  }
+}
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "middle"
+  }, [_c('vslide')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-20007245", module.exports)
+  }
+}
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('main', {
+    staticClass: "main"
+  }, [_c('vnav'), _vm._v(" "), _c('middle'), _vm._v(" "), _c('right')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-fe76a376", module.exports)
+  }
+}
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(49)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(52),
+  /* template */
+  __webpack_require__(54),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-4f67934c",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\back\\background.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] background.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f67934c", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f67934c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(50);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("0614debb", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4f67934c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./background.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4f67934c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./background.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(51) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/bg5.png?295d82f7760fee713eed6d670ea220a5";
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* eslint-disable */
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'vue-particles',
+    props: {
+        color: {
+            type: String,
+            default: '#dedede'
+        },
+        particleOpacity: {
+            type: Number,
+            default: 0.7
+        },
+        particlesNumber: {
+            type: Number,
+            default: 80
+        },
+        shapeType: {
+            type: String,
+            default: 'circle'
+        },
+        particleSize: {
+            type: Number,
+            default: 8
+        },
+        linesColor: {
+            type: String,
+            default: '#dedede'
+        },
+        linesWidth: {
+            type: Number,
+            default: 1
+        },
+        lineLinked: {
+            type: Boolean,
+            default: true
+        },
+        lineOpacity: {
+            type: Number,
+            default: 0.9
+        },
+        linesDistance: {
+            type: Number,
+            default: 150
+        },
+        moveSpeed: {
+            type: Number,
+            default: 3
+        },
+        hoverEffect: {
+            type: Boolean,
+            default: true
+        },
+        hoverMode: {
+            type: String,
+            default: 'grab'
+        },
+        clickEffect: {
+            type: Boolean,
+            default: true
+        },
+        clickMode: {
+            type: String,
+            default: 'push'
+        }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        // import particle.js only on client-side
+        __webpack_require__(53);
+        this.$nextTick(function () {
+            _this.initParticleJS(_this.color, _this.particleOpacity, _this.particlesNumber, _this.shapeType, _this.particleSize, _this.linesColor, _this.linesWidth, _this.lineLinked, _this.lineOpacity, _this.linesDistance, _this.moveSpeed, _this.hoverEffect, _this.hoverMode, _this.clickEffect, _this.clickMode);
+        });
+    },
+
+    methods: {
+        initParticleJS: function initParticleJS(color, particleOpacity, particlesNumber, shapeType, particleSize, linesColor, linesWidth, lineLinked, lineOpacity, linesDistance, moveSpeed, hoverEffect, hoverMode, clickEffect, clickMode) {
+            particlesJS('bg', {
+                "particles": {
+                    "number": {
+                        "value": particlesNumber,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": color
+                    },
+                    "shape": {
+                        // circle, edge, triangle, polygon, star, image
+                        "type": shapeType,
+                        "stroke": {
+                            "width": 0,
+                            "color": "#192231"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": particleOpacity,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": particleSize,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": lineLinked,
+                        "distance": linesDistance,
+                        "color": linesColor,
+                        "opacity": lineOpacity,
+                        "width": linesWidth
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": moveSpeed,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": hoverEffect,
+                            "mode": hoverMode
+                        },
+                        "onclick": {
+                            "enable": clickEffect,
+                            "mode": clickMode
+                        },
+                        "onresize": {
+
+                            "enable": true,
+                            "density_auto": true,
+                            "density_area": 400
+
+                        }
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+    }
+    /* eslint-disable */
+
+});
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+/* -----------------------------------------------
+/* Author : Vincent Garreau  - vincentgarreau.com
+/* MIT license: http://opensource.org/licenses/MIT
+/* Demo / Generator : vincentgarreau.com/particles.js
+/* GitHub : github.com/VincentGarreau/particles.js
+/* How to use? : Check the GitHub README
+/* v2.0.0
+/* ----------------------------------------------- */
+
+var pJS = function(tag_id, params){
+
+  var canvas_el = document.querySelector('#'+tag_id+' > .particles-js-canvas-el');
+
+  /* particles.js variables with default values */
+  this.pJS = {
+    canvas: {
+      el: canvas_el,
+      w: canvas_el.offsetWidth,
+      h: canvas_el.offsetHeight
+    },
+    particles: {
+      number: {
+        value: 400,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: {
+        value: '#fff'
+      },
+      shape: {
+        type: 'circle',
+        stroke: {
+          width: 0,
+          color: '#ff0000'
+        },
+        polygon: {
+          nb_sides: 5
+        },
+        image: {
+          src: '',
+          width: 100,
+          height: 100
+        }
+      },
+      opacity: {
+        value: 1,
+        random: false,
+        anim: {
+          enable: false,
+          speed: 2,
+          opacity_min: 0,
+          sync: false
+        }
+      },
+      size: {
+        value: 20,
+        random: false,
+        anim: {
+          enable: false,
+          speed: 20,
+          size_min: 0,
+          sync: false
+        }
+      },
+      line_linked: {
+        enable: true,
+        distance: 100,
+        color: '#fff',
+        opacity: 1,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 2,
+        direction: 'none',
+        random: false,
+        straight: false,
+        out_mode: 'out',
+        bounce: false,
+        attract: {
+          enable: false,
+          rotateX: 3000,
+          rotateY: 3000
+        }
+      },
+      array: []
+    },
+    interactivity: {
+      detect_on: 'canvas',
+      events: {
+        onhover: {
+          enable: true,
+          mode: 'grab'
+        },
+        onclick: {
+          enable: true,
+          mode: 'push'
+        },
+        resize: true
+      },
+      modes: {
+        grab:{
+          distance: 100,
+          line_linked:{
+            opacity: 1
+          }
+        },
+        bubble:{
+          distance: 200,
+          size: 80,
+          duration: 0.4
+        },
+        repulse:{
+          distance: 200,
+          duration: 0.4
+        },
+        push:{
+          particles_nb: 4
+        },
+        remove:{
+          particles_nb: 2
+        }
+      },
+      mouse:{}
+    },
+    retina_detect: false,
+    fn: {
+      interact: {},
+      modes: {},
+      vendors:{}
+    },
+    tmp: {}
+  };
+
+  var pJS = this.pJS;
+
+  /* params settings */
+  if(params){
+    Object.deepExtend(pJS, params);
+  }
+
+  pJS.tmp.obj = {
+    size_value: pJS.particles.size.value,
+    size_anim_speed: pJS.particles.size.anim.speed,
+    move_speed: pJS.particles.move.speed,
+    line_linked_distance: pJS.particles.line_linked.distance,
+    line_linked_width: pJS.particles.line_linked.width,
+    mode_grab_distance: pJS.interactivity.modes.grab.distance,
+    mode_bubble_distance: pJS.interactivity.modes.bubble.distance,
+    mode_bubble_size: pJS.interactivity.modes.bubble.size,
+    mode_repulse_distance: pJS.interactivity.modes.repulse.distance
+  };
+
+
+  pJS.fn.retinaInit = function(){
+
+    if(pJS.retina_detect && window.devicePixelRatio > 1){
+      pJS.canvas.pxratio = window.devicePixelRatio; 
+      pJS.tmp.retina = true;
+    } 
+    else{
+      pJS.canvas.pxratio = 1;
+      pJS.tmp.retina = false;
+    }
+
+    pJS.canvas.w = pJS.canvas.el.offsetWidth * pJS.canvas.pxratio;
+    pJS.canvas.h = pJS.canvas.el.offsetHeight * pJS.canvas.pxratio;
+
+    pJS.particles.size.value = pJS.tmp.obj.size_value * pJS.canvas.pxratio;
+    pJS.particles.size.anim.speed = pJS.tmp.obj.size_anim_speed * pJS.canvas.pxratio;
+    pJS.particles.move.speed = pJS.tmp.obj.move_speed * pJS.canvas.pxratio;
+    pJS.particles.line_linked.distance = pJS.tmp.obj.line_linked_distance * pJS.canvas.pxratio;
+    pJS.interactivity.modes.grab.distance = pJS.tmp.obj.mode_grab_distance * pJS.canvas.pxratio;
+    pJS.interactivity.modes.bubble.distance = pJS.tmp.obj.mode_bubble_distance * pJS.canvas.pxratio;
+    pJS.particles.line_linked.width = pJS.tmp.obj.line_linked_width * pJS.canvas.pxratio;
+    pJS.interactivity.modes.bubble.size = pJS.tmp.obj.mode_bubble_size * pJS.canvas.pxratio;
+    pJS.interactivity.modes.repulse.distance = pJS.tmp.obj.mode_repulse_distance * pJS.canvas.pxratio;
+
+  };
+
+
+
+  /* ---------- pJS functions - canvas ------------ */
+
+  pJS.fn.canvasInit = function(){
+    pJS.canvas.ctx = pJS.canvas.el.getContext('2d');
+  };
+
+  pJS.fn.canvasSize = function(){
+
+    pJS.canvas.el.width = pJS.canvas.w;
+    pJS.canvas.el.height = pJS.canvas.h;
+
+    if(pJS && pJS.interactivity.events.resize){
+
+      window.addEventListener('resize', function(){
+
+          pJS.canvas.w = pJS.canvas.el.offsetWidth;
+          pJS.canvas.h = pJS.canvas.el.offsetHeight;
+
+          /* resize canvas */
+          if(pJS.tmp.retina){
+            pJS.canvas.w *= pJS.canvas.pxratio;
+            pJS.canvas.h *= pJS.canvas.pxratio;
+          }
+
+          pJS.canvas.el.width = pJS.canvas.w;
+          pJS.canvas.el.height = pJS.canvas.h;
+
+          /* repaint canvas on anim disabled */
+          if(!pJS.particles.move.enable){
+            pJS.fn.particlesEmpty();
+            pJS.fn.particlesCreate();
+            pJS.fn.particlesDraw();
+            pJS.fn.vendors.densityAutoParticles();
+          }
+
+        /* density particles enabled */
+        pJS.fn.vendors.densityAutoParticles();
+
+      });
+
+    }
+
+  };
+
+
+  pJS.fn.canvasPaint = function(){
+    pJS.canvas.ctx.fillRect(0, 0, pJS.canvas.w, pJS.canvas.h);
+  };
+
+  pJS.fn.canvasClear = function(){
+    pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
+  };
+
+
+  /* --------- pJS functions - particles ----------- */
+
+  pJS.fn.particle = function(color, opacity, position){
+
+    /* size */
+    this.radius = (pJS.particles.size.random ? Math.random() : 1) * pJS.particles.size.value;
+    if(pJS.particles.size.anim.enable){
+      this.size_status = false;
+      this.vs = pJS.particles.size.anim.speed / 100;
+      if(!pJS.particles.size.anim.sync){
+        this.vs = this.vs * Math.random();
+      }
+    }
+
+    /* position */
+    this.x = position ? position.x : Math.random() * pJS.canvas.w;
+    this.y = position ? position.y : Math.random() * pJS.canvas.h;
+
+    /* check position  - into the canvas */
+    if(this.x > pJS.canvas.w - this.radius*2) this.x = this.x - this.radius;
+    else if(this.x < this.radius*2) this.x = this.x + this.radius;
+    if(this.y > pJS.canvas.h - this.radius*2) this.y = this.y - this.radius;
+    else if(this.y < this.radius*2) this.y = this.y + this.radius;
+
+    /* check position - avoid overlap */
+    if(pJS.particles.move.bounce){
+      pJS.fn.vendors.checkOverlap(this, position);
+    }
+
+    /* color */
+    this.color = {};
+    if(typeof(color.value) == 'object'){
+
+      if(color.value instanceof Array){
+        var color_selected = color.value[Math.floor(Math.random() * pJS.particles.color.value.length)];
+        this.color.rgb = hexToRgb(color_selected);
+      }else{
+        if(color.value.r != undefined && color.value.g != undefined && color.value.b != undefined){
+          this.color.rgb = {
+            r: color.value.r,
+            g: color.value.g,
+            b: color.value.b
+          }
+        }
+        if(color.value.h != undefined && color.value.s != undefined && color.value.l != undefined){
+          this.color.hsl = {
+            h: color.value.h,
+            s: color.value.s,
+            l: color.value.l
+          }
+        }
+      }
+
+    }
+    else if(color.value == 'random'){
+      this.color.rgb = {
+        r: (Math.floor(Math.random() * (255 - 0 + 1)) + 0),
+        g: (Math.floor(Math.random() * (255 - 0 + 1)) + 0),
+        b: (Math.floor(Math.random() * (255 - 0 + 1)) + 0)
+      }
+    }
+    else if(typeof(color.value) == 'string'){
+      this.color = color;
+      this.color.rgb = hexToRgb(this.color.value);
+    }
+
+    /* opacity */
+    this.opacity = (pJS.particles.opacity.random ? Math.random() : 1) * pJS.particles.opacity.value;
+    if(pJS.particles.opacity.anim.enable){
+      this.opacity_status = false;
+      this.vo = pJS.particles.opacity.anim.speed / 100;
+      if(!pJS.particles.opacity.anim.sync){
+        this.vo = this.vo * Math.random();
+      }
+    }
+
+    /* animation - velocity for speed */
+    var velbase = {}
+    switch(pJS.particles.move.direction){
+      case 'top':
+        velbase = { x:0, y:-1 };
+      break;
+      case 'top-right':
+        velbase = { x:0.5, y:-0.5 };
+      break;
+      case 'right':
+        velbase = { x:1, y:-0 };
+      break;
+      case 'bottom-right':
+        velbase = { x:0.5, y:0.5 };
+      break;
+      case 'bottom':
+        velbase = { x:0, y:1 };
+      break;
+      case 'bottom-left':
+        velbase = { x:-0.5, y:1 };
+      break;
+      case 'left':
+        velbase = { x:-1, y:0 };
+      break;
+      case 'top-left':
+        velbase = { x:-0.5, y:-0.5 };
+      break;
+      default:
+        velbase = { x:0, y:0 };
+      break;
+    }
+
+    if(pJS.particles.move.straight){
+      this.vx = velbase.x;
+      this.vy = velbase.y;
+      if(pJS.particles.move.random){
+        this.vx = this.vx * (Math.random());
+        this.vy = this.vy * (Math.random());
+      }
+    }else{
+      this.vx = velbase.x + Math.random()-0.5;
+      this.vy = velbase.y + Math.random()-0.5;
+    }
+
+    // var theta = 2.0 * Math.PI * Math.random();
+    // this.vx = Math.cos(theta);
+    // this.vy = Math.sin(theta);
+
+    this.vx_i = this.vx;
+    this.vy_i = this.vy;
+
+    
+
+    /* if shape is image */
+
+    var shape_type = pJS.particles.shape.type;
+    if(typeof(shape_type) == 'object'){
+      if(shape_type instanceof Array){
+        var shape_selected = shape_type[Math.floor(Math.random() * shape_type.length)];
+        this.shape = shape_selected;
+      }
+    }else{
+      this.shape = shape_type;
+    }
+
+    if(this.shape == 'image'){
+      var sh = pJS.particles.shape;
+      this.img = {
+        src: sh.image.src,
+        ratio: sh.image.width / sh.image.height
+      }
+      if(!this.img.ratio) this.img.ratio = 1;
+      if(pJS.tmp.img_type == 'svg' && pJS.tmp.source_svg != undefined){
+        pJS.fn.vendors.createSvgImg(this);
+        if(pJS.tmp.pushing){
+          this.img.loaded = false;
+        }
+      }
+    }
+
+    
+
+  };
+
+
+  pJS.fn.particle.prototype.draw = function() {
+
+    var p = this;
+
+    if(p.radius_bubble != undefined){
+      var radius = p.radius_bubble; 
+    }else{
+      var radius = p.radius;
+    }
+
+    if(p.opacity_bubble != undefined){
+      var opacity = p.opacity_bubble;
+    }else{
+      var opacity = p.opacity;
+    }
+
+    if(p.color.rgb){
+      var color_value = 'rgba('+p.color.rgb.r+','+p.color.rgb.g+','+p.color.rgb.b+','+opacity+')';
+    }else{
+      var color_value = 'hsla('+p.color.hsl.h+','+p.color.hsl.s+'%,'+p.color.hsl.l+'%,'+opacity+')';
+    }
+
+    pJS.canvas.ctx.fillStyle = color_value;
+    pJS.canvas.ctx.beginPath();
+
+    switch(p.shape){
+
+      case 'circle':
+        pJS.canvas.ctx.arc(p.x, p.y, radius, 0, Math.PI * 2, false);
+      break;
+
+      case 'edge':
+        pJS.canvas.ctx.rect(p.x-radius, p.y-radius, radius*2, radius*2);
+      break;
+
+      case 'triangle':
+        pJS.fn.vendors.drawShape(pJS.canvas.ctx, p.x-radius, p.y+radius / 1.66, radius*2, 3, 2);
+      break;
+
+      case 'polygon':
+        pJS.fn.vendors.drawShape(
+          pJS.canvas.ctx,
+          p.x - radius / (pJS.particles.shape.polygon.nb_sides/3.5), // startX
+          p.y - radius / (2.66/3.5), // startY
+          radius*2.66 / (pJS.particles.shape.polygon.nb_sides/3), // sideLength
+          pJS.particles.shape.polygon.nb_sides, // sideCountNumerator
+          1 // sideCountDenominator
+        );
+      break;
+
+      case 'star':
+        pJS.fn.vendors.drawShape(
+          pJS.canvas.ctx,
+          p.x - radius*2 / (pJS.particles.shape.polygon.nb_sides/4), // startX
+          p.y - radius / (2*2.66/3.5), // startY
+          radius*2*2.66 / (pJS.particles.shape.polygon.nb_sides/3), // sideLength
+          pJS.particles.shape.polygon.nb_sides, // sideCountNumerator
+          2 // sideCountDenominator
+        );
+      break;
+
+      case 'image':
+
+        function draw(){
+          pJS.canvas.ctx.drawImage(
+            img_obj,
+            p.x-radius,
+            p.y-radius,
+            radius*2,
+            radius*2 / p.img.ratio
+          );
+        }
+
+        if(pJS.tmp.img_type == 'svg'){
+          var img_obj = p.img.obj;
+        }else{
+          var img_obj = pJS.tmp.img_obj;
+        }
+
+        if(img_obj){
+          draw();
+        }
+
+      break;
+
+    }
+
+    pJS.canvas.ctx.closePath();
+
+    if(pJS.particles.shape.stroke.width > 0){
+      pJS.canvas.ctx.strokeStyle = pJS.particles.shape.stroke.color;
+      pJS.canvas.ctx.lineWidth = pJS.particles.shape.stroke.width;
+      pJS.canvas.ctx.stroke();
+    }
+    
+    pJS.canvas.ctx.fill();
+    
+  };
+
+
+  pJS.fn.particlesCreate = function(){
+    for(var i = 0; i < pJS.particles.number.value; i++) {
+      pJS.particles.array.push(new pJS.fn.particle(pJS.particles.color, pJS.particles.opacity.value));
+    }
+  };
+
+  pJS.fn.particlesUpdate = function(){
+
+    for(var i = 0; i < pJS.particles.array.length; i++){
+
+      /* the particle */
+      var p = pJS.particles.array[i];
+
+      // var d = ( dx = pJS.interactivity.mouse.click_pos_x - p.x ) * dx + ( dy = pJS.interactivity.mouse.click_pos_y - p.y ) * dy;
+      // var f = -BANG_SIZE / d;
+      // if ( d < BANG_SIZE ) {
+      //     var t = Math.atan2( dy, dx );
+      //     p.vx = f * Math.cos(t);
+      //     p.vy = f * Math.sin(t);
+      // }
+
+      /* move the particle */
+      if(pJS.particles.move.enable){
+        var ms = pJS.particles.move.speed/2;
+        p.x += p.vx * ms;
+        p.y += p.vy * ms;
+      }
+
+      /* change opacity status */
+      if(pJS.particles.opacity.anim.enable) {
+        if(p.opacity_status == true) {
+          if(p.opacity >= pJS.particles.opacity.value) p.opacity_status = false;
+          p.opacity += p.vo;
+        }else {
+          if(p.opacity <= pJS.particles.opacity.anim.opacity_min) p.opacity_status = true;
+          p.opacity -= p.vo;
+        }
+        if(p.opacity < 0) p.opacity = 0;
+      }
+
+      /* change size */
+      if(pJS.particles.size.anim.enable){
+        if(p.size_status == true){
+          if(p.radius >= pJS.particles.size.value) p.size_status = false;
+          p.radius += p.vs;
+        }else{
+          if(p.radius <= pJS.particles.size.anim.size_min) p.size_status = true;
+          p.radius -= p.vs;
+        }
+        if(p.radius < 0) p.radius = 0;
+      }
+
+      /* change particle position if it is out of canvas */
+      if(pJS.particles.move.out_mode == 'bounce'){
+        var new_pos = {
+          x_left: p.radius,
+          x_right:  pJS.canvas.w,
+          y_top: p.radius,
+          y_bottom: pJS.canvas.h
+        }
+      }else{
+        var new_pos = {
+          x_left: -p.radius,
+          x_right: pJS.canvas.w + p.radius,
+          y_top: -p.radius,
+          y_bottom: pJS.canvas.h + p.radius
+        }
+      }
+
+      if(p.x - p.radius > pJS.canvas.w){
+        p.x = new_pos.x_left;
+        p.y = Math.random() * pJS.canvas.h;
+      }
+      else if(p.x + p.radius < 0){
+        p.x = new_pos.x_right;
+        p.y = Math.random() * pJS.canvas.h;
+      }
+      if(p.y - p.radius > pJS.canvas.h){
+        p.y = new_pos.y_top;
+        p.x = Math.random() * pJS.canvas.w;
+      }
+      else if(p.y + p.radius < 0){
+        p.y = new_pos.y_bottom;
+        p.x = Math.random() * pJS.canvas.w;
+      }
+
+      /* out of canvas modes */
+      switch(pJS.particles.move.out_mode){
+        case 'bounce':
+          if (p.x + p.radius > pJS.canvas.w) p.vx = -p.vx;
+          else if (p.x - p.radius < 0) p.vx = -p.vx;
+          if (p.y + p.radius > pJS.canvas.h) p.vy = -p.vy;
+          else if (p.y - p.radius < 0) p.vy = -p.vy;
+        break;
+      }
+
+      /* events */
+      if(isInArray('grab', pJS.interactivity.events.onhover.mode)){
+        pJS.fn.modes.grabParticle(p);
+      }
+
+      if(isInArray('bubble', pJS.interactivity.events.onhover.mode) || isInArray('bubble', pJS.interactivity.events.onclick.mode)){
+        pJS.fn.modes.bubbleParticle(p);
+      }
+
+      if(isInArray('repulse', pJS.interactivity.events.onhover.mode) || isInArray('repulse', pJS.interactivity.events.onclick.mode)){
+        pJS.fn.modes.repulseParticle(p);
+      }
+
+      /* interaction auto between particles */
+      if(pJS.particles.line_linked.enable || pJS.particles.move.attract.enable){
+        for(var j = i + 1; j < pJS.particles.array.length; j++){
+          var p2 = pJS.particles.array[j];
+
+          /* link particles */
+          if(pJS.particles.line_linked.enable){
+            pJS.fn.interact.linkParticles(p,p2);
+          }
+
+          /* attract particles */
+          if(pJS.particles.move.attract.enable){
+            pJS.fn.interact.attractParticles(p,p2);
+          }
+
+          /* bounce particles */
+          if(pJS.particles.move.bounce){
+            pJS.fn.interact.bounceParticles(p,p2);
+          }
+
+        }
+      }
+
+
+    }
+
+  };
+
+  pJS.fn.particlesDraw = function(){
+
+    /* clear canvas */
+    pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
+
+    /* update each particles param */
+    pJS.fn.particlesUpdate();
+
+    /* draw each particle */
+    for(var i = 0; i < pJS.particles.array.length; i++){
+      var p = pJS.particles.array[i];
+      p.draw();
+    }
+
+  };
+
+  pJS.fn.particlesEmpty = function(){
+    pJS.particles.array = [];
+  };
+
+  pJS.fn.particlesRefresh = function(){
+
+    /* init all */
+    cancelRequestAnimFrame(pJS.fn.checkAnimFrame);
+    cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
+    pJS.tmp.source_svg = undefined;
+    pJS.tmp.img_obj = undefined;
+    pJS.tmp.count_svg = 0;
+    pJS.fn.particlesEmpty();
+    pJS.fn.canvasClear();
+    
+    /* restart */
+    pJS.fn.vendors.start();
+
+  };
+
+
+  /* ---------- pJS functions - particles interaction ------------ */
+
+  pJS.fn.interact.linkParticles = function(p1, p2){
+
+    var dx = p1.x - p2.x,
+        dy = p1.y - p2.y,
+        dist = Math.sqrt(dx*dx + dy*dy);
+
+    /* draw a line between p1 and p2 if the distance between them is under the config distance */
+    if(dist <= pJS.particles.line_linked.distance){
+
+      var opacity_line = pJS.particles.line_linked.opacity - (dist / (1/pJS.particles.line_linked.opacity)) / pJS.particles.line_linked.distance;
+
+      if(opacity_line > 0){        
+        
+        /* style */
+        var color_line = pJS.particles.line_linked.color_rgb_line;
+        pJS.canvas.ctx.strokeStyle = 'rgba('+color_line.r+','+color_line.g+','+color_line.b+','+opacity_line+')';
+        pJS.canvas.ctx.lineWidth = pJS.particles.line_linked.width;
+        //pJS.canvas.ctx.lineCap = 'round'; /* performance issue */
+        
+        /* path */
+        pJS.canvas.ctx.beginPath();
+        pJS.canvas.ctx.moveTo(p1.x, p1.y);
+        pJS.canvas.ctx.lineTo(p2.x, p2.y);
+        pJS.canvas.ctx.stroke();
+        pJS.canvas.ctx.closePath();
+
+      }
+
+    }
+
+  };
+
+
+  pJS.fn.interact.attractParticles  = function(p1, p2){
+
+    /* condensed particles */
+    var dx = p1.x - p2.x,
+        dy = p1.y - p2.y,
+        dist = Math.sqrt(dx*dx + dy*dy);
+
+    if(dist <= pJS.particles.line_linked.distance){
+
+      var ax = dx/(pJS.particles.move.attract.rotateX*1000),
+          ay = dy/(pJS.particles.move.attract.rotateY*1000);
+
+      p1.vx -= ax;
+      p1.vy -= ay;
+
+      p2.vx += ax;
+      p2.vy += ay;
+
+    }
+    
+
+  }
+
+
+  pJS.fn.interact.bounceParticles = function(p1, p2){
+
+    var dx = p1.x - p2.x,
+        dy = p1.y - p2.y,
+        dist = Math.sqrt(dx*dx + dy*dy),
+        dist_p = p1.radius+p2.radius;
+
+    if(dist <= dist_p){
+      p1.vx = -p1.vx;
+      p1.vy = -p1.vy;
+
+      p2.vx = -p2.vx;
+      p2.vy = -p2.vy;
+    }
+
+  }
+
+
+  /* ---------- pJS functions - modes events ------------ */
+
+  pJS.fn.modes.pushParticles = function(nb, pos){
+
+    pJS.tmp.pushing = true;
+
+    for(var i = 0; i < nb; i++){
+      pJS.particles.array.push(
+        new pJS.fn.particle(
+          pJS.particles.color,
+          pJS.particles.opacity.value,
+          {
+            'x': pos ? pos.pos_x : Math.random() * pJS.canvas.w,
+            'y': pos ? pos.pos_y : Math.random() * pJS.canvas.h
+          }
+        )
+      )
+      if(i == nb-1){
+        if(!pJS.particles.move.enable){
+          pJS.fn.particlesDraw();
+        }
+        pJS.tmp.pushing = false;
+      }
+    }
+
+  };
+
+
+  pJS.fn.modes.removeParticles = function(nb){
+
+    pJS.particles.array.splice(0, nb);
+    if(!pJS.particles.move.enable){
+      pJS.fn.particlesDraw();
+    }
+
+  };
+
+
+  pJS.fn.modes.bubbleParticle = function(p){
+
+    /* on hover event */
+    if(pJS.interactivity.events.onhover.enable && isInArray('bubble', pJS.interactivity.events.onhover.mode)){
+
+      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
+          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
+          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse),
+          ratio = 1 - dist_mouse / pJS.interactivity.modes.bubble.distance;
+
+      function init(){
+        p.opacity_bubble = p.opacity;
+        p.radius_bubble = p.radius;
+      }
+
+      /* mousemove - check ratio */
+      if(dist_mouse <= pJS.interactivity.modes.bubble.distance){
+
+        if(ratio >= 0 && pJS.interactivity.status == 'mousemove'){
+          
+          /* size */
+          if(pJS.interactivity.modes.bubble.size != pJS.particles.size.value){
+
+            if(pJS.interactivity.modes.bubble.size > pJS.particles.size.value){
+              var size = p.radius + (pJS.interactivity.modes.bubble.size*ratio);
+              if(size >= 0){
+                p.radius_bubble = size;
+              }
+            }else{
+              var dif = p.radius - pJS.interactivity.modes.bubble.size,
+                  size = p.radius - (dif*ratio);
+              if(size > 0){
+                p.radius_bubble = size;
+              }else{
+                p.radius_bubble = 0;
+              }
+            }
+
+          }
+
+          /* opacity */
+          if(pJS.interactivity.modes.bubble.opacity != pJS.particles.opacity.value){
+
+            if(pJS.interactivity.modes.bubble.opacity > pJS.particles.opacity.value){
+              var opacity = pJS.interactivity.modes.bubble.opacity*ratio;
+              if(opacity > p.opacity && opacity <= pJS.interactivity.modes.bubble.opacity){
+                p.opacity_bubble = opacity;
+              }
+            }else{
+              var opacity = p.opacity - (pJS.particles.opacity.value-pJS.interactivity.modes.bubble.opacity)*ratio;
+              if(opacity < p.opacity && opacity >= pJS.interactivity.modes.bubble.opacity){
+                p.opacity_bubble = opacity;
+              }
+            }
+
+          }
+
+        }
+
+      }else{
+        init();
+      }
+
+
+      /* mouseleave */
+      if(pJS.interactivity.status == 'mouseleave'){
+        init();
+      }
+    
+    }
+
+    /* on click event */
+    else if(pJS.interactivity.events.onclick.enable && isInArray('bubble', pJS.interactivity.events.onclick.mode)){
+
+
+      if(pJS.tmp.bubble_clicking){
+        var dx_mouse = p.x - pJS.interactivity.mouse.click_pos_x,
+            dy_mouse = p.y - pJS.interactivity.mouse.click_pos_y,
+            dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse),
+            time_spent = (new Date().getTime() - pJS.interactivity.mouse.click_time)/1000;
+
+        if(time_spent > pJS.interactivity.modes.bubble.duration){
+          pJS.tmp.bubble_duration_end = true;
+        }
+
+        if(time_spent > pJS.interactivity.modes.bubble.duration*2){
+          pJS.tmp.bubble_clicking = false;
+          pJS.tmp.bubble_duration_end = false;
+        }
+      }
+
+
+      function process(bubble_param, particles_param, p_obj_bubble, p_obj, id){
+
+        if(bubble_param != particles_param){
+
+          if(!pJS.tmp.bubble_duration_end){
+            if(dist_mouse <= pJS.interactivity.modes.bubble.distance){
+              if(p_obj_bubble != undefined) var obj = p_obj_bubble;
+              else var obj = p_obj;
+              if(obj != bubble_param){
+                var value = p_obj - (time_spent * (p_obj - bubble_param) / pJS.interactivity.modes.bubble.duration);
+                if(id == 'size') p.radius_bubble = value;
+                if(id == 'opacity') p.opacity_bubble = value;
+              }
+            }else{
+              if(id == 'size') p.radius_bubble = undefined;
+              if(id == 'opacity') p.opacity_bubble = undefined;
+            }
+          }else{
+            if(p_obj_bubble != undefined){
+              var value_tmp = p_obj - (time_spent * (p_obj - bubble_param) / pJS.interactivity.modes.bubble.duration),
+                  dif = bubble_param - value_tmp;
+                  value = bubble_param + dif;
+              if(id == 'size') p.radius_bubble = value;
+              if(id == 'opacity') p.opacity_bubble = value;
+            }
+          }
+
+        }
+
+      }
+
+      if(pJS.tmp.bubble_clicking){
+        /* size */
+        process(pJS.interactivity.modes.bubble.size, pJS.particles.size.value, p.radius_bubble, p.radius, 'size');
+        /* opacity */
+        process(pJS.interactivity.modes.bubble.opacity, pJS.particles.opacity.value, p.opacity_bubble, p.opacity, 'opacity');
+      }
+
+    }
+
+  };
+
+
+  pJS.fn.modes.repulseParticle = function(p){
+
+    if(pJS.interactivity.events.onhover.enable && isInArray('repulse', pJS.interactivity.events.onhover.mode) && pJS.interactivity.status == 'mousemove') {
+
+      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
+          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
+          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse);
+
+      var normVec = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse},
+          repulseRadius = pJS.interactivity.modes.repulse.distance,
+          velocity = 100,
+          repulseFactor = clamp((1/repulseRadius)*(-1*Math.pow(dist_mouse/repulseRadius,2)+1)*repulseRadius*velocity, 0, 50);
+      
+      var pos = {
+        x: p.x + normVec.x * repulseFactor,
+        y: p.y + normVec.y * repulseFactor
+      }
+
+      if(pJS.particles.move.out_mode == 'bounce'){
+        if(pos.x - p.radius > 0 && pos.x + p.radius < pJS.canvas.w) p.x = pos.x;
+        if(pos.y - p.radius > 0 && pos.y + p.radius < pJS.canvas.h) p.y = pos.y;
+      }else{
+        p.x = pos.x;
+        p.y = pos.y;
+      }
+    
+    }
+
+
+    else if(pJS.interactivity.events.onclick.enable && isInArray('repulse', pJS.interactivity.events.onclick.mode)) {
+
+      if(!pJS.tmp.repulse_finish){
+        pJS.tmp.repulse_count++;
+        if(pJS.tmp.repulse_count == pJS.particles.array.length){
+          pJS.tmp.repulse_finish = true;
+        }
+      }
+
+      if(pJS.tmp.repulse_clicking){
+
+        var repulseRadius = Math.pow(pJS.interactivity.modes.repulse.distance/6, 3);
+
+        var dx = pJS.interactivity.mouse.click_pos_x - p.x,
+            dy = pJS.interactivity.mouse.click_pos_y - p.y,
+            d = dx*dx + dy*dy;
+
+        var force = -repulseRadius / d * 1;
+
+        function process(){
+
+          var f = Math.atan2(dy,dx);
+          p.vx = force * Math.cos(f);
+          p.vy = force * Math.sin(f);
+
+          if(pJS.particles.move.out_mode == 'bounce'){
+            var pos = {
+              x: p.x + p.vx,
+              y: p.y + p.vy
+            }
+            if (pos.x + p.radius > pJS.canvas.w) p.vx = -p.vx;
+            else if (pos.x - p.radius < 0) p.vx = -p.vx;
+            if (pos.y + p.radius > pJS.canvas.h) p.vy = -p.vy;
+            else if (pos.y - p.radius < 0) p.vy = -p.vy;
+          }
+
+        }
+
+        // default
+        if(d <= repulseRadius){
+          process();
+        }
+
+        // bang - slow motion mode
+        // if(!pJS.tmp.repulse_finish){
+        //   if(d <= repulseRadius){
+        //     process();
+        //   }
+        // }else{
+        //   process();
+        // }
+        
+
+      }else{
+
+        if(pJS.tmp.repulse_clicking == false){
+
+          p.vx = p.vx_i;
+          p.vy = p.vy_i;
+        
+        }
+
+      }
+
+    }
+
+  }
+
+
+  pJS.fn.modes.grabParticle = function(p){
+
+    if(pJS.interactivity.events.onhover.enable && pJS.interactivity.status == 'mousemove'){
+
+      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
+          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
+          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse);
+
+      /* draw a line between the cursor and the particle if the distance between them is under the config distance */
+      if(dist_mouse <= pJS.interactivity.modes.grab.distance){
+
+        var opacity_line = pJS.interactivity.modes.grab.line_linked.opacity - (dist_mouse / (1/pJS.interactivity.modes.grab.line_linked.opacity)) / pJS.interactivity.modes.grab.distance;
+
+        if(opacity_line > 0){
+
+          /* style */
+          var color_line = pJS.particles.line_linked.color_rgb_line;
+          pJS.canvas.ctx.strokeStyle = 'rgba('+color_line.r+','+color_line.g+','+color_line.b+','+opacity_line+')';
+          pJS.canvas.ctx.lineWidth = pJS.particles.line_linked.width;
+          //pJS.canvas.ctx.lineCap = 'round'; /* performance issue */
+          
+          /* path */
+          pJS.canvas.ctx.beginPath();
+          pJS.canvas.ctx.moveTo(p.x, p.y);
+          pJS.canvas.ctx.lineTo(pJS.interactivity.mouse.pos_x, pJS.interactivity.mouse.pos_y);
+          pJS.canvas.ctx.stroke();
+          pJS.canvas.ctx.closePath();
+
+        }
+
+      }
+
+    }
+
+  };
+
+
+
+  /* ---------- pJS functions - vendors ------------ */
+
+  pJS.fn.vendors.eventsListeners = function(){
+
+    /* events target element */
+    if(pJS.interactivity.detect_on == 'window'){
+      pJS.interactivity.el = window;
+    }else{
+      pJS.interactivity.el = pJS.canvas.el;
+    }
+
+
+    /* detect mouse pos - on hover / click event */
+    if(pJS.interactivity.events.onhover.enable || pJS.interactivity.events.onclick.enable){
+
+      /* el on mousemove */
+      pJS.interactivity.el.addEventListener('mousemove', function(e){
+
+        if(pJS.interactivity.el == window){
+          var pos_x = e.clientX,
+              pos_y = e.clientY;
+        }
+        else{
+          var pos_x = e.offsetX || e.clientX,
+              pos_y = e.offsetY || e.clientY;
+        }
+
+        pJS.interactivity.mouse.pos_x = pos_x;
+        pJS.interactivity.mouse.pos_y = pos_y;
+
+        if(pJS.tmp.retina){
+          pJS.interactivity.mouse.pos_x *= pJS.canvas.pxratio;
+          pJS.interactivity.mouse.pos_y *= pJS.canvas.pxratio;
+        }
+
+        pJS.interactivity.status = 'mousemove';
+
+      });
+
+      /* el on onmouseleave */
+      pJS.interactivity.el.addEventListener('mouseleave', function(e){
+
+        pJS.interactivity.mouse.pos_x = null;
+        pJS.interactivity.mouse.pos_y = null;
+        pJS.interactivity.status = 'mouseleave';
+
+      });
+
+    }
+
+    /* on click event */
+    if(pJS.interactivity.events.onclick.enable){
+
+      pJS.interactivity.el.addEventListener('click', function(){
+
+        pJS.interactivity.mouse.click_pos_x = pJS.interactivity.mouse.pos_x;
+        pJS.interactivity.mouse.click_pos_y = pJS.interactivity.mouse.pos_y;
+        pJS.interactivity.mouse.click_time = new Date().getTime();
+
+        if(pJS.interactivity.events.onclick.enable){
+
+          switch(pJS.interactivity.events.onclick.mode){
+
+            case 'push':
+              if(pJS.particles.move.enable){
+                pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+              }else{
+                if(pJS.interactivity.modes.push.particles_nb == 1){
+                  pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+                }
+                else if(pJS.interactivity.modes.push.particles_nb > 1){
+                  pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb);
+                }
+              }
+            break;
+
+            case 'remove':
+              pJS.fn.modes.removeParticles(pJS.interactivity.modes.remove.particles_nb);
+            break;
+
+            case 'bubble':
+              pJS.tmp.bubble_clicking = true;
+            break;
+
+            case 'repulse':
+              pJS.tmp.repulse_clicking = true;
+              pJS.tmp.repulse_count = 0;
+              pJS.tmp.repulse_finish = false;
+              setTimeout(function(){
+                pJS.tmp.repulse_clicking = false;
+              }, pJS.interactivity.modes.repulse.duration*1000)
+            break;
+
+          }
+
+        }
+
+      });
+        
+    }
+
+
+  };
+
+  pJS.fn.vendors.densityAutoParticles = function(){
+
+    if(pJS.particles.number.density.enable){
+
+      /* calc area */
+      var area = pJS.canvas.el.width * pJS.canvas.el.height / 1000;
+      if(pJS.tmp.retina){
+        area = area/(pJS.canvas.pxratio*2);
+      }
+
+      /* calc number of particles based on density area */
+      var nb_particles = area * pJS.particles.number.value / pJS.particles.number.density.value_area;
+
+      /* add or remove X particles */
+      var missing_particles = pJS.particles.array.length - nb_particles;
+      if(missing_particles < 0) pJS.fn.modes.pushParticles(Math.abs(missing_particles));
+      else pJS.fn.modes.removeParticles(missing_particles);
+
+    }
+
+  };
+
+
+  pJS.fn.vendors.checkOverlap = function(p1, position){
+    for(var i = 0; i < pJS.particles.array.length; i++){
+      var p2 = pJS.particles.array[i];
+
+      var dx = p1.x - p2.x,
+          dy = p1.y - p2.y,
+          dist = Math.sqrt(dx*dx + dy*dy);
+
+      if(dist <= p1.radius + p2.radius){
+        p1.x = position ? position.x : Math.random() * pJS.canvas.w;
+        p1.y = position ? position.y : Math.random() * pJS.canvas.h;
+        pJS.fn.vendors.checkOverlap(p1);
+      }
+    }
+  };
+
+
+  pJS.fn.vendors.createSvgImg = function(p){
+
+    /* set color to svg element */
+    var svgXml = pJS.tmp.source_svg,
+        rgbHex = /#([0-9A-F]{3,6})/gi,
+        coloredSvgXml = svgXml.replace(rgbHex, function (m, r, g, b) {
+          if(p.color.rgb){
+            var color_value = 'rgba('+p.color.rgb.r+','+p.color.rgb.g+','+p.color.rgb.b+','+p.opacity+')';
+          }else{
+            var color_value = 'hsla('+p.color.hsl.h+','+p.color.hsl.s+'%,'+p.color.hsl.l+'%,'+p.opacity+')';
+          }
+          return color_value;
+        });
+
+    /* prepare to create img with colored svg */
+    var svg = new Blob([coloredSvgXml], {type: 'image/svg+xml;charset=utf-8'}),
+        DOMURL = window.URL || window.webkitURL || window,
+        url = DOMURL.createObjectURL(svg);
+
+    /* create particle img obj */
+    var img = new Image();
+    img.addEventListener('load', function(){
+      p.img.obj = img;
+      p.img.loaded = true;
+      DOMURL.revokeObjectURL(url);
+      pJS.tmp.count_svg++;
+    });
+    img.src = url;
+
+  };
+
+
+  pJS.fn.vendors.destroypJS = function(){
+    cancelAnimationFrame(pJS.fn.drawAnimFrame);
+    canvas_el.remove();
+    pJSDom = null;
+  };
+
+
+  pJS.fn.vendors.drawShape = function(c, startX, startY, sideLength, sideCountNumerator, sideCountDenominator){
+
+    // By Programming Thomas - https://programmingthomas.wordpress.com/2013/04/03/n-sided-shapes/
+    var sideCount = sideCountNumerator * sideCountDenominator;
+    var decimalSides = sideCountNumerator / sideCountDenominator;
+    var interiorAngleDegrees = (180 * (decimalSides - 2)) / decimalSides;
+    var interiorAngle = Math.PI - Math.PI * interiorAngleDegrees / 180; // convert to radians
+    c.save();
+    c.beginPath();
+    c.translate(startX, startY);
+    c.moveTo(0,0);
+    for (var i = 0; i < sideCount; i++) {
+      c.lineTo(sideLength,0);
+      c.translate(sideLength,0);
+      c.rotate(interiorAngle);
+    }
+    //c.stroke();
+    c.fill();
+    c.restore();
+
+  };
+
+  pJS.fn.vendors.exportImg = function(){
+    window.open(pJS.canvas.el.toDataURL('image/png'), '_blank');
+  };
+
+
+  pJS.fn.vendors.loadImg = function(type){
+
+    pJS.tmp.img_error = undefined;
+
+    if(pJS.particles.shape.image.src != ''){
+
+      if(type == 'svg'){
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', pJS.particles.shape.image.src);
+        xhr.onreadystatechange = function (data) {
+          if(xhr.readyState == 4){
+            if(xhr.status == 200){
+              pJS.tmp.source_svg = data.currentTarget.response;
+              pJS.fn.vendors.checkBeforeDraw();
+            }else{
+              console.log('Error pJS - Image not found');
+              pJS.tmp.img_error = true;
+            }
+          }
+        }
+        xhr.send();
+
+      }else{
+
+        var img = new Image();
+        img.addEventListener('load', function(){
+          pJS.tmp.img_obj = img;
+          pJS.fn.vendors.checkBeforeDraw();
+        });
+        img.src = pJS.particles.shape.image.src;
+
+      }
+
+    }else{
+      console.log('Error pJS - No image.src');
+      pJS.tmp.img_error = true;
+    }
+
+  };
+
+
+  pJS.fn.vendors.draw = function(){
+
+    if(pJS.particles.shape.type == 'image'){
+
+      if(pJS.tmp.img_type == 'svg'){
+
+        if(pJS.tmp.count_svg >= pJS.particles.number.value){
+          pJS.fn.particlesDraw();
+          if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
+          else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
+        }else{
+          //console.log('still loading...');
+          if(!pJS.tmp.img_error) pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
+        }
+
+      }else{
+
+        if(pJS.tmp.img_obj != undefined){
+          pJS.fn.particlesDraw();
+          if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
+          else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
+        }else{
+          if(!pJS.tmp.img_error) pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
+        }
+
+      }
+
+    }else{
+      pJS.fn.particlesDraw();
+      if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
+      else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
+    }
+
+  };
+
+
+  pJS.fn.vendors.checkBeforeDraw = function(){
+
+    // if shape is image
+    if(pJS.particles.shape.type == 'image'){
+
+      if(pJS.tmp.img_type == 'svg' && pJS.tmp.source_svg == undefined){
+        pJS.tmp.checkAnimFrame = requestAnimFrame(check);
+      }else{
+        //console.log('images loaded! cancel check');
+        cancelRequestAnimFrame(pJS.tmp.checkAnimFrame);
+        if(!pJS.tmp.img_error){
+          pJS.fn.vendors.init();
+          pJS.fn.vendors.draw();
+        }
+        
+      }
+
+    }else{
+      pJS.fn.vendors.init();
+      pJS.fn.vendors.draw();
+    }
+
+  };
+
+
+  pJS.fn.vendors.init = function(){
+
+    /* init canvas + particles */
+    pJS.fn.retinaInit();
+    pJS.fn.canvasInit();
+    pJS.fn.canvasSize();
+    pJS.fn.canvasPaint();
+    pJS.fn.particlesCreate();
+    pJS.fn.vendors.densityAutoParticles();
+
+    /* particles.line_linked - convert hex colors to rgb */
+    pJS.particles.line_linked.color_rgb_line = hexToRgb(pJS.particles.line_linked.color);
+
+  };
+
+
+  pJS.fn.vendors.start = function(){
+
+    if(isInArray('image', pJS.particles.shape.type)){
+      pJS.tmp.img_type = pJS.particles.shape.image.src.substr(pJS.particles.shape.image.src.length - 3);
+      pJS.fn.vendors.loadImg(pJS.tmp.img_type);
+    }else{
+      pJS.fn.vendors.checkBeforeDraw();
+    }
+
+  };
+
+
+
+
+  /* ---------- pJS - start ------------ */
+
+
+  pJS.fn.vendors.eventsListeners();
+
+  pJS.fn.vendors.start();
+  
+
+
+};
+
+/* ---------- global functions - vendors ------------ */
+
+Object.deepExtend = function(destination, source) {
+  for (var property in source) {
+    if (source[property] && source[property].constructor &&
+     source[property].constructor === Object) {
+      destination[property] = destination[property] || {};
+      arguments.callee(destination[property], source[property]);
+    } else {
+      destination[property] = source[property];
+    }
+  }
+  return destination;
+};
+
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame    ||
+    window.oRequestAnimationFrame      ||
+    window.msRequestAnimationFrame     ||
+    function(callback){
+      window.setTimeout(callback, 1000 / 60);
+    };
+})();
+
+window.cancelRequestAnimFrame = ( function() {
+  return window.cancelAnimationFrame         ||
+    window.webkitCancelRequestAnimationFrame ||
+    window.mozCancelRequestAnimationFrame    ||
+    window.oCancelRequestAnimationFrame      ||
+    window.msCancelRequestAnimationFrame     ||
+    clearTimeout
+} )();
+
+function hexToRgb(hex){
+  // By Tim Down - http://stackoverflow.com/a/5624139/3493650
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+     return r + r + g + g + b + b;
+  });
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+  } : null;
+};
+
+function clamp(number, min, max) {
+  return Math.min(Math.max(number, min), max);
+};
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
+
+
+/* ---------- particles.js functions - start ------------ */
+
+window.pJSDom = [];
+
+window.particlesJS = function(tag_id, params){
+
+  //console.log(params);
+
+  /* no string id? so it's object params, and set the id with default id */
+  if(typeof(tag_id) != 'string'){
+    params = tag_id;
+    tag_id = 'particles-js';
+  }
+
+  /* no id? set the id to default id */
+  if(!tag_id){
+    tag_id = 'particles-js';
+  }
+
+  /* pJS elements */
+  var pJS_tag = document.getElementById(tag_id),
+      pJS_canvas_class = 'particles-js-canvas-el',
+      exist_canvas = pJS_tag.getElementsByClassName(pJS_canvas_class);
+
+  /* remove canvas if exists into the pJS target tag */
+  if(exist_canvas.length){
+    while(exist_canvas.length > 0){
+      pJS_tag.removeChild(exist_canvas[0]);
+    }
+  }
+
+  /* create canvas element */
+  var canvas_el = document.createElement('canvas');
+  canvas_el.className = pJS_canvas_class;
+
+  /* set size canvas */
+  canvas_el.style.width = "100%";
+  canvas_el.style.height = "100%";
+
+  /* append canvas */
+  var canvas = document.getElementById(tag_id).appendChild(canvas_el);
+
+  /* launch particle.js */
+  if(canvas != null){
+    pJSDom.push(new pJS(tag_id, params));
+  }
+
+};
+
+window.particlesJS.load = function(tag_id, path_config_json, callback){
+
+  /* load json config */
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', path_config_json);
+  xhr.onreadystatechange = function (data) {
+    if(xhr.readyState == 4){
+      if(xhr.status == 200){
+        var params = JSON.parse(data.currentTarget.response);
+        window.particlesJS(tag_id, params);
+        if(callback) callback();
+      }else{
+        console.log('Error pJS - XMLHttpRequest status: '+xhr.status);
+        console.log('Error pJS - File config not found');
+      }
+    }
+  };
+  xhr.send();
+
+};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "bg-canvas"
+  }, [_c('div', {
+    staticClass: "bg-img"
+  }), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "bg",
+      "color": _vm.color,
+      "particleOpacity": _vm.particleOpacity,
+      "linesColor": _vm.linesColor,
+      "particlesNumber": _vm.particlesNumber,
+      "shapeType": _vm.shapeType,
+      "particleSize": _vm.particleSize,
+      "linesWidth": _vm.linesWidth,
+      "lineLinked": _vm.lineLinked,
+      "lineOpacity": _vm.lineOpacity,
+      "linesDistance": _vm.linesDistance,
+      "moveSpeed": _vm.moveSpeed,
+      "hoverEffect": _vm.hoverEffect,
+      "hoverMode": _vm.hoverMode,
+      "clickEffect": _vm.clickEffect,
+      "clickMode": _vm.clickMode
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4f67934c", module.exports)
+  }
+}
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "kawhi"
+  }, [_c('particle'), _vm._v(" "), _c('vheader'), _vm._v(" "), _c('vmain')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d0b61cd2", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10659,10 +22089,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57)))
 
 /***/ }),
-/* 7 */
+/* 57 */
 /***/ (function(module, exports) {
 
 var g;
@@ -10689,10972 +22119,79 @@ module.exports = g;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
-  * vue-router v2.7.0
-  * (c) 2017 Evan You
-  * @license MIT
-  */
-/*  */
-
-function assert (condition, message) {
-  if (!condition) {
-    throw new Error(("[vue-router] " + message))
-  }
-}
-
-function warn (condition, message) {
-  if ("development" !== 'production' && !condition) {
-    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
-  }
-}
-
-function isError (err) {
-  return Object.prototype.toString.call(err).indexOf('Error') > -1
-}
-
-var View = {
-  name: 'router-view',
-  functional: true,
-  props: {
-    name: {
-      type: String,
-      default: 'default'
-    }
-  },
-  render: function render (_, ref) {
-    var props = ref.props;
-    var children = ref.children;
-    var parent = ref.parent;
-    var data = ref.data;
-
-    data.routerView = true;
-
-    // directly use parent context's createElement() function
-    // so that components rendered by router-view can resolve named slots
-    var h = parent.$createElement;
-    var name = props.name;
-    var route = parent.$route;
-    var cache = parent._routerViewCache || (parent._routerViewCache = {});
-
-    // determine current view depth, also check to see if the tree
-    // has been toggled inactive but kept-alive.
-    var depth = 0;
-    var inactive = false;
-    while (parent && parent._routerRoot !== parent) {
-      if (parent.$vnode && parent.$vnode.data.routerView) {
-        depth++;
-      }
-      if (parent._inactive) {
-        inactive = true;
-      }
-      parent = parent.$parent;
-    }
-    data.routerViewDepth = depth;
-
-    // render previous view if the tree is inactive and kept-alive
-    if (inactive) {
-      return h(cache[name], data, children)
-    }
-
-    var matched = route.matched[depth];
-    // render empty node if no matched route
-    if (!matched) {
-      cache[name] = null;
-      return h()
-    }
-
-    var component = cache[name] = matched.components[name];
-
-    // attach instance registration hook
-    // this will be called in the instance's injected lifecycle hooks
-    data.registerRouteInstance = function (vm, val) {
-      // val could be undefined for unregistration
-      var current = matched.instances[name];
-      if (
-        (val && current !== vm) ||
-        (!val && current === vm)
-      ) {
-        matched.instances[name] = val;
-      }
-    }
-
-    // also regiseter instance in prepatch hook
-    // in case the same component instance is reused across different routes
-    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
-      matched.instances[name] = vnode.componentInstance;
-    };
-
-    // resolve props
-    data.props = resolveProps(route, matched.props && matched.props[name]);
-
-    return h(component, data, children)
-  }
-};
-
-function resolveProps (route, config) {
-  switch (typeof config) {
-    case 'undefined':
-      return
-    case 'object':
-      return config
-    case 'function':
-      return config(route)
-    case 'boolean':
-      return config ? route.params : undefined
-    default:
-      if (true) {
-        warn(
-          false,
-          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
-          "expecting an object, function or boolean."
-        );
-      }
-  }
-}
-
-/*  */
-
-var encodeReserveRE = /[!'()*]/g;
-var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
-var commaRE = /%2C/g;
-
-// fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
-var encode = function (str) { return encodeURIComponent(str)
-  .replace(encodeReserveRE, encodeReserveReplacer)
-  .replace(commaRE, ','); };
-
-var decode = decodeURIComponent;
-
-function resolveQuery (
-  query,
-  extraQuery,
-  _parseQuery
-) {
-  if ( extraQuery === void 0 ) extraQuery = {};
-
-  var parse = _parseQuery || parseQuery;
-  var parsedQuery;
-  try {
-    parsedQuery = parse(query || '');
-  } catch (e) {
-    "development" !== 'production' && warn(false, e.message);
-    parsedQuery = {};
-  }
-  for (var key in extraQuery) {
-    var val = extraQuery[key];
-    parsedQuery[key] = Array.isArray(val) ? val.slice() : val;
-  }
-  return parsedQuery
-}
-
-function parseQuery (query) {
-  var res = {};
-
-  query = query.trim().replace(/^(\?|#|&)/, '');
-
-  if (!query) {
-    return res
-  }
-
-  query.split('&').forEach(function (param) {
-    var parts = param.replace(/\+/g, ' ').split('=');
-    var key = decode(parts.shift());
-    var val = parts.length > 0
-      ? decode(parts.join('='))
-      : null;
-
-    if (res[key] === undefined) {
-      res[key] = val;
-    } else if (Array.isArray(res[key])) {
-      res[key].push(val);
-    } else {
-      res[key] = [res[key], val];
-    }
-  });
-
-  return res
-}
-
-function stringifyQuery (obj) {
-  var res = obj ? Object.keys(obj).map(function (key) {
-    var val = obj[key];
-
-    if (val === undefined) {
-      return ''
-    }
-
-    if (val === null) {
-      return encode(key)
-    }
-
-    if (Array.isArray(val)) {
-      var result = [];
-      val.forEach(function (val2) {
-        if (val2 === undefined) {
-          return
-        }
-        if (val2 === null) {
-          result.push(encode(key));
-        } else {
-          result.push(encode(key) + '=' + encode(val2));
-        }
-      });
-      return result.join('&')
-    }
-
-    return encode(key) + '=' + encode(val)
-  }).filter(function (x) { return x.length > 0; }).join('&') : null;
-  return res ? ("?" + res) : ''
-}
-
-/*  */
-
-
-var trailingSlashRE = /\/?$/;
-
-function createRoute (
-  record,
-  location,
-  redirectedFrom,
-  router
-) {
-  var stringifyQuery$$1 = router && router.options.stringifyQuery;
-  var route = {
-    name: location.name || (record && record.name),
-    meta: (record && record.meta) || {},
-    path: location.path || '/',
-    hash: location.hash || '',
-    query: location.query || {},
-    params: location.params || {},
-    fullPath: getFullPath(location, stringifyQuery$$1),
-    matched: record ? formatMatch(record) : []
-  };
-  if (redirectedFrom) {
-    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
-  }
-  return Object.freeze(route)
-}
-
-// the starting route that represents the initial state
-var START = createRoute(null, {
-  path: '/'
-});
-
-function formatMatch (record) {
-  var res = [];
-  while (record) {
-    res.unshift(record);
-    record = record.parent;
-  }
-  return res
-}
-
-function getFullPath (
-  ref,
-  _stringifyQuery
-) {
-  var path = ref.path;
-  var query = ref.query; if ( query === void 0 ) query = {};
-  var hash = ref.hash; if ( hash === void 0 ) hash = '';
-
-  var stringify = _stringifyQuery || stringifyQuery;
-  return (path || '/') + stringify(query) + hash
-}
-
-function isSameRoute (a, b) {
-  if (b === START) {
-    return a === b
-  } else if (!b) {
-    return false
-  } else if (a.path && b.path) {
-    return (
-      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query)
-    )
-  } else if (a.name && b.name) {
-    return (
-      a.name === b.name &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query) &&
-      isObjectEqual(a.params, b.params)
-    )
-  } else {
-    return false
-  }
-}
-
-function isObjectEqual (a, b) {
-  if ( a === void 0 ) a = {};
-  if ( b === void 0 ) b = {};
-
-  var aKeys = Object.keys(a);
-  var bKeys = Object.keys(b);
-  if (aKeys.length !== bKeys.length) {
-    return false
-  }
-  return aKeys.every(function (key) {
-    var aVal = a[key];
-    var bVal = b[key];
-    // check nested equality
-    if (typeof aVal === 'object' && typeof bVal === 'object') {
-      return isObjectEqual(aVal, bVal)
-    }
-    return String(aVal) === String(bVal)
-  })
-}
-
-function isIncludedRoute (current, target) {
-  return (
-    current.path.replace(trailingSlashRE, '/').indexOf(
-      target.path.replace(trailingSlashRE, '/')
-    ) === 0 &&
-    (!target.hash || current.hash === target.hash) &&
-    queryIncludes(current.query, target.query)
-  )
-}
-
-function queryIncludes (current, target) {
-  for (var key in target) {
-    if (!(key in current)) {
-      return false
-    }
-  }
-  return true
-}
-
-/*  */
-
-// work around weird flow bug
-var toTypes = [String, Object];
-var eventTypes = [String, Array];
-
-var Link = {
-  name: 'router-link',
-  props: {
-    to: {
-      type: toTypes,
-      required: true
-    },
-    tag: {
-      type: String,
-      default: 'a'
-    },
-    exact: Boolean,
-    append: Boolean,
-    replace: Boolean,
-    activeClass: String,
-    exactActiveClass: String,
-    event: {
-      type: eventTypes,
-      default: 'click'
-    }
-  },
-  render: function render (h) {
-    var this$1 = this;
-
-    var router = this.$router;
-    var current = this.$route;
-    var ref = router.resolve(this.to, current, this.append);
-    var location = ref.location;
-    var route = ref.route;
-    var href = ref.href;
-
-    var classes = {};
-    var globalActiveClass = router.options.linkActiveClass;
-    var globalExactActiveClass = router.options.linkExactActiveClass;
-    // Support global empty active class
-    var activeClassFallback = globalActiveClass == null
-            ? 'router-link-active'
-            : globalActiveClass;
-    var exactActiveClassFallback = globalExactActiveClass == null
-            ? 'router-link-exact-active'
-            : globalExactActiveClass;
-    var activeClass = this.activeClass == null
-            ? activeClassFallback
-            : this.activeClass;
-    var exactActiveClass = this.exactActiveClass == null
-            ? exactActiveClassFallback
-            : this.exactActiveClass;
-    var compareTarget = location.path
-      ? createRoute(null, location, null, router)
-      : route;
-
-    classes[exactActiveClass] = isSameRoute(current, compareTarget);
-    classes[activeClass] = this.exact
-      ? classes[exactActiveClass]
-      : isIncludedRoute(current, compareTarget);
-
-    var handler = function (e) {
-      if (guardEvent(e)) {
-        if (this$1.replace) {
-          router.replace(location);
-        } else {
-          router.push(location);
-        }
-      }
-    };
-
-    var on = { click: guardEvent };
-    if (Array.isArray(this.event)) {
-      this.event.forEach(function (e) { on[e] = handler; });
-    } else {
-      on[this.event] = handler;
-    }
-
-    var data = {
-      class: classes
-    };
-
-    if (this.tag === 'a') {
-      data.on = on;
-      data.attrs = { href: href };
-    } else {
-      // find the first <a> child and apply listener and href
-      var a = findAnchor(this.$slots.default);
-      if (a) {
-        // in case the <a> is a static node
-        a.isStatic = false;
-        var extend = _Vue.util.extend;
-        var aData = a.data = extend({}, a.data);
-        aData.on = on;
-        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
-        aAttrs.href = href;
-      } else {
-        // doesn't have <a> child, apply listener to self
-        data.on = on;
-      }
-    }
-
-    return h(this.tag, data, this.$slots.default)
-  }
-};
-
-function guardEvent (e) {
-  // don't redirect with control keys
-  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
-  // don't redirect when preventDefault called
-  if (e.defaultPrevented) { return }
-  // don't redirect on right click
-  if (e.button !== undefined && e.button !== 0) { return }
-  // don't redirect if `target="_blank"`
-  if (e.currentTarget && e.currentTarget.getAttribute) {
-    var target = e.currentTarget.getAttribute('target');
-    if (/\b_blank\b/i.test(target)) { return }
-  }
-  // this may be a Weex event which doesn't have this method
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  return true
-}
-
-function findAnchor (children) {
-  if (children) {
-    var child;
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      if (child.tag === 'a') {
-        return child
-      }
-      if (child.children && (child = findAnchor(child.children))) {
-        return child
-      }
-    }
-  }
-}
-
-var _Vue;
-
-function install (Vue) {
-  if (install.installed) { return }
-  install.installed = true;
-
-  _Vue = Vue;
-
-  var isDef = function (v) { return v !== undefined; };
-
-  var registerInstance = function (vm, callVal) {
-    var i = vm.$options._parentVnode;
-    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
-      i(vm, callVal);
-    }
-  };
-
-  Vue.mixin({
-    beforeCreate: function beforeCreate () {
-      if (isDef(this.$options.router)) {
-        this._routerRoot = this;
-        this._router = this.$options.router;
-        this._router.init(this);
-        Vue.util.defineReactive(this, '_route', this._router.history.current);
-      } else {
-        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
-      }
-      registerInstance(this, this);
-    },
-    destroyed: function destroyed () {
-      registerInstance(this);
-    }
-  });
-
-  Object.defineProperty(Vue.prototype, '$router', {
-    get: function get () { return this._routerRoot._router }
-  });
-
-  Object.defineProperty(Vue.prototype, '$route', {
-    get: function get () { return this._routerRoot._route }
-  });
-
-  Vue.component('router-view', View);
-  Vue.component('router-link', Link);
-
-  var strats = Vue.config.optionMergeStrategies;
-  // use the same hook merging strategy for route hooks
-  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
-}
-
-/*  */
-
-var inBrowser = typeof window !== 'undefined';
-
-/*  */
-
-function resolvePath (
-  relative,
-  base,
-  append
-) {
-  var firstChar = relative.charAt(0);
-  if (firstChar === '/') {
-    return relative
-  }
-
-  if (firstChar === '?' || firstChar === '#') {
-    return base + relative
-  }
-
-  var stack = base.split('/');
-
-  // remove trailing segment if:
-  // - not appending
-  // - appending to trailing slash (last segment is empty)
-  if (!append || !stack[stack.length - 1]) {
-    stack.pop();
-  }
-
-  // resolve relative path
-  var segments = relative.replace(/^\//, '').split('/');
-  for (var i = 0; i < segments.length; i++) {
-    var segment = segments[i];
-    if (segment === '..') {
-      stack.pop();
-    } else if (segment !== '.') {
-      stack.push(segment);
-    }
-  }
-
-  // ensure leading slash
-  if (stack[0] !== '') {
-    stack.unshift('');
-  }
-
-  return stack.join('/')
-}
-
-function parsePath (path) {
-  var hash = '';
-  var query = '';
-
-  var hashIndex = path.indexOf('#');
-  if (hashIndex >= 0) {
-    hash = path.slice(hashIndex);
-    path = path.slice(0, hashIndex);
-  }
-
-  var queryIndex = path.indexOf('?');
-  if (queryIndex >= 0) {
-    query = path.slice(queryIndex + 1);
-    path = path.slice(0, queryIndex);
-  }
-
-  return {
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function cleanPath (path) {
-  return path.replace(/\/\//g, '/')
-}
-
-var index$1 = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-/**
- * Expose `pathToRegexp`.
- */
-var index = pathToRegexp;
-var parse_1 = parse;
-var compile_1 = compile;
-var tokensToFunction_1 = tokensToFunction;
-var tokensToRegExp_1 = tokensToRegExp;
-
-/**
- * The main path matching regexp utility.
- *
- * @type {RegExp}
- */
-var PATH_REGEXP = new RegExp([
-  // Match escaped characters that would otherwise appear in future matches.
-  // This allows the user to escape special characters that won't transform.
-  '(\\\\.)',
-  // Match Express-style parameters and un-named parameters with a prefix
-  // and optional suffixes. Matches appear as:
-  //
-  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
-  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
-  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
-  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
-].join('|'), 'g');
-
-/**
- * Parse a string for the raw tokens.
- *
- * @param  {string}  str
- * @param  {Object=} options
- * @return {!Array}
- */
-function parse (str, options) {
-  var tokens = [];
-  var key = 0;
-  var index = 0;
-  var path = '';
-  var defaultDelimiter = options && options.delimiter || '/';
-  var res;
-
-  while ((res = PATH_REGEXP.exec(str)) != null) {
-    var m = res[0];
-    var escaped = res[1];
-    var offset = res.index;
-    path += str.slice(index, offset);
-    index = offset + m.length;
-
-    // Ignore already escaped sequences.
-    if (escaped) {
-      path += escaped[1];
-      continue
-    }
-
-    var next = str[index];
-    var prefix = res[2];
-    var name = res[3];
-    var capture = res[4];
-    var group = res[5];
-    var modifier = res[6];
-    var asterisk = res[7];
-
-    // Push the current path onto the tokens.
-    if (path) {
-      tokens.push(path);
-      path = '';
-    }
-
-    var partial = prefix != null && next != null && next !== prefix;
-    var repeat = modifier === '+' || modifier === '*';
-    var optional = modifier === '?' || modifier === '*';
-    var delimiter = res[2] || defaultDelimiter;
-    var pattern = capture || group;
-
-    tokens.push({
-      name: name || key++,
-      prefix: prefix || '',
-      delimiter: delimiter,
-      optional: optional,
-      repeat: repeat,
-      partial: partial,
-      asterisk: !!asterisk,
-      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
-    });
-  }
-
-  // Match any characters still remaining.
-  if (index < str.length) {
-    path += str.substr(index);
-  }
-
-  // If the path exists, push it onto the end.
-  if (path) {
-    tokens.push(path);
-  }
-
-  return tokens
-}
-
-/**
- * Compile a string to a template function for the path.
- *
- * @param  {string}             str
- * @param  {Object=}            options
- * @return {!function(Object=, Object=)}
- */
-function compile (str, options) {
-  return tokensToFunction(parse(str, options))
-}
-
-/**
- * Prettier encoding of URI path segments.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeURIComponentPretty (str) {
-  return encodeURI(str).replace(/[\/?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeAsterisk (str) {
-  return encodeURI(str).replace(/[?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Expose a method for transforming tokens into the path function.
- */
-function tokensToFunction (tokens) {
-  // Compile all the tokens into regexps.
-  var matches = new Array(tokens.length);
-
-  // Compile all the patterns before compilation.
-  for (var i = 0; i < tokens.length; i++) {
-    if (typeof tokens[i] === 'object') {
-      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
-    }
-  }
-
-  return function (obj, opts) {
-    var path = '';
-    var data = obj || {};
-    var options = opts || {};
-    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
-
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
-
-      if (typeof token === 'string') {
-        path += token;
-
-        continue
-      }
-
-      var value = data[token.name];
-      var segment;
-
-      if (value == null) {
-        if (token.optional) {
-          // Prepend partial segment prefixes.
-          if (token.partial) {
-            path += token.prefix;
-          }
-
-          continue
-        } else {
-          throw new TypeError('Expected "' + token.name + '" to be defined')
-        }
-      }
-
-      if (index$1(value)) {
-        if (!token.repeat) {
-          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
-        }
-
-        if (value.length === 0) {
-          if (token.optional) {
-            continue
-          } else {
-            throw new TypeError('Expected "' + token.name + '" to not be empty')
-          }
-        }
-
-        for (var j = 0; j < value.length; j++) {
-          segment = encode(value[j]);
-
-          if (!matches[i].test(segment)) {
-            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
-          }
-
-          path += (j === 0 ? token.prefix : token.delimiter) + segment;
-        }
-
-        continue
-      }
-
-      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
-
-      if (!matches[i].test(segment)) {
-        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
-      }
-
-      path += token.prefix + segment;
-    }
-
-    return path
-  }
-}
-
-/**
- * Escape a regular expression string.
- *
- * @param  {string} str
- * @return {string}
- */
-function escapeString (str) {
-  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
-}
-
-/**
- * Escape the capturing group by escaping special characters and meaning.
- *
- * @param  {string} group
- * @return {string}
- */
-function escapeGroup (group) {
-  return group.replace(/([=!:$\/()])/g, '\\$1')
-}
-
-/**
- * Attach the keys as a property of the regexp.
- *
- * @param  {!RegExp} re
- * @param  {Array}   keys
- * @return {!RegExp}
- */
-function attachKeys (re, keys) {
-  re.keys = keys;
-  return re
-}
-
-/**
- * Get the flags for a regexp from the options.
- *
- * @param  {Object} options
- * @return {string}
- */
-function flags (options) {
-  return options.sensitive ? '' : 'i'
-}
-
-/**
- * Pull out keys from a regexp.
- *
- * @param  {!RegExp} path
- * @param  {!Array}  keys
- * @return {!RegExp}
- */
-function regexpToRegexp (path, keys) {
-  // Use a negative lookahead to match only capturing groups.
-  var groups = path.source.match(/\((?!\?)/g);
-
-  if (groups) {
-    for (var i = 0; i < groups.length; i++) {
-      keys.push({
-        name: i,
-        prefix: null,
-        delimiter: null,
-        optional: false,
-        repeat: false,
-        partial: false,
-        asterisk: false,
-        pattern: null
-      });
-    }
-  }
-
-  return attachKeys(path, keys)
-}
-
-/**
- * Transform an array into a regexp.
- *
- * @param  {!Array}  path
- * @param  {Array}   keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function arrayToRegexp (path, keys, options) {
-  var parts = [];
-
-  for (var i = 0; i < path.length; i++) {
-    parts.push(pathToRegexp(path[i], keys, options).source);
-  }
-
-  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
-
-  return attachKeys(regexp, keys)
-}
-
-/**
- * Create a path regexp from string input.
- *
- * @param  {string}  path
- * @param  {!Array}  keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function stringToRegexp (path, keys, options) {
-  return tokensToRegExp(parse(path, options), keys, options)
-}
-
-/**
- * Expose a function for taking tokens and returning a RegExp.
- *
- * @param  {!Array}          tokens
- * @param  {(Array|Object)=} keys
- * @param  {Object=}         options
- * @return {!RegExp}
- */
-function tokensToRegExp (tokens, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  var strict = options.strict;
-  var end = options.end !== false;
-  var route = '';
-
-  // Iterate over the tokens and create our regexp string.
-  for (var i = 0; i < tokens.length; i++) {
-    var token = tokens[i];
-
-    if (typeof token === 'string') {
-      route += escapeString(token);
-    } else {
-      var prefix = escapeString(token.prefix);
-      var capture = '(?:' + token.pattern + ')';
-
-      keys.push(token);
-
-      if (token.repeat) {
-        capture += '(?:' + prefix + capture + ')*';
-      }
-
-      if (token.optional) {
-        if (!token.partial) {
-          capture = '(?:' + prefix + '(' + capture + '))?';
-        } else {
-          capture = prefix + '(' + capture + ')?';
-        }
-      } else {
-        capture = prefix + '(' + capture + ')';
-      }
-
-      route += capture;
-    }
-  }
-
-  var delimiter = escapeString(options.delimiter || '/');
-  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
-
-  // In non-strict mode we allow a slash at the end of match. If the path to
-  // match already ends with a slash, we remove it for consistency. The slash
-  // is valid at the end of a path match, not in the middle. This is important
-  // in non-ending mode, where "/test/" shouldn't match "/test//route".
-  if (!strict) {
-    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
-  }
-
-  if (end) {
-    route += '$';
-  } else {
-    // In non-ending mode, we need the capturing groups to match as much as
-    // possible by using a positive lookahead to the end or next path segment.
-    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
-  }
-
-  return attachKeys(new RegExp('^' + route, flags(options)), keys)
-}
-
-/**
- * Normalize the given path string, returning a regular expression.
- *
- * An empty array can be passed in for the keys, which will hold the
- * placeholder key descriptions. For example, using `/user/:id`, `keys` will
- * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
- *
- * @param  {(string|RegExp|Array)} path
- * @param  {(Array|Object)=}       keys
- * @param  {Object=}               options
- * @return {!RegExp}
- */
-function pathToRegexp (path, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  if (path instanceof RegExp) {
-    return regexpToRegexp(path, /** @type {!Array} */ (keys))
-  }
-
-  if (index$1(path)) {
-    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
-  }
-
-  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
-}
-
-index.parse = parse_1;
-index.compile = compile_1;
-index.tokensToFunction = tokensToFunction_1;
-index.tokensToRegExp = tokensToRegExp_1;
-
-/*  */
-
-var regexpCompileCache = Object.create(null);
-
-function fillParams (
-  path,
-  params,
-  routeMsg
-) {
-  try {
-    var filler =
-      regexpCompileCache[path] ||
-      (regexpCompileCache[path] = index.compile(path));
-    return filler(params || {}, { pretty: true })
-  } catch (e) {
-    if (true) {
-      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
-    }
-    return ''
-  }
-}
-
-/*  */
-
-function createRouteMap (
-  routes,
-  oldPathList,
-  oldPathMap,
-  oldNameMap
-) {
-  // the path list is used to control path matching priority
-  var pathList = oldPathList || [];
-  var pathMap = oldPathMap || Object.create(null);
-  var nameMap = oldNameMap || Object.create(null);
-
-  routes.forEach(function (route) {
-    addRouteRecord(pathList, pathMap, nameMap, route);
-  });
-
-  // ensure wildcard routes are always at the end
-  for (var i = 0, l = pathList.length; i < l; i++) {
-    if (pathList[i] === '*') {
-      pathList.push(pathList.splice(i, 1)[0]);
-      l--;
-      i--;
-    }
-  }
-
-  return {
-    pathList: pathList,
-    pathMap: pathMap,
-    nameMap: nameMap
-  }
-}
-
-function addRouteRecord (
-  pathList,
-  pathMap,
-  nameMap,
-  route,
-  parent,
-  matchAs
-) {
-  var path = route.path;
-  var name = route.name;
-  if (true) {
-    assert(path != null, "\"path\" is required in a route configuration.");
-    assert(
-      typeof route.component !== 'string',
-      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
-      "string id. Use an actual component instead."
-    );
-  }
-
-  var normalizedPath = normalizePath(path, parent);
-  var pathToRegexpOptions = route.pathToRegexpOptions || {};
-
-  if (typeof route.caseSensitive === 'boolean') {
-    pathToRegexpOptions.sensitive = route.caseSensitive;
-  }
-
-  var record = {
-    path: normalizedPath,
-    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
-    components: route.components || { default: route.component },
-    instances: {},
-    name: name,
-    parent: parent,
-    matchAs: matchAs,
-    redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
-    meta: route.meta || {},
-    props: route.props == null
-      ? {}
-      : route.components
-        ? route.props
-        : { default: route.props }
-  };
-
-  if (route.children) {
-    // Warn if route is named, does not redirect and has a default child route.
-    // If users navigate to this route by name, the default child will
-    // not be rendered (GH Issue #629)
-    if (true) {
-      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
-        warn(
-          false,
-          "Named Route '" + (route.name) + "' has a default child route. " +
-          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
-          "the default child route will not be rendered. Remove the name from " +
-          "this route and use the name of the default child route for named " +
-          "links instead."
-        );
-      }
-    }
-    route.children.forEach(function (child) {
-      var childMatchAs = matchAs
-        ? cleanPath((matchAs + "/" + (child.path)))
-        : undefined;
-      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
-    });
-  }
-
-  if (route.alias !== undefined) {
-    var aliases = Array.isArray(route.alias)
-      ? route.alias
-      : [route.alias];
-
-    aliases.forEach(function (alias) {
-      var aliasRoute = {
-        path: alias,
-        children: route.children
-      };
-      addRouteRecord(
-        pathList,
-        pathMap,
-        nameMap,
-        aliasRoute,
-        parent,
-        record.path || '/' // matchAs
-      );
-    });
-  }
-
-  if (!pathMap[record.path]) {
-    pathList.push(record.path);
-    pathMap[record.path] = record;
-  }
-
-  if (name) {
-    if (!nameMap[name]) {
-      nameMap[name] = record;
-    } else if ("development" !== 'production' && !matchAs) {
-      warn(
-        false,
-        "Duplicate named routes definition: " +
-        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
-      );
-    }
-  }
-}
-
-function compileRouteRegex (path, pathToRegexpOptions) {
-  var regex = index(path, [], pathToRegexpOptions);
-  if (true) {
-    var keys = {};
-    regex.keys.forEach(function (key) {
-      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
-      keys[key.name] = true;
-    });
-  }
-  return regex
-}
-
-function normalizePath (path, parent) {
-  path = path.replace(/\/$/, '');
-  if (path[0] === '/') { return path }
-  if (parent == null) { return path }
-  return cleanPath(((parent.path) + "/" + path))
-}
-
-/*  */
-
-
-function normalizeLocation (
-  raw,
-  current,
-  append,
-  router
-) {
-  var next = typeof raw === 'string' ? { path: raw } : raw;
-  // named target
-  if (next.name || next._normalized) {
-    return next
-  }
-
-  // relative params
-  if (!next.path && next.params && current) {
-    next = assign({}, next);
-    next._normalized = true;
-    var params = assign(assign({}, current.params), next.params);
-    if (current.name) {
-      next.name = current.name;
-      next.params = params;
-    } else if (current.matched.length) {
-      var rawPath = current.matched[current.matched.length - 1].path;
-      next.path = fillParams(rawPath, params, ("path " + (current.path)));
-    } else if (true) {
-      warn(false, "relative params navigation requires a current route.");
-    }
-    return next
-  }
-
-  var parsedPath = parsePath(next.path || '');
-  var basePath = (current && current.path) || '/';
-  var path = parsedPath.path
-    ? resolvePath(parsedPath.path, basePath, append || next.append)
-    : basePath;
-
-  var query = resolveQuery(
-    parsedPath.query,
-    next.query,
-    router && router.options.parseQuery
-  );
-
-  var hash = next.hash || parsedPath.hash;
-  if (hash && hash.charAt(0) !== '#') {
-    hash = "#" + hash;
-  }
-
-  return {
-    _normalized: true,
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function assign (a, b) {
-  for (var key in b) {
-    a[key] = b[key];
-  }
-  return a
-}
-
-/*  */
-
-
-function createMatcher (
-  routes,
-  router
-) {
-  var ref = createRouteMap(routes);
-  var pathList = ref.pathList;
-  var pathMap = ref.pathMap;
-  var nameMap = ref.nameMap;
-
-  function addRoutes (routes) {
-    createRouteMap(routes, pathList, pathMap, nameMap);
-  }
-
-  function match (
-    raw,
-    currentRoute,
-    redirectedFrom
-  ) {
-    var location = normalizeLocation(raw, currentRoute, false, router);
-    var name = location.name;
-
-    if (name) {
-      var record = nameMap[name];
-      if (true) {
-        warn(record, ("Route with name '" + name + "' does not exist"));
-      }
-      if (!record) { return _createRoute(null, location) }
-      var paramNames = record.regex.keys
-        .filter(function (key) { return !key.optional; })
-        .map(function (key) { return key.name; });
-
-      if (typeof location.params !== 'object') {
-        location.params = {};
-      }
-
-      if (currentRoute && typeof currentRoute.params === 'object') {
-        for (var key in currentRoute.params) {
-          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
-            location.params[key] = currentRoute.params[key];
-          }
-        }
-      }
-
-      if (record) {
-        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
-        return _createRoute(record, location, redirectedFrom)
-      }
-    } else if (location.path) {
-      location.params = {};
-      for (var i = 0; i < pathList.length; i++) {
-        var path = pathList[i];
-        var record$1 = pathMap[path];
-        if (matchRoute(record$1.regex, location.path, location.params)) {
-          return _createRoute(record$1, location, redirectedFrom)
-        }
-      }
-    }
-    // no match
-    return _createRoute(null, location)
-  }
-
-  function redirect (
-    record,
-    location
-  ) {
-    var originalRedirect = record.redirect;
-    var redirect = typeof originalRedirect === 'function'
-        ? originalRedirect(createRoute(record, location, null, router))
-        : originalRedirect;
-
-    if (typeof redirect === 'string') {
-      redirect = { path: redirect };
-    }
-
-    if (!redirect || typeof redirect !== 'object') {
-      if (true) {
-        warn(
-          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
-        );
-      }
-      return _createRoute(null, location)
-    }
-
-    var re = redirect;
-    var name = re.name;
-    var path = re.path;
-    var query = location.query;
-    var hash = location.hash;
-    var params = location.params;
-    query = re.hasOwnProperty('query') ? re.query : query;
-    hash = re.hasOwnProperty('hash') ? re.hash : hash;
-    params = re.hasOwnProperty('params') ? re.params : params;
-
-    if (name) {
-      // resolved named direct
-      var targetRecord = nameMap[name];
-      if (true) {
-        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
-      }
-      return match({
-        _normalized: true,
-        name: name,
-        query: query,
-        hash: hash,
-        params: params
-      }, undefined, location)
-    } else if (path) {
-      // 1. resolve relative redirect
-      var rawPath = resolveRecordPath(path, record);
-      // 2. resolve params
-      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
-      // 3. rematch with existing query and hash
-      return match({
-        _normalized: true,
-        path: resolvedPath,
-        query: query,
-        hash: hash
-      }, undefined, location)
-    } else {
-      if (true) {
-        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
-      }
-      return _createRoute(null, location)
-    }
-  }
-
-  function alias (
-    record,
-    location,
-    matchAs
-  ) {
-    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
-    var aliasedMatch = match({
-      _normalized: true,
-      path: aliasedPath
-    });
-    if (aliasedMatch) {
-      var matched = aliasedMatch.matched;
-      var aliasedRecord = matched[matched.length - 1];
-      location.params = aliasedMatch.params;
-      return _createRoute(aliasedRecord, location)
-    }
-    return _createRoute(null, location)
-  }
-
-  function _createRoute (
-    record,
-    location,
-    redirectedFrom
-  ) {
-    if (record && record.redirect) {
-      return redirect(record, redirectedFrom || location)
-    }
-    if (record && record.matchAs) {
-      return alias(record, location, record.matchAs)
-    }
-    return createRoute(record, location, redirectedFrom, router)
-  }
-
-  return {
-    match: match,
-    addRoutes: addRoutes
-  }
-}
-
-function matchRoute (
-  regex,
-  path,
-  params
-) {
-  var m = path.match(regex);
-
-  if (!m) {
-    return false
-  } else if (!params) {
-    return true
-  }
-
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = regex.keys[i - 1];
-    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
-    if (key) {
-      params[key.name] = val;
-    }
-  }
-
-  return true
-}
-
-function resolveRecordPath (path, record) {
-  return resolvePath(path, record.parent ? record.parent.path : '/', true)
-}
-
-/*  */
-
-
-var positionStore = Object.create(null);
-
-function setupScroll () {
-  window.addEventListener('popstate', function (e) {
-    saveScrollPosition();
-    if (e.state && e.state.key) {
-      setStateKey(e.state.key);
-    }
-  });
-}
-
-function handleScroll (
-  router,
-  to,
-  from,
-  isPop
-) {
-  if (!router.app) {
-    return
-  }
-
-  var behavior = router.options.scrollBehavior;
-  if (!behavior) {
-    return
-  }
-
-  if (true) {
-    assert(typeof behavior === 'function', "scrollBehavior must be a function");
-  }
-
-  // wait until re-render finishes before scrolling
-  router.app.$nextTick(function () {
-    var position = getScrollPosition();
-    var shouldScroll = behavior(to, from, isPop ? position : null);
-    if (!shouldScroll) {
-      return
-    }
-    var isObject = typeof shouldScroll === 'object';
-    if (isObject && typeof shouldScroll.selector === 'string') {
-      var el = document.querySelector(shouldScroll.selector);
-      if (el) {
-        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
-        offset = normalizeOffset(offset);
-        position = getElementPosition(el, offset);
-      } else if (isValidPosition(shouldScroll)) {
-        position = normalizePosition(shouldScroll);
-      }
-    } else if (isObject && isValidPosition(shouldScroll)) {
-      position = normalizePosition(shouldScroll);
-    }
-
-    if (position) {
-      window.scrollTo(position.x, position.y);
-    }
-  });
-}
-
-function saveScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    positionStore[key] = {
-      x: window.pageXOffset,
-      y: window.pageYOffset
-    };
-  }
-}
-
-function getScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    return positionStore[key]
-  }
-}
-
-function getElementPosition (el, offset) {
-  var docEl = document.documentElement;
-  var docRect = docEl.getBoundingClientRect();
-  var elRect = el.getBoundingClientRect();
-  return {
-    x: elRect.left - docRect.left - offset.x,
-    y: elRect.top - docRect.top - offset.y
-  }
-}
-
-function isValidPosition (obj) {
-  return isNumber(obj.x) || isNumber(obj.y)
-}
-
-function normalizePosition (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
-    y: isNumber(obj.y) ? obj.y : window.pageYOffset
-  }
-}
-
-function normalizeOffset (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : 0,
-    y: isNumber(obj.y) ? obj.y : 0
-  }
-}
-
-function isNumber (v) {
-  return typeof v === 'number'
-}
-
-/*  */
-
-var supportsPushState = inBrowser && (function () {
-  var ua = window.navigator.userAgent;
-
-  if (
-    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
-    ua.indexOf('Mobile Safari') !== -1 &&
-    ua.indexOf('Chrome') === -1 &&
-    ua.indexOf('Windows Phone') === -1
-  ) {
-    return false
-  }
-
-  return window.history && 'pushState' in window.history
-})();
-
-// use User Timing api (if present) for more accurate key precision
-var Time = inBrowser && window.performance && window.performance.now
-  ? window.performance
-  : Date;
-
-var _key = genKey();
-
-function genKey () {
-  return Time.now().toFixed(3)
-}
-
-function getStateKey () {
-  return _key
-}
-
-function setStateKey (key) {
-  _key = key;
-}
-
-function pushState (url, replace) {
-  saveScrollPosition();
-  // try...catch the pushState call to get around Safari
-  // DOM Exception 18 where it limits to 100 pushState calls
-  var history = window.history;
-  try {
-    if (replace) {
-      history.replaceState({ key: _key }, '', url);
-    } else {
-      _key = genKey();
-      history.pushState({ key: _key }, '', url);
-    }
-  } catch (e) {
-    window.location[replace ? 'replace' : 'assign'](url);
-  }
-}
-
-function replaceState (url) {
-  pushState(url, true);
-}
-
-/*  */
-
-function runQueue (queue, fn, cb) {
-  var step = function (index) {
-    if (index >= queue.length) {
-      cb();
-    } else {
-      if (queue[index]) {
-        fn(queue[index], function () {
-          step(index + 1);
-        });
-      } else {
-        step(index + 1);
-      }
-    }
-  };
-  step(0);
-}
-
-/*  */
-
-function resolveAsyncComponents (matched) {
-  return function (to, from, next) {
-    var hasAsync = false;
-    var pending = 0;
-    var error = null;
-
-    flatMapComponents(matched, function (def, _, match, key) {
-      // if it's a function and doesn't have cid attached,
-      // assume it's an async component resolve function.
-      // we are not using Vue's default async resolving mechanism because
-      // we want to halt the navigation until the incoming component has been
-      // resolved.
-      if (typeof def === 'function' && def.cid === undefined) {
-        hasAsync = true;
-        pending++;
-
-        var resolve = once(function (resolvedDef) {
-          if (resolvedDef.__esModule && resolvedDef.default) {
-            resolvedDef = resolvedDef.default;
-          }
-          // save resolved on async factory in case it's used elsewhere
-          def.resolved = typeof resolvedDef === 'function'
-            ? resolvedDef
-            : _Vue.extend(resolvedDef);
-          match.components[key] = resolvedDef;
-          pending--;
-          if (pending <= 0) {
-            next();
-          }
-        });
-
-        var reject = once(function (reason) {
-          var msg = "Failed to resolve async component " + key + ": " + reason;
-          "development" !== 'production' && warn(false, msg);
-          if (!error) {
-            error = isError(reason)
-              ? reason
-              : new Error(msg);
-            next(error);
-          }
-        });
-
-        var res;
-        try {
-          res = def(resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
-        if (res) {
-          if (typeof res.then === 'function') {
-            res.then(resolve, reject);
-          } else {
-            // new syntax in Vue 2.3
-            var comp = res.component;
-            if (comp && typeof comp.then === 'function') {
-              comp.then(resolve, reject);
-            }
-          }
-        }
-      }
-    });
-
-    if (!hasAsync) { next(); }
-  }
-}
-
-function flatMapComponents (
-  matched,
-  fn
-) {
-  return flatten(matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) { return fn(
-      m.components[key],
-      m.instances[key],
-      m, key
-    ); })
-  }))
-}
-
-function flatten (arr) {
-  return Array.prototype.concat.apply([], arr)
-}
-
-// in Webpack 2, require.ensure now also returns a Promise
-// so the resolve/reject functions may get called an extra time
-// if the user uses an arrow function shorthand that happens to
-// return that Promise.
-function once (fn) {
-  var called = false;
-  return function () {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    if (called) { return }
-    called = true;
-    return fn.apply(this, args)
-  }
-}
-
-/*  */
-
-var History = function History (router, base) {
-  this.router = router;
-  this.base = normalizeBase(base);
-  // start with a route object that stands for "nowhere"
-  this.current = START;
-  this.pending = null;
-  this.ready = false;
-  this.readyCbs = [];
-  this.readyErrorCbs = [];
-  this.errorCbs = [];
-};
-
-History.prototype.listen = function listen (cb) {
-  this.cb = cb;
-};
-
-History.prototype.onReady = function onReady (cb, errorCb) {
-  if (this.ready) {
-    cb();
-  } else {
-    this.readyCbs.push(cb);
-    if (errorCb) {
-      this.readyErrorCbs.push(errorCb);
-    }
-  }
-};
-
-History.prototype.onError = function onError (errorCb) {
-  this.errorCbs.push(errorCb);
-};
-
-History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
-    var this$1 = this;
-
-  var route = this.router.match(location, this.current);
-  this.confirmTransition(route, function () {
-    this$1.updateRoute(route);
-    onComplete && onComplete(route);
-    this$1.ensureURL();
-
-    // fire ready cbs once
-    if (!this$1.ready) {
-      this$1.ready = true;
-      this$1.readyCbs.forEach(function (cb) { cb(route); });
-    }
-  }, function (err) {
-    if (onAbort) {
-      onAbort(err);
-    }
-    if (err && !this$1.ready) {
-      this$1.ready = true;
-      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
-    }
-  });
-};
-
-History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
-    var this$1 = this;
-
-  var current = this.current;
-  var abort = function (err) {
-    if (isError(err)) {
-      if (this$1.errorCbs.length) {
-        this$1.errorCbs.forEach(function (cb) { cb(err); });
-      } else {
-        warn(false, 'uncaught error during route navigation:');
-        console.error(err);
-      }
-    }
-    onAbort && onAbort(err);
-  };
-  if (
-    isSameRoute(route, current) &&
-    // in the case the route map has been dynamically appended to
-    route.matched.length === current.matched.length
-  ) {
-    this.ensureURL();
-    return abort()
-  }
-
-  var ref = resolveQueue(this.current.matched, route.matched);
-    var updated = ref.updated;
-    var deactivated = ref.deactivated;
-    var activated = ref.activated;
-
-  var queue = [].concat(
-    // in-component leave guards
-    extractLeaveGuards(deactivated),
-    // global before hooks
-    this.router.beforeHooks,
-    // in-component update hooks
-    extractUpdateHooks(updated),
-    // in-config enter guards
-    activated.map(function (m) { return m.beforeEnter; }),
-    // async components
-    resolveAsyncComponents(activated)
-  );
-
-  this.pending = route;
-  var iterator = function (hook, next) {
-    if (this$1.pending !== route) {
-      return abort()
-    }
-    try {
-      hook(route, current, function (to) {
-        if (to === false || isError(to)) {
-          // next(false) -> abort navigation, ensure current URL
-          this$1.ensureURL(true);
-          abort(to);
-        } else if (
-          typeof to === 'string' ||
-          (typeof to === 'object' && (
-            typeof to.path === 'string' ||
-            typeof to.name === 'string'
-          ))
-        ) {
-          // next('/') or next({ path: '/' }) -> redirect
-          abort();
-          if (typeof to === 'object' && to.replace) {
-            this$1.replace(to);
-          } else {
-            this$1.push(to);
-          }
-        } else {
-          // confirm transition and pass on the value
-          next(to);
-        }
-      });
-    } catch (e) {
-      abort(e);
-    }
-  };
-
-  runQueue(queue, iterator, function () {
-    var postEnterCbs = [];
-    var isValid = function () { return this$1.current === route; };
-    // wait until async components are resolved before
-    // extracting in-component enter guards
-    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
-    var queue = enterGuards.concat(this$1.router.resolveHooks);
-    runQueue(queue, iterator, function () {
-      if (this$1.pending !== route) {
-        return abort()
-      }
-      this$1.pending = null;
-      onComplete(route);
-      if (this$1.router.app) {
-        this$1.router.app.$nextTick(function () {
-          postEnterCbs.forEach(function (cb) { cb(); });
-        });
-      }
-    });
-  });
-};
-
-History.prototype.updateRoute = function updateRoute (route) {
-  var prev = this.current;
-  this.current = route;
-  this.cb && this.cb(route);
-  this.router.afterHooks.forEach(function (hook) {
-    hook && hook(route, prev);
-  });
-};
-
-function normalizeBase (base) {
-  if (!base) {
-    if (inBrowser) {
-      // respect <base> tag
-      var baseEl = document.querySelector('base');
-      base = (baseEl && baseEl.getAttribute('href')) || '/';
-      // strip full URL origin
-      base = base.replace(/^https?:\/\/[^\/]+/, '');
-    } else {
-      base = '/';
-    }
-  }
-  // make sure there's the starting slash
-  if (base.charAt(0) !== '/') {
-    base = '/' + base;
-  }
-  // remove trailing slash
-  return base.replace(/\/$/, '')
-}
-
-function resolveQueue (
-  current,
-  next
-) {
-  var i;
-  var max = Math.max(current.length, next.length);
-  for (i = 0; i < max; i++) {
-    if (current[i] !== next[i]) {
-      break
-    }
-  }
-  return {
-    updated: next.slice(0, i),
-    activated: next.slice(i),
-    deactivated: current.slice(i)
-  }
-}
-
-function extractGuards (
-  records,
-  name,
-  bind,
-  reverse
-) {
-  var guards = flatMapComponents(records, function (def, instance, match, key) {
-    var guard = extractGuard(def, name);
-    if (guard) {
-      return Array.isArray(guard)
-        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
-        : bind(guard, instance, match, key)
-    }
-  });
-  return flatten(reverse ? guards.reverse() : guards)
-}
-
-function extractGuard (
-  def,
-  key
-) {
-  if (typeof def !== 'function') {
-    // extend now so that global mixins are applied.
-    def = _Vue.extend(def);
-  }
-  return def.options[key]
-}
-
-function extractLeaveGuards (deactivated) {
-  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
-}
-
-function extractUpdateHooks (updated) {
-  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
-}
-
-function bindGuard (guard, instance) {
-  if (instance) {
-    return function boundRouteGuard () {
-      return guard.apply(instance, arguments)
-    }
-  }
-}
-
-function extractEnterGuards (
-  activated,
-  cbs,
-  isValid
-) {
-  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
-    return bindEnterGuard(guard, match, key, cbs, isValid)
-  })
-}
-
-function bindEnterGuard (
-  guard,
-  match,
-  key,
-  cbs,
-  isValid
-) {
-  return function routeEnterGuard (to, from, next) {
-    return guard(to, from, function (cb) {
-      next(cb);
-      if (typeof cb === 'function') {
-        cbs.push(function () {
-          // #750
-          // if a router-view is wrapped with an out-in transition,
-          // the instance may not have been registered at this time.
-          // we will need to poll for registration until current route
-          // is no longer valid.
-          poll(cb, match.instances, key, isValid);
-        });
-      }
-    })
-  }
-}
-
-function poll (
-  cb, // somehow flow cannot infer this is a function
-  instances,
-  key,
-  isValid
-) {
-  if (instances[key]) {
-    cb(instances[key]);
-  } else if (isValid()) {
-    setTimeout(function () {
-      poll(cb, instances, key, isValid);
-    }, 16);
-  }
-}
-
-/*  */
-
-
-var HTML5History = (function (History$$1) {
-  function HTML5History (router, base) {
-    var this$1 = this;
-
-    History$$1.call(this, router, base);
-
-    var expectScroll = router.options.scrollBehavior;
-
-    if (expectScroll) {
-      setupScroll();
-    }
-
-    window.addEventListener('popstate', function (e) {
-      var current = this$1.current;
-      this$1.transitionTo(getLocation(this$1.base), function (route) {
-        if (expectScroll) {
-          handleScroll(router, route, current, true);
-        }
-      });
-    });
-  }
-
-  if ( History$$1 ) HTML5History.__proto__ = History$$1;
-  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
-  HTML5History.prototype.constructor = HTML5History;
-
-  HTML5History.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      pushState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      replaceState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.ensureURL = function ensureURL (push) {
-    if (getLocation(this.base) !== this.current.fullPath) {
-      var current = cleanPath(this.base + this.current.fullPath);
-      push ? pushState(current) : replaceState(current);
-    }
-  };
-
-  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getLocation(this.base)
-  };
-
-  return HTML5History;
-}(History));
-
-function getLocation (base) {
-  var path = window.location.pathname;
-  if (base && path.indexOf(base) === 0) {
-    path = path.slice(base.length);
-  }
-  return (path || '/') + window.location.search + window.location.hash
-}
-
-/*  */
-
-
-var HashHistory = (function (History$$1) {
-  function HashHistory (router, base, fallback) {
-    History$$1.call(this, router, base);
-    // check history fallback deeplinking
-    if (fallback && checkFallback(this.base)) {
-      return
-    }
-    ensureSlash();
-  }
-
-  if ( History$$1 ) HashHistory.__proto__ = History$$1;
-  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  HashHistory.prototype.constructor = HashHistory;
-
-  // this is delayed until the app mounts
-  // to avoid the hashchange listener being fired too early
-  HashHistory.prototype.setupListeners = function setupListeners () {
-    var this$1 = this;
-
-    window.addEventListener('hashchange', function () {
-      if (!ensureSlash()) {
-        return
-      }
-      this$1.transitionTo(getHash(), function (route) {
-        replaceHash(route.fullPath);
-      });
-    });
-  };
-
-  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      pushHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      replaceHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HashHistory.prototype.ensureURL = function ensureURL (push) {
-    var current = this.current.fullPath;
-    if (getHash() !== current) {
-      push ? pushHash(current) : replaceHash(current);
-    }
-  };
-
-  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getHash()
-  };
-
-  return HashHistory;
-}(History));
-
-function checkFallback (base) {
-  var location = getLocation(base);
-  if (!/^\/#/.test(location)) {
-    window.location.replace(
-      cleanPath(base + '/#' + location)
-    );
-    return true
-  }
-}
-
-function ensureSlash () {
-  var path = getHash();
-  if (path.charAt(0) === '/') {
-    return true
-  }
-  replaceHash('/' + path);
-  return false
-}
-
-function getHash () {
-  // We can't use window.location.hash here because it's not
-  // consistent across browsers - Firefox will pre-decode it!
-  var href = window.location.href;
-  var index = href.indexOf('#');
-  return index === -1 ? '' : href.slice(index + 1)
-}
-
-function pushHash (path) {
-  window.location.hash = path;
-}
-
-function replaceHash (path) {
-  var href = window.location.href;
-  var i = href.indexOf('#');
-  var base = i >= 0 ? href.slice(0, i) : href;
-  window.location.replace((base + "#" + path));
-}
-
-/*  */
-
-
-var AbstractHistory = (function (History$$1) {
-  function AbstractHistory (router, base) {
-    History$$1.call(this, router, base);
-    this.stack = [];
-    this.index = -1;
-  }
-
-  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
-  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  AbstractHistory.prototype.constructor = AbstractHistory;
-
-  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
-      this$1.index++;
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.go = function go (n) {
-    var this$1 = this;
-
-    var targetIndex = this.index + n;
-    if (targetIndex < 0 || targetIndex >= this.stack.length) {
-      return
-    }
-    var route = this.stack[targetIndex];
-    this.confirmTransition(route, function () {
-      this$1.index = targetIndex;
-      this$1.updateRoute(route);
-    });
-  };
-
-  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    var current = this.stack[this.stack.length - 1];
-    return current ? current.fullPath : '/'
-  };
-
-  AbstractHistory.prototype.ensureURL = function ensureURL () {
-    // noop
-  };
-
-  return AbstractHistory;
-}(History));
-
-/*  */
-
-var VueRouter = function VueRouter (options) {
-  if ( options === void 0 ) options = {};
-
-  this.app = null;
-  this.apps = [];
-  this.options = options;
-  this.beforeHooks = [];
-  this.resolveHooks = [];
-  this.afterHooks = [];
-  this.matcher = createMatcher(options.routes || [], this);
-
-  var mode = options.mode || 'hash';
-  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
-  if (this.fallback) {
-    mode = 'hash';
-  }
-  if (!inBrowser) {
-    mode = 'abstract';
-  }
-  this.mode = mode;
-
-  switch (mode) {
-    case 'history':
-      this.history = new HTML5History(this, options.base);
-      break
-    case 'hash':
-      this.history = new HashHistory(this, options.base, this.fallback);
-      break
-    case 'abstract':
-      this.history = new AbstractHistory(this, options.base);
-      break
-    default:
-      if (true) {
-        assert(false, ("invalid mode: " + mode));
-      }
-  }
-};
-
-var prototypeAccessors = { currentRoute: {} };
-
-VueRouter.prototype.match = function match (
-  raw,
-  current,
-  redirectedFrom
-) {
-  return this.matcher.match(raw, current, redirectedFrom)
-};
-
-prototypeAccessors.currentRoute.get = function () {
-  return this.history && this.history.current
-};
-
-VueRouter.prototype.init = function init (app /* Vue component instance */) {
-    var this$1 = this;
-
-  "development" !== 'production' && assert(
-    install.installed,
-    "not installed. Make sure to call `Vue.use(VueRouter)` " +
-    "before creating root instance."
-  );
-
-  this.apps.push(app);
-
-  // main app already initialized.
-  if (this.app) {
-    return
-  }
-
-  this.app = app;
-
-  var history = this.history;
-
-  if (history instanceof HTML5History) {
-    history.transitionTo(history.getCurrentLocation());
-  } else if (history instanceof HashHistory) {
-    var setupHashListener = function () {
-      history.setupListeners();
-    };
-    history.transitionTo(
-      history.getCurrentLocation(),
-      setupHashListener,
-      setupHashListener
-    );
-  }
-
-  history.listen(function (route) {
-    this$1.apps.forEach(function (app) {
-      app._route = route;
-    });
-  });
-};
-
-VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  return registerHook(this.beforeHooks, fn)
-};
-
-VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
-  return registerHook(this.resolveHooks, fn)
-};
-
-VueRouter.prototype.afterEach = function afterEach (fn) {
-  return registerHook(this.afterHooks, fn)
-};
-
-VueRouter.prototype.onReady = function onReady (cb, errorCb) {
-  this.history.onReady(cb, errorCb);
-};
-
-VueRouter.prototype.onError = function onError (errorCb) {
-  this.history.onError(errorCb);
-};
-
-VueRouter.prototype.push = function push (location, onComplete, onAbort) {
-  this.history.push(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
-  this.history.replace(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.go = function go (n) {
-  this.history.go(n);
-};
-
-VueRouter.prototype.back = function back () {
-  this.go(-1);
-};
-
-VueRouter.prototype.forward = function forward () {
-  this.go(1);
-};
-
-VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
-  var route = to
-    ? to.matched
-      ? to
-      : this.resolve(to).route
-    : this.currentRoute;
-  if (!route) {
-    return []
-  }
-  return [].concat.apply([], route.matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) {
-      return m.components[key]
-    })
-  }))
-};
-
-VueRouter.prototype.resolve = function resolve (
-  to,
-  current,
-  append
-) {
-  var location = normalizeLocation(
-    to,
-    current || this.history.current,
-    append,
-    this
-  );
-  var route = this.match(location, current);
-  var fullPath = route.redirectedFrom || route.fullPath;
-  var base = this.history.base;
-  var href = createHref(base, fullPath, this.mode);
-  return {
-    location: location,
-    route: route,
-    href: href,
-    // for backwards compat
-    normalizedTo: location,
-    resolved: route
-  }
-};
-
-VueRouter.prototype.addRoutes = function addRoutes (routes) {
-  this.matcher.addRoutes(routes);
-  if (this.history.current !== START) {
-    this.history.transitionTo(this.history.getCurrentLocation());
-  }
-};
-
-Object.defineProperties( VueRouter.prototype, prototypeAccessors );
-
-function registerHook (list, fn) {
-  list.push(fn);
-  return function () {
-    var i = list.indexOf(fn);
-    if (i > -1) { list.splice(i, 1); }
-  }
-}
-
-function createHref (base, fullPath, mode) {
-  var path = mode === 'hash' ? '#' + fullPath : fullPath;
-  return base ? cleanPath(base + '/' + path) : path
-}
-
-VueRouter.install = install;
-VueRouter.version = '2.7.0';
-
-if (inBrowser && window.Vue) {
-  window.Vue.use(VueRouter);
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (VueRouter);
-
-
-/***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header_header__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header_header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header_header__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_main__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__back_background__);
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        vheader: __WEBPACK_IMPORTED_MODULE_0__header_header___default.a,
-        vmain: __WEBPACK_IMPORTED_MODULE_1__main_main___default.a,
-        particle: __WEBPACK_IMPORTED_MODULE_2__back_background___default.a
-    }
-});
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(67)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(16),
-  /* template */
-  __webpack_require__(69),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-7de66b45",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\header\\header.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7de66b45", Component.options)
-  } else {
-    hotAPI.reload("data-v-7de66b45", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/***/ }),
-/* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(76)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(21),
-  /* template */
-  __webpack_require__(78),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-fe76a376",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\main\\main.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fe76a376", Component.options)
-  } else {
-    hotAPI.reload("data-v-fe76a376", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 19 */,
-/* 20 */,
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_nav__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_nav___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__nav_nav__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__middle_middle__);
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        vnav: __WEBPACK_IMPORTED_MODULE_0__nav_nav___default.a,
-        middle: __WEBPACK_IMPORTED_MODULE_1__middle_middle___default.a
-    }
-});
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(70)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(25),
-  /* template */
-  __webpack_require__(72),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-6ad9f8a6",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\nav\\nav.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6ad9f8a6", Component.options)
-  } else {
-    hotAPI.reload("data-v-6ad9f8a6", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 23 */,
-/* 24 */,
-/* 25 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/***/ }),
-/* 26 */,
-/* 27 */,
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(73)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(32),
-  /* template */
-  __webpack_require__(75),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-4f67934c",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\back\\background.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] background.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4f67934c", Component.options)
-  } else {
-    hotAPI.reload("data-v-4f67934c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 29 */,
-/* 30 */,
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/bg5.png?295d82f7760fee713eed6d670ea220a5";
-
-/***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* eslint-disable */
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'vue-particles',
-    props: {
-        color: {
-            type: String,
-            default: '#dedede'
-        },
-        particleOpacity: {
-            type: Number,
-            default: 0.7
-        },
-        particlesNumber: {
-            type: Number,
-            default: 80
-        },
-        shapeType: {
-            type: String,
-            default: 'circle'
-        },
-        particleSize: {
-            type: Number,
-            default: 8
-        },
-        linesColor: {
-            type: String,
-            default: '#dedede'
-        },
-        linesWidth: {
-            type: Number,
-            default: 1
-        },
-        lineLinked: {
-            type: Boolean,
-            default: true
-        },
-        lineOpacity: {
-            type: Number,
-            default: 0.9
-        },
-        linesDistance: {
-            type: Number,
-            default: 150
-        },
-        moveSpeed: {
-            type: Number,
-            default: 3
-        },
-        hoverEffect: {
-            type: Boolean,
-            default: true
-        },
-        hoverMode: {
-            type: String,
-            default: 'grab'
-        },
-        clickEffect: {
-            type: Boolean,
-            default: true
-        },
-        clickMode: {
-            type: String,
-            default: 'push'
-        }
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        // import particle.js only on client-side
-        __webpack_require__(33);
-        this.$nextTick(function () {
-            _this.initParticleJS(_this.color, _this.particleOpacity, _this.particlesNumber, _this.shapeType, _this.particleSize, _this.linesColor, _this.linesWidth, _this.lineLinked, _this.lineOpacity, _this.linesDistance, _this.moveSpeed, _this.hoverEffect, _this.hoverMode, _this.clickEffect, _this.clickMode);
-        });
-    },
-
-    methods: {
-        initParticleJS: function initParticleJS(color, particleOpacity, particlesNumber, shapeType, particleSize, linesColor, linesWidth, lineLinked, lineOpacity, linesDistance, moveSpeed, hoverEffect, hoverMode, clickEffect, clickMode) {
-            particlesJS('bg', {
-                "particles": {
-                    "number": {
-                        "value": particlesNumber,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": color
-                    },
-                    "shape": {
-                        // circle, edge, triangle, polygon, star, image
-                        "type": shapeType,
-                        "stroke": {
-                            "width": 0,
-                            "color": "#192231"
-                        },
-                        "polygon": {
-                            "nb_sides": 5
-                        }
-                    },
-                    "opacity": {
-                        "value": particleOpacity,
-                        "random": false,
-                        "anim": {
-                            "enable": false,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": particleSize,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 40,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": lineLinked,
-                        "distance": linesDistance,
-                        "color": linesColor,
-                        "opacity": lineOpacity,
-                        "width": linesWidth
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": moveSpeed,
-                        "direction": "none",
-                        "random": false,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": false,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": hoverEffect,
-                            "mode": hoverMode
-                        },
-                        "onclick": {
-                            "enable": clickEffect,
-                            "mode": clickMode
-                        },
-                        "onresize": {
-
-                            "enable": true,
-                            "density_auto": true,
-                            "density_area": 400
-
-                        }
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 1
-                            }
-                        },
-                        "bubble": {
-                            "distance": 400,
-                            "size": 40,
-                            "duration": 2,
-                            "opacity": 8,
-                            "speed": 3
-                        },
-                        "repulse": {
-                            "distance": 200,
-                            "duration": 0.4
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        },
-                        "remove": {
-                            "particles_nb": 2
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
-        }
-    }
-    /* eslint-disable */
-
-});
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-/* -----------------------------------------------
-/* Author : Vincent Garreau  - vincentgarreau.com
-/* MIT license: http://opensource.org/licenses/MIT
-/* Demo / Generator : vincentgarreau.com/particles.js
-/* GitHub : github.com/VincentGarreau/particles.js
-/* How to use? : Check the GitHub README
-/* v2.0.0
-/* ----------------------------------------------- */
-
-var pJS = function(tag_id, params){
-
-  var canvas_el = document.querySelector('#'+tag_id+' > .particles-js-canvas-el');
-
-  /* particles.js variables with default values */
-  this.pJS = {
-    canvas: {
-      el: canvas_el,
-      w: canvas_el.offsetWidth,
-      h: canvas_el.offsetHeight
-    },
-    particles: {
-      number: {
-        value: 400,
-        density: {
-          enable: true,
-          value_area: 800
-        }
-      },
-      color: {
-        value: '#fff'
-      },
-      shape: {
-        type: 'circle',
-        stroke: {
-          width: 0,
-          color: '#ff0000'
-        },
-        polygon: {
-          nb_sides: 5
-        },
-        image: {
-          src: '',
-          width: 100,
-          height: 100
-        }
-      },
-      opacity: {
-        value: 1,
-        random: false,
-        anim: {
-          enable: false,
-          speed: 2,
-          opacity_min: 0,
-          sync: false
-        }
-      },
-      size: {
-        value: 20,
-        random: false,
-        anim: {
-          enable: false,
-          speed: 20,
-          size_min: 0,
-          sync: false
-        }
-      },
-      line_linked: {
-        enable: true,
-        distance: 100,
-        color: '#fff',
-        opacity: 1,
-        width: 1
-      },
-      move: {
-        enable: true,
-        speed: 2,
-        direction: 'none',
-        random: false,
-        straight: false,
-        out_mode: 'out',
-        bounce: false,
-        attract: {
-          enable: false,
-          rotateX: 3000,
-          rotateY: 3000
-        }
-      },
-      array: []
-    },
-    interactivity: {
-      detect_on: 'canvas',
-      events: {
-        onhover: {
-          enable: true,
-          mode: 'grab'
-        },
-        onclick: {
-          enable: true,
-          mode: 'push'
-        },
-        resize: true
-      },
-      modes: {
-        grab:{
-          distance: 100,
-          line_linked:{
-            opacity: 1
-          }
-        },
-        bubble:{
-          distance: 200,
-          size: 80,
-          duration: 0.4
-        },
-        repulse:{
-          distance: 200,
-          duration: 0.4
-        },
-        push:{
-          particles_nb: 4
-        },
-        remove:{
-          particles_nb: 2
-        }
-      },
-      mouse:{}
-    },
-    retina_detect: false,
-    fn: {
-      interact: {},
-      modes: {},
-      vendors:{}
-    },
-    tmp: {}
-  };
-
-  var pJS = this.pJS;
-
-  /* params settings */
-  if(params){
-    Object.deepExtend(pJS, params);
-  }
-
-  pJS.tmp.obj = {
-    size_value: pJS.particles.size.value,
-    size_anim_speed: pJS.particles.size.anim.speed,
-    move_speed: pJS.particles.move.speed,
-    line_linked_distance: pJS.particles.line_linked.distance,
-    line_linked_width: pJS.particles.line_linked.width,
-    mode_grab_distance: pJS.interactivity.modes.grab.distance,
-    mode_bubble_distance: pJS.interactivity.modes.bubble.distance,
-    mode_bubble_size: pJS.interactivity.modes.bubble.size,
-    mode_repulse_distance: pJS.interactivity.modes.repulse.distance
-  };
-
-
-  pJS.fn.retinaInit = function(){
-
-    if(pJS.retina_detect && window.devicePixelRatio > 1){
-      pJS.canvas.pxratio = window.devicePixelRatio; 
-      pJS.tmp.retina = true;
-    } 
-    else{
-      pJS.canvas.pxratio = 1;
-      pJS.tmp.retina = false;
-    }
-
-    pJS.canvas.w = pJS.canvas.el.offsetWidth * pJS.canvas.pxratio;
-    pJS.canvas.h = pJS.canvas.el.offsetHeight * pJS.canvas.pxratio;
-
-    pJS.particles.size.value = pJS.tmp.obj.size_value * pJS.canvas.pxratio;
-    pJS.particles.size.anim.speed = pJS.tmp.obj.size_anim_speed * pJS.canvas.pxratio;
-    pJS.particles.move.speed = pJS.tmp.obj.move_speed * pJS.canvas.pxratio;
-    pJS.particles.line_linked.distance = pJS.tmp.obj.line_linked_distance * pJS.canvas.pxratio;
-    pJS.interactivity.modes.grab.distance = pJS.tmp.obj.mode_grab_distance * pJS.canvas.pxratio;
-    pJS.interactivity.modes.bubble.distance = pJS.tmp.obj.mode_bubble_distance * pJS.canvas.pxratio;
-    pJS.particles.line_linked.width = pJS.tmp.obj.line_linked_width * pJS.canvas.pxratio;
-    pJS.interactivity.modes.bubble.size = pJS.tmp.obj.mode_bubble_size * pJS.canvas.pxratio;
-    pJS.interactivity.modes.repulse.distance = pJS.tmp.obj.mode_repulse_distance * pJS.canvas.pxratio;
-
-  };
-
-
-
-  /* ---------- pJS functions - canvas ------------ */
-
-  pJS.fn.canvasInit = function(){
-    pJS.canvas.ctx = pJS.canvas.el.getContext('2d');
-  };
-
-  pJS.fn.canvasSize = function(){
-
-    pJS.canvas.el.width = pJS.canvas.w;
-    pJS.canvas.el.height = pJS.canvas.h;
-
-    if(pJS && pJS.interactivity.events.resize){
-
-      window.addEventListener('resize', function(){
-
-          pJS.canvas.w = pJS.canvas.el.offsetWidth;
-          pJS.canvas.h = pJS.canvas.el.offsetHeight;
-
-          /* resize canvas */
-          if(pJS.tmp.retina){
-            pJS.canvas.w *= pJS.canvas.pxratio;
-            pJS.canvas.h *= pJS.canvas.pxratio;
-          }
-
-          pJS.canvas.el.width = pJS.canvas.w;
-          pJS.canvas.el.height = pJS.canvas.h;
-
-          /* repaint canvas on anim disabled */
-          if(!pJS.particles.move.enable){
-            pJS.fn.particlesEmpty();
-            pJS.fn.particlesCreate();
-            pJS.fn.particlesDraw();
-            pJS.fn.vendors.densityAutoParticles();
-          }
-
-        /* density particles enabled */
-        pJS.fn.vendors.densityAutoParticles();
-
-      });
-
-    }
-
-  };
-
-
-  pJS.fn.canvasPaint = function(){
-    pJS.canvas.ctx.fillRect(0, 0, pJS.canvas.w, pJS.canvas.h);
-  };
-
-  pJS.fn.canvasClear = function(){
-    pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
-  };
-
-
-  /* --------- pJS functions - particles ----------- */
-
-  pJS.fn.particle = function(color, opacity, position){
-
-    /* size */
-    this.radius = (pJS.particles.size.random ? Math.random() : 1) * pJS.particles.size.value;
-    if(pJS.particles.size.anim.enable){
-      this.size_status = false;
-      this.vs = pJS.particles.size.anim.speed / 100;
-      if(!pJS.particles.size.anim.sync){
-        this.vs = this.vs * Math.random();
-      }
-    }
-
-    /* position */
-    this.x = position ? position.x : Math.random() * pJS.canvas.w;
-    this.y = position ? position.y : Math.random() * pJS.canvas.h;
-
-    /* check position  - into the canvas */
-    if(this.x > pJS.canvas.w - this.radius*2) this.x = this.x - this.radius;
-    else if(this.x < this.radius*2) this.x = this.x + this.radius;
-    if(this.y > pJS.canvas.h - this.radius*2) this.y = this.y - this.radius;
-    else if(this.y < this.radius*2) this.y = this.y + this.radius;
-
-    /* check position - avoid overlap */
-    if(pJS.particles.move.bounce){
-      pJS.fn.vendors.checkOverlap(this, position);
-    }
-
-    /* color */
-    this.color = {};
-    if(typeof(color.value) == 'object'){
-
-      if(color.value instanceof Array){
-        var color_selected = color.value[Math.floor(Math.random() * pJS.particles.color.value.length)];
-        this.color.rgb = hexToRgb(color_selected);
-      }else{
-        if(color.value.r != undefined && color.value.g != undefined && color.value.b != undefined){
-          this.color.rgb = {
-            r: color.value.r,
-            g: color.value.g,
-            b: color.value.b
-          }
-        }
-        if(color.value.h != undefined && color.value.s != undefined && color.value.l != undefined){
-          this.color.hsl = {
-            h: color.value.h,
-            s: color.value.s,
-            l: color.value.l
-          }
-        }
-      }
-
-    }
-    else if(color.value == 'random'){
-      this.color.rgb = {
-        r: (Math.floor(Math.random() * (255 - 0 + 1)) + 0),
-        g: (Math.floor(Math.random() * (255 - 0 + 1)) + 0),
-        b: (Math.floor(Math.random() * (255 - 0 + 1)) + 0)
-      }
-    }
-    else if(typeof(color.value) == 'string'){
-      this.color = color;
-      this.color.rgb = hexToRgb(this.color.value);
-    }
-
-    /* opacity */
-    this.opacity = (pJS.particles.opacity.random ? Math.random() : 1) * pJS.particles.opacity.value;
-    if(pJS.particles.opacity.anim.enable){
-      this.opacity_status = false;
-      this.vo = pJS.particles.opacity.anim.speed / 100;
-      if(!pJS.particles.opacity.anim.sync){
-        this.vo = this.vo * Math.random();
-      }
-    }
-
-    /* animation - velocity for speed */
-    var velbase = {}
-    switch(pJS.particles.move.direction){
-      case 'top':
-        velbase = { x:0, y:-1 };
-      break;
-      case 'top-right':
-        velbase = { x:0.5, y:-0.5 };
-      break;
-      case 'right':
-        velbase = { x:1, y:-0 };
-      break;
-      case 'bottom-right':
-        velbase = { x:0.5, y:0.5 };
-      break;
-      case 'bottom':
-        velbase = { x:0, y:1 };
-      break;
-      case 'bottom-left':
-        velbase = { x:-0.5, y:1 };
-      break;
-      case 'left':
-        velbase = { x:-1, y:0 };
-      break;
-      case 'top-left':
-        velbase = { x:-0.5, y:-0.5 };
-      break;
-      default:
-        velbase = { x:0, y:0 };
-      break;
-    }
-
-    if(pJS.particles.move.straight){
-      this.vx = velbase.x;
-      this.vy = velbase.y;
-      if(pJS.particles.move.random){
-        this.vx = this.vx * (Math.random());
-        this.vy = this.vy * (Math.random());
-      }
-    }else{
-      this.vx = velbase.x + Math.random()-0.5;
-      this.vy = velbase.y + Math.random()-0.5;
-    }
-
-    // var theta = 2.0 * Math.PI * Math.random();
-    // this.vx = Math.cos(theta);
-    // this.vy = Math.sin(theta);
-
-    this.vx_i = this.vx;
-    this.vy_i = this.vy;
-
-    
-
-    /* if shape is image */
-
-    var shape_type = pJS.particles.shape.type;
-    if(typeof(shape_type) == 'object'){
-      if(shape_type instanceof Array){
-        var shape_selected = shape_type[Math.floor(Math.random() * shape_type.length)];
-        this.shape = shape_selected;
-      }
-    }else{
-      this.shape = shape_type;
-    }
-
-    if(this.shape == 'image'){
-      var sh = pJS.particles.shape;
-      this.img = {
-        src: sh.image.src,
-        ratio: sh.image.width / sh.image.height
-      }
-      if(!this.img.ratio) this.img.ratio = 1;
-      if(pJS.tmp.img_type == 'svg' && pJS.tmp.source_svg != undefined){
-        pJS.fn.vendors.createSvgImg(this);
-        if(pJS.tmp.pushing){
-          this.img.loaded = false;
-        }
-      }
-    }
-
-    
-
-  };
-
-
-  pJS.fn.particle.prototype.draw = function() {
-
-    var p = this;
-
-    if(p.radius_bubble != undefined){
-      var radius = p.radius_bubble; 
-    }else{
-      var radius = p.radius;
-    }
-
-    if(p.opacity_bubble != undefined){
-      var opacity = p.opacity_bubble;
-    }else{
-      var opacity = p.opacity;
-    }
-
-    if(p.color.rgb){
-      var color_value = 'rgba('+p.color.rgb.r+','+p.color.rgb.g+','+p.color.rgb.b+','+opacity+')';
-    }else{
-      var color_value = 'hsla('+p.color.hsl.h+','+p.color.hsl.s+'%,'+p.color.hsl.l+'%,'+opacity+')';
-    }
-
-    pJS.canvas.ctx.fillStyle = color_value;
-    pJS.canvas.ctx.beginPath();
-
-    switch(p.shape){
-
-      case 'circle':
-        pJS.canvas.ctx.arc(p.x, p.y, radius, 0, Math.PI * 2, false);
-      break;
-
-      case 'edge':
-        pJS.canvas.ctx.rect(p.x-radius, p.y-radius, radius*2, radius*2);
-      break;
-
-      case 'triangle':
-        pJS.fn.vendors.drawShape(pJS.canvas.ctx, p.x-radius, p.y+radius / 1.66, radius*2, 3, 2);
-      break;
-
-      case 'polygon':
-        pJS.fn.vendors.drawShape(
-          pJS.canvas.ctx,
-          p.x - radius / (pJS.particles.shape.polygon.nb_sides/3.5), // startX
-          p.y - radius / (2.66/3.5), // startY
-          radius*2.66 / (pJS.particles.shape.polygon.nb_sides/3), // sideLength
-          pJS.particles.shape.polygon.nb_sides, // sideCountNumerator
-          1 // sideCountDenominator
-        );
-      break;
-
-      case 'star':
-        pJS.fn.vendors.drawShape(
-          pJS.canvas.ctx,
-          p.x - radius*2 / (pJS.particles.shape.polygon.nb_sides/4), // startX
-          p.y - radius / (2*2.66/3.5), // startY
-          radius*2*2.66 / (pJS.particles.shape.polygon.nb_sides/3), // sideLength
-          pJS.particles.shape.polygon.nb_sides, // sideCountNumerator
-          2 // sideCountDenominator
-        );
-      break;
-
-      case 'image':
-
-        function draw(){
-          pJS.canvas.ctx.drawImage(
-            img_obj,
-            p.x-radius,
-            p.y-radius,
-            radius*2,
-            radius*2 / p.img.ratio
-          );
-        }
-
-        if(pJS.tmp.img_type == 'svg'){
-          var img_obj = p.img.obj;
-        }else{
-          var img_obj = pJS.tmp.img_obj;
-        }
-
-        if(img_obj){
-          draw();
-        }
-
-      break;
-
-    }
-
-    pJS.canvas.ctx.closePath();
-
-    if(pJS.particles.shape.stroke.width > 0){
-      pJS.canvas.ctx.strokeStyle = pJS.particles.shape.stroke.color;
-      pJS.canvas.ctx.lineWidth = pJS.particles.shape.stroke.width;
-      pJS.canvas.ctx.stroke();
-    }
-    
-    pJS.canvas.ctx.fill();
-    
-  };
-
-
-  pJS.fn.particlesCreate = function(){
-    for(var i = 0; i < pJS.particles.number.value; i++) {
-      pJS.particles.array.push(new pJS.fn.particle(pJS.particles.color, pJS.particles.opacity.value));
-    }
-  };
-
-  pJS.fn.particlesUpdate = function(){
-
-    for(var i = 0; i < pJS.particles.array.length; i++){
-
-      /* the particle */
-      var p = pJS.particles.array[i];
-
-      // var d = ( dx = pJS.interactivity.mouse.click_pos_x - p.x ) * dx + ( dy = pJS.interactivity.mouse.click_pos_y - p.y ) * dy;
-      // var f = -BANG_SIZE / d;
-      // if ( d < BANG_SIZE ) {
-      //     var t = Math.atan2( dy, dx );
-      //     p.vx = f * Math.cos(t);
-      //     p.vy = f * Math.sin(t);
-      // }
-
-      /* move the particle */
-      if(pJS.particles.move.enable){
-        var ms = pJS.particles.move.speed/2;
-        p.x += p.vx * ms;
-        p.y += p.vy * ms;
-      }
-
-      /* change opacity status */
-      if(pJS.particles.opacity.anim.enable) {
-        if(p.opacity_status == true) {
-          if(p.opacity >= pJS.particles.opacity.value) p.opacity_status = false;
-          p.opacity += p.vo;
-        }else {
-          if(p.opacity <= pJS.particles.opacity.anim.opacity_min) p.opacity_status = true;
-          p.opacity -= p.vo;
-        }
-        if(p.opacity < 0) p.opacity = 0;
-      }
-
-      /* change size */
-      if(pJS.particles.size.anim.enable){
-        if(p.size_status == true){
-          if(p.radius >= pJS.particles.size.value) p.size_status = false;
-          p.radius += p.vs;
-        }else{
-          if(p.radius <= pJS.particles.size.anim.size_min) p.size_status = true;
-          p.radius -= p.vs;
-        }
-        if(p.radius < 0) p.radius = 0;
-      }
-
-      /* change particle position if it is out of canvas */
-      if(pJS.particles.move.out_mode == 'bounce'){
-        var new_pos = {
-          x_left: p.radius,
-          x_right:  pJS.canvas.w,
-          y_top: p.radius,
-          y_bottom: pJS.canvas.h
-        }
-      }else{
-        var new_pos = {
-          x_left: -p.radius,
-          x_right: pJS.canvas.w + p.radius,
-          y_top: -p.radius,
-          y_bottom: pJS.canvas.h + p.radius
-        }
-      }
-
-      if(p.x - p.radius > pJS.canvas.w){
-        p.x = new_pos.x_left;
-        p.y = Math.random() * pJS.canvas.h;
-      }
-      else if(p.x + p.radius < 0){
-        p.x = new_pos.x_right;
-        p.y = Math.random() * pJS.canvas.h;
-      }
-      if(p.y - p.radius > pJS.canvas.h){
-        p.y = new_pos.y_top;
-        p.x = Math.random() * pJS.canvas.w;
-      }
-      else if(p.y + p.radius < 0){
-        p.y = new_pos.y_bottom;
-        p.x = Math.random() * pJS.canvas.w;
-      }
-
-      /* out of canvas modes */
-      switch(pJS.particles.move.out_mode){
-        case 'bounce':
-          if (p.x + p.radius > pJS.canvas.w) p.vx = -p.vx;
-          else if (p.x - p.radius < 0) p.vx = -p.vx;
-          if (p.y + p.radius > pJS.canvas.h) p.vy = -p.vy;
-          else if (p.y - p.radius < 0) p.vy = -p.vy;
-        break;
-      }
-
-      /* events */
-      if(isInArray('grab', pJS.interactivity.events.onhover.mode)){
-        pJS.fn.modes.grabParticle(p);
-      }
-
-      if(isInArray('bubble', pJS.interactivity.events.onhover.mode) || isInArray('bubble', pJS.interactivity.events.onclick.mode)){
-        pJS.fn.modes.bubbleParticle(p);
-      }
-
-      if(isInArray('repulse', pJS.interactivity.events.onhover.mode) || isInArray('repulse', pJS.interactivity.events.onclick.mode)){
-        pJS.fn.modes.repulseParticle(p);
-      }
-
-      /* interaction auto between particles */
-      if(pJS.particles.line_linked.enable || pJS.particles.move.attract.enable){
-        for(var j = i + 1; j < pJS.particles.array.length; j++){
-          var p2 = pJS.particles.array[j];
-
-          /* link particles */
-          if(pJS.particles.line_linked.enable){
-            pJS.fn.interact.linkParticles(p,p2);
-          }
-
-          /* attract particles */
-          if(pJS.particles.move.attract.enable){
-            pJS.fn.interact.attractParticles(p,p2);
-          }
-
-          /* bounce particles */
-          if(pJS.particles.move.bounce){
-            pJS.fn.interact.bounceParticles(p,p2);
-          }
-
-        }
-      }
-
-
-    }
-
-  };
-
-  pJS.fn.particlesDraw = function(){
-
-    /* clear canvas */
-    pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
-
-    /* update each particles param */
-    pJS.fn.particlesUpdate();
-
-    /* draw each particle */
-    for(var i = 0; i < pJS.particles.array.length; i++){
-      var p = pJS.particles.array[i];
-      p.draw();
-    }
-
-  };
-
-  pJS.fn.particlesEmpty = function(){
-    pJS.particles.array = [];
-  };
-
-  pJS.fn.particlesRefresh = function(){
-
-    /* init all */
-    cancelRequestAnimFrame(pJS.fn.checkAnimFrame);
-    cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
-    pJS.tmp.source_svg = undefined;
-    pJS.tmp.img_obj = undefined;
-    pJS.tmp.count_svg = 0;
-    pJS.fn.particlesEmpty();
-    pJS.fn.canvasClear();
-    
-    /* restart */
-    pJS.fn.vendors.start();
-
-  };
-
-
-  /* ---------- pJS functions - particles interaction ------------ */
-
-  pJS.fn.interact.linkParticles = function(p1, p2){
-
-    var dx = p1.x - p2.x,
-        dy = p1.y - p2.y,
-        dist = Math.sqrt(dx*dx + dy*dy);
-
-    /* draw a line between p1 and p2 if the distance between them is under the config distance */
-    if(dist <= pJS.particles.line_linked.distance){
-
-      var opacity_line = pJS.particles.line_linked.opacity - (dist / (1/pJS.particles.line_linked.opacity)) / pJS.particles.line_linked.distance;
-
-      if(opacity_line > 0){        
-        
-        /* style */
-        var color_line = pJS.particles.line_linked.color_rgb_line;
-        pJS.canvas.ctx.strokeStyle = 'rgba('+color_line.r+','+color_line.g+','+color_line.b+','+opacity_line+')';
-        pJS.canvas.ctx.lineWidth = pJS.particles.line_linked.width;
-        //pJS.canvas.ctx.lineCap = 'round'; /* performance issue */
-        
-        /* path */
-        pJS.canvas.ctx.beginPath();
-        pJS.canvas.ctx.moveTo(p1.x, p1.y);
-        pJS.canvas.ctx.lineTo(p2.x, p2.y);
-        pJS.canvas.ctx.stroke();
-        pJS.canvas.ctx.closePath();
-
-      }
-
-    }
-
-  };
-
-
-  pJS.fn.interact.attractParticles  = function(p1, p2){
-
-    /* condensed particles */
-    var dx = p1.x - p2.x,
-        dy = p1.y - p2.y,
-        dist = Math.sqrt(dx*dx + dy*dy);
-
-    if(dist <= pJS.particles.line_linked.distance){
-
-      var ax = dx/(pJS.particles.move.attract.rotateX*1000),
-          ay = dy/(pJS.particles.move.attract.rotateY*1000);
-
-      p1.vx -= ax;
-      p1.vy -= ay;
-
-      p2.vx += ax;
-      p2.vy += ay;
-
-    }
-    
-
-  }
-
-
-  pJS.fn.interact.bounceParticles = function(p1, p2){
-
-    var dx = p1.x - p2.x,
-        dy = p1.y - p2.y,
-        dist = Math.sqrt(dx*dx + dy*dy),
-        dist_p = p1.radius+p2.radius;
-
-    if(dist <= dist_p){
-      p1.vx = -p1.vx;
-      p1.vy = -p1.vy;
-
-      p2.vx = -p2.vx;
-      p2.vy = -p2.vy;
-    }
-
-  }
-
-
-  /* ---------- pJS functions - modes events ------------ */
-
-  pJS.fn.modes.pushParticles = function(nb, pos){
-
-    pJS.tmp.pushing = true;
-
-    for(var i = 0; i < nb; i++){
-      pJS.particles.array.push(
-        new pJS.fn.particle(
-          pJS.particles.color,
-          pJS.particles.opacity.value,
-          {
-            'x': pos ? pos.pos_x : Math.random() * pJS.canvas.w,
-            'y': pos ? pos.pos_y : Math.random() * pJS.canvas.h
-          }
-        )
-      )
-      if(i == nb-1){
-        if(!pJS.particles.move.enable){
-          pJS.fn.particlesDraw();
-        }
-        pJS.tmp.pushing = false;
-      }
-    }
-
-  };
-
-
-  pJS.fn.modes.removeParticles = function(nb){
-
-    pJS.particles.array.splice(0, nb);
-    if(!pJS.particles.move.enable){
-      pJS.fn.particlesDraw();
-    }
-
-  };
-
-
-  pJS.fn.modes.bubbleParticle = function(p){
-
-    /* on hover event */
-    if(pJS.interactivity.events.onhover.enable && isInArray('bubble', pJS.interactivity.events.onhover.mode)){
-
-      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
-          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
-          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse),
-          ratio = 1 - dist_mouse / pJS.interactivity.modes.bubble.distance;
-
-      function init(){
-        p.opacity_bubble = p.opacity;
-        p.radius_bubble = p.radius;
-      }
-
-      /* mousemove - check ratio */
-      if(dist_mouse <= pJS.interactivity.modes.bubble.distance){
-
-        if(ratio >= 0 && pJS.interactivity.status == 'mousemove'){
-          
-          /* size */
-          if(pJS.interactivity.modes.bubble.size != pJS.particles.size.value){
-
-            if(pJS.interactivity.modes.bubble.size > pJS.particles.size.value){
-              var size = p.radius + (pJS.interactivity.modes.bubble.size*ratio);
-              if(size >= 0){
-                p.radius_bubble = size;
-              }
-            }else{
-              var dif = p.radius - pJS.interactivity.modes.bubble.size,
-                  size = p.radius - (dif*ratio);
-              if(size > 0){
-                p.radius_bubble = size;
-              }else{
-                p.radius_bubble = 0;
-              }
-            }
-
-          }
-
-          /* opacity */
-          if(pJS.interactivity.modes.bubble.opacity != pJS.particles.opacity.value){
-
-            if(pJS.interactivity.modes.bubble.opacity > pJS.particles.opacity.value){
-              var opacity = pJS.interactivity.modes.bubble.opacity*ratio;
-              if(opacity > p.opacity && opacity <= pJS.interactivity.modes.bubble.opacity){
-                p.opacity_bubble = opacity;
-              }
-            }else{
-              var opacity = p.opacity - (pJS.particles.opacity.value-pJS.interactivity.modes.bubble.opacity)*ratio;
-              if(opacity < p.opacity && opacity >= pJS.interactivity.modes.bubble.opacity){
-                p.opacity_bubble = opacity;
-              }
-            }
-
-          }
-
-        }
-
-      }else{
-        init();
-      }
-
-
-      /* mouseleave */
-      if(pJS.interactivity.status == 'mouseleave'){
-        init();
-      }
-    
-    }
-
-    /* on click event */
-    else if(pJS.interactivity.events.onclick.enable && isInArray('bubble', pJS.interactivity.events.onclick.mode)){
-
-
-      if(pJS.tmp.bubble_clicking){
-        var dx_mouse = p.x - pJS.interactivity.mouse.click_pos_x,
-            dy_mouse = p.y - pJS.interactivity.mouse.click_pos_y,
-            dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse),
-            time_spent = (new Date().getTime() - pJS.interactivity.mouse.click_time)/1000;
-
-        if(time_spent > pJS.interactivity.modes.bubble.duration){
-          pJS.tmp.bubble_duration_end = true;
-        }
-
-        if(time_spent > pJS.interactivity.modes.bubble.duration*2){
-          pJS.tmp.bubble_clicking = false;
-          pJS.tmp.bubble_duration_end = false;
-        }
-      }
-
-
-      function process(bubble_param, particles_param, p_obj_bubble, p_obj, id){
-
-        if(bubble_param != particles_param){
-
-          if(!pJS.tmp.bubble_duration_end){
-            if(dist_mouse <= pJS.interactivity.modes.bubble.distance){
-              if(p_obj_bubble != undefined) var obj = p_obj_bubble;
-              else var obj = p_obj;
-              if(obj != bubble_param){
-                var value = p_obj - (time_spent * (p_obj - bubble_param) / pJS.interactivity.modes.bubble.duration);
-                if(id == 'size') p.radius_bubble = value;
-                if(id == 'opacity') p.opacity_bubble = value;
-              }
-            }else{
-              if(id == 'size') p.radius_bubble = undefined;
-              if(id == 'opacity') p.opacity_bubble = undefined;
-            }
-          }else{
-            if(p_obj_bubble != undefined){
-              var value_tmp = p_obj - (time_spent * (p_obj - bubble_param) / pJS.interactivity.modes.bubble.duration),
-                  dif = bubble_param - value_tmp;
-                  value = bubble_param + dif;
-              if(id == 'size') p.radius_bubble = value;
-              if(id == 'opacity') p.opacity_bubble = value;
-            }
-          }
-
-        }
-
-      }
-
-      if(pJS.tmp.bubble_clicking){
-        /* size */
-        process(pJS.interactivity.modes.bubble.size, pJS.particles.size.value, p.radius_bubble, p.radius, 'size');
-        /* opacity */
-        process(pJS.interactivity.modes.bubble.opacity, pJS.particles.opacity.value, p.opacity_bubble, p.opacity, 'opacity');
-      }
-
-    }
-
-  };
-
-
-  pJS.fn.modes.repulseParticle = function(p){
-
-    if(pJS.interactivity.events.onhover.enable && isInArray('repulse', pJS.interactivity.events.onhover.mode) && pJS.interactivity.status == 'mousemove') {
-
-      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
-          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
-          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse);
-
-      var normVec = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse},
-          repulseRadius = pJS.interactivity.modes.repulse.distance,
-          velocity = 100,
-          repulseFactor = clamp((1/repulseRadius)*(-1*Math.pow(dist_mouse/repulseRadius,2)+1)*repulseRadius*velocity, 0, 50);
-      
-      var pos = {
-        x: p.x + normVec.x * repulseFactor,
-        y: p.y + normVec.y * repulseFactor
-      }
-
-      if(pJS.particles.move.out_mode == 'bounce'){
-        if(pos.x - p.radius > 0 && pos.x + p.radius < pJS.canvas.w) p.x = pos.x;
-        if(pos.y - p.radius > 0 && pos.y + p.radius < pJS.canvas.h) p.y = pos.y;
-      }else{
-        p.x = pos.x;
-        p.y = pos.y;
-      }
-    
-    }
-
-
-    else if(pJS.interactivity.events.onclick.enable && isInArray('repulse', pJS.interactivity.events.onclick.mode)) {
-
-      if(!pJS.tmp.repulse_finish){
-        pJS.tmp.repulse_count++;
-        if(pJS.tmp.repulse_count == pJS.particles.array.length){
-          pJS.tmp.repulse_finish = true;
-        }
-      }
-
-      if(pJS.tmp.repulse_clicking){
-
-        var repulseRadius = Math.pow(pJS.interactivity.modes.repulse.distance/6, 3);
-
-        var dx = pJS.interactivity.mouse.click_pos_x - p.x,
-            dy = pJS.interactivity.mouse.click_pos_y - p.y,
-            d = dx*dx + dy*dy;
-
-        var force = -repulseRadius / d * 1;
-
-        function process(){
-
-          var f = Math.atan2(dy,dx);
-          p.vx = force * Math.cos(f);
-          p.vy = force * Math.sin(f);
-
-          if(pJS.particles.move.out_mode == 'bounce'){
-            var pos = {
-              x: p.x + p.vx,
-              y: p.y + p.vy
-            }
-            if (pos.x + p.radius > pJS.canvas.w) p.vx = -p.vx;
-            else if (pos.x - p.radius < 0) p.vx = -p.vx;
-            if (pos.y + p.radius > pJS.canvas.h) p.vy = -p.vy;
-            else if (pos.y - p.radius < 0) p.vy = -p.vy;
-          }
-
-        }
-
-        // default
-        if(d <= repulseRadius){
-          process();
-        }
-
-        // bang - slow motion mode
-        // if(!pJS.tmp.repulse_finish){
-        //   if(d <= repulseRadius){
-        //     process();
-        //   }
-        // }else{
-        //   process();
-        // }
-        
-
-      }else{
-
-        if(pJS.tmp.repulse_clicking == false){
-
-          p.vx = p.vx_i;
-          p.vy = p.vy_i;
-        
-        }
-
-      }
-
-    }
-
-  }
-
-
-  pJS.fn.modes.grabParticle = function(p){
-
-    if(pJS.interactivity.events.onhover.enable && pJS.interactivity.status == 'mousemove'){
-
-      var dx_mouse = p.x - pJS.interactivity.mouse.pos_x,
-          dy_mouse = p.y - pJS.interactivity.mouse.pos_y,
-          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse);
-
-      /* draw a line between the cursor and the particle if the distance between them is under the config distance */
-      if(dist_mouse <= pJS.interactivity.modes.grab.distance){
-
-        var opacity_line = pJS.interactivity.modes.grab.line_linked.opacity - (dist_mouse / (1/pJS.interactivity.modes.grab.line_linked.opacity)) / pJS.interactivity.modes.grab.distance;
-
-        if(opacity_line > 0){
-
-          /* style */
-          var color_line = pJS.particles.line_linked.color_rgb_line;
-          pJS.canvas.ctx.strokeStyle = 'rgba('+color_line.r+','+color_line.g+','+color_line.b+','+opacity_line+')';
-          pJS.canvas.ctx.lineWidth = pJS.particles.line_linked.width;
-          //pJS.canvas.ctx.lineCap = 'round'; /* performance issue */
-          
-          /* path */
-          pJS.canvas.ctx.beginPath();
-          pJS.canvas.ctx.moveTo(p.x, p.y);
-          pJS.canvas.ctx.lineTo(pJS.interactivity.mouse.pos_x, pJS.interactivity.mouse.pos_y);
-          pJS.canvas.ctx.stroke();
-          pJS.canvas.ctx.closePath();
-
-        }
-
-      }
-
-    }
-
-  };
-
-
-
-  /* ---------- pJS functions - vendors ------------ */
-
-  pJS.fn.vendors.eventsListeners = function(){
-
-    /* events target element */
-    if(pJS.interactivity.detect_on == 'window'){
-      pJS.interactivity.el = window;
-    }else{
-      pJS.interactivity.el = pJS.canvas.el;
-    }
-
-
-    /* detect mouse pos - on hover / click event */
-    if(pJS.interactivity.events.onhover.enable || pJS.interactivity.events.onclick.enable){
-
-      /* el on mousemove */
-      pJS.interactivity.el.addEventListener('mousemove', function(e){
-
-        if(pJS.interactivity.el == window){
-          var pos_x = e.clientX,
-              pos_y = e.clientY;
-        }
-        else{
-          var pos_x = e.offsetX || e.clientX,
-              pos_y = e.offsetY || e.clientY;
-        }
-
-        pJS.interactivity.mouse.pos_x = pos_x;
-        pJS.interactivity.mouse.pos_y = pos_y;
-
-        if(pJS.tmp.retina){
-          pJS.interactivity.mouse.pos_x *= pJS.canvas.pxratio;
-          pJS.interactivity.mouse.pos_y *= pJS.canvas.pxratio;
-        }
-
-        pJS.interactivity.status = 'mousemove';
-
-      });
-
-      /* el on onmouseleave */
-      pJS.interactivity.el.addEventListener('mouseleave', function(e){
-
-        pJS.interactivity.mouse.pos_x = null;
-        pJS.interactivity.mouse.pos_y = null;
-        pJS.interactivity.status = 'mouseleave';
-
-      });
-
-    }
-
-    /* on click event */
-    if(pJS.interactivity.events.onclick.enable){
-
-      pJS.interactivity.el.addEventListener('click', function(){
-
-        pJS.interactivity.mouse.click_pos_x = pJS.interactivity.mouse.pos_x;
-        pJS.interactivity.mouse.click_pos_y = pJS.interactivity.mouse.pos_y;
-        pJS.interactivity.mouse.click_time = new Date().getTime();
-
-        if(pJS.interactivity.events.onclick.enable){
-
-          switch(pJS.interactivity.events.onclick.mode){
-
-            case 'push':
-              if(pJS.particles.move.enable){
-                pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
-              }else{
-                if(pJS.interactivity.modes.push.particles_nb == 1){
-                  pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
-                }
-                else if(pJS.interactivity.modes.push.particles_nb > 1){
-                  pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb);
-                }
-              }
-            break;
-
-            case 'remove':
-              pJS.fn.modes.removeParticles(pJS.interactivity.modes.remove.particles_nb);
-            break;
-
-            case 'bubble':
-              pJS.tmp.bubble_clicking = true;
-            break;
-
-            case 'repulse':
-              pJS.tmp.repulse_clicking = true;
-              pJS.tmp.repulse_count = 0;
-              pJS.tmp.repulse_finish = false;
-              setTimeout(function(){
-                pJS.tmp.repulse_clicking = false;
-              }, pJS.interactivity.modes.repulse.duration*1000)
-            break;
-
-          }
-
-        }
-
-      });
-        
-    }
-
-
-  };
-
-  pJS.fn.vendors.densityAutoParticles = function(){
-
-    if(pJS.particles.number.density.enable){
-
-      /* calc area */
-      var area = pJS.canvas.el.width * pJS.canvas.el.height / 1000;
-      if(pJS.tmp.retina){
-        area = area/(pJS.canvas.pxratio*2);
-      }
-
-      /* calc number of particles based on density area */
-      var nb_particles = area * pJS.particles.number.value / pJS.particles.number.density.value_area;
-
-      /* add or remove X particles */
-      var missing_particles = pJS.particles.array.length - nb_particles;
-      if(missing_particles < 0) pJS.fn.modes.pushParticles(Math.abs(missing_particles));
-      else pJS.fn.modes.removeParticles(missing_particles);
-
-    }
-
-  };
-
-
-  pJS.fn.vendors.checkOverlap = function(p1, position){
-    for(var i = 0; i < pJS.particles.array.length; i++){
-      var p2 = pJS.particles.array[i];
-
-      var dx = p1.x - p2.x,
-          dy = p1.y - p2.y,
-          dist = Math.sqrt(dx*dx + dy*dy);
-
-      if(dist <= p1.radius + p2.radius){
-        p1.x = position ? position.x : Math.random() * pJS.canvas.w;
-        p1.y = position ? position.y : Math.random() * pJS.canvas.h;
-        pJS.fn.vendors.checkOverlap(p1);
-      }
-    }
-  };
-
-
-  pJS.fn.vendors.createSvgImg = function(p){
-
-    /* set color to svg element */
-    var svgXml = pJS.tmp.source_svg,
-        rgbHex = /#([0-9A-F]{3,6})/gi,
-        coloredSvgXml = svgXml.replace(rgbHex, function (m, r, g, b) {
-          if(p.color.rgb){
-            var color_value = 'rgba('+p.color.rgb.r+','+p.color.rgb.g+','+p.color.rgb.b+','+p.opacity+')';
-          }else{
-            var color_value = 'hsla('+p.color.hsl.h+','+p.color.hsl.s+'%,'+p.color.hsl.l+'%,'+p.opacity+')';
-          }
-          return color_value;
-        });
-
-    /* prepare to create img with colored svg */
-    var svg = new Blob([coloredSvgXml], {type: 'image/svg+xml;charset=utf-8'}),
-        DOMURL = window.URL || window.webkitURL || window,
-        url = DOMURL.createObjectURL(svg);
-
-    /* create particle img obj */
-    var img = new Image();
-    img.addEventListener('load', function(){
-      p.img.obj = img;
-      p.img.loaded = true;
-      DOMURL.revokeObjectURL(url);
-      pJS.tmp.count_svg++;
-    });
-    img.src = url;
-
-  };
-
-
-  pJS.fn.vendors.destroypJS = function(){
-    cancelAnimationFrame(pJS.fn.drawAnimFrame);
-    canvas_el.remove();
-    pJSDom = null;
-  };
-
-
-  pJS.fn.vendors.drawShape = function(c, startX, startY, sideLength, sideCountNumerator, sideCountDenominator){
-
-    // By Programming Thomas - https://programmingthomas.wordpress.com/2013/04/03/n-sided-shapes/
-    var sideCount = sideCountNumerator * sideCountDenominator;
-    var decimalSides = sideCountNumerator / sideCountDenominator;
-    var interiorAngleDegrees = (180 * (decimalSides - 2)) / decimalSides;
-    var interiorAngle = Math.PI - Math.PI * interiorAngleDegrees / 180; // convert to radians
-    c.save();
-    c.beginPath();
-    c.translate(startX, startY);
-    c.moveTo(0,0);
-    for (var i = 0; i < sideCount; i++) {
-      c.lineTo(sideLength,0);
-      c.translate(sideLength,0);
-      c.rotate(interiorAngle);
-    }
-    //c.stroke();
-    c.fill();
-    c.restore();
-
-  };
-
-  pJS.fn.vendors.exportImg = function(){
-    window.open(pJS.canvas.el.toDataURL('image/png'), '_blank');
-  };
-
-
-  pJS.fn.vendors.loadImg = function(type){
-
-    pJS.tmp.img_error = undefined;
-
-    if(pJS.particles.shape.image.src != ''){
-
-      if(type == 'svg'){
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', pJS.particles.shape.image.src);
-        xhr.onreadystatechange = function (data) {
-          if(xhr.readyState == 4){
-            if(xhr.status == 200){
-              pJS.tmp.source_svg = data.currentTarget.response;
-              pJS.fn.vendors.checkBeforeDraw();
-            }else{
-              console.log('Error pJS - Image not found');
-              pJS.tmp.img_error = true;
-            }
-          }
-        }
-        xhr.send();
-
-      }else{
-
-        var img = new Image();
-        img.addEventListener('load', function(){
-          pJS.tmp.img_obj = img;
-          pJS.fn.vendors.checkBeforeDraw();
-        });
-        img.src = pJS.particles.shape.image.src;
-
-      }
-
-    }else{
-      console.log('Error pJS - No image.src');
-      pJS.tmp.img_error = true;
-    }
-
-  };
-
-
-  pJS.fn.vendors.draw = function(){
-
-    if(pJS.particles.shape.type == 'image'){
-
-      if(pJS.tmp.img_type == 'svg'){
-
-        if(pJS.tmp.count_svg >= pJS.particles.number.value){
-          pJS.fn.particlesDraw();
-          if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
-          else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
-        }else{
-          //console.log('still loading...');
-          if(!pJS.tmp.img_error) pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
-        }
-
-      }else{
-
-        if(pJS.tmp.img_obj != undefined){
-          pJS.fn.particlesDraw();
-          if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
-          else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
-        }else{
-          if(!pJS.tmp.img_error) pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
-        }
-
-      }
-
-    }else{
-      pJS.fn.particlesDraw();
-      if(!pJS.particles.move.enable) cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
-      else pJS.fn.drawAnimFrame = requestAnimFrame(pJS.fn.vendors.draw);
-    }
-
-  };
-
-
-  pJS.fn.vendors.checkBeforeDraw = function(){
-
-    // if shape is image
-    if(pJS.particles.shape.type == 'image'){
-
-      if(pJS.tmp.img_type == 'svg' && pJS.tmp.source_svg == undefined){
-        pJS.tmp.checkAnimFrame = requestAnimFrame(check);
-      }else{
-        //console.log('images loaded! cancel check');
-        cancelRequestAnimFrame(pJS.tmp.checkAnimFrame);
-        if(!pJS.tmp.img_error){
-          pJS.fn.vendors.init();
-          pJS.fn.vendors.draw();
-        }
-        
-      }
-
-    }else{
-      pJS.fn.vendors.init();
-      pJS.fn.vendors.draw();
-    }
-
-  };
-
-
-  pJS.fn.vendors.init = function(){
-
-    /* init canvas + particles */
-    pJS.fn.retinaInit();
-    pJS.fn.canvasInit();
-    pJS.fn.canvasSize();
-    pJS.fn.canvasPaint();
-    pJS.fn.particlesCreate();
-    pJS.fn.vendors.densityAutoParticles();
-
-    /* particles.line_linked - convert hex colors to rgb */
-    pJS.particles.line_linked.color_rgb_line = hexToRgb(pJS.particles.line_linked.color);
-
-  };
-
-
-  pJS.fn.vendors.start = function(){
-
-    if(isInArray('image', pJS.particles.shape.type)){
-      pJS.tmp.img_type = pJS.particles.shape.image.src.substr(pJS.particles.shape.image.src.length - 3);
-      pJS.fn.vendors.loadImg(pJS.tmp.img_type);
-    }else{
-      pJS.fn.vendors.checkBeforeDraw();
-    }
-
-  };
-
-
-
-
-  /* ---------- pJS - start ------------ */
-
-
-  pJS.fn.vendors.eventsListeners();
-
-  pJS.fn.vendors.start();
-  
-
-
-};
-
-/* ---------- global functions - vendors ------------ */
-
-Object.deepExtend = function(destination, source) {
-  for (var property in source) {
-    if (source[property] && source[property].constructor &&
-     source[property].constructor === Object) {
-      destination[property] = destination[property] || {};
-      arguments.callee(destination[property], source[property]);
-    } else {
-      destination[property] = source[property];
-    }
-  }
-  return destination;
-};
-
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame    ||
-    window.oRequestAnimationFrame      ||
-    window.msRequestAnimationFrame     ||
-    function(callback){
-      window.setTimeout(callback, 1000 / 60);
-    };
-})();
-
-window.cancelRequestAnimFrame = ( function() {
-  return window.cancelAnimationFrame         ||
-    window.webkitCancelRequestAnimationFrame ||
-    window.mozCancelRequestAnimationFrame    ||
-    window.oCancelRequestAnimationFrame      ||
-    window.msCancelRequestAnimationFrame     ||
-    clearTimeout
-} )();
-
-function hexToRgb(hex){
-  // By Tim Down - http://stackoverflow.com/a/5624139/3493650
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-     return r + r + g + g + b + b;
-  });
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-  } : null;
-};
-
-function clamp(number, min, max) {
-  return Math.min(Math.max(number, min), max);
-};
-
-function isInArray(value, array) {
-  return array.indexOf(value) > -1;
-}
-
-
-/* ---------- particles.js functions - start ------------ */
-
-window.pJSDom = [];
-
-window.particlesJS = function(tag_id, params){
-
-  //console.log(params);
-
-  /* no string id? so it's object params, and set the id with default id */
-  if(typeof(tag_id) != 'string'){
-    params = tag_id;
-    tag_id = 'particles-js';
-  }
-
-  /* no id? set the id to default id */
-  if(!tag_id){
-    tag_id = 'particles-js';
-  }
-
-  /* pJS elements */
-  var pJS_tag = document.getElementById(tag_id),
-      pJS_canvas_class = 'particles-js-canvas-el',
-      exist_canvas = pJS_tag.getElementsByClassName(pJS_canvas_class);
-
-  /* remove canvas if exists into the pJS target tag */
-  if(exist_canvas.length){
-    while(exist_canvas.length > 0){
-      pJS_tag.removeChild(exist_canvas[0]);
-    }
-  }
-
-  /* create canvas element */
-  var canvas_el = document.createElement('canvas');
-  canvas_el.className = pJS_canvas_class;
-
-  /* set size canvas */
-  canvas_el.style.width = "100%";
-  canvas_el.style.height = "100%";
-
-  /* append canvas */
-  var canvas = document.getElementById(tag_id).appendChild(canvas_el);
-
-  /* launch particle.js */
-  if(canvas != null){
-    pJSDom.push(new pJS(tag_id, params));
-  }
-
-};
-
-window.particlesJS.load = function(tag_id, path_config_json, callback){
-
-  /* load json config */
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', path_config_json);
-  xhr.onreadystatechange = function (data) {
-    if(xhr.readyState == 4){
-      if(xhr.status == 200){
-        var params = JSON.parse(data.currentTarget.response);
-        window.particlesJS(tag_id, params);
-        if(callback) callback();
-      }else{
-        console.log('Error pJS - XMLHttpRequest status: '+xhr.status);
-        console.log('Error pJS - File config not found');
-      }
-    }
-  };
-  xhr.send();
-
-};
-
-/***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */
+/* 58 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(44);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(82)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(48),
-  /* template */
-  __webpack_require__(84),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-1a8c8849",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\slide\\slide.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1a8c8849", Component.options)
-  } else {
-    hotAPI.reload("data-v-1a8c8849", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 46 */,
-/* 47 */,
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'carrousel',
-    data: function data() {
-        return {
-            swiperOption: {
-                autoplay: 3500,
-                setWrapperSize: true,
-                pagination: '.swiper-pagination',
-                paginationClickable: true,
-                mousewheelControl: false,
-                observeParents: true,
-                autoplayDisableOnInteraction: false
-            },
-            swiperSlides: [{
-                thumb: "../../../images/bg.png",
-                title: "bg1"
-            }, {
-                thumb: "../../../images/bg1.png",
-                title: "bg2"
-            }, {
-                thumb: "../../../images/bg2.png",
-                title: "bg3"
-            }]
-        };
-    }
-});
-
-/***/ }),
-/* 49 */,
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(51);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(43)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../css-loader/index.js!./swiper.css", function() {
-			var newContent = require("!!../../../css-loader/index.js!./swiper.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Swiper 3.4.2\n * Most modern mobile touch slider and framework with hardware accelerated transitions\n * \n * http://www.idangero.us/swiper/\n * \n * Copyright 2017, Vladimir Kharlampidi\n * The iDangero.us\n * http://www.idangero.us/\n * \n * Licensed under MIT\n * \n * Released on: March 10, 2017\n */\n.swiper-container {\n  margin-left: auto;\n  margin-right: auto;\n  position: relative;\n  overflow: hidden;\n  /* Fix of Webkit flickering */\n  z-index: 1;\n}\n.swiper-container-no-flexbox .swiper-slide {\n  float: left;\n}\n.swiper-container-vertical > .swiper-wrapper {\n  -webkit-box-orient: vertical;\n  -moz-box-orient: vertical;\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  flex-direction: column;\n}\n.swiper-wrapper {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n  -webkit-transition-property: -webkit-transform;\n  -moz-transition-property: -moz-transform;\n  -o-transition-property: -o-transform;\n  -ms-transition-property: -ms-transform;\n  transition-property: transform;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n.swiper-container-android .swiper-slide,\n.swiper-wrapper {\n  -webkit-transform: translate3d(0px, 0, 0);\n  -moz-transform: translate3d(0px, 0, 0);\n  -o-transform: translate(0px, 0px);\n  -ms-transform: translate3d(0px, 0, 0);\n  transform: translate3d(0px, 0, 0);\n}\n.swiper-container-multirow > .swiper-wrapper {\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  -ms-flex-wrap: wrap;\n  -webkit-flex-wrap: wrap;\n  flex-wrap: wrap;\n}\n.swiper-container-free-mode > .swiper-wrapper {\n  -webkit-transition-timing-function: ease-out;\n  -moz-transition-timing-function: ease-out;\n  -ms-transition-timing-function: ease-out;\n  -o-transition-timing-function: ease-out;\n  transition-timing-function: ease-out;\n  margin: 0 auto;\n}\n.swiper-slide {\n  -webkit-flex-shrink: 0;\n  -ms-flex: 0 0 auto;\n  flex-shrink: 0;\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n/* Auto Height */\n.swiper-container-autoheight,\n.swiper-container-autoheight .swiper-slide {\n  height: auto;\n}\n.swiper-container-autoheight .swiper-wrapper {\n  -webkit-box-align: start;\n  -ms-flex-align: start;\n  -webkit-align-items: flex-start;\n  align-items: flex-start;\n  -webkit-transition-property: -webkit-transform, height;\n  -moz-transition-property: -moz-transform;\n  -o-transition-property: -o-transform;\n  -ms-transition-property: -ms-transform;\n  transition-property: transform, height;\n}\n/* a11y */\n.swiper-container .swiper-notification {\n  position: absolute;\n  left: 0;\n  top: 0;\n  pointer-events: none;\n  opacity: 0;\n  z-index: -1000;\n}\n/* IE10 Windows Phone 8 Fixes */\n.swiper-wp8-horizontal {\n  -ms-touch-action: pan-y;\n  touch-action: pan-y;\n}\n.swiper-wp8-vertical {\n  -ms-touch-action: pan-x;\n  touch-action: pan-x;\n}\n/* Arrows */\n.swiper-button-prev,\n.swiper-button-next {\n  position: absolute;\n  top: 50%;\n  width: 27px;\n  height: 44px;\n  margin-top: -22px;\n  z-index: 10;\n  cursor: pointer;\n  -moz-background-size: 27px 44px;\n  -webkit-background-size: 27px 44px;\n  background-size: 27px 44px;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n.swiper-button-prev.swiper-button-disabled,\n.swiper-button-next.swiper-button-disabled {\n  opacity: 0.35;\n  cursor: auto;\n  pointer-events: none;\n}\n.swiper-button-prev,\n.swiper-container-rtl .swiper-button-next {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E\");\n  left: 10px;\n  right: auto;\n}\n.swiper-button-prev.swiper-button-black,\n.swiper-container-rtl .swiper-button-next.swiper-button-black {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-prev.swiper-button-white,\n.swiper-container-rtl .swiper-button-next.swiper-button-white {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-next,\n.swiper-container-rtl .swiper-button-prev {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E\");\n  right: 10px;\n  left: auto;\n}\n.swiper-button-next.swiper-button-black,\n.swiper-container-rtl .swiper-button-prev.swiper-button-black {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E\");\n}\n.swiper-button-next.swiper-button-white,\n.swiper-container-rtl .swiper-button-prev.swiper-button-white {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E\");\n}\n/* Pagination Styles */\n.swiper-pagination {\n  position: absolute;\n  text-align: center;\n  -webkit-transition: 300ms;\n  -moz-transition: 300ms;\n  -o-transition: 300ms;\n  transition: 300ms;\n  -webkit-transform: translate3d(0, 0, 0);\n  -ms-transform: translate3d(0, 0, 0);\n  -o-transform: translate3d(0, 0, 0);\n  transform: translate3d(0, 0, 0);\n  z-index: 10;\n}\n.swiper-pagination.swiper-pagination-hidden {\n  opacity: 0;\n}\n/* Common Styles */\n.swiper-pagination-fraction,\n.swiper-pagination-custom,\n.swiper-container-horizontal > .swiper-pagination-bullets {\n  bottom: 10px;\n  left: 0;\n  width: 100%;\n}\n/* Bullets */\n.swiper-pagination-bullet {\n  width: 8px;\n  height: 8px;\n  display: inline-block;\n  border-radius: 100%;\n  background: #000;\n  opacity: 0.2;\n}\nbutton.swiper-pagination-bullet {\n  border: none;\n  margin: 0;\n  padding: 0;\n  box-shadow: none;\n  -moz-appearance: none;\n  -ms-appearance: none;\n  -webkit-appearance: none;\n  appearance: none;\n}\n.swiper-pagination-clickable .swiper-pagination-bullet {\n  cursor: pointer;\n}\n.swiper-pagination-white .swiper-pagination-bullet {\n  background: #fff;\n}\n.swiper-pagination-bullet-active {\n  opacity: .6;\n  background: rgba(0, 3, 13, 0.7);\n}\n.swiper-pagination-white .swiper-pagination-bullet-active {\n  background: #fff;\n}\n.swiper-pagination-black .swiper-pagination-bullet-active {\n  background: #000;\n}\n.swiper-container-vertical > .swiper-pagination-bullets {\n  right: 10px;\n  top: 50%;\n  -webkit-transform: translate3d(0px, -50%, 0);\n  -moz-transform: translate3d(0px, -50%, 0);\n  -o-transform: translate(0px, -50%);\n  -ms-transform: translate3d(0px, -50%, 0);\n  transform: translate3d(0px, -50%, 0);\n}\n.swiper-container-vertical > .swiper-pagination-bullets .swiper-pagination-bullet {\n  margin: 5px 0;\n  display: block;\n}\n.swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {\n  margin: 0 5px;\n}\n/* Progress */\n.swiper-pagination-progress {\n  background: rgba(0, 0, 0, 0.25);\n  position: absolute;\n}\n.swiper-pagination-progress .swiper-pagination-progressbar {\n  background: #007aff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  -webkit-transform: scale(0);\n  -ms-transform: scale(0);\n  -o-transform: scale(0);\n  transform: scale(0);\n  -webkit-transform-origin: left top;\n  -moz-transform-origin: left top;\n  -ms-transform-origin: left top;\n  -o-transform-origin: left top;\n  transform-origin: left top;\n}\n.swiper-container-rtl .swiper-pagination-progress .swiper-pagination-progressbar {\n  -webkit-transform-origin: right top;\n  -moz-transform-origin: right top;\n  -ms-transform-origin: right top;\n  -o-transform-origin: right top;\n  transform-origin: right top;\n}\n.swiper-container-horizontal > .swiper-pagination-progress {\n  width: 100%;\n  height: 4px;\n  left: 0;\n  top: 0;\n}\n.swiper-container-vertical > .swiper-pagination-progress {\n  width: 4px;\n  height: 100%;\n  left: 0;\n  top: 0;\n}\n.swiper-pagination-progress.swiper-pagination-white {\n  background: rgba(255, 255, 255, 0.5);\n}\n.swiper-pagination-progress.swiper-pagination-white .swiper-pagination-progressbar {\n  background: #fff;\n}\n.swiper-pagination-progress.swiper-pagination-black .swiper-pagination-progressbar {\n  background: #000;\n}\n/* 3D Container */\n.swiper-container-3d {\n  -webkit-perspective: 1200px;\n  -moz-perspective: 1200px;\n  -o-perspective: 1200px;\n  perspective: 1200px;\n}\n.swiper-container-3d .swiper-wrapper,\n.swiper-container-3d .swiper-slide,\n.swiper-container-3d .swiper-slide-shadow-left,\n.swiper-container-3d .swiper-slide-shadow-right,\n.swiper-container-3d .swiper-slide-shadow-top,\n.swiper-container-3d .swiper-slide-shadow-bottom,\n.swiper-container-3d .swiper-cube-shadow {\n  -webkit-transform-style: preserve-3d;\n  -moz-transform-style: preserve-3d;\n  -ms-transform-style: preserve-3d;\n  transform-style: preserve-3d;\n}\n.swiper-container-3d .swiper-slide-shadow-left,\n.swiper-container-3d .swiper-slide-shadow-right,\n.swiper-container-3d .swiper-slide-shadow-top,\n.swiper-container-3d .swiper-slide-shadow-bottom {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 10;\n}\n.swiper-container-3d .swiper-slide-shadow-left {\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-right {\n  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-top {\n  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n.swiper-container-3d .swiper-slide-shadow-bottom {\n  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));\n  /* Safari 4+, Chrome */\n  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Chrome 10+, Safari 5.1+, iOS 5+ */\n  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 3.6-15 */\n  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Opera 11.10-12.00 */\n  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));\n  /* Firefox 16+, IE10, Opera 12.50+ */\n}\n/* Coverflow */\n.swiper-container-coverflow .swiper-wrapper,\n.swiper-container-flip .swiper-wrapper {\n  /* Windows 8 IE 10 fix */\n  -ms-perspective: 1200px;\n}\n/* Cube + Flip */\n.swiper-container-cube,\n.swiper-container-flip {\n  overflow: visible;\n}\n.swiper-container-cube .swiper-slide,\n.swiper-container-flip .swiper-slide {\n  pointer-events: none;\n  -webkit-backface-visibility: hidden;\n  -moz-backface-visibility: hidden;\n  -ms-backface-visibility: hidden;\n  backface-visibility: hidden;\n  z-index: 1;\n}\n.swiper-container-cube .swiper-slide .swiper-slide,\n.swiper-container-flip .swiper-slide .swiper-slide {\n  pointer-events: none;\n}\n.swiper-container-cube .swiper-slide-active,\n.swiper-container-flip .swiper-slide-active,\n.swiper-container-cube .swiper-slide-active .swiper-slide-active,\n.swiper-container-flip .swiper-slide-active .swiper-slide-active {\n  pointer-events: auto;\n}\n.swiper-container-cube .swiper-slide-shadow-top,\n.swiper-container-flip .swiper-slide-shadow-top,\n.swiper-container-cube .swiper-slide-shadow-bottom,\n.swiper-container-flip .swiper-slide-shadow-bottom,\n.swiper-container-cube .swiper-slide-shadow-left,\n.swiper-container-flip .swiper-slide-shadow-left,\n.swiper-container-cube .swiper-slide-shadow-right,\n.swiper-container-flip .swiper-slide-shadow-right {\n  z-index: 0;\n  -webkit-backface-visibility: hidden;\n  -moz-backface-visibility: hidden;\n  -ms-backface-visibility: hidden;\n  backface-visibility: hidden;\n}\n/* Cube */\n.swiper-container-cube .swiper-slide {\n  visibility: hidden;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -ms-transform-origin: 0 0;\n  transform-origin: 0 0;\n  width: 100%;\n  height: 100%;\n}\n.swiper-container-cube.swiper-container-rtl .swiper-slide {\n  -webkit-transform-origin: 100% 0;\n  -moz-transform-origin: 100% 0;\n  -ms-transform-origin: 100% 0;\n  transform-origin: 100% 0;\n}\n.swiper-container-cube .swiper-slide-active,\n.swiper-container-cube .swiper-slide-next,\n.swiper-container-cube .swiper-slide-prev,\n.swiper-container-cube .swiper-slide-next + .swiper-slide {\n  pointer-events: auto;\n  visibility: visible;\n}\n.swiper-container-cube .swiper-cube-shadow {\n  position: absolute;\n  left: 0;\n  bottom: 0px;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  opacity: 0.6;\n  -webkit-filter: blur(50px);\n  filter: blur(50px);\n  z-index: 0;\n}\n/* Fade */\n.swiper-container-fade.swiper-container-free-mode .swiper-slide {\n  -webkit-transition-timing-function: ease-out;\n  -moz-transition-timing-function: ease-out;\n  -ms-transition-timing-function: ease-out;\n  -o-transition-timing-function: ease-out;\n  transition-timing-function: ease-out;\n}\n.swiper-container-fade .swiper-slide {\n  pointer-events: none;\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  -o-transition-property: opacity;\n  transition-property: opacity;\n}\n.swiper-container-fade .swiper-slide .swiper-slide {\n  pointer-events: none;\n}\n.swiper-container-fade .swiper-slide-active,\n.swiper-container-fade .swiper-slide-active .swiper-slide-active {\n  pointer-events: auto;\n}\n.swiper-zoom-container {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -ms-flex-pack: center;\n  -webkit-justify-content: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -ms-flex-align: center;\n  -webkit-align-items: center;\n  align-items: center;\n  text-align: center;\n}\n.swiper-zoom-container > img,\n.swiper-zoom-container > svg,\n.swiper-zoom-container > canvas {\n  max-width: 100%;\n  max-height: 100%;\n  object-fit: contain;\n}\n/* Scrollbar */\n.swiper-scrollbar {\n  border-radius: 10px;\n  position: relative;\n  -ms-touch-action: none;\n  background: rgba(0, 0, 0, 0.1);\n}\n.swiper-container-horizontal > .swiper-scrollbar {\n  position: absolute;\n  left: 1%;\n  bottom: 3px;\n  z-index: 50;\n  height: 5px;\n  width: 98%;\n}\n.swiper-container-vertical > .swiper-scrollbar {\n  position: absolute;\n  right: 3px;\n  top: 1%;\n  z-index: 50;\n  width: 5px;\n  height: 98%;\n}\n.swiper-scrollbar-drag {\n  height: 100%;\n  width: 100%;\n  position: relative;\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 10px;\n  left: 0;\n  top: 0;\n}\n.swiper-scrollbar-cursor-drag {\n  cursor: move;\n}\n/* Preloader */\n.swiper-lazy-preloader {\n  width: 42px;\n  height: 42px;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin-left: -21px;\n  margin-top: -21px;\n  z-index: 10;\n  -webkit-transform-origin: 50%;\n  -moz-transform-origin: 50%;\n  transform-origin: 50%;\n  -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;\n  -moz-animation: swiper-preloader-spin 1s steps(12, end) infinite;\n  animation: swiper-preloader-spin 1s steps(12, end) infinite;\n}\n.swiper-lazy-preloader:after {\n  display: block;\n  content: \"\";\n  width: 100%;\n  height: 100%;\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\");\n  background-position: 50%;\n  -webkit-background-size: 100%;\n  background-size: 100%;\n  background-repeat: no-repeat;\n}\n.swiper-lazy-preloader-white:after {\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\");\n}\n@-webkit-keyframes swiper-preloader-spin {\n  100% {\n    -webkit-transform: rotate(360deg);\n  }\n}\n@keyframes swiper-preloader-spin {\n  100% {\n    transform: rotate(360deg);\n  }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Swiper 3.4.2
- * Most modern mobile touch slider and framework with hardware accelerated transitions
- * 
- * http://www.idangero.us/swiper/
- * 
- * Copyright 2017, Vladimir Kharlampidi
- * The iDangero.us
- * http://www.idangero.us/
- * 
- * Licensed under MIT
- * 
- * Released on: March 10, 2017
- */
-(function () {
-    'use strict';
-    var $;
-
-    /*===========================
-    Swiper
-    ===========================*/
-    var Swiper = function (container, params) {
-        if (!(this instanceof Swiper)) return new Swiper(container, params);
-    
-
-        var defaults = {
-            direction: 'horizontal',
-            touchEventsTarget: 'container',
-            initialSlide: 0,
-            speed: 300,
-            // autoplay
-            autoplay: false,
-            autoplayDisableOnInteraction: true,
-            autoplayStopOnLast: false,
-            // To support iOS's swipe-to-go-back gesture (when being used in-app, with UIWebView).
-            iOSEdgeSwipeDetection: false,
-            iOSEdgeSwipeThreshold: 20,
-            // Free mode
-            freeMode: false,
-            freeModeMomentum: true,
-            freeModeMomentumRatio: 1,
-            freeModeMomentumBounce: true,
-            freeModeMomentumBounceRatio: 1,
-            freeModeMomentumVelocityRatio: 1,
-            freeModeSticky: false,
-            freeModeMinimumVelocity: 0.02,
-            // Autoheight
-            autoHeight: false,
-            // Set wrapper width
-            setWrapperSize: false,
-            // Virtual Translate
-            virtualTranslate: false,
-            // Effects
-            effect: 'slide', // 'slide' or 'fade' or 'cube' or 'coverflow' or 'flip'
-            coverflow: {
-                rotate: 50,
-                stretch: 0,
-                depth: 100,
-                modifier: 1,
-                slideShadows : true
-            },
-            flip: {
-                slideShadows : true,
-                limitRotation: true
-            },
-            cube: {
-                slideShadows: true,
-                shadow: true,
-                shadowOffset: 20,
-                shadowScale: 0.94
-            },
-            fade: {
-                crossFade: false
-            },
-            // Parallax
-            parallax: false,
-            // Zoom
-            zoom: false,
-            zoomMax: 3,
-            zoomMin: 1,
-            zoomToggle: true,
-            // Scrollbar
-            scrollbar: null,
-            scrollbarHide: true,
-            scrollbarDraggable: false,
-            scrollbarSnapOnRelease: false,
-            // Keyboard Mousewheel
-            keyboardControl: false,
-            mousewheelControl: false,
-            mousewheelReleaseOnEdges: false,
-            mousewheelInvert: false,
-            mousewheelForceToAxis: false,
-            mousewheelSensitivity: 1,
-            mousewheelEventsTarged: 'container',
-            // Hash Navigation
-            hashnav: false,
-            hashnavWatchState: false,
-            // History
-            history: false,
-            // Commong Nav State
-            replaceState: false,
-            // Breakpoints
-            breakpoints: undefined,
-            // Slides grid
-            spaceBetween: 0,
-            slidesPerView: 1,
-            slidesPerColumn: 1,
-            slidesPerColumnFill: 'column',
-            slidesPerGroup: 1,
-            centeredSlides: false,
-            slidesOffsetBefore: 0, // in px
-            slidesOffsetAfter: 0, // in px
-            // Round length
-            roundLengths: false,
-            // Touches
-            touchRatio: 1,
-            touchAngle: 45,
-            simulateTouch: true,
-            shortSwipes: true,
-            longSwipes: true,
-            longSwipesRatio: 0.5,
-            longSwipesMs: 300,
-            followFinger: true,
-            onlyExternal: false,
-            threshold: 0,
-            touchMoveStopPropagation: true,
-            touchReleaseOnEdges: false,
-            // Unique Navigation Elements
-            uniqueNavElements: true,
-            // Pagination
-            pagination: null,
-            paginationElement: 'span',
-            paginationClickable: false,
-            paginationHide: false,
-            paginationBulletRender: null,
-            paginationProgressRender: null,
-            paginationFractionRender: null,
-            paginationCustomRender: null,
-            paginationType: 'bullets', // 'bullets' or 'progress' or 'fraction' or 'custom'
-            // Resistance
-            resistance: true,
-            resistanceRatio: 0.85,
-            // Next/prev buttons
-            nextButton: null,
-            prevButton: null,
-            // Progress
-            watchSlidesProgress: false,
-            watchSlidesVisibility: false,
-            // Cursor
-            grabCursor: false,
-            // Clicks
-            preventClicks: true,
-            preventClicksPropagation: true,
-            slideToClickedSlide: false,
-            // Lazy Loading
-            lazyLoading: false,
-            lazyLoadingInPrevNext: false,
-            lazyLoadingInPrevNextAmount: 1,
-            lazyLoadingOnTransitionStart: false,
-            // Images
-            preloadImages: true,
-            updateOnImagesReady: true,
-            // loop
-            loop: false,
-            loopAdditionalSlides: 0,
-            loopedSlides: null,
-            // Control
-            control: undefined,
-            controlInverse: false,
-            controlBy: 'slide', //or 'container'
-            normalizeSlideIndex: true,
-            // Swiping/no swiping
-            allowSwipeToPrev: true,
-            allowSwipeToNext: true,
-            swipeHandler: null, //'.swipe-handler',
-            noSwiping: true,
-            noSwipingClass: 'swiper-no-swiping',
-            // Passive Listeners
-            passiveListeners: true,
-            // NS
-            containerModifierClass: 'swiper-container-', // NEW
-            slideClass: 'swiper-slide',
-            slideActiveClass: 'swiper-slide-active',
-            slideDuplicateActiveClass: 'swiper-slide-duplicate-active',
-            slideVisibleClass: 'swiper-slide-visible',
-            slideDuplicateClass: 'swiper-slide-duplicate',
-            slideNextClass: 'swiper-slide-next',
-            slideDuplicateNextClass: 'swiper-slide-duplicate-next',
-            slidePrevClass: 'swiper-slide-prev',
-            slideDuplicatePrevClass: 'swiper-slide-duplicate-prev',
-            wrapperClass: 'swiper-wrapper',
-            bulletClass: 'swiper-pagination-bullet',
-            bulletActiveClass: 'swiper-pagination-bullet-active',
-            buttonDisabledClass: 'swiper-button-disabled',
-            paginationCurrentClass: 'swiper-pagination-current',
-            paginationTotalClass: 'swiper-pagination-total',
-            paginationHiddenClass: 'swiper-pagination-hidden',
-            paginationProgressbarClass: 'swiper-pagination-progressbar',
-            paginationClickableClass: 'swiper-pagination-clickable', // NEW
-            paginationModifierClass: 'swiper-pagination-', // NEW
-            lazyLoadingClass: 'swiper-lazy',
-            lazyStatusLoadingClass: 'swiper-lazy-loading',
-            lazyStatusLoadedClass: 'swiper-lazy-loaded',
-            lazyPreloaderClass: 'swiper-lazy-preloader',
-            notificationClass: 'swiper-notification',
-            preloaderClass: 'preloader',
-            zoomContainerClass: 'swiper-zoom-container',
-        
-            // Observer
-            observer: false,
-            observeParents: false,
-            // Accessibility
-            a11y: false,
-            prevSlideMessage: 'Previous slide',
-            nextSlideMessage: 'Next slide',
-            firstSlideMessage: 'This is the first slide',
-            lastSlideMessage: 'This is the last slide',
-            paginationBulletMessage: 'Go to slide {{index}}',
-            // Callbacks
-            runCallbacksOnInit: true
-            /*
-            Callbacks:
-            onInit: function (swiper)
-            onDestroy: function (swiper)
-            onBeforeResize: function (swiper)
-            onAfterResize: function (swiper)
-            onClick: function (swiper, e)
-            onTap: function (swiper, e)
-            onDoubleTap: function (swiper, e)
-            onSliderMove: function (swiper, e)
-            onSlideChangeStart: function (swiper)
-            onSlideChangeEnd: function (swiper)
-            onTransitionStart: function (swiper)
-            onTransitionEnd: function (swiper)
-            onImagesReady: function (swiper)
-            onProgress: function (swiper, progress)
-            onTouchStart: function (swiper, e)
-            onTouchMove: function (swiper, e)
-            onTouchMoveOpposite: function (swiper, e)
-            onTouchEnd: function (swiper, e)
-            onReachBeginning: function (swiper)
-            onReachEnd: function (swiper)
-            onSetTransition: function (swiper, duration)
-            onSetTranslate: function (swiper, translate)
-            onAutoplayStart: function (swiper)
-            onAutoplayStop: function (swiper),
-            onLazyImageLoad: function (swiper, slide, image)
-            onLazyImageReady: function (swiper, slide, image)
-            onKeyPress: function (swiper, keyCode)
-            */
-        
-        };
-        var initialVirtualTranslate = params && params.virtualTranslate;
-        
-        params = params || {};
-        var originalParams = {};
-        for (var param in params) {
-            if (typeof params[param] === 'object' && params[param] !== null && !(params[param].nodeType || params[param] === window || params[param] === document || (typeof Dom7 !== 'undefined' && params[param] instanceof Dom7) || (typeof jQuery !== 'undefined' && params[param] instanceof jQuery))) {
-                originalParams[param] = {};
-                for (var deepParam in params[param]) {
-                    originalParams[param][deepParam] = params[param][deepParam];
-                }
-            }
-            else {
-                originalParams[param] = params[param];
-            }
-        }
-        for (var def in defaults) {
-            if (typeof params[def] === 'undefined') {
-                params[def] = defaults[def];
-            }
-            else if (typeof params[def] === 'object') {
-                for (var deepDef in defaults[def]) {
-                    if (typeof params[def][deepDef] === 'undefined') {
-                        params[def][deepDef] = defaults[def][deepDef];
-                    }
-                }
-            }
-        }
-        
-        // Swiper
-        var s = this;
-        
-        // Params
-        s.params = params;
-        s.originalParams = originalParams;
-        
-        // Classname
-        s.classNames = [];
-        /*=========================
-          Dom Library and plugins
-          ===========================*/
-        if (typeof $ !== 'undefined' && typeof Dom7 !== 'undefined'){
-            $ = Dom7;
-        }
-        if (typeof $ === 'undefined') {
-            if (typeof Dom7 === 'undefined') {
-                $ = window.Dom7 || window.Zepto || window.jQuery;
-            }
-            else {
-                $ = Dom7;
-            }
-            if (!$) return;
-        }
-        // Export it to Swiper instance
-        s.$ = $;
-        
-        /*=========================
-          Breakpoints
-          ===========================*/
-        s.currentBreakpoint = undefined;
-        s.getActiveBreakpoint = function () {
-            //Get breakpoint for window width
-            if (!s.params.breakpoints) return false;
-            var breakpoint = false;
-            var points = [], point;
-            for ( point in s.params.breakpoints ) {
-                if (s.params.breakpoints.hasOwnProperty(point)) {
-                    points.push(point);
-                }
-            }
-            points.sort(function (a, b) {
-                return parseInt(a, 10) > parseInt(b, 10);
-            });
-            for (var i = 0; i < points.length; i++) {
-                point = points[i];
-                if (point >= window.innerWidth && !breakpoint) {
-                    breakpoint = point;
-                }
-            }
-            return breakpoint || 'max';
-        };
-        s.setBreakpoint = function () {
-            //Set breakpoint for window width and update parameters
-            var breakpoint = s.getActiveBreakpoint();
-            if (breakpoint && s.currentBreakpoint !== breakpoint) {
-                var breakPointsParams = breakpoint in s.params.breakpoints ? s.params.breakpoints[breakpoint] : s.originalParams;
-                var needsReLoop = s.params.loop && (breakPointsParams.slidesPerView !== s.params.slidesPerView);
-                for ( var param in breakPointsParams ) {
-                    s.params[param] = breakPointsParams[param];
-                }
-                s.currentBreakpoint = breakpoint;
-                if(needsReLoop && s.destroyLoop) {
-                    s.reLoop(true);
-                }
-            }
-        };
-        // Set breakpoint on load
-        if (s.params.breakpoints) {
-            s.setBreakpoint();
-        }
-        
-        /*=========================
-          Preparation - Define Container, Wrapper and Pagination
-          ===========================*/
-        s.container = $(container);
-        if (s.container.length === 0) return;
-        if (s.container.length > 1) {
-            var swipers = [];
-            s.container.each(function () {
-                var container = this;
-                swipers.push(new Swiper(this, params));
-            });
-            return swipers;
-        }
-        
-        // Save instance in container HTML Element and in data
-        s.container[0].swiper = s;
-        s.container.data('swiper', s);
-        
-        s.classNames.push(s.params.containerModifierClass + s.params.direction);
-        
-        if (s.params.freeMode) {
-            s.classNames.push(s.params.containerModifierClass + 'free-mode');
-        }
-        if (!s.support.flexbox) {
-            s.classNames.push(s.params.containerModifierClass + 'no-flexbox');
-            s.params.slidesPerColumn = 1;
-        }
-        if (s.params.autoHeight) {
-            s.classNames.push(s.params.containerModifierClass + 'autoheight');
-        }
-        // Enable slides progress when required
-        if (s.params.parallax || s.params.watchSlidesVisibility) {
-            s.params.watchSlidesProgress = true;
-        }
-        // Max resistance when touchReleaseOnEdges
-        if (s.params.touchReleaseOnEdges) {
-            s.params.resistanceRatio = 0;
-        }
-        // Coverflow / 3D
-        if (['cube', 'coverflow', 'flip'].indexOf(s.params.effect) >= 0) {
-            if (s.support.transforms3d) {
-                s.params.watchSlidesProgress = true;
-                s.classNames.push(s.params.containerModifierClass + '3d');
-            }
-            else {
-                s.params.effect = 'slide';
-            }
-        }
-        if (s.params.effect !== 'slide') {
-            s.classNames.push(s.params.containerModifierClass + s.params.effect);
-        }
-        if (s.params.effect === 'cube') {
-            s.params.resistanceRatio = 0;
-            s.params.slidesPerView = 1;
-            s.params.slidesPerColumn = 1;
-            s.params.slidesPerGroup = 1;
-            s.params.centeredSlides = false;
-            s.params.spaceBetween = 0;
-            s.params.virtualTranslate = true;
-        }
-        if (s.params.effect === 'fade' || s.params.effect === 'flip') {
-            s.params.slidesPerView = 1;
-            s.params.slidesPerColumn = 1;
-            s.params.slidesPerGroup = 1;
-            s.params.watchSlidesProgress = true;
-            s.params.spaceBetween = 0;
-            if (typeof initialVirtualTranslate === 'undefined') {
-                s.params.virtualTranslate = true;
-            }
-        }
-        
-        // Grab Cursor
-        if (s.params.grabCursor && s.support.touch) {
-            s.params.grabCursor = false;
-        }
-        
-        // Wrapper
-        s.wrapper = s.container.children('.' + s.params.wrapperClass);
-        
-        // Pagination
-        if (s.params.pagination) {
-            s.paginationContainer = $(s.params.pagination);
-            if (s.params.uniqueNavElements && typeof s.params.pagination === 'string' && s.paginationContainer.length > 1 && s.container.find(s.params.pagination).length === 1) {
-                s.paginationContainer = s.container.find(s.params.pagination);
-            }
-        
-            if (s.params.paginationType === 'bullets' && s.params.paginationClickable) {
-                s.paginationContainer.addClass(s.params.paginationModifierClass + 'clickable');
-            }
-            else {
-                s.params.paginationClickable = false;
-            }
-            s.paginationContainer.addClass(s.params.paginationModifierClass + s.params.paginationType);
-        }
-        // Next/Prev Buttons
-        if (s.params.nextButton || s.params.prevButton) {
-            if (s.params.nextButton) {
-                s.nextButton = $(s.params.nextButton);
-                if (s.params.uniqueNavElements && typeof s.params.nextButton === 'string' && s.nextButton.length > 1 && s.container.find(s.params.nextButton).length === 1) {
-                    s.nextButton = s.container.find(s.params.nextButton);
-                }
-            }
-            if (s.params.prevButton) {
-                s.prevButton = $(s.params.prevButton);
-                if (s.params.uniqueNavElements && typeof s.params.prevButton === 'string' && s.prevButton.length > 1 && s.container.find(s.params.prevButton).length === 1) {
-                    s.prevButton = s.container.find(s.params.prevButton);
-                }
-            }
-        }
-        
-        // Is Horizontal
-        s.isHorizontal = function () {
-            return s.params.direction === 'horizontal';
-        };
-        // s.isH = isH;
-        
-        // RTL
-        s.rtl = s.isHorizontal() && (s.container[0].dir.toLowerCase() === 'rtl' || s.container.css('direction') === 'rtl');
-        if (s.rtl) {
-            s.classNames.push(s.params.containerModifierClass + 'rtl');
-        }
-        
-        // Wrong RTL support
-        if (s.rtl) {
-            s.wrongRTL = s.wrapper.css('display') === '-webkit-box';
-        }
-        
-        // Columns
-        if (s.params.slidesPerColumn > 1) {
-            s.classNames.push(s.params.containerModifierClass + 'multirow');
-        }
-        
-        // Check for Android
-        if (s.device.android) {
-            s.classNames.push(s.params.containerModifierClass + 'android');
-        }
-        
-        // Add classes
-        s.container.addClass(s.classNames.join(' '));
-        
-        // Translate
-        s.translate = 0;
-        
-        // Progress
-        s.progress = 0;
-        
-        // Velocity
-        s.velocity = 0;
-        
-        /*=========================
-          Locks, unlocks
-          ===========================*/
-        s.lockSwipeToNext = function () {
-            s.params.allowSwipeToNext = false;
-            if (s.params.allowSwipeToPrev === false && s.params.grabCursor) {
-                s.unsetGrabCursor();
-            }
-        };
-        s.lockSwipeToPrev = function () {
-            s.params.allowSwipeToPrev = false;
-            if (s.params.allowSwipeToNext === false && s.params.grabCursor) {
-                s.unsetGrabCursor();
-            }
-        };
-        s.lockSwipes = function () {
-            s.params.allowSwipeToNext = s.params.allowSwipeToPrev = false;
-            if (s.params.grabCursor) s.unsetGrabCursor();
-        };
-        s.unlockSwipeToNext = function () {
-            s.params.allowSwipeToNext = true;
-            if (s.params.allowSwipeToPrev === true && s.params.grabCursor) {
-                s.setGrabCursor();
-            }
-        };
-        s.unlockSwipeToPrev = function () {
-            s.params.allowSwipeToPrev = true;
-            if (s.params.allowSwipeToNext === true && s.params.grabCursor) {
-                s.setGrabCursor();
-            }
-        };
-        s.unlockSwipes = function () {
-            s.params.allowSwipeToNext = s.params.allowSwipeToPrev = true;
-            if (s.params.grabCursor) s.setGrabCursor();
-        };
-        
-        /*=========================
-          Round helper
-          ===========================*/
-        function round(a) {
-            return Math.floor(a);
-        }
-        /*=========================
-          Set grab cursor
-          ===========================*/
-        s.setGrabCursor = function(moving) {
-            s.container[0].style.cursor = 'move';
-            s.container[0].style.cursor = moving ? '-webkit-grabbing' : '-webkit-grab';
-            s.container[0].style.cursor = moving ? '-moz-grabbin' : '-moz-grab';
-            s.container[0].style.cursor = moving ? 'grabbing': 'grab';
-        };
-        s.unsetGrabCursor = function () {
-            s.container[0].style.cursor = '';
-        };
-        if (s.params.grabCursor) {
-            s.setGrabCursor();
-        }
-        /*=========================
-          Update on Images Ready
-          ===========================*/
-        s.imagesToLoad = [];
-        s.imagesLoaded = 0;
-        
-        s.loadImage = function (imgElement, src, srcset, sizes, checkForComplete, callback) {
-            var image;
-            function onReady () {
-                if (callback) callback();
-            }
-            if (!imgElement.complete || !checkForComplete) {
-                if (src) {
-                    image = new window.Image();
-                    image.onload = onReady;
-                    image.onerror = onReady;
-                    if (sizes) {
-                        image.sizes = sizes;
-                    }
-                    if (srcset) {
-                        image.srcset = srcset;
-                    }
-                    if (src) {
-                        image.src = src;
-                    }
-                } else {
-                    onReady();
-                }
-        
-            } else {//image already loaded...
-                onReady();
-            }
-        };
-        s.preloadImages = function () {
-            s.imagesToLoad = s.container.find('img');
-            function _onReady() {
-                if (typeof s === 'undefined' || s === null || !s) return;
-                if (s.imagesLoaded !== undefined) s.imagesLoaded++;
-                if (s.imagesLoaded === s.imagesToLoad.length) {
-                    if (s.params.updateOnImagesReady) s.update();
-                    s.emit('onImagesReady', s);
-                }
-            }
-            for (var i = 0; i < s.imagesToLoad.length; i++) {
-                s.loadImage(s.imagesToLoad[i], (s.imagesToLoad[i].currentSrc || s.imagesToLoad[i].getAttribute('src')), (s.imagesToLoad[i].srcset || s.imagesToLoad[i].getAttribute('srcset')), s.imagesToLoad[i].sizes || s.imagesToLoad[i].getAttribute('sizes'), true, _onReady);
-            }
-        };
-        
-        /*=========================
-          Autoplay
-          ===========================*/
-        s.autoplayTimeoutId = undefined;
-        s.autoplaying = false;
-        s.autoplayPaused = false;
-        function autoplay() {
-            var autoplayDelay = s.params.autoplay;
-            var activeSlide = s.slides.eq(s.activeIndex);
-            if (activeSlide.attr('data-swiper-autoplay')) {
-                autoplayDelay = activeSlide.attr('data-swiper-autoplay') || s.params.autoplay;
-            }
-            s.autoplayTimeoutId = setTimeout(function () {
-                if (s.params.loop) {
-                    s.fixLoop();
-                    s._slideNext();
-                    s.emit('onAutoplay', s);
-                }
-                else {
-                    if (!s.isEnd) {
-                        s._slideNext();
-                        s.emit('onAutoplay', s);
-                    }
-                    else {
-                        if (!params.autoplayStopOnLast) {
-                            s._slideTo(0);
-                            s.emit('onAutoplay', s);
-                        }
-                        else {
-                            s.stopAutoplay();
-                        }
-                    }
-                }
-            }, autoplayDelay);
-        }
-        s.startAutoplay = function () {
-            if (typeof s.autoplayTimeoutId !== 'undefined') return false;
-            if (!s.params.autoplay) return false;
-            if (s.autoplaying) return false;
-            s.autoplaying = true;
-            s.emit('onAutoplayStart', s);
-            autoplay();
-        };
-        s.stopAutoplay = function (internal) {
-            if (!s.autoplayTimeoutId) return;
-            if (s.autoplayTimeoutId) clearTimeout(s.autoplayTimeoutId);
-            s.autoplaying = false;
-            s.autoplayTimeoutId = undefined;
-            s.emit('onAutoplayStop', s);
-        };
-        s.pauseAutoplay = function (speed) {
-            if (s.autoplayPaused) return;
-            if (s.autoplayTimeoutId) clearTimeout(s.autoplayTimeoutId);
-            s.autoplayPaused = true;
-            if (speed === 0) {
-                s.autoplayPaused = false;
-                autoplay();
-            }
-            else {
-                s.wrapper.transitionEnd(function () {
-                    if (!s) return;
-                    s.autoplayPaused = false;
-                    if (!s.autoplaying) {
-                        s.stopAutoplay();
-                    }
-                    else {
-                        autoplay();
-                    }
-                });
-            }
-        };
-        /*=========================
-          Min/Max Translate
-          ===========================*/
-        s.minTranslate = function () {
-            return (-s.snapGrid[0]);
-        };
-        s.maxTranslate = function () {
-            return (-s.snapGrid[s.snapGrid.length - 1]);
-        };
-        /*=========================
-          Slider/slides sizes
-          ===========================*/
-        s.updateAutoHeight = function () {
-            var activeSlides = [];
-            var newHeight = 0;
-            var i;
-        
-            // Find slides currently in view
-            if(s.params.slidesPerView !== 'auto' && s.params.slidesPerView > 1) {
-                for (i = 0; i < Math.ceil(s.params.slidesPerView); i++) {
-                    var index = s.activeIndex + i;
-                    if(index > s.slides.length) break;
-                    activeSlides.push(s.slides.eq(index)[0]);
-                }
-            } else {
-                activeSlides.push(s.slides.eq(s.activeIndex)[0]);
-            }
-        
-            // Find new height from heighest slide in view
-            for (i = 0; i < activeSlides.length; i++) {
-                if (typeof activeSlides[i] !== 'undefined') {
-                    var height = activeSlides[i].offsetHeight;
-                    newHeight = height > newHeight ? height : newHeight;
-                }
-            }
-        
-            // Update Height
-            if (newHeight) s.wrapper.css('height', newHeight + 'px');
-        };
-        s.updateContainerSize = function () {
-            var width, height;
-            if (typeof s.params.width !== 'undefined') {
-                width = s.params.width;
-            }
-            else {
-                width = s.container[0].clientWidth;
-            }
-            if (typeof s.params.height !== 'undefined') {
-                height = s.params.height;
-            }
-            else {
-                height = s.container[0].clientHeight;
-            }
-            if (width === 0 && s.isHorizontal() || height === 0 && !s.isHorizontal()) {
-                return;
-            }
-        
-            //Subtract paddings
-            width = width - parseInt(s.container.css('padding-left'), 10) - parseInt(s.container.css('padding-right'), 10);
-            height = height - parseInt(s.container.css('padding-top'), 10) - parseInt(s.container.css('padding-bottom'), 10);
-        
-            // Store values
-            s.width = width;
-            s.height = height;
-            s.size = s.isHorizontal() ? s.width : s.height;
-        };
-        
-        s.updateSlidesSize = function () {
-            s.slides = s.wrapper.children('.' + s.params.slideClass);
-            s.snapGrid = [];
-            s.slidesGrid = [];
-            s.slidesSizesGrid = [];
-        
-            var spaceBetween = s.params.spaceBetween,
-                slidePosition = -s.params.slidesOffsetBefore,
-                i,
-                prevSlideSize = 0,
-                index = 0;
-            if (typeof s.size === 'undefined') return;
-            if (typeof spaceBetween === 'string' && spaceBetween.indexOf('%') >= 0) {
-                spaceBetween = parseFloat(spaceBetween.replace('%', '')) / 100 * s.size;
-            }
-        
-            s.virtualSize = -spaceBetween;
-            // reset margins
-            if (s.rtl) s.slides.css({marginLeft: '', marginTop: ''});
-            else s.slides.css({marginRight: '', marginBottom: ''});
-        
-            var slidesNumberEvenToRows;
-            if (s.params.slidesPerColumn > 1) {
-                if (Math.floor(s.slides.length / s.params.slidesPerColumn) === s.slides.length / s.params.slidesPerColumn) {
-                    slidesNumberEvenToRows = s.slides.length;
-                }
-                else {
-                    slidesNumberEvenToRows = Math.ceil(s.slides.length / s.params.slidesPerColumn) * s.params.slidesPerColumn;
-                }
-                if (s.params.slidesPerView !== 'auto' && s.params.slidesPerColumnFill === 'row') {
-                    slidesNumberEvenToRows = Math.max(slidesNumberEvenToRows, s.params.slidesPerView * s.params.slidesPerColumn);
-                }
-            }
-        
-            // Calc slides
-            var slideSize;
-            var slidesPerColumn = s.params.slidesPerColumn;
-            var slidesPerRow = slidesNumberEvenToRows / slidesPerColumn;
-            var numFullColumns = slidesPerRow - (s.params.slidesPerColumn * slidesPerRow - s.slides.length);
-            for (i = 0; i < s.slides.length; i++) {
-                slideSize = 0;
-                var slide = s.slides.eq(i);
-                if (s.params.slidesPerColumn > 1) {
-                    // Set slides order
-                    var newSlideOrderIndex;
-                    var column, row;
-                    if (s.params.slidesPerColumnFill === 'column') {
-                        column = Math.floor(i / slidesPerColumn);
-                        row = i - column * slidesPerColumn;
-                        if (column > numFullColumns || (column === numFullColumns && row === slidesPerColumn-1)) {
-                            if (++row >= slidesPerColumn) {
-                                row = 0;
-                                column++;
-                            }
-                        }
-                        newSlideOrderIndex = column + row * slidesNumberEvenToRows / slidesPerColumn;
-                        slide
-                            .css({
-                                '-webkit-box-ordinal-group': newSlideOrderIndex,
-                                '-moz-box-ordinal-group': newSlideOrderIndex,
-                                '-ms-flex-order': newSlideOrderIndex,
-                                '-webkit-order': newSlideOrderIndex,
-                                'order': newSlideOrderIndex
-                            });
-                    }
-                    else {
-                        row = Math.floor(i / slidesPerRow);
-                        column = i - row * slidesPerRow;
-                    }
-                    slide
-                        .css(
-                            'margin-' + (s.isHorizontal() ? 'top' : 'left'),
-                            (row !== 0 && s.params.spaceBetween) && (s.params.spaceBetween + 'px')
-                        )
-                        .attr('data-swiper-column', column)
-                        .attr('data-swiper-row', row);
-        
-                }
-                if (slide.css('display') === 'none') continue;
-                if (s.params.slidesPerView === 'auto') {
-                    slideSize = s.isHorizontal() ? slide.outerWidth(true) : slide.outerHeight(true);
-                    if (s.params.roundLengths) slideSize = round(slideSize);
-                }
-                else {
-                    slideSize = (s.size - (s.params.slidesPerView - 1) * spaceBetween) / s.params.slidesPerView;
-                    if (s.params.roundLengths) slideSize = round(slideSize);
-        
-                    if (s.isHorizontal()) {
-                        s.slides[i].style.width = slideSize + 'px';
-                    }
-                    else {
-                        s.slides[i].style.height = slideSize + 'px';
-                    }
-                }
-                s.slides[i].swiperSlideSize = slideSize;
-                s.slidesSizesGrid.push(slideSize);
-        
-        
-                if (s.params.centeredSlides) {
-                    slidePosition = slidePosition + slideSize / 2 + prevSlideSize / 2 + spaceBetween;
-                    if(prevSlideSize === 0 && i !== 0) slidePosition = slidePosition - s.size / 2 - spaceBetween;
-                    if (i === 0) slidePosition = slidePosition - s.size / 2 - spaceBetween;
-                    if (Math.abs(slidePosition) < 1 / 1000) slidePosition = 0;
-                    if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
-                    s.slidesGrid.push(slidePosition);
-                }
-                else {
-                    if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
-                    s.slidesGrid.push(slidePosition);
-                    slidePosition = slidePosition + slideSize + spaceBetween;
-                }
-        
-                s.virtualSize += slideSize + spaceBetween;
-        
-                prevSlideSize = slideSize;
-        
-                index ++;
-            }
-            s.virtualSize = Math.max(s.virtualSize, s.size) + s.params.slidesOffsetAfter;
-            var newSlidesGrid;
-        
-            if (
-                s.rtl && s.wrongRTL && (s.params.effect === 'slide' || s.params.effect === 'coverflow')) {
-                s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
-            }
-            if (!s.support.flexbox || s.params.setWrapperSize) {
-                if (s.isHorizontal()) s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
-                else s.wrapper.css({height: s.virtualSize + s.params.spaceBetween + 'px'});
-            }
-        
-            if (s.params.slidesPerColumn > 1) {
-                s.virtualSize = (slideSize + s.params.spaceBetween) * slidesNumberEvenToRows;
-                s.virtualSize = Math.ceil(s.virtualSize / s.params.slidesPerColumn) - s.params.spaceBetween;
-                if (s.isHorizontal()) s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
-                else s.wrapper.css({height: s.virtualSize + s.params.spaceBetween + 'px'});
-                if (s.params.centeredSlides) {
-                    newSlidesGrid = [];
-                    for (i = 0; i < s.snapGrid.length; i++) {
-                        if (s.snapGrid[i] < s.virtualSize + s.snapGrid[0]) newSlidesGrid.push(s.snapGrid[i]);
-                    }
-                    s.snapGrid = newSlidesGrid;
-                }
-            }
-        
-            // Remove last grid elements depending on width
-            if (!s.params.centeredSlides) {
-                newSlidesGrid = [];
-                for (i = 0; i < s.snapGrid.length; i++) {
-                    if (s.snapGrid[i] <= s.virtualSize - s.size) {
-                        newSlidesGrid.push(s.snapGrid[i]);
-                    }
-                }
-                s.snapGrid = newSlidesGrid;
-                if (Math.floor(s.virtualSize - s.size) - Math.floor(s.snapGrid[s.snapGrid.length - 1]) > 1) {
-                    s.snapGrid.push(s.virtualSize - s.size);
-                }
-            }
-            if (s.snapGrid.length === 0) s.snapGrid = [0];
-        
-            if (s.params.spaceBetween !== 0) {
-                if (s.isHorizontal()) {
-                    if (s.rtl) s.slides.css({marginLeft: spaceBetween + 'px'});
-                    else s.slides.css({marginRight: spaceBetween + 'px'});
-                }
-                else s.slides.css({marginBottom: spaceBetween + 'px'});
-            }
-            if (s.params.watchSlidesProgress) {
-                s.updateSlidesOffset();
-            }
-        };
-        s.updateSlidesOffset = function () {
-            for (var i = 0; i < s.slides.length; i++) {
-                s.slides[i].swiperSlideOffset = s.isHorizontal() ? s.slides[i].offsetLeft : s.slides[i].offsetTop;
-            }
-        };
-        
-        /*=========================
-          Dynamic Slides Per View
-          ===========================*/
-        s.currentSlidesPerView = function () {
-            var spv = 1, i, j;
-            if (s.params.centeredSlides) {
-                var size = s.slides[s.activeIndex].swiperSlideSize;
-                var breakLoop;
-                for (i = s.activeIndex + 1; i < s.slides.length; i++) {
-                    if (s.slides[i] && !breakLoop) {
-                        size += s.slides[i].swiperSlideSize;
-                        spv ++;
-                        if (size > s.size) breakLoop = true;
-                    }
-                }
-                for (j = s.activeIndex - 1; j >= 0; j--) {
-                    if (s.slides[j] && !breakLoop) {
-                        size += s.slides[j].swiperSlideSize;
-                        spv ++;
-                        if (size > s.size) breakLoop = true;
-                    }
-                }
-            }
-            else {
-                for (i = s.activeIndex + 1; i < s.slides.length; i++) {
-                    if (s.slidesGrid[i] - s.slidesGrid[s.activeIndex] < s.size) {
-                        spv++;
-                    }
-                }
-            }
-            return spv;
-        };
-        /*=========================
-          Slider/slides progress
-          ===========================*/
-        s.updateSlidesProgress = function (translate) {
-            if (typeof translate === 'undefined') {
-                translate = s.translate || 0;
-            }
-            if (s.slides.length === 0) return;
-            if (typeof s.slides[0].swiperSlideOffset === 'undefined') s.updateSlidesOffset();
-        
-            var offsetCenter = -translate;
-            if (s.rtl) offsetCenter = translate;
-        
-            // Visible Slides
-            s.slides.removeClass(s.params.slideVisibleClass);
-            for (var i = 0; i < s.slides.length; i++) {
-                var slide = s.slides[i];
-                var slideProgress = (offsetCenter + (s.params.centeredSlides ? s.minTranslate() : 0) - slide.swiperSlideOffset) / (slide.swiperSlideSize + s.params.spaceBetween);
-                if (s.params.watchSlidesVisibility) {
-                    var slideBefore = -(offsetCenter - slide.swiperSlideOffset);
-                    var slideAfter = slideBefore + s.slidesSizesGrid[i];
-                    var isVisible =
-                        (slideBefore >= 0 && slideBefore < s.size) ||
-                        (slideAfter > 0 && slideAfter <= s.size) ||
-                        (slideBefore <= 0 && slideAfter >= s.size);
-                    if (isVisible) {
-                        s.slides.eq(i).addClass(s.params.slideVisibleClass);
-                    }
-                }
-                slide.progress = s.rtl ? -slideProgress : slideProgress;
-            }
-        };
-        s.updateProgress = function (translate) {
-            if (typeof translate === 'undefined') {
-                translate = s.translate || 0;
-            }
-            var translatesDiff = s.maxTranslate() - s.minTranslate();
-            var wasBeginning = s.isBeginning;
-            var wasEnd = s.isEnd;
-            if (translatesDiff === 0) {
-                s.progress = 0;
-                s.isBeginning = s.isEnd = true;
-            }
-            else {
-                s.progress = (translate - s.minTranslate()) / (translatesDiff);
-                s.isBeginning = s.progress <= 0;
-                s.isEnd = s.progress >= 1;
-            }
-            if (s.isBeginning && !wasBeginning) s.emit('onReachBeginning', s);
-            if (s.isEnd && !wasEnd) s.emit('onReachEnd', s);
-        
-            if (s.params.watchSlidesProgress) s.updateSlidesProgress(translate);
-            s.emit('onProgress', s, s.progress);
-        };
-        s.updateActiveIndex = function () {
-            var translate = s.rtl ? s.translate : -s.translate;
-            var newActiveIndex, i, snapIndex;
-            for (i = 0; i < s.slidesGrid.length; i ++) {
-                if (typeof s.slidesGrid[i + 1] !== 'undefined') {
-                    if (translate >= s.slidesGrid[i] && translate < s.slidesGrid[i + 1] - (s.slidesGrid[i + 1] - s.slidesGrid[i]) / 2) {
-                        newActiveIndex = i;
-                    }
-                    else if (translate >= s.slidesGrid[i] && translate < s.slidesGrid[i + 1]) {
-                        newActiveIndex = i + 1;
-                    }
-                }
-                else {
-                    if (translate >= s.slidesGrid[i]) {
-                        newActiveIndex = i;
-                    }
-                }
-            }
-            // Normalize slideIndex
-            if(s.params.normalizeSlideIndex){
-                if (newActiveIndex < 0 || typeof newActiveIndex === 'undefined') newActiveIndex = 0;
-            }
-            // for (i = 0; i < s.slidesGrid.length; i++) {
-                // if (- translate >= s.slidesGrid[i]) {
-                    // newActiveIndex = i;
-                // }
-            // }
-            snapIndex = Math.floor(newActiveIndex / s.params.slidesPerGroup);
-            if (snapIndex >= s.snapGrid.length) snapIndex = s.snapGrid.length - 1;
-        
-            if (newActiveIndex === s.activeIndex) {
-                return;
-            }
-            s.snapIndex = snapIndex;
-            s.previousIndex = s.activeIndex;
-            s.activeIndex = newActiveIndex;
-            s.updateClasses();
-            s.updateRealIndex();
-        };
-        s.updateRealIndex = function(){
-            s.realIndex = parseInt(s.slides.eq(s.activeIndex).attr('data-swiper-slide-index') || s.activeIndex, 10);
-        };
-        
-        /*=========================
-          Classes
-          ===========================*/
-        s.updateClasses = function () {
-            s.slides.removeClass(s.params.slideActiveClass + ' ' + s.params.slideNextClass + ' ' + s.params.slidePrevClass + ' ' + s.params.slideDuplicateActiveClass + ' ' + s.params.slideDuplicateNextClass + ' ' + s.params.slideDuplicatePrevClass);
-            var activeSlide = s.slides.eq(s.activeIndex);
-            // Active classes
-            activeSlide.addClass(s.params.slideActiveClass);
-            if (params.loop) {
-                // Duplicate to all looped slides
-                if (activeSlide.hasClass(s.params.slideDuplicateClass)) {
-                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + s.realIndex + '"]').addClass(s.params.slideDuplicateActiveClass);
-                }
-                else {
-                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + s.realIndex + '"]').addClass(s.params.slideDuplicateActiveClass);
-                }
-            }
-            // Next Slide
-            var nextSlide = activeSlide.next('.' + s.params.slideClass).addClass(s.params.slideNextClass);
-            if (s.params.loop && nextSlide.length === 0) {
-                nextSlide = s.slides.eq(0);
-                nextSlide.addClass(s.params.slideNextClass);
-            }
-            // Prev Slide
-            var prevSlide = activeSlide.prev('.' + s.params.slideClass).addClass(s.params.slidePrevClass);
-            if (s.params.loop && prevSlide.length === 0) {
-                prevSlide = s.slides.eq(-1);
-                prevSlide.addClass(s.params.slidePrevClass);
-            }
-            if (params.loop) {
-                // Duplicate to all looped slides
-                if (nextSlide.hasClass(s.params.slideDuplicateClass)) {
-                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + nextSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicateNextClass);
-                }
-                else {
-                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + nextSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicateNextClass);
-                }
-                if (prevSlide.hasClass(s.params.slideDuplicateClass)) {
-                    s.wrapper.children('.' + s.params.slideClass + ':not(.' + s.params.slideDuplicateClass + ')[data-swiper-slide-index="' + prevSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicatePrevClass);
-                }
-                else {
-                    s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + prevSlide.attr('data-swiper-slide-index') + '"]').addClass(s.params.slideDuplicatePrevClass);
-                }
-            }
-        
-            // Pagination
-            if (s.paginationContainer && s.paginationContainer.length > 0) {
-                // Current/Total
-                var current,
-                    total = s.params.loop ? Math.ceil((s.slides.length - s.loopedSlides * 2) / s.params.slidesPerGroup) : s.snapGrid.length;
-                if (s.params.loop) {
-                    current = Math.ceil((s.activeIndex - s.loopedSlides)/s.params.slidesPerGroup);
-                    if (current > s.slides.length - 1 - s.loopedSlides * 2) {
-                        current = current - (s.slides.length - s.loopedSlides * 2);
-                    }
-                    if (current > total - 1) current = current - total;
-                    if (current < 0 && s.params.paginationType !== 'bullets') current = total + current;
-                }
-                else {
-                    if (typeof s.snapIndex !== 'undefined') {
-                        current = s.snapIndex;
-                    }
-                    else {
-                        current = s.activeIndex || 0;
-                    }
-                }
-                // Types
-                if (s.params.paginationType === 'bullets' && s.bullets && s.bullets.length > 0) {
-                    s.bullets.removeClass(s.params.bulletActiveClass);
-                    if (s.paginationContainer.length > 1) {
-                        s.bullets.each(function () {
-                            if ($(this).index() === current) $(this).addClass(s.params.bulletActiveClass);
-                        });
-                    }
-                    else {
-                        s.bullets.eq(current).addClass(s.params.bulletActiveClass);
-                    }
-                }
-                if (s.params.paginationType === 'fraction') {
-                    s.paginationContainer.find('.' + s.params.paginationCurrentClass).text(current + 1);
-                    s.paginationContainer.find('.' + s.params.paginationTotalClass).text(total);
-                }
-                if (s.params.paginationType === 'progress') {
-                    var scale = (current + 1) / total,
-                        scaleX = scale,
-                        scaleY = 1;
-                    if (!s.isHorizontal()) {
-                        scaleY = scale;
-                        scaleX = 1;
-                    }
-                    s.paginationContainer.find('.' + s.params.paginationProgressbarClass).transform('translate3d(0,0,0) scaleX(' + scaleX + ') scaleY(' + scaleY + ')').transition(s.params.speed);
-                }
-                if (s.params.paginationType === 'custom' && s.params.paginationCustomRender) {
-                    s.paginationContainer.html(s.params.paginationCustomRender(s, current + 1, total));
-                    s.emit('onPaginationRendered', s, s.paginationContainer[0]);
-                }
-            }
-        
-            // Next/active buttons
-            if (!s.params.loop) {
-                if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
-                    if (s.isBeginning) {
-                        s.prevButton.addClass(s.params.buttonDisabledClass);
-                        if (s.params.a11y && s.a11y) s.a11y.disable(s.prevButton);
-                    }
-                    else {
-                        s.prevButton.removeClass(s.params.buttonDisabledClass);
-                        if (s.params.a11y && s.a11y) s.a11y.enable(s.prevButton);
-                    }
-                }
-                if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
-                    if (s.isEnd) {
-                        s.nextButton.addClass(s.params.buttonDisabledClass);
-                        if (s.params.a11y && s.a11y) s.a11y.disable(s.nextButton);
-                    }
-                    else {
-                        s.nextButton.removeClass(s.params.buttonDisabledClass);
-                        if (s.params.a11y && s.a11y) s.a11y.enable(s.nextButton);
-                    }
-                }
-            }
-        };
-        
-        /*=========================
-          Pagination
-          ===========================*/
-        s.updatePagination = function () {
-            if (!s.params.pagination) return;
-            if (s.paginationContainer && s.paginationContainer.length > 0) {
-                var paginationHTML = '';
-                if (s.params.paginationType === 'bullets') {
-                    var numberOfBullets = s.params.loop ? Math.ceil((s.slides.length - s.loopedSlides * 2) / s.params.slidesPerGroup) : s.snapGrid.length;
-                    for (var i = 0; i < numberOfBullets; i++) {
-                        if (s.params.paginationBulletRender) {
-                            paginationHTML += s.params.paginationBulletRender(s, i, s.params.bulletClass);
-                        }
-                        else {
-                            paginationHTML += '<' + s.params.paginationElement+' class="' + s.params.bulletClass + '"></' + s.params.paginationElement + '>';
-                        }
-                    }
-                    s.paginationContainer.html(paginationHTML);
-                    s.bullets = s.paginationContainer.find('.' + s.params.bulletClass);
-                    if (s.params.paginationClickable && s.params.a11y && s.a11y) {
-                        s.a11y.initPagination();
-                    }
-                }
-                if (s.params.paginationType === 'fraction') {
-                    if (s.params.paginationFractionRender) {
-                        paginationHTML = s.params.paginationFractionRender(s, s.params.paginationCurrentClass, s.params.paginationTotalClass);
-                    }
-                    else {
-                        paginationHTML =
-                            '<span class="' + s.params.paginationCurrentClass + '"></span>' +
-                            ' / ' +
-                            '<span class="' + s.params.paginationTotalClass+'"></span>';
-                    }
-                    s.paginationContainer.html(paginationHTML);
-                }
-                if (s.params.paginationType === 'progress') {
-                    if (s.params.paginationProgressRender) {
-                        paginationHTML = s.params.paginationProgressRender(s, s.params.paginationProgressbarClass);
-                    }
-                    else {
-                        paginationHTML = '<span class="' + s.params.paginationProgressbarClass + '"></span>';
-                    }
-                    s.paginationContainer.html(paginationHTML);
-                }
-                if (s.params.paginationType !== 'custom') {
-                    s.emit('onPaginationRendered', s, s.paginationContainer[0]);
-                }
-            }
-        };
-        /*=========================
-          Common update method
-          ===========================*/
-        s.update = function (updateTranslate) {
-            if (!s) return;
-            s.updateContainerSize();
-            s.updateSlidesSize();
-            s.updateProgress();
-            s.updatePagination();
-            s.updateClasses();
-            if (s.params.scrollbar && s.scrollbar) {
-                s.scrollbar.set();
-            }
-            var newTranslate;
-            function forceSetTranslate() {
-                var translate = s.rtl ? -s.translate : s.translate;
-                newTranslate = Math.min(Math.max(s.translate, s.maxTranslate()), s.minTranslate());
-                s.setWrapperTranslate(newTranslate);
-                s.updateActiveIndex();
-                s.updateClasses();
-            }
-            if (updateTranslate) {
-                var translated;
-                if (s.controller && s.controller.spline) {
-                    s.controller.spline = undefined;
-                }
-                if (s.params.freeMode) {
-                    forceSetTranslate();
-                    if (s.params.autoHeight) {
-                        s.updateAutoHeight();
-                    }
-                }
-                else {
-                    if ((s.params.slidesPerView === 'auto' || s.params.slidesPerView > 1) && s.isEnd && !s.params.centeredSlides) {
-                        translated = s.slideTo(s.slides.length - 1, 0, false, true);
-                    }
-                    else {
-                        translated = s.slideTo(s.activeIndex, 0, false, true);
-                    }
-                    if (!translated) {
-                        forceSetTranslate();
-                    }
-                }
-            }
-            else if (s.params.autoHeight) {
-                s.updateAutoHeight();
-            }
-        };
-        
-        /*=========================
-          Resize Handler
-          ===========================*/
-        s.onResize = function (forceUpdatePagination) {
-            if (s.params.onBeforeResize) s.params.onBeforeResize(s);
-            //Breakpoints
-            if (s.params.breakpoints) {
-                s.setBreakpoint();
-            }
-        
-            // Disable locks on resize
-            var allowSwipeToPrev = s.params.allowSwipeToPrev;
-            var allowSwipeToNext = s.params.allowSwipeToNext;
-            s.params.allowSwipeToPrev = s.params.allowSwipeToNext = true;
-        
-            s.updateContainerSize();
-            s.updateSlidesSize();
-            if (s.params.slidesPerView === 'auto' || s.params.freeMode || forceUpdatePagination) s.updatePagination();
-            if (s.params.scrollbar && s.scrollbar) {
-                s.scrollbar.set();
-            }
-            if (s.controller && s.controller.spline) {
-                s.controller.spline = undefined;
-            }
-            var slideChangedBySlideTo = false;
-            if (s.params.freeMode) {
-                var newTranslate = Math.min(Math.max(s.translate, s.maxTranslate()), s.minTranslate());
-                s.setWrapperTranslate(newTranslate);
-                s.updateActiveIndex();
-                s.updateClasses();
-        
-                if (s.params.autoHeight) {
-                    s.updateAutoHeight();
-                }
-            }
-            else {
-                s.updateClasses();
-                if ((s.params.slidesPerView === 'auto' || s.params.slidesPerView > 1) && s.isEnd && !s.params.centeredSlides) {
-                    slideChangedBySlideTo = s.slideTo(s.slides.length - 1, 0, false, true);
-                }
-                else {
-                    slideChangedBySlideTo = s.slideTo(s.activeIndex, 0, false, true);
-                }
-            }
-            if (s.params.lazyLoading && !slideChangedBySlideTo && s.lazy) {
-                s.lazy.load();
-            }
-            // Return locks after resize
-            s.params.allowSwipeToPrev = allowSwipeToPrev;
-            s.params.allowSwipeToNext = allowSwipeToNext;
-            if (s.params.onAfterResize) s.params.onAfterResize(s);
-        };
-        
-        /*=========================
-          Events
-          ===========================*/
-        
-        //Define Touch Events
-        s.touchEventsDesktop = {start: 'mousedown', move: 'mousemove', end: 'mouseup'};
-        if (window.navigator.pointerEnabled) s.touchEventsDesktop = {start: 'pointerdown', move: 'pointermove', end: 'pointerup'};
-        else if (window.navigator.msPointerEnabled) s.touchEventsDesktop = {start: 'MSPointerDown', move: 'MSPointerMove', end: 'MSPointerUp'};
-        s.touchEvents = {
-            start : s.support.touch || !s.params.simulateTouch  ? 'touchstart' : s.touchEventsDesktop.start,
-            move : s.support.touch || !s.params.simulateTouch ? 'touchmove' : s.touchEventsDesktop.move,
-            end : s.support.touch || !s.params.simulateTouch ? 'touchend' : s.touchEventsDesktop.end
-        };
-        
-        
-        // WP8 Touch Events Fix
-        if (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) {
-            (s.params.touchEventsTarget === 'container' ? s.container : s.wrapper).addClass('swiper-wp8-' + s.params.direction);
-        }
-        
-        // Attach/detach events
-        s.initEvents = function (detach) {
-            var actionDom = detach ? 'off' : 'on';
-            var action = detach ? 'removeEventListener' : 'addEventListener';
-            var touchEventsTarget = s.params.touchEventsTarget === 'container' ? s.container[0] : s.wrapper[0];
-            var target = s.support.touch ? touchEventsTarget : document;
-        
-            var moveCapture = s.params.nested ? true : false;
-        
-            //Touch Events
-            if (s.browser.ie) {
-                touchEventsTarget[action](s.touchEvents.start, s.onTouchStart, false);
-                target[action](s.touchEvents.move, s.onTouchMove, moveCapture);
-                target[action](s.touchEvents.end, s.onTouchEnd, false);
-            }
-            else {
-                if (s.support.touch) {
-                    var passiveListener = s.touchEvents.start === 'touchstart' && s.support.passiveListener && s.params.passiveListeners ? {passive: true, capture: false} : false;
-                    touchEventsTarget[action](s.touchEvents.start, s.onTouchStart, passiveListener);
-                    touchEventsTarget[action](s.touchEvents.move, s.onTouchMove, moveCapture);
-                    touchEventsTarget[action](s.touchEvents.end, s.onTouchEnd, passiveListener);
-                }
-                if ((params.simulateTouch && !s.device.ios && !s.device.android) || (params.simulateTouch && !s.support.touch && s.device.ios)) {
-                    touchEventsTarget[action]('mousedown', s.onTouchStart, false);
-                    document[action]('mousemove', s.onTouchMove, moveCapture);
-                    document[action]('mouseup', s.onTouchEnd, false);
-                }
-            }
-            window[action]('resize', s.onResize);
-        
-            // Next, Prev, Index
-            if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
-                s.nextButton[actionDom]('click', s.onClickNext);
-                if (s.params.a11y && s.a11y) s.nextButton[actionDom]('keydown', s.a11y.onEnterKey);
-            }
-            if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
-                s.prevButton[actionDom]('click', s.onClickPrev);
-                if (s.params.a11y && s.a11y) s.prevButton[actionDom]('keydown', s.a11y.onEnterKey);
-            }
-            if (s.params.pagination && s.params.paginationClickable) {
-                s.paginationContainer[actionDom]('click', '.' + s.params.bulletClass, s.onClickIndex);
-                if (s.params.a11y && s.a11y) s.paginationContainer[actionDom]('keydown', '.' + s.params.bulletClass, s.a11y.onEnterKey);
-            }
-        
-            // Prevent Links Clicks
-            if (s.params.preventClicks || s.params.preventClicksPropagation) touchEventsTarget[action]('click', s.preventClicks, true);
-        };
-        s.attachEvents = function () {
-            s.initEvents();
-        };
-        s.detachEvents = function () {
-            s.initEvents(true);
-        };
-        
-        /*=========================
-          Handle Clicks
-          ===========================*/
-        // Prevent Clicks
-        s.allowClick = true;
-        s.preventClicks = function (e) {
-            if (!s.allowClick) {
-                if (s.params.preventClicks) e.preventDefault();
-                if (s.params.preventClicksPropagation && s.animating) {
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                }
-            }
-        };
-        // Clicks
-        s.onClickNext = function (e) {
-            e.preventDefault();
-            if (s.isEnd && !s.params.loop) return;
-            s.slideNext();
-        };
-        s.onClickPrev = function (e) {
-            e.preventDefault();
-            if (s.isBeginning && !s.params.loop) return;
-            s.slidePrev();
-        };
-        s.onClickIndex = function (e) {
-            e.preventDefault();
-            var index = $(this).index() * s.params.slidesPerGroup;
-            if (s.params.loop) index = index + s.loopedSlides;
-            s.slideTo(index);
-        };
-        
-        /*=========================
-          Handle Touches
-          ===========================*/
-        function findElementInEvent(e, selector) {
-            var el = $(e.target);
-            if (!el.is(selector)) {
-                if (typeof selector === 'string') {
-                    el = el.parents(selector);
-                }
-                else if (selector.nodeType) {
-                    var found;
-                    el.parents().each(function (index, _el) {
-                        if (_el === selector) found = selector;
-                    });
-                    if (!found) return undefined;
-                    else return selector;
-                }
-            }
-            if (el.length === 0) {
-                return undefined;
-            }
-            return el[0];
-        }
-        s.updateClickedSlide = function (e) {
-            var slide = findElementInEvent(e, '.' + s.params.slideClass);
-            var slideFound = false;
-            if (slide) {
-                for (var i = 0; i < s.slides.length; i++) {
-                    if (s.slides[i] === slide) slideFound = true;
-                }
-            }
-        
-            if (slide && slideFound) {
-                s.clickedSlide = slide;
-                s.clickedIndex = $(slide).index();
-            }
-            else {
-                s.clickedSlide = undefined;
-                s.clickedIndex = undefined;
-                return;
-            }
-            if (s.params.slideToClickedSlide && s.clickedIndex !== undefined && s.clickedIndex !== s.activeIndex) {
-                var slideToIndex = s.clickedIndex,
-                    realIndex,
-                    duplicatedSlides,
-                    slidesPerView = s.params.slidesPerView === 'auto' ? s.currentSlidesPerView() : s.params.slidesPerView;
-                if (s.params.loop) {
-                    if (s.animating) return;
-                    realIndex = parseInt($(s.clickedSlide).attr('data-swiper-slide-index'), 10);
-                    if (s.params.centeredSlides) {
-                        if ((slideToIndex < s.loopedSlides - slidesPerView/2) || (slideToIndex > s.slides.length - s.loopedSlides + slidesPerView/2)) {
-                            s.fixLoop();
-                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.' + s.params.slideDuplicateClass + ')').eq(0).index();
-                            setTimeout(function () {
-                                s.slideTo(slideToIndex);
-                            }, 0);
-                        }
-                        else {
-                            s.slideTo(slideToIndex);
-                        }
-                    }
-                    else {
-                        if (slideToIndex > s.slides.length - slidesPerView) {
-                            s.fixLoop();
-                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.' + s.params.slideDuplicateClass + ')').eq(0).index();
-                            setTimeout(function () {
-                                s.slideTo(slideToIndex);
-                            }, 0);
-                        }
-                        else {
-                            s.slideTo(slideToIndex);
-                        }
-                    }
-                }
-                else {
-                    s.slideTo(slideToIndex);
-                }
-            }
-        };
-        
-        var isTouched,
-            isMoved,
-            allowTouchCallbacks,
-            touchStartTime,
-            isScrolling,
-            currentTranslate,
-            startTranslate,
-            allowThresholdMove,
-            // Form elements to match
-            formElements = 'input, select, textarea, button, video',
-            // Last click time
-            lastClickTime = Date.now(), clickTimeout,
-            //Velocities
-            velocities = [],
-            allowMomentumBounce;
-        
-        // Animating Flag
-        s.animating = false;
-        
-        // Touches information
-        s.touches = {
-            startX: 0,
-            startY: 0,
-            currentX: 0,
-            currentY: 0,
-            diff: 0
-        };
-        
-        // Touch handlers
-        var isTouchEvent, startMoving;
-        s.onTouchStart = function (e) {
-            if (e.originalEvent) e = e.originalEvent;
-            isTouchEvent = e.type === 'touchstart';
-            if (!isTouchEvent && 'which' in e && e.which === 3) return;
-            if (s.params.noSwiping && findElementInEvent(e, '.' + s.params.noSwipingClass)) {
-                s.allowClick = true;
-                return;
-            }
-            if (s.params.swipeHandler) {
-                if (!findElementInEvent(e, s.params.swipeHandler)) return;
-            }
-        
-            var startX = s.touches.currentX = e.type === 'touchstart' ? e.targetTouches[0].pageX : e.pageX;
-            var startY = s.touches.currentY = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
-        
-            // Do NOT start if iOS edge swipe is detected. Otherwise iOS app (UIWebView) cannot swipe-to-go-back anymore
-            if(s.device.ios && s.params.iOSEdgeSwipeDetection && startX <= s.params.iOSEdgeSwipeThreshold) {
-                return;
-            }
-        
-            isTouched = true;
-            isMoved = false;
-            allowTouchCallbacks = true;
-            isScrolling = undefined;
-            startMoving = undefined;
-            s.touches.startX = startX;
-            s.touches.startY = startY;
-            touchStartTime = Date.now();
-            s.allowClick = true;
-            s.updateContainerSize();
-            s.swipeDirection = undefined;
-            if (s.params.threshold > 0) allowThresholdMove = false;
-            if (e.type !== 'touchstart') {
-                var preventDefault = true;
-                if ($(e.target).is(formElements)) preventDefault = false;
-                if (document.activeElement && $(document.activeElement).is(formElements)) {
-                    document.activeElement.blur();
-                }
-                if (preventDefault) {
-                    e.preventDefault();
-                }
-            }
-            s.emit('onTouchStart', s, e);
-        };
-        
-        s.onTouchMove = function (e) {
-            if (e.originalEvent) e = e.originalEvent;
-            if (isTouchEvent && e.type === 'mousemove') return;
-            if (e.preventedByNestedSwiper) {
-                s.touches.startX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
-                s.touches.startY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
-                return;
-            }
-            if (s.params.onlyExternal) {
-                // isMoved = true;
-                s.allowClick = false;
-                if (isTouched) {
-                    s.touches.startX = s.touches.currentX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
-                    s.touches.startY = s.touches.currentY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
-                    touchStartTime = Date.now();
-                }
-                return;
-            }
-            if (isTouchEvent && s.params.touchReleaseOnEdges && !s.params.loop) {
-                if (!s.isHorizontal()) {
-                    // Vertical
-                    if (
-                        (s.touches.currentY < s.touches.startY && s.translate <= s.maxTranslate()) ||
-                        (s.touches.currentY > s.touches.startY && s.translate >= s.minTranslate())
-                        ) {
-                        return;
-                    }
-                }
-                else {
-                    if (
-                        (s.touches.currentX < s.touches.startX && s.translate <= s.maxTranslate()) ||
-                        (s.touches.currentX > s.touches.startX && s.translate >= s.minTranslate())
-                        ) {
-                        return;
-                    }
-                }
-            }
-            if (isTouchEvent && document.activeElement) {
-                if (e.target === document.activeElement && $(e.target).is(formElements)) {
-                    isMoved = true;
-                    s.allowClick = false;
-                    return;
-                }
-            }
-            if (allowTouchCallbacks) {
-                s.emit('onTouchMove', s, e);
-            }
-            if (e.targetTouches && e.targetTouches.length > 1) return;
-        
-            s.touches.currentX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
-            s.touches.currentY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
-        
-            if (typeof isScrolling === 'undefined') {
-                var touchAngle;
-                if (s.isHorizontal() && s.touches.currentY === s.touches.startY || !s.isHorizontal() && s.touches.currentX === s.touches.startX) {
-                    isScrolling = false;
-                }
-                else {
-                    touchAngle = Math.atan2(Math.abs(s.touches.currentY - s.touches.startY), Math.abs(s.touches.currentX - s.touches.startX)) * 180 / Math.PI;
-                    isScrolling = s.isHorizontal() ? touchAngle > s.params.touchAngle : (90 - touchAngle > s.params.touchAngle);
-                }
-            }
-            if (isScrolling) {
-                s.emit('onTouchMoveOpposite', s, e);
-            }
-            if (typeof startMoving === 'undefined') {
-                if (s.touches.currentX !== s.touches.startX || s.touches.currentY !== s.touches.startY) {
-                    startMoving = true;
-                }
-            }
-            if (!isTouched) return;
-            if (isScrolling)  {
-                isTouched = false;
-                return;
-            }
-            if (!startMoving) {
-                return;
-            }
-            s.allowClick = false;
-            s.emit('onSliderMove', s, e);
-            e.preventDefault();
-            if (s.params.touchMoveStopPropagation && !s.params.nested) {
-                e.stopPropagation();
-            }
-        
-            if (!isMoved) {
-                if (params.loop) {
-                    s.fixLoop();
-                }
-                startTranslate = s.getWrapperTranslate();
-                s.setWrapperTransition(0);
-                if (s.animating) {
-                    s.wrapper.trigger('webkitTransitionEnd transitionend oTransitionEnd MSTransitionEnd msTransitionEnd');
-                }
-                if (s.params.autoplay && s.autoplaying) {
-                    if (s.params.autoplayDisableOnInteraction) {
-                        s.stopAutoplay();
-                    }
-                    else {
-                        s.pauseAutoplay();
-                    }
-                }
-                allowMomentumBounce = false;
-                //Grab Cursor
-                if (s.params.grabCursor && (s.params.allowSwipeToNext === true || s.params.allowSwipeToPrev === true)) {
-                    s.setGrabCursor(true);
-                }
-            }
-            isMoved = true;
-        
-            var diff = s.touches.diff = s.isHorizontal() ? s.touches.currentX - s.touches.startX : s.touches.currentY - s.touches.startY;
-        
-            diff = diff * s.params.touchRatio;
-            if (s.rtl) diff = -diff;
-        
-            s.swipeDirection = diff > 0 ? 'prev' : 'next';
-            currentTranslate = diff + startTranslate;
-        
-            var disableParentSwiper = true;
-            if ((diff > 0 && currentTranslate > s.minTranslate())) {
-                disableParentSwiper = false;
-                if (s.params.resistance) currentTranslate = s.minTranslate() - 1 + Math.pow(-s.minTranslate() + startTranslate + diff, s.params.resistanceRatio);
-            }
-            else if (diff < 0 && currentTranslate < s.maxTranslate()) {
-                disableParentSwiper = false;
-                if (s.params.resistance) currentTranslate = s.maxTranslate() + 1 - Math.pow(s.maxTranslate() - startTranslate - diff, s.params.resistanceRatio);
-            }
-        
-            if (disableParentSwiper) {
-                e.preventedByNestedSwiper = true;
-            }
-        
-            // Directions locks
-            if (!s.params.allowSwipeToNext && s.swipeDirection === 'next' && currentTranslate < startTranslate) {
-                currentTranslate = startTranslate;
-            }
-            if (!s.params.allowSwipeToPrev && s.swipeDirection === 'prev' && currentTranslate > startTranslate) {
-                currentTranslate = startTranslate;
-            }
-        
-        
-            // Threshold
-            if (s.params.threshold > 0) {
-                if (Math.abs(diff) > s.params.threshold || allowThresholdMove) {
-                    if (!allowThresholdMove) {
-                        allowThresholdMove = true;
-                        s.touches.startX = s.touches.currentX;
-                        s.touches.startY = s.touches.currentY;
-                        currentTranslate = startTranslate;
-                        s.touches.diff = s.isHorizontal() ? s.touches.currentX - s.touches.startX : s.touches.currentY - s.touches.startY;
-                        return;
-                    }
-                }
-                else {
-                    currentTranslate = startTranslate;
-                    return;
-                }
-            }
-        
-            if (!s.params.followFinger) return;
-        
-            // Update active index in free mode
-            if (s.params.freeMode || s.params.watchSlidesProgress) {
-                s.updateActiveIndex();
-            }
-            if (s.params.freeMode) {
-                //Velocity
-                if (velocities.length === 0) {
-                    velocities.push({
-                        position: s.touches[s.isHorizontal() ? 'startX' : 'startY'],
-                        time: touchStartTime
-                    });
-                }
-                velocities.push({
-                    position: s.touches[s.isHorizontal() ? 'currentX' : 'currentY'],
-                    time: (new window.Date()).getTime()
-                });
-            }
-            // Update progress
-            s.updateProgress(currentTranslate);
-            // Update translate
-            s.setWrapperTranslate(currentTranslate);
-        };
-        s.onTouchEnd = function (e) {
-            if (e.originalEvent) e = e.originalEvent;
-            if (allowTouchCallbacks) {
-                s.emit('onTouchEnd', s, e);
-            }
-            allowTouchCallbacks = false;
-            if (!isTouched) return;
-            //Return Grab Cursor
-            if (s.params.grabCursor && isMoved && isTouched  && (s.params.allowSwipeToNext === true || s.params.allowSwipeToPrev === true)) {
-                s.setGrabCursor(false);
-            }
-        
-            // Time diff
-            var touchEndTime = Date.now();
-            var timeDiff = touchEndTime - touchStartTime;
-        
-            // Tap, doubleTap, Click
-            if (s.allowClick) {
-                s.updateClickedSlide(e);
-                s.emit('onTap', s, e);
-                if (timeDiff < 300 && (touchEndTime - lastClickTime) > 300) {
-                    if (clickTimeout) clearTimeout(clickTimeout);
-                    clickTimeout = setTimeout(function () {
-                        if (!s) return;
-                        if (s.params.paginationHide && s.paginationContainer.length > 0 && !$(e.target).hasClass(s.params.bulletClass)) {
-                            s.paginationContainer.toggleClass(s.params.paginationHiddenClass);
-                        }
-                        s.emit('onClick', s, e);
-                    }, 300);
-        
-                }
-                if (timeDiff < 300 && (touchEndTime - lastClickTime) < 300) {
-                    if (clickTimeout) clearTimeout(clickTimeout);
-                    s.emit('onDoubleTap', s, e);
-                }
-            }
-        
-            lastClickTime = Date.now();
-            setTimeout(function () {
-                if (s) s.allowClick = true;
-            }, 0);
-        
-            if (!isTouched || !isMoved || !s.swipeDirection || s.touches.diff === 0 || currentTranslate === startTranslate) {
-                isTouched = isMoved = false;
-                return;
-            }
-            isTouched = isMoved = false;
-        
-            var currentPos;
-            if (s.params.followFinger) {
-                currentPos = s.rtl ? s.translate : -s.translate;
-            }
-            else {
-                currentPos = -currentTranslate;
-            }
-            if (s.params.freeMode) {
-                if (currentPos < -s.minTranslate()) {
-                    s.slideTo(s.activeIndex);
-                    return;
-                }
-                else if (currentPos > -s.maxTranslate()) {
-                    if (s.slides.length < s.snapGrid.length) {
-                        s.slideTo(s.snapGrid.length - 1);
-                    }
-                    else {
-                        s.slideTo(s.slides.length - 1);
-                    }
-                    return;
-                }
-        
-                if (s.params.freeModeMomentum) {
-                    if (velocities.length > 1) {
-                        var lastMoveEvent = velocities.pop(), velocityEvent = velocities.pop();
-        
-                        var distance = lastMoveEvent.position - velocityEvent.position;
-                        var time = lastMoveEvent.time - velocityEvent.time;
-                        s.velocity = distance / time;
-                        s.velocity = s.velocity / 2;
-                        if (Math.abs(s.velocity) < s.params.freeModeMinimumVelocity) {
-                            s.velocity = 0;
-                        }
-                        // this implies that the user stopped moving a finger then released.
-                        // There would be no events with distance zero, so the last event is stale.
-                        if (time > 150 || (new window.Date().getTime() - lastMoveEvent.time) > 300) {
-                            s.velocity = 0;
-                        }
-                    } else {
-                        s.velocity = 0;
-                    }
-                    s.velocity = s.velocity * s.params.freeModeMomentumVelocityRatio;
-        
-                    velocities.length = 0;
-                    var momentumDuration = 1000 * s.params.freeModeMomentumRatio;
-                    var momentumDistance = s.velocity * momentumDuration;
-        
-                    var newPosition = s.translate + momentumDistance;
-                    if (s.rtl) newPosition = - newPosition;
-                    var doBounce = false;
-                    var afterBouncePosition;
-                    var bounceAmount = Math.abs(s.velocity) * 20 * s.params.freeModeMomentumBounceRatio;
-                    if (newPosition < s.maxTranslate()) {
-                        if (s.params.freeModeMomentumBounce) {
-                            if (newPosition + s.maxTranslate() < -bounceAmount) {
-                                newPosition = s.maxTranslate() - bounceAmount;
-                            }
-                            afterBouncePosition = s.maxTranslate();
-                            doBounce = true;
-                            allowMomentumBounce = true;
-                        }
-                        else {
-                            newPosition = s.maxTranslate();
-                        }
-                    }
-                    else if (newPosition > s.minTranslate()) {
-                        if (s.params.freeModeMomentumBounce) {
-                            if (newPosition - s.minTranslate() > bounceAmount) {
-                                newPosition = s.minTranslate() + bounceAmount;
-                            }
-                            afterBouncePosition = s.minTranslate();
-                            doBounce = true;
-                            allowMomentumBounce = true;
-                        }
-                        else {
-                            newPosition = s.minTranslate();
-                        }
-                    }
-                    else if (s.params.freeModeSticky) {
-                        var j = 0,
-                            nextSlide;
-                        for (j = 0; j < s.snapGrid.length; j += 1) {
-                            if (s.snapGrid[j] > -newPosition) {
-                                nextSlide = j;
-                                break;
-                            }
-        
-                        }
-                        if (Math.abs(s.snapGrid[nextSlide] - newPosition) < Math.abs(s.snapGrid[nextSlide - 1] - newPosition) || s.swipeDirection === 'next') {
-                            newPosition = s.snapGrid[nextSlide];
-                        } else {
-                            newPosition = s.snapGrid[nextSlide - 1];
-                        }
-                        if (!s.rtl) newPosition = - newPosition;
-                    }
-                    //Fix duration
-                    if (s.velocity !== 0) {
-                        if (s.rtl) {
-                            momentumDuration = Math.abs((-newPosition - s.translate) / s.velocity);
-                        }
-                        else {
-                            momentumDuration = Math.abs((newPosition - s.translate) / s.velocity);
-                        }
-                    }
-                    else if (s.params.freeModeSticky) {
-                        s.slideReset();
-                        return;
-                    }
-        
-                    if (s.params.freeModeMomentumBounce && doBounce) {
-                        s.updateProgress(afterBouncePosition);
-                        s.setWrapperTransition(momentumDuration);
-                        s.setWrapperTranslate(newPosition);
-                        s.onTransitionStart();
-                        s.animating = true;
-                        s.wrapper.transitionEnd(function () {
-                            if (!s || !allowMomentumBounce) return;
-                            s.emit('onMomentumBounce', s);
-        
-                            s.setWrapperTransition(s.params.speed);
-                            s.setWrapperTranslate(afterBouncePosition);
-                            s.wrapper.transitionEnd(function () {
-                                if (!s) return;
-                                s.onTransitionEnd();
-                            });
-                        });
-                    } else if (s.velocity) {
-                        s.updateProgress(newPosition);
-                        s.setWrapperTransition(momentumDuration);
-                        s.setWrapperTranslate(newPosition);
-                        s.onTransitionStart();
-                        if (!s.animating) {
-                            s.animating = true;
-                            s.wrapper.transitionEnd(function () {
-                                if (!s) return;
-                                s.onTransitionEnd();
-                            });
-                        }
-        
-                    } else {
-                        s.updateProgress(newPosition);
-                    }
-        
-                    s.updateActiveIndex();
-                }
-                if (!s.params.freeModeMomentum || timeDiff >= s.params.longSwipesMs) {
-                    s.updateProgress();
-                    s.updateActiveIndex();
-                }
-                return;
-            }
-        
-            // Find current slide
-            var i, stopIndex = 0, groupSize = s.slidesSizesGrid[0];
-            for (i = 0; i < s.slidesGrid.length; i += s.params.slidesPerGroup) {
-                if (typeof s.slidesGrid[i + s.params.slidesPerGroup] !== 'undefined') {
-                    if (currentPos >= s.slidesGrid[i] && currentPos < s.slidesGrid[i + s.params.slidesPerGroup]) {
-                        stopIndex = i;
-                        groupSize = s.slidesGrid[i + s.params.slidesPerGroup] - s.slidesGrid[i];
-                    }
-                }
-                else {
-                    if (currentPos >= s.slidesGrid[i]) {
-                        stopIndex = i;
-                        groupSize = s.slidesGrid[s.slidesGrid.length - 1] - s.slidesGrid[s.slidesGrid.length - 2];
-                    }
-                }
-            }
-        
-            // Find current slide size
-            var ratio = (currentPos - s.slidesGrid[stopIndex]) / groupSize;
-        
-            if (timeDiff > s.params.longSwipesMs) {
-                // Long touches
-                if (!s.params.longSwipes) {
-                    s.slideTo(s.activeIndex);
-                    return;
-                }
-                if (s.swipeDirection === 'next') {
-                    if (ratio >= s.params.longSwipesRatio) s.slideTo(stopIndex + s.params.slidesPerGroup);
-                    else s.slideTo(stopIndex);
-        
-                }
-                if (s.swipeDirection === 'prev') {
-                    if (ratio > (1 - s.params.longSwipesRatio)) s.slideTo(stopIndex + s.params.slidesPerGroup);
-                    else s.slideTo(stopIndex);
-                }
-            }
-            else {
-                // Short swipes
-                if (!s.params.shortSwipes) {
-                    s.slideTo(s.activeIndex);
-                    return;
-                }
-                if (s.swipeDirection === 'next') {
-                    s.slideTo(stopIndex + s.params.slidesPerGroup);
-        
-                }
-                if (s.swipeDirection === 'prev') {
-                    s.slideTo(stopIndex);
-                }
-            }
-        };
-        /*=========================
-          Transitions
-          ===========================*/
-        s._slideTo = function (slideIndex, speed) {
-            return s.slideTo(slideIndex, speed, true, true);
-        };
-        s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
-            if (typeof runCallbacks === 'undefined') runCallbacks = true;
-            if (typeof slideIndex === 'undefined') slideIndex = 0;
-            if (slideIndex < 0) slideIndex = 0;
-            s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
-            if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
-        
-            var translate = - s.snapGrid[s.snapIndex];
-            // Stop autoplay
-            if (s.params.autoplay && s.autoplaying) {
-                if (internal || !s.params.autoplayDisableOnInteraction) {
-                    s.pauseAutoplay(speed);
-                }
-                else {
-                    s.stopAutoplay();
-                }
-            }
-            // Update progress
-            s.updateProgress(translate);
-        
-            // Normalize slideIndex
-            if(s.params.normalizeSlideIndex){
-                for (var i = 0; i < s.slidesGrid.length; i++) {
-                    if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
-                        slideIndex = i;
-                    }
-                }
-            }
-        
-            // Directions locks
-            if (!s.params.allowSwipeToNext && translate < s.translate && translate < s.minTranslate()) {
-                return false;
-            }
-            if (!s.params.allowSwipeToPrev && translate > s.translate && translate > s.maxTranslate()) {
-                if ((s.activeIndex || 0) !== slideIndex ) return false;
-            }
-        
-            // Update Index
-            if (typeof speed === 'undefined') speed = s.params.speed;
-            s.previousIndex = s.activeIndex || 0;
-            s.activeIndex = slideIndex;
-            s.updateRealIndex();
-            if ((s.rtl && -translate === s.translate) || (!s.rtl && translate === s.translate)) {
-                // Update Height
-                if (s.params.autoHeight) {
-                    s.updateAutoHeight();
-                }
-                s.updateClasses();
-                if (s.params.effect !== 'slide') {
-                    s.setWrapperTranslate(translate);
-                }
-                return false;
-            }
-            s.updateClasses();
-            s.onTransitionStart(runCallbacks);
-        
-            if (speed === 0 || s.browser.lteIE9) {
-                s.setWrapperTranslate(translate);
-                s.setWrapperTransition(0);
-                s.onTransitionEnd(runCallbacks);
-            }
-            else {
-                s.setWrapperTranslate(translate);
-                s.setWrapperTransition(speed);
-                if (!s.animating) {
-                    s.animating = true;
-                    s.wrapper.transitionEnd(function () {
-                        if (!s) return;
-                        s.onTransitionEnd(runCallbacks);
-                    });
-                }
-        
-            }
-        
-            return true;
-        };
-        
-        s.onTransitionStart = function (runCallbacks) {
-            if (typeof runCallbacks === 'undefined') runCallbacks = true;
-            if (s.params.autoHeight) {
-                s.updateAutoHeight();
-            }
-            if (s.lazy) s.lazy.onTransitionStart();
-            if (runCallbacks) {
-                s.emit('onTransitionStart', s);
-                if (s.activeIndex !== s.previousIndex) {
-                    s.emit('onSlideChangeStart', s);
-                    if (s.activeIndex > s.previousIndex) {
-                        s.emit('onSlideNextStart', s);
-                    }
-                    else {
-                        s.emit('onSlidePrevStart', s);
-                    }
-                }
-        
-            }
-        };
-        s.onTransitionEnd = function (runCallbacks) {
-            s.animating = false;
-            s.setWrapperTransition(0);
-            if (typeof runCallbacks === 'undefined') runCallbacks = true;
-            if (s.lazy) s.lazy.onTransitionEnd();
-            if (runCallbacks) {
-                s.emit('onTransitionEnd', s);
-                if (s.activeIndex !== s.previousIndex) {
-                    s.emit('onSlideChangeEnd', s);
-                    if (s.activeIndex > s.previousIndex) {
-                        s.emit('onSlideNextEnd', s);
-                    }
-                    else {
-                        s.emit('onSlidePrevEnd', s);
-                    }
-                }
-            }
-            if (s.params.history && s.history) {
-                s.history.setHistory(s.params.history, s.activeIndex);
-            }
-            if (s.params.hashnav && s.hashnav) {
-                s.hashnav.setHash();
-            }
-        
-        };
-        s.slideNext = function (runCallbacks, speed, internal) {
-            if (s.params.loop) {
-                if (s.animating) return false;
-                s.fixLoop();
-                var clientLeft = s.container[0].clientLeft;
-                return s.slideTo(s.activeIndex + s.params.slidesPerGroup, speed, runCallbacks, internal);
-            }
-            else return s.slideTo(s.activeIndex + s.params.slidesPerGroup, speed, runCallbacks, internal);
-        };
-        s._slideNext = function (speed) {
-            return s.slideNext(true, speed, true);
-        };
-        s.slidePrev = function (runCallbacks, speed, internal) {
-            if (s.params.loop) {
-                if (s.animating) return false;
-                s.fixLoop();
-                var clientLeft = s.container[0].clientLeft;
-                return s.slideTo(s.activeIndex - 1, speed, runCallbacks, internal);
-            }
-            else return s.slideTo(s.activeIndex - 1, speed, runCallbacks, internal);
-        };
-        s._slidePrev = function (speed) {
-            return s.slidePrev(true, speed, true);
-        };
-        s.slideReset = function (runCallbacks, speed, internal) {
-            return s.slideTo(s.activeIndex, speed, runCallbacks);
-        };
-        
-        s.disableTouchControl = function () {
-            s.params.onlyExternal = true;
-            return true;
-        };
-        s.enableTouchControl = function () {
-            s.params.onlyExternal = false;
-            return true;
-        };
-        
-        /*=========================
-          Translate/transition helpers
-          ===========================*/
-        s.setWrapperTransition = function (duration, byController) {
-            s.wrapper.transition(duration);
-            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
-                s.effects[s.params.effect].setTransition(duration);
-            }
-            if (s.params.parallax && s.parallax) {
-                s.parallax.setTransition(duration);
-            }
-            if (s.params.scrollbar && s.scrollbar) {
-                s.scrollbar.setTransition(duration);
-            }
-            if (s.params.control && s.controller) {
-                s.controller.setTransition(duration, byController);
-            }
-            s.emit('onSetTransition', s, duration);
-        };
-        s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
-            var x = 0, y = 0, z = 0;
-            if (s.isHorizontal()) {
-                x = s.rtl ? -translate : translate;
-            }
-            else {
-                y = translate;
-            }
-        
-            if (s.params.roundLengths) {
-                x = round(x);
-                y = round(y);
-            }
-        
-            if (!s.params.virtualTranslate) {
-                if (s.support.transforms3d) s.wrapper.transform('translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)');
-                else s.wrapper.transform('translate(' + x + 'px, ' + y + 'px)');
-            }
-        
-            s.translate = s.isHorizontal() ? x : y;
-        
-            // Check if we need to update progress
-            var progress;
-            var translatesDiff = s.maxTranslate() - s.minTranslate();
-            if (translatesDiff === 0) {
-                progress = 0;
-            }
-            else {
-                progress = (translate - s.minTranslate()) / (translatesDiff);
-            }
-            if (progress !== s.progress) {
-                s.updateProgress(translate);
-            }
-        
-            if (updateActiveIndex) s.updateActiveIndex();
-            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
-                s.effects[s.params.effect].setTranslate(s.translate);
-            }
-            if (s.params.parallax && s.parallax) {
-                s.parallax.setTranslate(s.translate);
-            }
-            if (s.params.scrollbar && s.scrollbar) {
-                s.scrollbar.setTranslate(s.translate);
-            }
-            if (s.params.control && s.controller) {
-                s.controller.setTranslate(s.translate, byController);
-            }
-            s.emit('onSetTranslate', s, s.translate);
-        };
-        
-        s.getTranslate = function (el, axis) {
-            var matrix, curTransform, curStyle, transformMatrix;
-        
-            // automatic axis detection
-            if (typeof axis === 'undefined') {
-                axis = 'x';
-            }
-        
-            if (s.params.virtualTranslate) {
-                return s.rtl ? -s.translate : s.translate;
-            }
-        
-            curStyle = window.getComputedStyle(el, null);
-            if (window.WebKitCSSMatrix) {
-                curTransform = curStyle.transform || curStyle.webkitTransform;
-                if (curTransform.split(',').length > 6) {
-                    curTransform = curTransform.split(', ').map(function(a){
-                        return a.replace(',','.');
-                    }).join(', ');
-                }
-                // Some old versions of Webkit choke when 'none' is passed; pass
-                // empty string instead in this case
-                transformMatrix = new window.WebKitCSSMatrix(curTransform === 'none' ? '' : curTransform);
-            }
-            else {
-                transformMatrix = curStyle.MozTransform || curStyle.OTransform || curStyle.MsTransform || curStyle.msTransform  || curStyle.transform || curStyle.getPropertyValue('transform').replace('translate(', 'matrix(1, 0, 0, 1,');
-                matrix = transformMatrix.toString().split(',');
-            }
-        
-            if (axis === 'x') {
-                //Latest Chrome and webkits Fix
-                if (window.WebKitCSSMatrix)
-                    curTransform = transformMatrix.m41;
-                //Crazy IE10 Matrix
-                else if (matrix.length === 16)
-                    curTransform = parseFloat(matrix[12]);
-                //Normal Browsers
-                else
-                    curTransform = parseFloat(matrix[4]);
-            }
-            if (axis === 'y') {
-                //Latest Chrome and webkits Fix
-                if (window.WebKitCSSMatrix)
-                    curTransform = transformMatrix.m42;
-                //Crazy IE10 Matrix
-                else if (matrix.length === 16)
-                    curTransform = parseFloat(matrix[13]);
-                //Normal Browsers
-                else
-                    curTransform = parseFloat(matrix[5]);
-            }
-            if (s.rtl && curTransform) curTransform = -curTransform;
-            return curTransform || 0;
-        };
-        s.getWrapperTranslate = function (axis) {
-            if (typeof axis === 'undefined') {
-                axis = s.isHorizontal() ? 'x' : 'y';
-            }
-            return s.getTranslate(s.wrapper[0], axis);
-        };
-        
-        /*=========================
-          Observer
-          ===========================*/
-        s.observers = [];
-        function initObserver(target, options) {
-            options = options || {};
-            // create an observer instance
-            var ObserverFunc = window.MutationObserver || window.WebkitMutationObserver;
-            var observer = new ObserverFunc(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    s.onResize(true);
-                    s.emit('onObserverUpdate', s, mutation);
-                });
-            });
-        
-            observer.observe(target, {
-                attributes: typeof options.attributes === 'undefined' ? true : options.attributes,
-                childList: typeof options.childList === 'undefined' ? true : options.childList,
-                characterData: typeof options.characterData === 'undefined' ? true : options.characterData
-            });
-        
-            s.observers.push(observer);
-        }
-        s.initObservers = function () {
-            if (s.params.observeParents) {
-                var containerParents = s.container.parents();
-                for (var i = 0; i < containerParents.length; i++) {
-                    initObserver(containerParents[i]);
-                }
-            }
-        
-            // Observe container
-            initObserver(s.container[0], {childList: false});
-        
-            // Observe wrapper
-            initObserver(s.wrapper[0], {attributes: false});
-        };
-        s.disconnectObservers = function () {
-            for (var i = 0; i < s.observers.length; i++) {
-                s.observers[i].disconnect();
-            }
-            s.observers = [];
-        };
-        /*=========================
-          Loop
-          ===========================*/
-        // Create looped slides
-        s.createLoop = function () {
-            // Remove duplicated slides
-            s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
-        
-            var slides = s.wrapper.children('.' + s.params.slideClass);
-        
-            if(s.params.slidesPerView === 'auto' && !s.params.loopedSlides) s.params.loopedSlides = slides.length;
-        
-            s.loopedSlides = parseInt(s.params.loopedSlides || s.params.slidesPerView, 10);
-            s.loopedSlides = s.loopedSlides + s.params.loopAdditionalSlides;
-            if (s.loopedSlides > slides.length) {
-                s.loopedSlides = slides.length;
-            }
-        
-            var prependSlides = [], appendSlides = [], i;
-            slides.each(function (index, el) {
-                var slide = $(this);
-                if (index < s.loopedSlides) appendSlides.push(el);
-                if (index < slides.length && index >= slides.length - s.loopedSlides) prependSlides.push(el);
-                slide.attr('data-swiper-slide-index', index);
-            });
-            for (i = 0; i < appendSlides.length; i++) {
-                s.wrapper.append($(appendSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
-            }
-            for (i = prependSlides.length - 1; i >= 0; i--) {
-                s.wrapper.prepend($(prependSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
-            }
-        };
-        s.destroyLoop = function () {
-            s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
-            s.slides.removeAttr('data-swiper-slide-index');
-        };
-        s.reLoop = function (updatePosition) {
-            var oldIndex = s.activeIndex - s.loopedSlides;
-            s.destroyLoop();
-            s.createLoop();
-            s.updateSlidesSize();
-            if (updatePosition) {
-                s.slideTo(oldIndex + s.loopedSlides, 0, false);
-            }
-        
-        };
-        s.fixLoop = function () {
-            var newIndex;
-            //Fix For Negative Oversliding
-            if (s.activeIndex < s.loopedSlides) {
-                newIndex = s.slides.length - s.loopedSlides * 3 + s.activeIndex;
-                newIndex = newIndex + s.loopedSlides;
-                s.slideTo(newIndex, 0, false, true);
-            }
-            //Fix For Positive Oversliding
-            else if ((s.params.slidesPerView === 'auto' && s.activeIndex >= s.loopedSlides * 2) || (s.activeIndex > s.slides.length - s.params.slidesPerView * 2)) {
-                newIndex = -s.slides.length + s.activeIndex + s.loopedSlides;
-                newIndex = newIndex + s.loopedSlides;
-                s.slideTo(newIndex, 0, false, true);
-            }
-        };
-        /*=========================
-          Append/Prepend/Remove Slides
-          ===========================*/
-        s.appendSlide = function (slides) {
-            if (s.params.loop) {
-                s.destroyLoop();
-            }
-            if (typeof slides === 'object' && slides.length) {
-                for (var i = 0; i < slides.length; i++) {
-                    if (slides[i]) s.wrapper.append(slides[i]);
-                }
-            }
-            else {
-                s.wrapper.append(slides);
-            }
-            if (s.params.loop) {
-                s.createLoop();
-            }
-            if (!(s.params.observer && s.support.observer)) {
-                s.update(true);
-            }
-        };
-        s.prependSlide = function (slides) {
-            if (s.params.loop) {
-                s.destroyLoop();
-            }
-            var newActiveIndex = s.activeIndex + 1;
-            if (typeof slides === 'object' && slides.length) {
-                for (var i = 0; i < slides.length; i++) {
-                    if (slides[i]) s.wrapper.prepend(slides[i]);
-                }
-                newActiveIndex = s.activeIndex + slides.length;
-            }
-            else {
-                s.wrapper.prepend(slides);
-            }
-            if (s.params.loop) {
-                s.createLoop();
-            }
-            if (!(s.params.observer && s.support.observer)) {
-                s.update(true);
-            }
-            s.slideTo(newActiveIndex, 0, false);
-        };
-        s.removeSlide = function (slidesIndexes) {
-            if (s.params.loop) {
-                s.destroyLoop();
-                s.slides = s.wrapper.children('.' + s.params.slideClass);
-            }
-            var newActiveIndex = s.activeIndex,
-                indexToRemove;
-            if (typeof slidesIndexes === 'object' && slidesIndexes.length) {
-                for (var i = 0; i < slidesIndexes.length; i++) {
-                    indexToRemove = slidesIndexes[i];
-                    if (s.slides[indexToRemove]) s.slides.eq(indexToRemove).remove();
-                    if (indexToRemove < newActiveIndex) newActiveIndex--;
-                }
-                newActiveIndex = Math.max(newActiveIndex, 0);
-            }
-            else {
-                indexToRemove = slidesIndexes;
-                if (s.slides[indexToRemove]) s.slides.eq(indexToRemove).remove();
-                if (indexToRemove < newActiveIndex) newActiveIndex--;
-                newActiveIndex = Math.max(newActiveIndex, 0);
-            }
-        
-            if (s.params.loop) {
-                s.createLoop();
-            }
-        
-            if (!(s.params.observer && s.support.observer)) {
-                s.update(true);
-            }
-            if (s.params.loop) {
-                s.slideTo(newActiveIndex + s.loopedSlides, 0, false);
-            }
-            else {
-                s.slideTo(newActiveIndex, 0, false);
-            }
-        
-        };
-        s.removeAllSlides = function () {
-            var slidesIndexes = [];
-            for (var i = 0; i < s.slides.length; i++) {
-                slidesIndexes.push(i);
-            }
-            s.removeSlide(slidesIndexes);
-        };
-        
-
-        /*=========================
-          Effects
-          ===========================*/
-        s.effects = {
-            fade: {
-                setTranslate: function () {
-                    for (var i = 0; i < s.slides.length; i++) {
-                        var slide = s.slides.eq(i);
-                        var offset = slide[0].swiperSlideOffset;
-                        var tx = -offset;
-                        if (!s.params.virtualTranslate) tx = tx - s.translate;
-                        var ty = 0;
-                        if (!s.isHorizontal()) {
-                            ty = tx;
-                            tx = 0;
-                        }
-                        var slideOpacity = s.params.fade.crossFade ?
-                                Math.max(1 - Math.abs(slide[0].progress), 0) :
-                                1 + Math.min(Math.max(slide[0].progress, -1), 0);
-                        slide
-                            .css({
-                                opacity: slideOpacity
-                            })
-                            .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px)');
-        
-                    }
-        
-                },
-                setTransition: function (duration) {
-                    s.slides.transition(duration);
-                    if (s.params.virtualTranslate && duration !== 0) {
-                        var eventTriggered = false;
-                        s.slides.transitionEnd(function () {
-                            if (eventTriggered) return;
-                            if (!s) return;
-                            eventTriggered = true;
-                            s.animating = false;
-                            var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
-                            for (var i = 0; i < triggerEvents.length; i++) {
-                                s.wrapper.trigger(triggerEvents[i]);
-                            }
-                        });
-                    }
-                }
-            },
-            flip: {
-                setTranslate: function () {
-                    for (var i = 0; i < s.slides.length; i++) {
-                        var slide = s.slides.eq(i);
-                        var progress = slide[0].progress;
-                        if (s.params.flip.limitRotation) {
-                            progress = Math.max(Math.min(slide[0].progress, 1), -1);
-                        }
-                        var offset = slide[0].swiperSlideOffset;
-                        var rotate = -180 * progress,
-                            rotateY = rotate,
-                            rotateX = 0,
-                            tx = -offset,
-                            ty = 0;
-                        if (!s.isHorizontal()) {
-                            ty = tx;
-                            tx = 0;
-                            rotateX = -rotateY;
-                            rotateY = 0;
-                        }
-                        else if (s.rtl) {
-                            rotateY = -rotateY;
-                        }
-        
-                        slide[0].style.zIndex = -Math.abs(Math.round(progress)) + s.slides.length;
-        
-                        if (s.params.flip.slideShadows) {
-                            //Set shadows
-                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
-                            if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
-                                slide.append(shadowBefore);
-                            }
-                            if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
-                                slide.append(shadowAfter);
-                            }
-                            if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
-                            if (shadowAfter.length) shadowAfter[0].style.opacity = Math.max(progress, 0);
-                        }
-        
-                        slide
-                            .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
-                    }
-                },
-                setTransition: function (duration) {
-                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
-                    if (s.params.virtualTranslate && duration !== 0) {
-                        var eventTriggered = false;
-                        s.slides.eq(s.activeIndex).transitionEnd(function () {
-                            if (eventTriggered) return;
-                            if (!s) return;
-                            if (!$(this).hasClass(s.params.slideActiveClass)) return;
-                            eventTriggered = true;
-                            s.animating = false;
-                            var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
-                            for (var i = 0; i < triggerEvents.length; i++) {
-                                s.wrapper.trigger(triggerEvents[i]);
-                            }
-                        });
-                    }
-                }
-            },
-            cube: {
-                setTranslate: function () {
-                    var wrapperRotate = 0, cubeShadow;
-                    if (s.params.cube.shadow) {
-                        if (s.isHorizontal()) {
-                            cubeShadow = s.wrapper.find('.swiper-cube-shadow');
-                            if (cubeShadow.length === 0) {
-                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
-                                s.wrapper.append(cubeShadow);
-                            }
-                            cubeShadow.css({height: s.width + 'px'});
-                        }
-                        else {
-                            cubeShadow = s.container.find('.swiper-cube-shadow');
-                            if (cubeShadow.length === 0) {
-                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
-                                s.container.append(cubeShadow);
-                            }
-                        }
-                    }
-                    for (var i = 0; i < s.slides.length; i++) {
-                        var slide = s.slides.eq(i);
-                        var slideAngle = i * 90;
-                        var round = Math.floor(slideAngle / 360);
-                        if (s.rtl) {
-                            slideAngle = -slideAngle;
-                            round = Math.floor(-slideAngle / 360);
-                        }
-                        var progress = Math.max(Math.min(slide[0].progress, 1), -1);
-                        var tx = 0, ty = 0, tz = 0;
-                        if (i % 4 === 0) {
-                            tx = - round * 4 * s.size;
-                            tz = 0;
-                        }
-                        else if ((i - 1) % 4 === 0) {
-                            tx = 0;
-                            tz = - round * 4 * s.size;
-                        }
-                        else if ((i - 2) % 4 === 0) {
-                            tx = s.size + round * 4 * s.size;
-                            tz = s.size;
-                        }
-                        else if ((i - 3) % 4 === 0) {
-                            tx = - s.size;
-                            tz = 3 * s.size + s.size * 4 * round;
-                        }
-                        if (s.rtl) {
-                            tx = -tx;
-                        }
-        
-                        if (!s.isHorizontal()) {
-                            ty = tx;
-                            tx = 0;
-                        }
-        
-                        var transform = 'rotateX(' + (s.isHorizontal() ? 0 : -slideAngle) + 'deg) rotateY(' + (s.isHorizontal() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
-                        if (progress <= 1 && progress > -1) {
-                            wrapperRotate = i * 90 + progress * 90;
-                            if (s.rtl) wrapperRotate = -i * 90 - progress * 90;
-                        }
-                        slide.transform(transform);
-                        if (s.params.cube.slideShadows) {
-                            //Set shadows
-                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
-                            if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
-                                slide.append(shadowBefore);
-                            }
-                            if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
-                                slide.append(shadowAfter);
-                            }
-                            if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
-                            if (shadowAfter.length) shadowAfter[0].style.opacity = Math.max(progress, 0);
-                        }
-                    }
-                    s.wrapper.css({
-                        '-webkit-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
-                        '-moz-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
-                        '-ms-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
-                        'transform-origin': '50% 50% -' + (s.size / 2) + 'px'
-                    });
-        
-                    if (s.params.cube.shadow) {
-                        if (s.isHorizontal()) {
-                            cubeShadow.transform('translate3d(0px, ' + (s.width / 2 + s.params.cube.shadowOffset) + 'px, ' + (-s.width / 2) + 'px) rotateX(90deg) rotateZ(0deg) scale(' + (s.params.cube.shadowScale) + ')');
-                        }
-                        else {
-                            var shadowAngle = Math.abs(wrapperRotate) - Math.floor(Math.abs(wrapperRotate) / 90) * 90;
-                            var multiplier = 1.5 - (Math.sin(shadowAngle * 2 * Math.PI / 360) / 2 + Math.cos(shadowAngle * 2 * Math.PI / 360) / 2);
-                            var scale1 = s.params.cube.shadowScale,
-                                scale2 = s.params.cube.shadowScale / multiplier,
-                                offset = s.params.cube.shadowOffset;
-                            cubeShadow.transform('scale3d(' + scale1 + ', 1, ' + scale2 + ') translate3d(0px, ' + (s.height / 2 + offset) + 'px, ' + (-s.height / 2 / scale2) + 'px) rotateX(-90deg)');
-                        }
-                    }
-                    var zFactor = (s.isSafari || s.isUiWebView) ? (-s.size / 2) : 0;
-                    s.wrapper.transform('translate3d(0px,0,' + zFactor + 'px) rotateX(' + (s.isHorizontal() ? 0 : wrapperRotate) + 'deg) rotateY(' + (s.isHorizontal() ? -wrapperRotate : 0) + 'deg)');
-                },
-                setTransition: function (duration) {
-                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
-                    if (s.params.cube.shadow && !s.isHorizontal()) {
-                        s.container.find('.swiper-cube-shadow').transition(duration);
-                    }
-                }
-            },
-            coverflow: {
-                setTranslate: function () {
-                    var transform = s.translate;
-                    var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
-                    var rotate = s.isHorizontal() ? s.params.coverflow.rotate: -s.params.coverflow.rotate;
-                    var translate = s.params.coverflow.depth;
-                    //Each slide offset from center
-                    for (var i = 0, length = s.slides.length; i < length; i++) {
-                        var slide = s.slides.eq(i);
-                        var slideSize = s.slidesSizesGrid[i];
-                        var slideOffset = slide[0].swiperSlideOffset;
-                        var offsetMultiplier = (center - slideOffset - slideSize / 2) / slideSize * s.params.coverflow.modifier;
-        
-                        var rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
-                        var rotateX = s.isHorizontal() ? 0 : rotate * offsetMultiplier;
-                        // var rotateZ = 0
-                        var translateZ = -translate * Math.abs(offsetMultiplier);
-        
-                        var translateY = s.isHorizontal() ? 0 : s.params.coverflow.stretch * (offsetMultiplier);
-                        var translateX = s.isHorizontal() ? s.params.coverflow.stretch * (offsetMultiplier) : 0;
-        
-                        //Fix for ultra small values
-                        if (Math.abs(translateX) < 0.001) translateX = 0;
-                        if (Math.abs(translateY) < 0.001) translateY = 0;
-                        if (Math.abs(translateZ) < 0.001) translateZ = 0;
-                        if (Math.abs(rotateY) < 0.001) rotateY = 0;
-                        if (Math.abs(rotateX) < 0.001) rotateX = 0;
-        
-                        var slideTransform = 'translate3d(' + translateX + 'px,' + translateY + 'px,' + translateZ + 'px)  rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
-        
-                        slide.transform(slideTransform);
-                        slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
-                        if (s.params.coverflow.slideShadows) {
-                            //Set shadows
-                            var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                            var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
-                            if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
-                                slide.append(shadowBefore);
-                            }
-                            if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
-                                slide.append(shadowAfter);
-                            }
-                            if (shadowBefore.length) shadowBefore[0].style.opacity = offsetMultiplier > 0 ? offsetMultiplier : 0;
-                            if (shadowAfter.length) shadowAfter[0].style.opacity = (-offsetMultiplier) > 0 ? -offsetMultiplier : 0;
-                        }
-                    }
-        
-                    //Set correct perspective for IE10
-                    if (s.browser.ie) {
-                        var ws = s.wrapper[0].style;
-                        ws.perspectiveOrigin = center + 'px 50%';
-                    }
-                },
-                setTransition: function (duration) {
-                    s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
-                }
-            }
-        };
-        
-
-        /*=========================
-          Images Lazy Loading
-          ===========================*/
-        s.lazy = {
-            initialImageLoaded: false,
-            loadImageInSlide: function (index, loadInDuplicate) {
-                if (typeof index === 'undefined') return;
-                if (typeof loadInDuplicate === 'undefined') loadInDuplicate = true;
-                if (s.slides.length === 0) return;
-        
-                var slide = s.slides.eq(index);
-                var img = slide.find('.' + s.params.lazyLoadingClass + ':not(.' + s.params.lazyStatusLoadedClass + '):not(.' + s.params.lazyStatusLoadingClass + ')');
-                if (slide.hasClass(s.params.lazyLoadingClass) && !slide.hasClass(s.params.lazyStatusLoadedClass) && !slide.hasClass(s.params.lazyStatusLoadingClass)) {
-                    img = img.add(slide[0]);
-                }
-                if (img.length === 0) return;
-        
-                img.each(function () {
-                    var _img = $(this);
-                    _img.addClass(s.params.lazyStatusLoadingClass);
-                    var background = _img.attr('data-background');
-                    var src = _img.attr('data-src'),
-                        srcset = _img.attr('data-srcset'),
-                        sizes = _img.attr('data-sizes');
-                    s.loadImage(_img[0], (src || background), srcset, sizes, false, function () {
-                        if (typeof s === 'undefined' || s === null || !s) return;
-                        if (background) {
-                            _img.css('background-image', 'url("' + background + '")');
-                            _img.removeAttr('data-background');
-                        }
-                        else {
-                            if (srcset) {
-                                _img.attr('srcset', srcset);
-                                _img.removeAttr('data-srcset');
-                            }
-                            if (sizes) {
-                                _img.attr('sizes', sizes);
-                                _img.removeAttr('data-sizes');
-                            }
-                            if (src) {
-                                _img.attr('src', src);
-                                _img.removeAttr('data-src');
-                            }
-        
-                        }
-        
-                        _img.addClass(s.params.lazyStatusLoadedClass).removeClass(s.params.lazyStatusLoadingClass);
-                        slide.find('.' + s.params.lazyPreloaderClass + ', .' + s.params.preloaderClass).remove();
-                        if (s.params.loop && loadInDuplicate) {
-                            var slideOriginalIndex = slide.attr('data-swiper-slide-index');
-                            if (slide.hasClass(s.params.slideDuplicateClass)) {
-                                var originalSlide = s.wrapper.children('[data-swiper-slide-index="' + slideOriginalIndex + '"]:not(.' + s.params.slideDuplicateClass + ')');
-                                s.lazy.loadImageInSlide(originalSlide.index(), false);
-                            }
-                            else {
-                                var duplicatedSlide = s.wrapper.children('.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + slideOriginalIndex + '"]');
-                                s.lazy.loadImageInSlide(duplicatedSlide.index(), false);
-                            }
-                        }
-                        s.emit('onLazyImageReady', s, slide[0], _img[0]);
-                    });
-        
-                    s.emit('onLazyImageLoad', s, slide[0], _img[0]);
-                });
-        
-            },
-            load: function () {
-                var i;
-                var slidesPerView = s.params.slidesPerView;
-                if (slidesPerView === 'auto') {
-                    slidesPerView = 0;
-                }
-                if (!s.lazy.initialImageLoaded) s.lazy.initialImageLoaded = true;
-                if (s.params.watchSlidesVisibility) {
-                    s.wrapper.children('.' + s.params.slideVisibleClass).each(function () {
-                        s.lazy.loadImageInSlide($(this).index());
-                    });
-                }
-                else {
-                    if (slidesPerView > 1) {
-                        for (i = s.activeIndex; i < s.activeIndex + slidesPerView ; i++) {
-                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
-                        }
-                    }
-                    else {
-                        s.lazy.loadImageInSlide(s.activeIndex);
-                    }
-                }
-                if (s.params.lazyLoadingInPrevNext) {
-                    if (slidesPerView > 1 || (s.params.lazyLoadingInPrevNextAmount && s.params.lazyLoadingInPrevNextAmount > 1)) {
-                        var amount = s.params.lazyLoadingInPrevNextAmount;
-                        var spv = slidesPerView;
-                        var maxIndex = Math.min(s.activeIndex + spv + Math.max(amount, spv), s.slides.length);
-                        var minIndex = Math.max(s.activeIndex - Math.max(spv, amount), 0);
-                        // Next Slides
-                        for (i = s.activeIndex + slidesPerView; i < maxIndex; i++) {
-                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
-                        }
-                        // Prev Slides
-                        for (i = minIndex; i < s.activeIndex ; i++) {
-                            if (s.slides[i]) s.lazy.loadImageInSlide(i);
-                        }
-                    }
-                    else {
-                        var nextSlide = s.wrapper.children('.' + s.params.slideNextClass);
-                        if (nextSlide.length > 0) s.lazy.loadImageInSlide(nextSlide.index());
-        
-                        var prevSlide = s.wrapper.children('.' + s.params.slidePrevClass);
-                        if (prevSlide.length > 0) s.lazy.loadImageInSlide(prevSlide.index());
-                    }
-                }
-            },
-            onTransitionStart: function () {
-                if (s.params.lazyLoading) {
-                    if (s.params.lazyLoadingOnTransitionStart || (!s.params.lazyLoadingOnTransitionStart && !s.lazy.initialImageLoaded)) {
-                        s.lazy.load();
-                    }
-                }
-            },
-            onTransitionEnd: function () {
-                if (s.params.lazyLoading && !s.params.lazyLoadingOnTransitionStart) {
-                    s.lazy.load();
-                }
-            }
-        };
-        
-
-        /*=========================
-          Scrollbar
-          ===========================*/
-        s.scrollbar = {
-            isTouched: false,
-            setDragPosition: function (e) {
-                var sb = s.scrollbar;
-                var x = 0, y = 0;
-                var translate;
-                var pointerPosition = s.isHorizontal() ?
-                    ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageX : e.pageX || e.clientX) :
-                    ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageY : e.pageY || e.clientY) ;
-                var position = (pointerPosition) - sb.track.offset()[s.isHorizontal() ? 'left' : 'top'] - sb.dragSize / 2;
-                var positionMin = -s.minTranslate() * sb.moveDivider;
-                var positionMax = -s.maxTranslate() * sb.moveDivider;
-                if (position < positionMin) {
-                    position = positionMin;
-                }
-                else if (position > positionMax) {
-                    position = positionMax;
-                }
-                position = -position / sb.moveDivider;
-                s.updateProgress(position);
-                s.setWrapperTranslate(position, true);
-            },
-            dragStart: function (e) {
-                var sb = s.scrollbar;
-                sb.isTouched = true;
-                e.preventDefault();
-                e.stopPropagation();
-        
-                sb.setDragPosition(e);
-                clearTimeout(sb.dragTimeout);
-        
-                sb.track.transition(0);
-                if (s.params.scrollbarHide) {
-                    sb.track.css('opacity', 1);
-                }
-                s.wrapper.transition(100);
-                sb.drag.transition(100);
-                s.emit('onScrollbarDragStart', s);
-            },
-            dragMove: function (e) {
-                var sb = s.scrollbar;
-                if (!sb.isTouched) return;
-                if (e.preventDefault) e.preventDefault();
-                else e.returnValue = false;
-                sb.setDragPosition(e);
-                s.wrapper.transition(0);
-                sb.track.transition(0);
-                sb.drag.transition(0);
-                s.emit('onScrollbarDragMove', s);
-            },
-            dragEnd: function (e) {
-                var sb = s.scrollbar;
-                if (!sb.isTouched) return;
-                sb.isTouched = false;
-                if (s.params.scrollbarHide) {
-                    clearTimeout(sb.dragTimeout);
-                    sb.dragTimeout = setTimeout(function () {
-                        sb.track.css('opacity', 0);
-                        sb.track.transition(400);
-                    }, 1000);
-        
-                }
-                s.emit('onScrollbarDragEnd', s);
-                if (s.params.scrollbarSnapOnRelease) {
-                    s.slideReset();
-                }
-            },
-            draggableEvents: (function () {
-                if ((s.params.simulateTouch === false && !s.support.touch)) return s.touchEventsDesktop;
-                else return s.touchEvents;
-            })(),
-            enableDraggable: function () {
-                var sb = s.scrollbar;
-                var target = s.support.touch ? sb.track : document;
-                $(sb.track).on(sb.draggableEvents.start, sb.dragStart);
-                $(target).on(sb.draggableEvents.move, sb.dragMove);
-                $(target).on(sb.draggableEvents.end, sb.dragEnd);
-            },
-            disableDraggable: function () {
-                var sb = s.scrollbar;
-                var target = s.support.touch ? sb.track : document;
-                $(sb.track).off(sb.draggableEvents.start, sb.dragStart);
-                $(target).off(sb.draggableEvents.move, sb.dragMove);
-                $(target).off(sb.draggableEvents.end, sb.dragEnd);
-            },
-            set: function () {
-                if (!s.params.scrollbar) return;
-                var sb = s.scrollbar;
-                sb.track = $(s.params.scrollbar);
-                if (s.params.uniqueNavElements && typeof s.params.scrollbar === 'string' && sb.track.length > 1 && s.container.find(s.params.scrollbar).length === 1) {
-                    sb.track = s.container.find(s.params.scrollbar);
-                }
-                sb.drag = sb.track.find('.swiper-scrollbar-drag');
-                if (sb.drag.length === 0) {
-                    sb.drag = $('<div class="swiper-scrollbar-drag"></div>');
-                    sb.track.append(sb.drag);
-                }
-                sb.drag[0].style.width = '';
-                sb.drag[0].style.height = '';
-                sb.trackSize = s.isHorizontal() ? sb.track[0].offsetWidth : sb.track[0].offsetHeight;
-        
-                sb.divider = s.size / s.virtualSize;
-                sb.moveDivider = sb.divider * (sb.trackSize / s.size);
-                sb.dragSize = sb.trackSize * sb.divider;
-        
-                if (s.isHorizontal()) {
-                    sb.drag[0].style.width = sb.dragSize + 'px';
-                }
-                else {
-                    sb.drag[0].style.height = sb.dragSize + 'px';
-                }
-        
-                if (sb.divider >= 1) {
-                    sb.track[0].style.display = 'none';
-                }
-                else {
-                    sb.track[0].style.display = '';
-                }
-                if (s.params.scrollbarHide) {
-                    sb.track[0].style.opacity = 0;
-                }
-            },
-            setTranslate: function () {
-                if (!s.params.scrollbar) return;
-                var diff;
-                var sb = s.scrollbar;
-                var translate = s.translate || 0;
-                var newPos;
-        
-                var newSize = sb.dragSize;
-                newPos = (sb.trackSize - sb.dragSize) * s.progress;
-                if (s.rtl && s.isHorizontal()) {
-                    newPos = -newPos;
-                    if (newPos > 0) {
-                        newSize = sb.dragSize - newPos;
-                        newPos = 0;
-                    }
-                    else if (-newPos + sb.dragSize > sb.trackSize) {
-                        newSize = sb.trackSize + newPos;
-                    }
-                }
-                else {
-                    if (newPos < 0) {
-                        newSize = sb.dragSize + newPos;
-                        newPos = 0;
-                    }
-                    else if (newPos + sb.dragSize > sb.trackSize) {
-                        newSize = sb.trackSize - newPos;
-                    }
-                }
-                if (s.isHorizontal()) {
-                    if (s.support.transforms3d) {
-                        sb.drag.transform('translate3d(' + (newPos) + 'px, 0, 0)');
-                    }
-                    else {
-                        sb.drag.transform('translateX(' + (newPos) + 'px)');
-                    }
-                    sb.drag[0].style.width = newSize + 'px';
-                }
-                else {
-                    if (s.support.transforms3d) {
-                        sb.drag.transform('translate3d(0px, ' + (newPos) + 'px, 0)');
-                    }
-                    else {
-                        sb.drag.transform('translateY(' + (newPos) + 'px)');
-                    }
-                    sb.drag[0].style.height = newSize + 'px';
-                }
-                if (s.params.scrollbarHide) {
-                    clearTimeout(sb.timeout);
-                    sb.track[0].style.opacity = 1;
-                    sb.timeout = setTimeout(function () {
-                        sb.track[0].style.opacity = 0;
-                        sb.track.transition(400);
-                    }, 1000);
-                }
-            },
-            setTransition: function (duration) {
-                if (!s.params.scrollbar) return;
-                s.scrollbar.drag.transition(duration);
-            }
-        };
-        
-
-        /*=========================
-          Controller
-          ===========================*/
-        s.controller = {
-            LinearSpline: function (x, y) {
-                var binarySearch = (function() {
-                    var maxIndex, minIndex, guess;
-                    return function(array, val) {
-                        minIndex = -1;
-                        maxIndex = array.length;
-                        while (maxIndex - minIndex > 1)
-                            if (array[guess = maxIndex + minIndex >> 1] <= val) {
-                                minIndex = guess;
-                            } else {
-                                maxIndex = guess;
-                            }
-                        return maxIndex;
-                    };
-                })();
-                this.x = x;
-                this.y = y;
-                this.lastIndex = x.length - 1;
-                // Given an x value (x2), return the expected y2 value:
-                // (x1,y1) is the known point before given value,
-                // (x3,y3) is the known point after given value.
-                var i1, i3;
-                var l = this.x.length;
-        
-                this.interpolate = function (x2) {
-                    if (!x2) return 0;
-        
-                    // Get the indexes of x1 and x3 (the array indexes before and after given x2):
-                    i3 = binarySearch(this.x, x2);
-                    i1 = i3 - 1;
-        
-                    // We have our indexes i1 & i3, so we can calculate already:
-                    // y2 := ((x2−x1) × (y3−y1)) ÷ (x3−x1) + y1
-                    return ((x2 - this.x[i1]) * (this.y[i3] - this.y[i1])) / (this.x[i3] - this.x[i1]) + this.y[i1];
-                };
-            },
-            //xxx: for now i will just save one spline function to to
-            getInterpolateFunction: function(c){
-                if(!s.controller.spline) s.controller.spline = s.params.loop ?
-                    new s.controller.LinearSpline(s.slidesGrid, c.slidesGrid) :
-                    new s.controller.LinearSpline(s.snapGrid, c.snapGrid);
-            },
-            setTranslate: function (translate, byController) {
-               var controlled = s.params.control;
-               var multiplier, controlledTranslate;
-               function setControlledTranslate(c) {
-                    // this will create an Interpolate function based on the snapGrids
-                    // x is the Grid of the scrolled scroller and y will be the controlled scroller
-                    // it makes sense to create this only once and recall it for the interpolation
-                    // the function does a lot of value caching for performance
-                    translate = c.rtl && c.params.direction === 'horizontal' ? -s.translate : s.translate;
-                    if (s.params.controlBy === 'slide') {
-                        s.controller.getInterpolateFunction(c);
-                        // i am not sure why the values have to be multiplicated this way, tried to invert the snapGrid
-                        // but it did not work out
-                        controlledTranslate = -s.controller.spline.interpolate(-translate);
-                    }
-        
-                    if(!controlledTranslate || s.params.controlBy === 'container'){
-                        multiplier = (c.maxTranslate() - c.minTranslate()) / (s.maxTranslate() - s.minTranslate());
-                        controlledTranslate = (translate - s.minTranslate()) * multiplier + c.minTranslate();
-                    }
-        
-                    if (s.params.controlInverse) {
-                        controlledTranslate = c.maxTranslate() - controlledTranslate;
-                    }
-                    c.updateProgress(controlledTranslate);
-                    c.setWrapperTranslate(controlledTranslate, false, s);
-                    c.updateActiveIndex();
-               }
-               if (Array.isArray(controlled)) {
-                   for (var i = 0; i < controlled.length; i++) {
-                       if (controlled[i] !== byController && controlled[i] instanceof Swiper) {
-                           setControlledTranslate(controlled[i]);
-                       }
-                   }
-               }
-               else if (controlled instanceof Swiper && byController !== controlled) {
-        
-                   setControlledTranslate(controlled);
-               }
-            },
-            setTransition: function (duration, byController) {
-                var controlled = s.params.control;
-                var i;
-                function setControlledTransition(c) {
-                    c.setWrapperTransition(duration, s);
-                    if (duration !== 0) {
-                        c.onTransitionStart();
-                        c.wrapper.transitionEnd(function(){
-                            if (!controlled) return;
-                            if (c.params.loop && s.params.controlBy === 'slide') {
-                                c.fixLoop();
-                            }
-                            c.onTransitionEnd();
-        
-                        });
-                    }
-                }
-                if (Array.isArray(controlled)) {
-                    for (i = 0; i < controlled.length; i++) {
-                        if (controlled[i] !== byController && controlled[i] instanceof Swiper) {
-                            setControlledTransition(controlled[i]);
-                        }
-                    }
-                }
-                else if (controlled instanceof Swiper && byController !== controlled) {
-                    setControlledTransition(controlled);
-                }
-            }
-        };
-        
-
-        /*=========================
-          Hash Navigation
-          ===========================*/
-        s.hashnav = {
-            onHashCange: function (e, a) {
-                var newHash = document.location.hash.replace('#', '');
-                var activeSlideHash = s.slides.eq(s.activeIndex).attr('data-hash');
-                if (newHash !== activeSlideHash) {
-                    s.slideTo(s.wrapper.children('.' + s.params.slideClass + '[data-hash="' + (newHash) + '"]').index());
-                }
-            },
-            attachEvents: function (detach) {
-                var action = detach ? 'off' : 'on';
-                $(window)[action]('hashchange', s.hashnav.onHashCange);
-            },
-            setHash: function () {
-                if (!s.hashnav.initialized || !s.params.hashnav) return;
-                if (s.params.replaceState && window.history && window.history.replaceState) {
-                    window.history.replaceState(null, null, ('#' + s.slides.eq(s.activeIndex).attr('data-hash') || ''));
-                } else {
-                    var slide = s.slides.eq(s.activeIndex);
-                    var hash = slide.attr('data-hash') || slide.attr('data-history');
-                    document.location.hash = hash || '';
-                }
-            },
-            init: function () {
-                if (!s.params.hashnav || s.params.history) return;
-                s.hashnav.initialized = true;
-                var hash = document.location.hash.replace('#', '');
-                if (hash) {
-                    var speed = 0;
-                    for (var i = 0, length = s.slides.length; i < length; i++) {
-                        var slide = s.slides.eq(i);
-                        var slideHash = slide.attr('data-hash') || slide.attr('data-history');
-                        if (slideHash === hash && !slide.hasClass(s.params.slideDuplicateClass)) {
-                            var index = slide.index();
-                            s.slideTo(index, speed, s.params.runCallbacksOnInit, true);
-                        }
-                    }
-                }
-                if (s.params.hashnavWatchState) s.hashnav.attachEvents();
-            },
-            destroy: function () {
-                if (s.params.hashnavWatchState) s.hashnav.attachEvents(true);
-            }
-        };
-        
-
-        /*=========================
-          History Api with fallback to Hashnav
-          ===========================*/
-        s.history = {
-            init: function () {
-                if (!s.params.history) return;
-                if (!window.history || !window.history.pushState) {
-                    s.params.history = false;
-                    s.params.hashnav = true;
-                    return;
-                }
-                s.history.initialized = true;
-                this.paths = this.getPathValues();
-                if (!this.paths.key && !this.paths.value) return;
-                this.scrollToSlide(0, this.paths.value, s.params.runCallbacksOnInit);
-                if (!s.params.replaceState) {
-                    window.addEventListener('popstate', this.setHistoryPopState);
-                }
-            },
-            setHistoryPopState: function() {
-                s.history.paths = s.history.getPathValues();
-                s.history.scrollToSlide(s.params.speed, s.history.paths.value, false);
-            },
-            getPathValues: function() {
-                var pathArray = window.location.pathname.slice(1).split('/');
-                var total = pathArray.length;
-                var key = pathArray[total - 2];
-                var value = pathArray[total - 1];
-                return { key: key, value: value };
-            },
-            setHistory: function (key, index) {
-                if (!s.history.initialized || !s.params.history) return;
-                var slide = s.slides.eq(index);
-                var value = this.slugify(slide.attr('data-history'));
-                if (!window.location.pathname.includes(key)) {
-                    value = key + '/' + value;
-                }
-                if (s.params.replaceState) {
-                    window.history.replaceState(null, null, value);
-                } else {
-                    window.history.pushState(null, null, value);
-                }
-            },
-            slugify: function(text) {
-                return text.toString().toLowerCase()
-                    .replace(/\s+/g, '-')
-                    .replace(/[^\w\-]+/g, '')
-                    .replace(/\-\-+/g, '-')
-                    .replace(/^-+/, '')
-                    .replace(/-+$/, '');
-            },
-            scrollToSlide: function(speed, value, runCallbacks) {
-                if (value) {
-                    for (var i = 0, length = s.slides.length; i < length; i++) {
-                        var slide = s.slides.eq(i);
-                        var slideHistory = this.slugify(slide.attr('data-history'));
-                        if (slideHistory === value && !slide.hasClass(s.params.slideDuplicateClass)) {
-                            var index = slide.index();
-                            s.slideTo(index, speed, runCallbacks);
-                        }
-                    }
-                } else {
-                    s.slideTo(0, speed, runCallbacks);
-                }
-            }
-        };
-        
-
-        /*=========================
-          Keyboard Control
-          ===========================*/
-        function handleKeyboard(e) {
-            if (e.originalEvent) e = e.originalEvent; //jquery fix
-            var kc = e.keyCode || e.charCode;
-            // Directions locks
-            if (!s.params.allowSwipeToNext && (s.isHorizontal() && kc === 39 || !s.isHorizontal() && kc === 40)) {
-                return false;
-            }
-            if (!s.params.allowSwipeToPrev && (s.isHorizontal() && kc === 37 || !s.isHorizontal() && kc === 38)) {
-                return false;
-            }
-            if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
-                return;
-            }
-            if (document.activeElement && document.activeElement.nodeName && (document.activeElement.nodeName.toLowerCase() === 'input' || document.activeElement.nodeName.toLowerCase() === 'textarea')) {
-                return;
-            }
-            if (kc === 37 || kc === 39 || kc === 38 || kc === 40) {
-                var inView = false;
-                //Check that swiper should be inside of visible area of window
-                if (s.container.parents('.' + s.params.slideClass).length > 0 && s.container.parents('.' + s.params.slideActiveClass).length === 0) {
-                    return;
-                }
-                var windowScroll = {
-                    left: window.pageXOffset,
-                    top: window.pageYOffset
-                };
-                var windowWidth = window.innerWidth;
-                var windowHeight = window.innerHeight;
-                var swiperOffset = s.container.offset();
-                if (s.rtl) swiperOffset.left = swiperOffset.left - s.container[0].scrollLeft;
-                var swiperCoord = [
-                    [swiperOffset.left, swiperOffset.top],
-                    [swiperOffset.left + s.width, swiperOffset.top],
-                    [swiperOffset.left, swiperOffset.top + s.height],
-                    [swiperOffset.left + s.width, swiperOffset.top + s.height]
-                ];
-                for (var i = 0; i < swiperCoord.length; i++) {
-                    var point = swiperCoord[i];
-                    if (
-                        point[0] >= windowScroll.left && point[0] <= windowScroll.left + windowWidth &&
-                        point[1] >= windowScroll.top && point[1] <= windowScroll.top + windowHeight
-                    ) {
-                        inView = true;
-                    }
-        
-                }
-                if (!inView) return;
-            }
-            if (s.isHorizontal()) {
-                if (kc === 37 || kc === 39) {
-                    if (e.preventDefault) e.preventDefault();
-                    else e.returnValue = false;
-                }
-                if ((kc === 39 && !s.rtl) || (kc === 37 && s.rtl)) s.slideNext();
-                if ((kc === 37 && !s.rtl) || (kc === 39 && s.rtl)) s.slidePrev();
-            }
-            else {
-                if (kc === 38 || kc === 40) {
-                    if (e.preventDefault) e.preventDefault();
-                    else e.returnValue = false;
-                }
-                if (kc === 40) s.slideNext();
-                if (kc === 38) s.slidePrev();
-            }
-            s.emit('onKeyPress', s, kc);
-        }
-        s.disableKeyboardControl = function () {
-            s.params.keyboardControl = false;
-            $(document).off('keydown', handleKeyboard);
-        };
-        s.enableKeyboardControl = function () {
-            s.params.keyboardControl = true;
-            $(document).on('keydown', handleKeyboard);
-        };
-        
-
-        /*=========================
-          Mousewheel Control
-          ===========================*/
-        s.mousewheel = {
-            event: false,
-            lastScrollTime: (new window.Date()).getTime()
-        };
-        function isEventSupported() {
-            var eventName = 'onwheel';
-            var isSupported = eventName in document;
-        
-            if (!isSupported) {
-                var element = document.createElement('div');
-                element.setAttribute(eventName, 'return;');
-                isSupported = typeof element[eventName] === 'function';
-            }
-        
-            if (!isSupported &&
-                document.implementation &&
-                document.implementation.hasFeature &&
-                    // always returns true in newer browsers as per the standard.
-                    // @see http://dom.spec.whatwg.org/#dom-domimplementation-hasfeature
-                document.implementation.hasFeature('', '') !== true ) {
-                // This is the only way to test support for the `wheel` event in IE9+.
-                isSupported = document.implementation.hasFeature('Events.wheel', '3.0');
-            }
-        
-            return isSupported;
-        }
-        /**
-         * Mouse wheel (and 2-finger trackpad) support on the web sucks.  It is
-         * complicated, thus this doc is long and (hopefully) detailed enough to answer
-         * your questions.
-         *
-         * If you need to react to the mouse wheel in a predictable way, this code is
-         * like your bestest friend. * hugs *
-         *
-         * As of today, there are 4 DOM event types you can listen to:
-         *
-         *   'wheel'                -- Chrome(31+), FF(17+), IE(9+)
-         *   'mousewheel'           -- Chrome, IE(6+), Opera, Safari
-         *   'MozMousePixelScroll'  -- FF(3.5 only!) (2010-2013) -- don't bother!
-         *   'DOMMouseScroll'       -- FF(0.9.7+) since 2003
-         *
-         * So what to do?  The is the best:
-         *
-         *   normalizeWheel.getEventType();
-         *
-         * In your event callback, use this code to get sane interpretation of the
-         * deltas.  This code will return an object with properties:
-         *
-         *   spinX   -- normalized spin speed (use for zoom) - x plane
-         *   spinY   -- " - y plane
-         *   pixelX  -- normalized distance (to pixels) - x plane
-         *   pixelY  -- " - y plane
-         *
-         * Wheel values are provided by the browser assuming you are using the wheel to
-         * scroll a web page by a number of lines or pixels (or pages).  Values can vary
-         * significantly on different platforms and browsers, forgetting that you can
-         * scroll at different speeds.  Some devices (like trackpads) emit more events
-         * at smaller increments with fine granularity, and some emit massive jumps with
-         * linear speed or acceleration.
-         *
-         * This code does its best to normalize the deltas for you:
-         *
-         *   - spin is trying to normalize how far the wheel was spun (or trackpad
-         *     dragged).  This is super useful for zoom support where you want to
-         *     throw away the chunky scroll steps on the PC and make those equal to
-         *     the slow and smooth tiny steps on the Mac. Key data: This code tries to
-         *     resolve a single slow step on a wheel to 1.
-         *
-         *   - pixel is normalizing the desired scroll delta in pixel units.  You'll
-         *     get the crazy differences between browsers, but at least it'll be in
-         *     pixels!
-         *
-         *   - positive value indicates scrolling DOWN/RIGHT, negative UP/LEFT.  This
-         *     should translate to positive value zooming IN, negative zooming OUT.
-         *     This matches the newer 'wheel' event.
-         *
-         * Why are there spinX, spinY (or pixels)?
-         *
-         *   - spinX is a 2-finger side drag on the trackpad, and a shift + wheel turn
-         *     with a mouse.  It results in side-scrolling in the browser by default.
-         *
-         *   - spinY is what you expect -- it's the classic axis of a mouse wheel.
-         *
-         *   - I dropped spinZ/pixelZ.  It is supported by the DOM 3 'wheel' event and
-         *     probably is by browsers in conjunction with fancy 3D controllers .. but
-         *     you know.
-         *
-         * Implementation info:
-         *
-         * Examples of 'wheel' event if you scroll slowly (down) by one step with an
-         * average mouse:
-         *
-         *   OS X + Chrome  (mouse)     -    4   pixel delta  (wheelDelta -120)
-         *   OS X + Safari  (mouse)     -  N/A   pixel delta  (wheelDelta  -12)
-         *   OS X + Firefox (mouse)     -    0.1 line  delta  (wheelDelta  N/A)
-         *   Win8 + Chrome  (mouse)     -  100   pixel delta  (wheelDelta -120)
-         *   Win8 + Firefox (mouse)     -    3   line  delta  (wheelDelta -120)
-         *
-         * On the trackpad:
-         *
-         *   OS X + Chrome  (trackpad)  -    2   pixel delta  (wheelDelta   -6)
-         *   OS X + Firefox (trackpad)  -    1   pixel delta  (wheelDelta  N/A)
-         *
-         * On other/older browsers.. it's more complicated as there can be multiple and
-         * also missing delta values.
-         *
-         * The 'wheel' event is more standard:
-         *
-         * http://www.w3.org/TR/DOM-Level-3-Events/#events-wheelevents
-         *
-         * The basics is that it includes a unit, deltaMode (pixels, lines, pages), and
-         * deltaX, deltaY and deltaZ.  Some browsers provide other values to maintain
-         * backward compatibility with older events.  Those other values help us
-         * better normalize spin speed.  Example of what the browsers provide:
-         *
-         *                          | event.wheelDelta | event.detail
-         *        ------------------+------------------+--------------
-         *          Safari v5/OS X  |       -120       |       0
-         *          Safari v5/Win7  |       -120       |       0
-         *         Chrome v17/OS X  |       -120       |       0
-         *         Chrome v17/Win7  |       -120       |       0
-         *                IE9/Win7  |       -120       |   undefined
-         *         Firefox v4/OS X  |     undefined    |       1
-         *         Firefox v4/Win7  |     undefined    |       3
-         *
-         */
-        function normalizeWheel( /*object*/ event ) /*object*/ {
-            // Reasonable defaults
-            var PIXEL_STEP = 10;
-            var LINE_HEIGHT = 40;
-            var PAGE_HEIGHT = 800;
-        
-            var sX = 0, sY = 0,       // spinX, spinY
-                pX = 0, pY = 0;       // pixelX, pixelY
-        
-            // Legacy
-            if( 'detail' in event ) {
-                sY = event.detail;
-            }
-            if( 'wheelDelta' in event ) {
-                sY = -event.wheelDelta / 120;
-            }
-            if( 'wheelDeltaY' in event ) {
-                sY = -event.wheelDeltaY / 120;
-            }
-            if( 'wheelDeltaX' in event ) {
-                sX = -event.wheelDeltaX / 120;
-            }
-        
-            // side scrolling on FF with DOMMouseScroll
-            if( 'axis' in event && event.axis === event.HORIZONTAL_AXIS ) {
-                sX = sY;
-                sY = 0;
-            }
-        
-            pX = sX * PIXEL_STEP;
-            pY = sY * PIXEL_STEP;
-        
-            if( 'deltaY' in event ) {
-                pY = event.deltaY;
-            }
-            if( 'deltaX' in event ) {
-                pX = event.deltaX;
-            }
-        
-            if( (pX || pY) && event.deltaMode ) {
-                if( event.deltaMode === 1 ) {          // delta in LINE units
-                    pX *= LINE_HEIGHT;
-                    pY *= LINE_HEIGHT;
-                } else {                             // delta in PAGE units
-                    pX *= PAGE_HEIGHT;
-                    pY *= PAGE_HEIGHT;
-                }
-            }
-        
-            // Fall-back if spin cannot be determined
-            if( pX && !sX ) {
-                sX = (pX < 1) ? -1 : 1;
-            }
-            if( pY && !sY ) {
-                sY = (pY < 1) ? -1 : 1;
-            }
-        
-            return {
-                spinX: sX,
-                spinY: sY,
-                pixelX: pX,
-                pixelY: pY
-            };
-        }
-        if (s.params.mousewheelControl) {
-            /**
-             * The best combination if you prefer spinX + spinY normalization.  It favors
-             * the older DOMMouseScroll for Firefox, as FF does not include wheelDelta with
-             * 'wheel' event, making spin speed determination impossible.
-             */
-            s.mousewheel.event = (navigator.userAgent.indexOf('firefox') > -1) ?
-                'DOMMouseScroll' :
-                isEventSupported() ?
-                    'wheel' : 'mousewheel';
-        }
-        function handleMousewheel(e) {
-            if (e.originalEvent) e = e.originalEvent; //jquery fix
-            var delta = 0;
-            var rtlFactor = s.rtl ? -1 : 1;
-        
-            var data = normalizeWheel( e );
-        
-            if (s.params.mousewheelForceToAxis) {
-                if (s.isHorizontal()) {
-                    if (Math.abs(data.pixelX) > Math.abs(data.pixelY)) delta = data.pixelX * rtlFactor;
-                    else return;
-                }
-                else {
-                    if (Math.abs(data.pixelY) > Math.abs(data.pixelX)) delta = data.pixelY;
-                    else return;
-                }
-            }
-            else {
-                delta = Math.abs(data.pixelX) > Math.abs(data.pixelY) ? - data.pixelX * rtlFactor : - data.pixelY;
-            }
-        
-            if (delta === 0) return;
-        
-            if (s.params.mousewheelInvert) delta = -delta;
-        
-            if (!s.params.freeMode) {
-                if ((new window.Date()).getTime() - s.mousewheel.lastScrollTime > 60) {
-                    if (delta < 0) {
-                        if ((!s.isEnd || s.params.loop) && !s.animating) {
-                            s.slideNext();
-                            s.emit('onScroll', s, e);
-                        }
-                        else if (s.params.mousewheelReleaseOnEdges) return true;
-                    }
-                    else {
-                        if ((!s.isBeginning || s.params.loop) && !s.animating) {
-                            s.slidePrev();
-                            s.emit('onScroll', s, e);
-                        }
-                        else if (s.params.mousewheelReleaseOnEdges) return true;
-                    }
-                }
-                s.mousewheel.lastScrollTime = (new window.Date()).getTime();
-        
-            }
-            else {
-                //Freemode or scrollContainer:
-                var position = s.getWrapperTranslate() + delta * s.params.mousewheelSensitivity;
-                var wasBeginning = s.isBeginning,
-                    wasEnd = s.isEnd;
-        
-                if (position >= s.minTranslate()) position = s.minTranslate();
-                if (position <= s.maxTranslate()) position = s.maxTranslate();
-        
-                s.setWrapperTransition(0);
-                s.setWrapperTranslate(position);
-                s.updateProgress();
-                s.updateActiveIndex();
-        
-                if (!wasBeginning && s.isBeginning || !wasEnd && s.isEnd) {
-                    s.updateClasses();
-                }
-        
-                if (s.params.freeModeSticky) {
-                    clearTimeout(s.mousewheel.timeout);
-                    s.mousewheel.timeout = setTimeout(function () {
-                        s.slideReset();
-                    }, 300);
-                }
-                else {
-                    if (s.params.lazyLoading && s.lazy) {
-                        s.lazy.load();
-                    }
-                }
-                // Emit event
-                s.emit('onScroll', s, e);
-        
-                // Stop autoplay
-                if (s.params.autoplay && s.params.autoplayDisableOnInteraction) s.stopAutoplay();
-        
-                // Return page scroll on edge positions
-                if (position === 0 || position === s.maxTranslate()) return;
-            }
-        
-            if (e.preventDefault) e.preventDefault();
-            else e.returnValue = false;
-            return false;
-        }
-        s.disableMousewheelControl = function () {
-            if (!s.mousewheel.event) return false;
-            var target = s.container;
-            if (s.params.mousewheelEventsTarged !== 'container') {
-                target = $(s.params.mousewheelEventsTarged);
-            }
-            target.off(s.mousewheel.event, handleMousewheel);
-            s.params.mousewheelControl = false;
-            return true;
-        };
-        
-        s.enableMousewheelControl = function () {
-            if (!s.mousewheel.event) return false;
-            var target = s.container;
-            if (s.params.mousewheelEventsTarged !== 'container') {
-                target = $(s.params.mousewheelEventsTarged);
-            }
-            target.on(s.mousewheel.event, handleMousewheel);
-            s.params.mousewheelControl = true;
-            return true;
-        };
-        
-
-        /*=========================
-          Parallax
-          ===========================*/
-        function setParallaxTransform(el, progress) {
-            el = $(el);
-            var p, pX, pY;
-            var rtlFactor = s.rtl ? -1 : 1;
-        
-            p = el.attr('data-swiper-parallax') || '0';
-            pX = el.attr('data-swiper-parallax-x');
-            pY = el.attr('data-swiper-parallax-y');
-            if (pX || pY) {
-                pX = pX || '0';
-                pY = pY || '0';
-            }
-            else {
-                if (s.isHorizontal()) {
-                    pX = p;
-                    pY = '0';
-                }
-                else {
-                    pY = p;
-                    pX = '0';
-                }
-            }
-        
-            if ((pX).indexOf('%') >= 0) {
-                pX = parseInt(pX, 10) * progress * rtlFactor + '%';
-            }
-            else {
-                pX = pX * progress * rtlFactor + 'px' ;
-            }
-            if ((pY).indexOf('%') >= 0) {
-                pY = parseInt(pY, 10) * progress + '%';
-            }
-            else {
-                pY = pY * progress + 'px' ;
-            }
-        
-            el.transform('translate3d(' + pX + ', ' + pY + ',0px)');
-        }
-        s.parallax = {
-            setTranslate: function () {
-                s.container.children('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
-                    setParallaxTransform(this, s.progress);
-        
-                });
-                s.slides.each(function () {
-                    var slide = $(this);
-                    slide.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function () {
-                        var progress = Math.min(Math.max(slide[0].progress, -1), 1);
-                        setParallaxTransform(this, progress);
-                    });
-                });
-            },
-            setTransition: function (duration) {
-                if (typeof duration === 'undefined') duration = s.params.speed;
-                s.container.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
-                    var el = $(this);
-                    var parallaxDuration = parseInt(el.attr('data-swiper-parallax-duration'), 10) || duration;
-                    if (duration === 0) parallaxDuration = 0;
-                    el.transition(parallaxDuration);
-                });
-            }
-        };
-        
-
-        /*=========================
-          Zoom
-          ===========================*/
-        s.zoom = {
-            // "Global" Props
-            scale: 1,
-            currentScale: 1,
-            isScaling: false,
-            gesture: {
-                slide: undefined,
-                slideWidth: undefined,
-                slideHeight: undefined,
-                image: undefined,
-                imageWrap: undefined,
-                zoomMax: s.params.zoomMax
-            },
-            image: {
-                isTouched: undefined,
-                isMoved: undefined,
-                currentX: undefined,
-                currentY: undefined,
-                minX: undefined,
-                minY: undefined,
-                maxX: undefined,
-                maxY: undefined,
-                width: undefined,
-                height: undefined,
-                startX: undefined,
-                startY: undefined,
-                touchesStart: {},
-                touchesCurrent: {}
-            },
-            velocity: {
-                x: undefined,
-                y: undefined,
-                prevPositionX: undefined,
-                prevPositionY: undefined,
-                prevTime: undefined
-            },
-            // Calc Scale From Multi-touches
-            getDistanceBetweenTouches: function (e) {
-                if (e.targetTouches.length < 2) return 1;
-                var x1 = e.targetTouches[0].pageX,
-                    y1 = e.targetTouches[0].pageY,
-                    x2 = e.targetTouches[1].pageX,
-                    y2 = e.targetTouches[1].pageY;
-                var distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-                return distance;
-            },
-            // Events
-            onGestureStart: function (e) {
-                var z = s.zoom;
-                if (!s.support.gestures) {
-                    if (e.type !== 'touchstart' || e.type === 'touchstart' && e.targetTouches.length < 2) {
-                        return;
-                    }
-                    z.gesture.scaleStart = z.getDistanceBetweenTouches(e);
-                }
-                if (!z.gesture.slide || !z.gesture.slide.length) {
-                    z.gesture.slide = $(this);
-                    if (z.gesture.slide.length === 0) z.gesture.slide = s.slides.eq(s.activeIndex);
-                    z.gesture.image = z.gesture.slide.find('img, svg, canvas');
-                    z.gesture.imageWrap = z.gesture.image.parent('.' + s.params.zoomContainerClass);
-                    z.gesture.zoomMax = z.gesture.imageWrap.attr('data-swiper-zoom') || s.params.zoomMax ;
-                    if (z.gesture.imageWrap.length === 0) {
-                        z.gesture.image = undefined;
-                        return;
-                    }
-                }
-                z.gesture.image.transition(0);
-                z.isScaling = true;
-            },
-            onGestureChange: function (e) {
-                var z = s.zoom;
-                if (!s.support.gestures) {
-                    if (e.type !== 'touchmove' || e.type === 'touchmove' && e.targetTouches.length < 2) {
-                        return;
-                    }
-                    z.gesture.scaleMove = z.getDistanceBetweenTouches(e);
-                }
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-                if (s.support.gestures) {
-                    z.scale = e.scale * z.currentScale;
-                }
-                else {
-                    z.scale = (z.gesture.scaleMove / z.gesture.scaleStart) * z.currentScale;
-                }
-                if (z.scale > z.gesture.zoomMax) {
-                    z.scale = z.gesture.zoomMax - 1 + Math.pow((z.scale - z.gesture.zoomMax + 1), 0.5);
-                }
-                if (z.scale < s.params.zoomMin) {
-                    z.scale =  s.params.zoomMin + 1 - Math.pow((s.params.zoomMin - z.scale + 1), 0.5);
-                }
-                z.gesture.image.transform('translate3d(0,0,0) scale(' + z.scale + ')');
-            },
-            onGestureEnd: function (e) {
-                var z = s.zoom;
-                if (!s.support.gestures) {
-                    if (e.type !== 'touchend' || e.type === 'touchend' && e.changedTouches.length < 2) {
-                        return;
-                    }
-                }
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-                z.scale = Math.max(Math.min(z.scale, z.gesture.zoomMax), s.params.zoomMin);
-                z.gesture.image.transition(s.params.speed).transform('translate3d(0,0,0) scale(' + z.scale + ')');
-                z.currentScale = z.scale;
-                z.isScaling = false;
-                if (z.scale === 1) z.gesture.slide = undefined;
-            },
-            onTouchStart: function (s, e) {
-                var z = s.zoom;
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-                if (z.image.isTouched) return;
-                if (s.device.os === 'android') e.preventDefault();
-                z.image.isTouched = true;
-                z.image.touchesStart.x = e.type === 'touchstart' ? e.targetTouches[0].pageX : e.pageX;
-                z.image.touchesStart.y = e.type === 'touchstart' ? e.targetTouches[0].pageY : e.pageY;
-            },
-            onTouchMove: function (e) {
-                var z = s.zoom;
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-                s.allowClick = false;
-                if (!z.image.isTouched || !z.gesture.slide) return;
-        
-                if (!z.image.isMoved) {
-                    z.image.width = z.gesture.image[0].offsetWidth;
-                    z.image.height = z.gesture.image[0].offsetHeight;
-                    z.image.startX = s.getTranslate(z.gesture.imageWrap[0], 'x') || 0;
-                    z.image.startY = s.getTranslate(z.gesture.imageWrap[0], 'y') || 0;
-                    z.gesture.slideWidth = z.gesture.slide[0].offsetWidth;
-                    z.gesture.slideHeight = z.gesture.slide[0].offsetHeight;
-                    z.gesture.imageWrap.transition(0);
-                    if (s.rtl) z.image.startX = -z.image.startX;
-                    if (s.rtl) z.image.startY = -z.image.startY;
-                }
-                // Define if we need image drag
-                var scaledWidth = z.image.width * z.scale;
-                var scaledHeight = z.image.height * z.scale;
-        
-                if (scaledWidth < z.gesture.slideWidth && scaledHeight < z.gesture.slideHeight) return;
-        
-                z.image.minX = Math.min((z.gesture.slideWidth / 2 - scaledWidth / 2), 0);
-                z.image.maxX = -z.image.minX;
-                z.image.minY = Math.min((z.gesture.slideHeight / 2 - scaledHeight / 2), 0);
-                z.image.maxY = -z.image.minY;
-        
-                z.image.touchesCurrent.x = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
-                z.image.touchesCurrent.y = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
-        
-                if (!z.image.isMoved && !z.isScaling) {
-                    if (s.isHorizontal() &&
-                        (Math.floor(z.image.minX) === Math.floor(z.image.startX) && z.image.touchesCurrent.x < z.image.touchesStart.x) ||
-                        (Math.floor(z.image.maxX) === Math.floor(z.image.startX) && z.image.touchesCurrent.x > z.image.touchesStart.x)
-                        ) {
-                        z.image.isTouched = false;
-                        return;
-                    }
-                    else if (!s.isHorizontal() &&
-                        (Math.floor(z.image.minY) === Math.floor(z.image.startY) && z.image.touchesCurrent.y < z.image.touchesStart.y) ||
-                        (Math.floor(z.image.maxY) === Math.floor(z.image.startY) && z.image.touchesCurrent.y > z.image.touchesStart.y)
-                        ) {
-                        z.image.isTouched = false;
-                        return;
-                    }
-                }
-                e.preventDefault();
-                e.stopPropagation();
-        
-                z.image.isMoved = true;
-                z.image.currentX = z.image.touchesCurrent.x - z.image.touchesStart.x + z.image.startX;
-                z.image.currentY = z.image.touchesCurrent.y - z.image.touchesStart.y + z.image.startY;
-        
-                if (z.image.currentX < z.image.minX) {
-                    z.image.currentX =  z.image.minX + 1 - Math.pow((z.image.minX - z.image.currentX + 1), 0.8);
-                }
-                if (z.image.currentX > z.image.maxX) {
-                    z.image.currentX = z.image.maxX - 1 + Math.pow((z.image.currentX - z.image.maxX + 1), 0.8);
-                }
-        
-                if (z.image.currentY < z.image.minY) {
-                    z.image.currentY =  z.image.minY + 1 - Math.pow((z.image.minY - z.image.currentY + 1), 0.8);
-                }
-                if (z.image.currentY > z.image.maxY) {
-                    z.image.currentY = z.image.maxY - 1 + Math.pow((z.image.currentY - z.image.maxY + 1), 0.8);
-                }
-        
-                //Velocity
-                if (!z.velocity.prevPositionX) z.velocity.prevPositionX = z.image.touchesCurrent.x;
-                if (!z.velocity.prevPositionY) z.velocity.prevPositionY = z.image.touchesCurrent.y;
-                if (!z.velocity.prevTime) z.velocity.prevTime = Date.now();
-                z.velocity.x = (z.image.touchesCurrent.x - z.velocity.prevPositionX) / (Date.now() - z.velocity.prevTime) / 2;
-                z.velocity.y = (z.image.touchesCurrent.y - z.velocity.prevPositionY) / (Date.now() - z.velocity.prevTime) / 2;
-                if (Math.abs(z.image.touchesCurrent.x - z.velocity.prevPositionX) < 2) z.velocity.x = 0;
-                if (Math.abs(z.image.touchesCurrent.y - z.velocity.prevPositionY) < 2) z.velocity.y = 0;
-                z.velocity.prevPositionX = z.image.touchesCurrent.x;
-                z.velocity.prevPositionY = z.image.touchesCurrent.y;
-                z.velocity.prevTime = Date.now();
-        
-                z.gesture.imageWrap.transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
-            },
-            onTouchEnd: function (s, e) {
-                var z = s.zoom;
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-                if (!z.image.isTouched || !z.image.isMoved) {
-                    z.image.isTouched = false;
-                    z.image.isMoved = false;
-                    return;
-                }
-                z.image.isTouched = false;
-                z.image.isMoved = false;
-                var momentumDurationX = 300;
-                var momentumDurationY = 300;
-                var momentumDistanceX = z.velocity.x * momentumDurationX;
-                var newPositionX = z.image.currentX + momentumDistanceX;
-                var momentumDistanceY = z.velocity.y * momentumDurationY;
-                var newPositionY = z.image.currentY + momentumDistanceY;
-        
-                //Fix duration
-                if (z.velocity.x !== 0) momentumDurationX = Math.abs((newPositionX - z.image.currentX) / z.velocity.x);
-                if (z.velocity.y !== 0) momentumDurationY = Math.abs((newPositionY - z.image.currentY) / z.velocity.y);
-                var momentumDuration = Math.max(momentumDurationX, momentumDurationY);
-        
-                z.image.currentX = newPositionX;
-                z.image.currentY = newPositionY;
-        
-                // Define if we need image drag
-                var scaledWidth = z.image.width * z.scale;
-                var scaledHeight = z.image.height * z.scale;
-                z.image.minX = Math.min((z.gesture.slideWidth / 2 - scaledWidth / 2), 0);
-                z.image.maxX = -z.image.minX;
-                z.image.minY = Math.min((z.gesture.slideHeight / 2 - scaledHeight / 2), 0);
-                z.image.maxY = -z.image.minY;
-                z.image.currentX = Math.max(Math.min(z.image.currentX, z.image.maxX), z.image.minX);
-                z.image.currentY = Math.max(Math.min(z.image.currentY, z.image.maxY), z.image.minY);
-        
-                z.gesture.imageWrap.transition(momentumDuration).transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
-            },
-            onTransitionEnd: function (s) {
-                var z = s.zoom;
-                if (z.gesture.slide && s.previousIndex !== s.activeIndex) {
-                    z.gesture.image.transform('translate3d(0,0,0) scale(1)');
-                    z.gesture.imageWrap.transform('translate3d(0,0,0)');
-                    z.gesture.slide = z.gesture.image = z.gesture.imageWrap = undefined;
-                    z.scale = z.currentScale = 1;
-                }
-            },
-            // Toggle Zoom
-            toggleZoom: function (s, e) {
-                var z = s.zoom;
-                if (!z.gesture.slide) {
-                    z.gesture.slide = s.clickedSlide ? $(s.clickedSlide) : s.slides.eq(s.activeIndex);
-                    z.gesture.image = z.gesture.slide.find('img, svg, canvas');
-                    z.gesture.imageWrap = z.gesture.image.parent('.' + s.params.zoomContainerClass);
-                }
-                if (!z.gesture.image || z.gesture.image.length === 0) return;
-        
-                var touchX, touchY, offsetX, offsetY, diffX, diffY, translateX, translateY, imageWidth, imageHeight, scaledWidth, scaledHeight, translateMinX, translateMinY, translateMaxX, translateMaxY, slideWidth, slideHeight;
-        
-                if (typeof z.image.touchesStart.x === 'undefined' && e) {
-                    touchX = e.type === 'touchend' ? e.changedTouches[0].pageX : e.pageX;
-                    touchY = e.type === 'touchend' ? e.changedTouches[0].pageY : e.pageY;
-                }
-                else {
-                    touchX = z.image.touchesStart.x;
-                    touchY = z.image.touchesStart.y;
-                }
-        
-                if (z.scale && z.scale !== 1) {
-                    // Zoom Out
-                    z.scale = z.currentScale = 1;
-                    z.gesture.imageWrap.transition(300).transform('translate3d(0,0,0)');
-                    z.gesture.image.transition(300).transform('translate3d(0,0,0) scale(1)');
-                    z.gesture.slide = undefined;
-                }
-                else {
-                    // Zoom In
-                    z.scale = z.currentScale = z.gesture.imageWrap.attr('data-swiper-zoom') || s.params.zoomMax;
-                    if (e) {
-                        slideWidth = z.gesture.slide[0].offsetWidth;
-                        slideHeight = z.gesture.slide[0].offsetHeight;
-                        offsetX = z.gesture.slide.offset().left;
-                        offsetY = z.gesture.slide.offset().top;
-                        diffX = offsetX + slideWidth/2 - touchX;
-                        diffY = offsetY + slideHeight/2 - touchY;
-        
-                        imageWidth = z.gesture.image[0].offsetWidth;
-                        imageHeight = z.gesture.image[0].offsetHeight;
-                        scaledWidth = imageWidth * z.scale;
-                        scaledHeight = imageHeight * z.scale;
-        
-                        translateMinX = Math.min((slideWidth / 2 - scaledWidth / 2), 0);
-                        translateMinY = Math.min((slideHeight / 2 - scaledHeight / 2), 0);
-                        translateMaxX = -translateMinX;
-                        translateMaxY = -translateMinY;
-        
-                        translateX = diffX * z.scale;
-                        translateY = diffY * z.scale;
-        
-                        if (translateX < translateMinX) {
-                            translateX =  translateMinX;
-                        }
-                        if (translateX > translateMaxX) {
-                            translateX = translateMaxX;
-                        }
-        
-                        if (translateY < translateMinY) {
-                            translateY =  translateMinY;
-                        }
-                        if (translateY > translateMaxY) {
-                            translateY = translateMaxY;
-                        }
-                    }
-                    else {
-                        translateX = 0;
-                        translateY = 0;
-                    }
-                    z.gesture.imageWrap.transition(300).transform('translate3d(' + translateX + 'px, ' + translateY + 'px,0)');
-                    z.gesture.image.transition(300).transform('translate3d(0,0,0) scale(' + z.scale + ')');
-                }
-            },
-            // Attach/Detach Events
-            attachEvents: function (detach) {
-                var action = detach ? 'off' : 'on';
-        
-                if (s.params.zoom) {
-                    var target = s.slides;
-                    var passiveListener = s.touchEvents.start === 'touchstart' && s.support.passiveListener && s.params.passiveListeners ? {passive: true, capture: false} : false;
-                    // Scale image
-                    if (s.support.gestures) {
-                        s.slides[action]('gesturestart', s.zoom.onGestureStart, passiveListener);
-                        s.slides[action]('gesturechange', s.zoom.onGestureChange, passiveListener);
-                        s.slides[action]('gestureend', s.zoom.onGestureEnd, passiveListener);
-                    }
-                    else if (s.touchEvents.start === 'touchstart') {
-                        s.slides[action](s.touchEvents.start, s.zoom.onGestureStart, passiveListener);
-                        s.slides[action](s.touchEvents.move, s.zoom.onGestureChange, passiveListener);
-                        s.slides[action](s.touchEvents.end, s.zoom.onGestureEnd, passiveListener);
-                    }
-        
-                    // Move image
-                    s[action]('touchStart', s.zoom.onTouchStart);
-                    s.slides.each(function (index, slide){
-                        if ($(slide).find('.' + s.params.zoomContainerClass).length > 0) {
-                            $(slide)[action](s.touchEvents.move, s.zoom.onTouchMove);
-                        }
-                    });
-                    s[action]('touchEnd', s.zoom.onTouchEnd);
-        
-                    // Scale Out
-                    s[action]('transitionEnd', s.zoom.onTransitionEnd);
-                    if (s.params.zoomToggle) {
-                        s.on('doubleTap', s.zoom.toggleZoom);
-                    }
-                }
-            },
-            init: function () {
-                s.zoom.attachEvents();
-            },
-            destroy: function () {
-                s.zoom.attachEvents(true);
-            }
-        };
-        
-
-        /*=========================
-          Plugins API. Collect all and init all plugins
-          ===========================*/
-        s._plugins = [];
-        for (var plugin in s.plugins) {
-            var p = s.plugins[plugin](s, s.params[plugin]);
-            if (p) s._plugins.push(p);
-        }
-        // Method to call all plugins event/method
-        s.callPlugins = function (eventName) {
-            for (var i = 0; i < s._plugins.length; i++) {
-                if (eventName in s._plugins[i]) {
-                    s._plugins[i][eventName](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
-                }
-            }
-        };
-        
-
-        /*=========================
-          Events/Callbacks/Plugins Emitter
-          ===========================*/
-        function normalizeEventName (eventName) {
-            if (eventName.indexOf('on') !== 0) {
-                if (eventName[0] !== eventName[0].toUpperCase()) {
-                    eventName = 'on' + eventName[0].toUpperCase() + eventName.substring(1);
-                }
-                else {
-                    eventName = 'on' + eventName;
-                }
-            }
-            return eventName;
-        }
-        s.emitterEventListeners = {
-        
-        };
-        s.emit = function (eventName) {
-            // Trigger callbacks
-            if (s.params[eventName]) {
-                s.params[eventName](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
-            }
-            var i;
-            // Trigger events
-            if (s.emitterEventListeners[eventName]) {
-                for (i = 0; i < s.emitterEventListeners[eventName].length; i++) {
-                    s.emitterEventListeners[eventName][i](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
-                }
-            }
-            // Trigger plugins
-            if (s.callPlugins) s.callPlugins(eventName, arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
-        };
-        s.on = function (eventName, handler) {
-            eventName = normalizeEventName(eventName);
-            if (!s.emitterEventListeners[eventName]) s.emitterEventListeners[eventName] = [];
-            s.emitterEventListeners[eventName].push(handler);
-            return s;
-        };
-        s.off = function (eventName, handler) {
-            var i;
-            eventName = normalizeEventName(eventName);
-            if (typeof handler === 'undefined') {
-                // Remove all handlers for such event
-                s.emitterEventListeners[eventName] = [];
-                return s;
-            }
-            if (!s.emitterEventListeners[eventName] || s.emitterEventListeners[eventName].length === 0) return;
-            for (i = 0; i < s.emitterEventListeners[eventName].length; i++) {
-                if(s.emitterEventListeners[eventName][i] === handler) s.emitterEventListeners[eventName].splice(i, 1);
-            }
-            return s;
-        };
-        s.once = function (eventName, handler) {
-            eventName = normalizeEventName(eventName);
-            var _handler = function () {
-                handler(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-                s.off(eventName, _handler);
-            };
-            s.on(eventName, _handler);
-            return s;
-        };
-        
-
-        // Accessibility tools
-        s.a11y = {
-            makeFocusable: function ($el) {
-                $el.attr('tabIndex', '0');
-                return $el;
-            },
-            addRole: function ($el, role) {
-                $el.attr('role', role);
-                return $el;
-            },
-        
-            addLabel: function ($el, label) {
-                $el.attr('aria-label', label);
-                return $el;
-            },
-        
-            disable: function ($el) {
-                $el.attr('aria-disabled', true);
-                return $el;
-            },
-        
-            enable: function ($el) {
-                $el.attr('aria-disabled', false);
-                return $el;
-            },
-        
-            onEnterKey: function (event) {
-                if (event.keyCode !== 13) return;
-                if ($(event.target).is(s.params.nextButton)) {
-                    s.onClickNext(event);
-                    if (s.isEnd) {
-                        s.a11y.notify(s.params.lastSlideMessage);
-                    }
-                    else {
-                        s.a11y.notify(s.params.nextSlideMessage);
-                    }
-                }
-                else if ($(event.target).is(s.params.prevButton)) {
-                    s.onClickPrev(event);
-                    if (s.isBeginning) {
-                        s.a11y.notify(s.params.firstSlideMessage);
-                    }
-                    else {
-                        s.a11y.notify(s.params.prevSlideMessage);
-                    }
-                }
-                if ($(event.target).is('.' + s.params.bulletClass)) {
-                    $(event.target)[0].click();
-                }
-            },
-        
-            liveRegion: $('<span class="' + s.params.notificationClass + '" aria-live="assertive" aria-atomic="true"></span>'),
-        
-            notify: function (message) {
-                var notification = s.a11y.liveRegion;
-                if (notification.length === 0) return;
-                notification.html('');
-                notification.html(message);
-            },
-            init: function () {
-                // Setup accessibility
-                if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
-                    s.a11y.makeFocusable(s.nextButton);
-                    s.a11y.addRole(s.nextButton, 'button');
-                    s.a11y.addLabel(s.nextButton, s.params.nextSlideMessage);
-                }
-                if (s.params.prevButton && s.prevButton && s.prevButton.length > 0) {
-                    s.a11y.makeFocusable(s.prevButton);
-                    s.a11y.addRole(s.prevButton, 'button');
-                    s.a11y.addLabel(s.prevButton, s.params.prevSlideMessage);
-                }
-        
-                $(s.container).append(s.a11y.liveRegion);
-            },
-            initPagination: function () {
-                if (s.params.pagination && s.params.paginationClickable && s.bullets && s.bullets.length) {
-                    s.bullets.each(function () {
-                        var bullet = $(this);
-                        s.a11y.makeFocusable(bullet);
-                        s.a11y.addRole(bullet, 'button');
-                        s.a11y.addLabel(bullet, s.params.paginationBulletMessage.replace(/{{index}}/, bullet.index() + 1));
-                    });
-                }
-            },
-            destroy: function () {
-                if (s.a11y.liveRegion && s.a11y.liveRegion.length > 0) s.a11y.liveRegion.remove();
-            }
-        };
-        
-
-        /*=========================
-          Init/Destroy
-          ===========================*/
-        s.init = function () {
-            if (s.params.loop) s.createLoop();
-            s.updateContainerSize();
-            s.updateSlidesSize();
-            s.updatePagination();
-            if (s.params.scrollbar && s.scrollbar) {
-                s.scrollbar.set();
-                if (s.params.scrollbarDraggable) {
-                    s.scrollbar.enableDraggable();
-                }
-            }
-            if (s.params.effect !== 'slide' && s.effects[s.params.effect]) {
-                if (!s.params.loop) s.updateProgress();
-                s.effects[s.params.effect].setTranslate();
-            }
-            if (s.params.loop) {
-                s.slideTo(s.params.initialSlide + s.loopedSlides, 0, s.params.runCallbacksOnInit);
-            }
-            else {
-                s.slideTo(s.params.initialSlide, 0, s.params.runCallbacksOnInit);
-                if (s.params.initialSlide === 0) {
-                    if (s.parallax && s.params.parallax) s.parallax.setTranslate();
-                    if (s.lazy && s.params.lazyLoading) {
-                        s.lazy.load();
-                        s.lazy.initialImageLoaded = true;
-                    }
-                }
-            }
-            s.attachEvents();
-            if (s.params.observer && s.support.observer) {
-                s.initObservers();
-            }
-            if (s.params.preloadImages && !s.params.lazyLoading) {
-                s.preloadImages();
-            }
-            if (s.params.zoom && s.zoom) {
-                s.zoom.init();
-            }
-            if (s.params.autoplay) {
-                s.startAutoplay();
-            }
-            if (s.params.keyboardControl) {
-                if (s.enableKeyboardControl) s.enableKeyboardControl();
-            }
-            if (s.params.mousewheelControl) {
-                if (s.enableMousewheelControl) s.enableMousewheelControl();
-            }
-            // Deprecated hashnavReplaceState changed to replaceState for use in hashnav and history
-            if (s.params.hashnavReplaceState) {
-                s.params.replaceState = s.params.hashnavReplaceState;
-            }
-            if (s.params.history) {
-                if (s.history) s.history.init();
-            }
-            if (s.params.hashnav) {
-                if (s.hashnav) s.hashnav.init();
-            }
-            if (s.params.a11y && s.a11y) s.a11y.init();
-            s.emit('onInit', s);
-        };
-        
-        // Cleanup dynamic styles
-        s.cleanupStyles = function () {
-            // Container
-            s.container.removeClass(s.classNames.join(' ')).removeAttr('style');
-        
-            // Wrapper
-            s.wrapper.removeAttr('style');
-        
-            // Slides
-            if (s.slides && s.slides.length) {
-                s.slides
-                    .removeClass([
-                      s.params.slideVisibleClass,
-                      s.params.slideActiveClass,
-                      s.params.slideNextClass,
-                      s.params.slidePrevClass
-                    ].join(' '))
-                    .removeAttr('style')
-                    .removeAttr('data-swiper-column')
-                    .removeAttr('data-swiper-row');
-            }
-        
-            // Pagination/Bullets
-            if (s.paginationContainer && s.paginationContainer.length) {
-                s.paginationContainer.removeClass(s.params.paginationHiddenClass);
-            }
-            if (s.bullets && s.bullets.length) {
-                s.bullets.removeClass(s.params.bulletActiveClass);
-            }
-        
-            // Buttons
-            if (s.params.prevButton) $(s.params.prevButton).removeClass(s.params.buttonDisabledClass);
-            if (s.params.nextButton) $(s.params.nextButton).removeClass(s.params.buttonDisabledClass);
-        
-            // Scrollbar
-            if (s.params.scrollbar && s.scrollbar) {
-                if (s.scrollbar.track && s.scrollbar.track.length) s.scrollbar.track.removeAttr('style');
-                if (s.scrollbar.drag && s.scrollbar.drag.length) s.scrollbar.drag.removeAttr('style');
-            }
-        };
-        
-        // Destroy
-        s.destroy = function (deleteInstance, cleanupStyles) {
-            // Detach evebts
-            s.detachEvents();
-            // Stop autoplay
-            s.stopAutoplay();
-            // Disable draggable
-            if (s.params.scrollbar && s.scrollbar) {
-                if (s.params.scrollbarDraggable) {
-                    s.scrollbar.disableDraggable();
-                }
-            }
-            // Destroy loop
-            if (s.params.loop) {
-                s.destroyLoop();
-            }
-            // Cleanup styles
-            if (cleanupStyles) {
-                s.cleanupStyles();
-            }
-            // Disconnect observer
-            s.disconnectObservers();
-        
-            // Destroy zoom
-            if (s.params.zoom && s.zoom) {
-                s.zoom.destroy();
-            }
-            // Disable keyboard/mousewheel
-            if (s.params.keyboardControl) {
-                if (s.disableKeyboardControl) s.disableKeyboardControl();
-            }
-            if (s.params.mousewheelControl) {
-                if (s.disableMousewheelControl) s.disableMousewheelControl();
-            }
-            // Disable a11y
-            if (s.params.a11y && s.a11y) s.a11y.destroy();
-            // Delete history popstate
-            if (s.params.history && !s.params.replaceState) {
-                window.removeEventListener('popstate', s.history.setHistoryPopState);
-            }
-            if (s.params.hashnav && s.hashnav)  {
-                s.hashnav.destroy();
-            }
-            // Destroy callback
-            s.emit('onDestroy');
-            // Delete instance
-            if (deleteInstance !== false) s = null;
-        };
-        
-        s.init();
-        
-
-    
-        // Return swiper instance
-        return s;
-    };
-    
-
-    /*==================================================
-        Prototype
-    ====================================================*/
-    Swiper.prototype = {
-        isSafari: (function () {
-            var ua = window.navigator.userAgent.toLowerCase();
-            return (ua.indexOf('safari') >= 0 && ua.indexOf('chrome') < 0 && ua.indexOf('android') < 0);
-        })(),
-        isUiWebView: /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(window.navigator.userAgent),
-        isArray: function (arr) {
-            return Object.prototype.toString.apply(arr) === '[object Array]';
-        },
-        /*==================================================
-        Browser
-        ====================================================*/
-        browser: {
-            ie: window.navigator.pointerEnabled || window.navigator.msPointerEnabled,
-            ieTouch: (window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints > 1) || (window.navigator.pointerEnabled && window.navigator.maxTouchPoints > 1),
-            lteIE9: (function() {
-                // create temporary DIV
-                var div = document.createElement('div');
-                // add content to tmp DIV which is wrapped into the IE HTML conditional statement
-                div.innerHTML = '<!--[if lte IE 9]><i></i><![endif]-->';
-                // return true / false value based on what will browser render
-                return div.getElementsByTagName('i').length === 1;
-            })()
-        },
-        /*==================================================
-        Devices
-        ====================================================*/
-        device: (function () {
-            var ua = window.navigator.userAgent;
-            var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
-            var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
-            var ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
-            var iphone = !ipad && ua.match(/(iPhone\sOS|iOS)\s([\d_]+)/);
-            return {
-                ios: ipad || iphone || ipod,
-                android: android
-            };
-        })(),
-        /*==================================================
-        Feature Detection
-        ====================================================*/
-        support: {
-            touch : (window.Modernizr && Modernizr.touch === true) || (function () {
-                return !!(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
-            })(),
-    
-            transforms3d : (window.Modernizr && Modernizr.csstransforms3d === true) || (function () {
-                var div = document.createElement('div').style;
-                return ('webkitPerspective' in div || 'MozPerspective' in div || 'OPerspective' in div || 'MsPerspective' in div || 'perspective' in div);
-            })(),
-    
-            flexbox: (function () {
-                var div = document.createElement('div').style;
-                var styles = ('alignItems webkitAlignItems webkitBoxAlign msFlexAlign mozBoxAlign webkitFlexDirection msFlexDirection mozBoxDirection mozBoxOrient webkitBoxDirection webkitBoxOrient').split(' ');
-                for (var i = 0; i < styles.length; i++) {
-                    if (styles[i] in div) return true;
-                }
-            })(),
-    
-            observer: (function () {
-                return ('MutationObserver' in window || 'WebkitMutationObserver' in window);
-            })(),
-    
-            passiveListener: (function () {
-                var supportsPassive = false;
-                try {
-                    var opts = Object.defineProperty({}, 'passive', {
-                        get: function() {
-                            supportsPassive = true;
-                        }
-                    });
-                    window.addEventListener('testPassiveListener', null, opts);
-                } catch (e) {}
-                return supportsPassive;
-            })(),
-    
-            gestures: (function () {
-                return 'ongesturestart' in window;
-            })()
-        },
-        /*==================================================
-        Plugins
-        ====================================================*/
-        plugins: {}
-    };
-    
-
-    /*===========================
-    Dom7 Library
-    ===========================*/
-    var Dom7 = (function () {
-        var Dom7 = function (arr) {
-            var _this = this, i = 0;
-            // Create array-like object
-            for (i = 0; i < arr.length; i++) {
-                _this[i] = arr[i];
-            }
-            _this.length = arr.length;
-            // Return collection with methods
-            return this;
-        };
-        var $ = function (selector, context) {
-            var arr = [], i = 0;
-            if (selector && !context) {
-                if (selector instanceof Dom7) {
-                    return selector;
-                }
-            }
-            if (selector) {
-                // String
-                if (typeof selector === 'string') {
-                    var els, tempParent, html = selector.trim();
-                    if (html.indexOf('<') >= 0 && html.indexOf('>') >= 0) {
-                        var toCreate = 'div';
-                        if (html.indexOf('<li') === 0) toCreate = 'ul';
-                        if (html.indexOf('<tr') === 0) toCreate = 'tbody';
-                        if (html.indexOf('<td') === 0 || html.indexOf('<th') === 0) toCreate = 'tr';
-                        if (html.indexOf('<tbody') === 0) toCreate = 'table';
-                        if (html.indexOf('<option') === 0) toCreate = 'select';
-                        tempParent = document.createElement(toCreate);
-                        tempParent.innerHTML = selector;
-                        for (i = 0; i < tempParent.childNodes.length; i++) {
-                            arr.push(tempParent.childNodes[i]);
-                        }
-                    }
-                    else {
-                        if (!context && selector[0] === '#' && !selector.match(/[ .<>:~]/)) {
-                            // Pure ID selector
-                            els = [document.getElementById(selector.split('#')[1])];
-                        }
-                        else {
-                            // Other selectors
-                            els = (context || document).querySelectorAll(selector);
-                        }
-                        for (i = 0; i < els.length; i++) {
-                            if (els[i]) arr.push(els[i]);
-                        }
-                    }
-                }
-                // Node/element
-                else if (selector.nodeType || selector === window || selector === document) {
-                    arr.push(selector);
-                }
-                //Array of elements or instance of Dom
-                else if (selector.length > 0 && selector[0].nodeType) {
-                    for (i = 0; i < selector.length; i++) {
-                        arr.push(selector[i]);
-                    }
-                }
-            }
-            return new Dom7(arr);
-        };
-        Dom7.prototype = {
-            // Classes and attriutes
-            addClass: function (className) {
-                if (typeof className === 'undefined') {
-                    return this;
-                }
-                var classes = className.split(' ');
-                for (var i = 0; i < classes.length; i++) {
-                    for (var j = 0; j < this.length; j++) {
-                        this[j].classList.add(classes[i]);
-                    }
-                }
-                return this;
-            },
-            removeClass: function (className) {
-                var classes = className.split(' ');
-                for (var i = 0; i < classes.length; i++) {
-                    for (var j = 0; j < this.length; j++) {
-                        this[j].classList.remove(classes[i]);
-                    }
-                }
-                return this;
-            },
-            hasClass: function (className) {
-                if (!this[0]) return false;
-                else return this[0].classList.contains(className);
-            },
-            toggleClass: function (className) {
-                var classes = className.split(' ');
-                for (var i = 0; i < classes.length; i++) {
-                    for (var j = 0; j < this.length; j++) {
-                        this[j].classList.toggle(classes[i]);
-                    }
-                }
-                return this;
-            },
-            attr: function (attrs, value) {
-                if (arguments.length === 1 && typeof attrs === 'string') {
-                    // Get attr
-                    if (this[0]) return this[0].getAttribute(attrs);
-                    else return undefined;
-                }
-                else {
-                    // Set attrs
-                    for (var i = 0; i < this.length; i++) {
-                        if (arguments.length === 2) {
-                            // String
-                            this[i].setAttribute(attrs, value);
-                        }
-                        else {
-                            // Object
-                            for (var attrName in attrs) {
-                                this[i][attrName] = attrs[attrName];
-                                this[i].setAttribute(attrName, attrs[attrName]);
-                            }
-                        }
-                    }
-                    return this;
-                }
-            },
-            removeAttr: function (attr) {
-                for (var i = 0; i < this.length; i++) {
-                    this[i].removeAttribute(attr);
-                }
-                return this;
-            },
-            data: function (key, value) {
-                if (typeof value === 'undefined') {
-                    // Get value
-                    if (this[0]) {
-                        var dataKey = this[0].getAttribute('data-' + key);
-                        if (dataKey) return dataKey;
-                        else if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) return this[0].dom7ElementDataStorage[key];
-                        else return undefined;
-                    }
-                    else return undefined;
-                }
-                else {
-                    // Set value
-                    for (var i = 0; i < this.length; i++) {
-                        var el = this[i];
-                        if (!el.dom7ElementDataStorage) el.dom7ElementDataStorage = {};
-                        el.dom7ElementDataStorage[key] = value;
-                    }
-                    return this;
-                }
-            },
-            // Transforms
-            transform : function (transform) {
-                for (var i = 0; i < this.length; i++) {
-                    var elStyle = this[i].style;
-                    elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
-                }
-                return this;
-            },
-            transition: function (duration) {
-                if (typeof duration !== 'string') {
-                    duration = duration + 'ms';
-                }
-                for (var i = 0; i < this.length; i++) {
-                    var elStyle = this[i].style;
-                    elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
-                }
-                return this;
-            },
-            //Events
-            on: function (eventName, targetSelector, listener, capture) {
-                function handleLiveEvent(e) {
-                    var target = e.target;
-                    if ($(target).is(targetSelector)) listener.call(target, e);
-                    else {
-                        var parents = $(target).parents();
-                        for (var k = 0; k < parents.length; k++) {
-                            if ($(parents[k]).is(targetSelector)) listener.call(parents[k], e);
-                        }
-                    }
-                }
-                var events = eventName.split(' ');
-                var i, j;
-                for (i = 0; i < this.length; i++) {
-                    if (typeof targetSelector === 'function' || targetSelector === false) {
-                        // Usual events
-                        if (typeof targetSelector === 'function') {
-                            listener = arguments[1];
-                            capture = arguments[2] || false;
-                        }
-                        for (j = 0; j < events.length; j++) {
-                            this[i].addEventListener(events[j], listener, capture);
-                        }
-                    }
-                    else {
-                        //Live events
-                        for (j = 0; j < events.length; j++) {
-                            if (!this[i].dom7LiveListeners) this[i].dom7LiveListeners = [];
-                            this[i].dom7LiveListeners.push({listener: listener, liveListener: handleLiveEvent});
-                            this[i].addEventListener(events[j], handleLiveEvent, capture);
-                        }
-                    }
-                }
-    
-                return this;
-            },
-            off: function (eventName, targetSelector, listener, capture) {
-                var events = eventName.split(' ');
-                for (var i = 0; i < events.length; i++) {
-                    for (var j = 0; j < this.length; j++) {
-                        if (typeof targetSelector === 'function' || targetSelector === false) {
-                            // Usual events
-                            if (typeof targetSelector === 'function') {
-                                listener = arguments[1];
-                                capture = arguments[2] || false;
-                            }
-                            this[j].removeEventListener(events[i], listener, capture);
-                        }
-                        else {
-                            // Live event
-                            if (this[j].dom7LiveListeners) {
-                                for (var k = 0; k < this[j].dom7LiveListeners.length; k++) {
-                                    if (this[j].dom7LiveListeners[k].listener === listener) {
-                                        this[j].removeEventListener(events[i], this[j].dom7LiveListeners[k].liveListener, capture);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return this;
-            },
-            once: function (eventName, targetSelector, listener, capture) {
-                var dom = this;
-                if (typeof targetSelector === 'function') {
-                    targetSelector = false;
-                    listener = arguments[1];
-                    capture = arguments[2];
-                }
-                function proxy(e) {
-                    listener(e);
-                    dom.off(eventName, targetSelector, proxy, capture);
-                }
-                dom.on(eventName, targetSelector, proxy, capture);
-            },
-            trigger: function (eventName, eventData) {
-                for (var i = 0; i < this.length; i++) {
-                    var evt;
-                    try {
-                        evt = new window.CustomEvent(eventName, {detail: eventData, bubbles: true, cancelable: true});
-                    }
-                    catch (e) {
-                        evt = document.createEvent('Event');
-                        evt.initEvent(eventName, true, true);
-                        evt.detail = eventData;
-                    }
-                    this[i].dispatchEvent(evt);
-                }
-                return this;
-            },
-            transitionEnd: function (callback) {
-                var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
-                    i, j, dom = this;
-                function fireCallBack(e) {
-                    /*jshint validthis:true */
-                    if (e.target !== this) return;
-                    callback.call(this, e);
-                    for (i = 0; i < events.length; i++) {
-                        dom.off(events[i], fireCallBack);
-                    }
-                }
-                if (callback) {
-                    for (i = 0; i < events.length; i++) {
-                        dom.on(events[i], fireCallBack);
-                    }
-                }
-                return this;
-            },
-            // Sizing/Styles
-            width: function () {
-                if (this[0] === window) {
-                    return window.innerWidth;
-                }
-                else {
-                    if (this.length > 0) {
-                        return parseFloat(this.css('width'));
-                    }
-                    else {
-                        return null;
-                    }
-                }
-            },
-            outerWidth: function (includeMargins) {
-                if (this.length > 0) {
-                    if (includeMargins)
-                        return this[0].offsetWidth + parseFloat(this.css('margin-right')) + parseFloat(this.css('margin-left'));
-                    else
-                        return this[0].offsetWidth;
-                }
-                else return null;
-            },
-            height: function () {
-                if (this[0] === window) {
-                    return window.innerHeight;
-                }
-                else {
-                    if (this.length > 0) {
-                        return parseFloat(this.css('height'));
-                    }
-                    else {
-                        return null;
-                    }
-                }
-            },
-            outerHeight: function (includeMargins) {
-                if (this.length > 0) {
-                    if (includeMargins)
-                        return this[0].offsetHeight + parseFloat(this.css('margin-top')) + parseFloat(this.css('margin-bottom'));
-                    else
-                        return this[0].offsetHeight;
-                }
-                else return null;
-            },
-            offset: function () {
-                if (this.length > 0) {
-                    var el = this[0];
-                    var box = el.getBoundingClientRect();
-                    var body = document.body;
-                    var clientTop  = el.clientTop  || body.clientTop  || 0;
-                    var clientLeft = el.clientLeft || body.clientLeft || 0;
-                    var scrollTop  = window.pageYOffset || el.scrollTop;
-                    var scrollLeft = window.pageXOffset || el.scrollLeft;
-                    return {
-                        top: box.top  + scrollTop  - clientTop,
-                        left: box.left + scrollLeft - clientLeft
-                    };
-                }
-                else {
-                    return null;
-                }
-            },
-            css: function (props, value) {
-                var i;
-                if (arguments.length === 1) {
-                    if (typeof props === 'string') {
-                        if (this[0]) return window.getComputedStyle(this[0], null).getPropertyValue(props);
-                    }
-                    else {
-                        for (i = 0; i < this.length; i++) {
-                            for (var prop in props) {
-                                this[i].style[prop] = props[prop];
-                            }
-                        }
-                        return this;
-                    }
-                }
-                if (arguments.length === 2 && typeof props === 'string') {
-                    for (i = 0; i < this.length; i++) {
-                        this[i].style[props] = value;
-                    }
-                    return this;
-                }
-                return this;
-            },
-    
-            //Dom manipulation
-            each: function (callback) {
-                for (var i = 0; i < this.length; i++) {
-                    callback.call(this[i], i, this[i]);
-                }
-                return this;
-            },
-            html: function (html) {
-                if (typeof html === 'undefined') {
-                    return this[0] ? this[0].innerHTML : undefined;
-                }
-                else {
-                    for (var i = 0; i < this.length; i++) {
-                        this[i].innerHTML = html;
-                    }
-                    return this;
-                }
-            },
-            text: function (text) {
-                if (typeof text === 'undefined') {
-                    if (this[0]) {
-                        return this[0].textContent.trim();
-                    }
-                    else return null;
-                }
-                else {
-                    for (var i = 0; i < this.length; i++) {
-                        this[i].textContent = text;
-                    }
-                    return this;
-                }
-            },
-            is: function (selector) {
-                if (!this[0]) return false;
-                var compareWith, i;
-                if (typeof selector === 'string') {
-                    var el = this[0];
-                    if (el === document) return selector === document;
-                    if (el === window) return selector === window;
-    
-                    if (el.matches) return el.matches(selector);
-                    else if (el.webkitMatchesSelector) return el.webkitMatchesSelector(selector);
-                    else if (el.mozMatchesSelector) return el.mozMatchesSelector(selector);
-                    else if (el.msMatchesSelector) return el.msMatchesSelector(selector);
-                    else {
-                        compareWith = $(selector);
-                        for (i = 0; i < compareWith.length; i++) {
-                            if (compareWith[i] === this[0]) return true;
-                        }
-                        return false;
-                    }
-                }
-                else if (selector === document) return this[0] === document;
-                else if (selector === window) return this[0] === window;
-                else {
-                    if (selector.nodeType || selector instanceof Dom7) {
-                        compareWith = selector.nodeType ? [selector] : selector;
-                        for (i = 0; i < compareWith.length; i++) {
-                            if (compareWith[i] === this[0]) return true;
-                        }
-                        return false;
-                    }
-                    return false;
-                }
-    
-            },
-            index: function () {
-                if (this[0]) {
-                    var child = this[0];
-                    var i = 0;
-                    while ((child = child.previousSibling) !== null) {
-                        if (child.nodeType === 1) i++;
-                    }
-                    return i;
-                }
-                else return undefined;
-            },
-            eq: function (index) {
-                if (typeof index === 'undefined') return this;
-                var length = this.length;
-                var returnIndex;
-                if (index > length - 1) {
-                    return new Dom7([]);
-                }
-                if (index < 0) {
-                    returnIndex = length + index;
-                    if (returnIndex < 0) return new Dom7([]);
-                    else return new Dom7([this[returnIndex]]);
-                }
-                return new Dom7([this[index]]);
-            },
-            append: function (newChild) {
-                var i, j;
-                for (i = 0; i < this.length; i++) {
-                    if (typeof newChild === 'string') {
-                        var tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = newChild;
-                        while (tempDiv.firstChild) {
-                            this[i].appendChild(tempDiv.firstChild);
-                        }
-                    }
-                    else if (newChild instanceof Dom7) {
-                        for (j = 0; j < newChild.length; j++) {
-                            this[i].appendChild(newChild[j]);
-                        }
-                    }
-                    else {
-                        this[i].appendChild(newChild);
-                    }
-                }
-                return this;
-            },
-            prepend: function (newChild) {
-                var i, j;
-                for (i = 0; i < this.length; i++) {
-                    if (typeof newChild === 'string') {
-                        var tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = newChild;
-                        for (j = tempDiv.childNodes.length - 1; j >= 0; j--) {
-                            this[i].insertBefore(tempDiv.childNodes[j], this[i].childNodes[0]);
-                        }
-                        // this[i].insertAdjacentHTML('afterbegin', newChild);
-                    }
-                    else if (newChild instanceof Dom7) {
-                        for (j = 0; j < newChild.length; j++) {
-                            this[i].insertBefore(newChild[j], this[i].childNodes[0]);
-                        }
-                    }
-                    else {
-                        this[i].insertBefore(newChild, this[i].childNodes[0]);
-                    }
-                }
-                return this;
-            },
-            insertBefore: function (selector) {
-                var before = $(selector);
-                for (var i = 0; i < this.length; i++) {
-                    if (before.length === 1) {
-                        before[0].parentNode.insertBefore(this[i], before[0]);
-                    }
-                    else if (before.length > 1) {
-                        for (var j = 0; j < before.length; j++) {
-                            before[j].parentNode.insertBefore(this[i].cloneNode(true), before[j]);
-                        }
-                    }
-                }
-            },
-            insertAfter: function (selector) {
-                var after = $(selector);
-                for (var i = 0; i < this.length; i++) {
-                    if (after.length === 1) {
-                        after[0].parentNode.insertBefore(this[i], after[0].nextSibling);
-                    }
-                    else if (after.length > 1) {
-                        for (var j = 0; j < after.length; j++) {
-                            after[j].parentNode.insertBefore(this[i].cloneNode(true), after[j].nextSibling);
-                        }
-                    }
-                }
-            },
-            next: function (selector) {
-                if (this.length > 0) {
-                    if (selector) {
-                        if (this[0].nextElementSibling && $(this[0].nextElementSibling).is(selector)) return new Dom7([this[0].nextElementSibling]);
-                        else return new Dom7([]);
-                    }
-                    else {
-                        if (this[0].nextElementSibling) return new Dom7([this[0].nextElementSibling]);
-                        else return new Dom7([]);
-                    }
-                }
-                else return new Dom7([]);
-            },
-            nextAll: function (selector) {
-                var nextEls = [];
-                var el = this[0];
-                if (!el) return new Dom7([]);
-                while (el.nextElementSibling) {
-                    var next = el.nextElementSibling;
-                    if (selector) {
-                        if($(next).is(selector)) nextEls.push(next);
-                    }
-                    else nextEls.push(next);
-                    el = next;
-                }
-                return new Dom7(nextEls);
-            },
-            prev: function (selector) {
-                if (this.length > 0) {
-                    if (selector) {
-                        if (this[0].previousElementSibling && $(this[0].previousElementSibling).is(selector)) return new Dom7([this[0].previousElementSibling]);
-                        else return new Dom7([]);
-                    }
-                    else {
-                        if (this[0].previousElementSibling) return new Dom7([this[0].previousElementSibling]);
-                        else return new Dom7([]);
-                    }
-                }
-                else return new Dom7([]);
-            },
-            prevAll: function (selector) {
-                var prevEls = [];
-                var el = this[0];
-                if (!el) return new Dom7([]);
-                while (el.previousElementSibling) {
-                    var prev = el.previousElementSibling;
-                    if (selector) {
-                        if($(prev).is(selector)) prevEls.push(prev);
-                    }
-                    else prevEls.push(prev);
-                    el = prev;
-                }
-                return new Dom7(prevEls);
-            },
-            parent: function (selector) {
-                var parents = [];
-                for (var i = 0; i < this.length; i++) {
-                    if (selector) {
-                        if ($(this[i].parentNode).is(selector)) parents.push(this[i].parentNode);
-                    }
-                    else {
-                        parents.push(this[i].parentNode);
-                    }
-                }
-                return $($.unique(parents));
-            },
-            parents: function (selector) {
-                var parents = [];
-                for (var i = 0; i < this.length; i++) {
-                    var parent = this[i].parentNode;
-                    while (parent) {
-                        if (selector) {
-                            if ($(parent).is(selector)) parents.push(parent);
-                        }
-                        else {
-                            parents.push(parent);
-                        }
-                        parent = parent.parentNode;
-                    }
-                }
-                return $($.unique(parents));
-            },
-            find : function (selector) {
-                var foundElements = [];
-                for (var i = 0; i < this.length; i++) {
-                    var found = this[i].querySelectorAll(selector);
-                    for (var j = 0; j < found.length; j++) {
-                        foundElements.push(found[j]);
-                    }
-                }
-                return new Dom7(foundElements);
-            },
-            children: function (selector) {
-                var children = [];
-                for (var i = 0; i < this.length; i++) {
-                    var childNodes = this[i].childNodes;
-    
-                    for (var j = 0; j < childNodes.length; j++) {
-                        if (!selector) {
-                            if (childNodes[j].nodeType === 1) children.push(childNodes[j]);
-                        }
-                        else {
-                            if (childNodes[j].nodeType === 1 && $(childNodes[j]).is(selector)) children.push(childNodes[j]);
-                        }
-                    }
-                }
-                return new Dom7($.unique(children));
-            },
-            remove: function () {
-                for (var i = 0; i < this.length; i++) {
-                    if (this[i].parentNode) this[i].parentNode.removeChild(this[i]);
-                }
-                return this;
-            },
-            add: function () {
-                var dom = this;
-                var i, j;
-                for (i = 0; i < arguments.length; i++) {
-                    var toAdd = $(arguments[i]);
-                    for (j = 0; j < toAdd.length; j++) {
-                        dom[dom.length] = toAdd[j];
-                        dom.length++;
-                    }
-                }
-                return dom;
-            }
-        };
-        $.fn = Dom7.prototype;
-        $.unique = function (arr) {
-            var unique = [];
-            for (var i = 0; i < arr.length; i++) {
-                if (unique.indexOf(arr[i]) === -1) unique.push(arr[i]);
-            }
-            return unique;
-        };
-    
-        return $;
-    })();
-    
-
-    /*===========================
-     Get Dom libraries
-     ===========================*/
-    var swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
-    for (var i = 0; i < swiperDomPlugins.length; i++) {
-    	if (window[swiperDomPlugins[i]]) {
-    		addLibraryPlugin(window[swiperDomPlugins[i]]);
-    	}
-    }
-    // Required DOM Plugins
-    var domLib;
-    if (typeof Dom7 === 'undefined') {
-    	domLib = window.Dom7 || window.Zepto || window.jQuery;
-    }
-    else {
-    	domLib = Dom7;
-    }
-    
-
-    /*===========================
-    Add .swiper plugin from Dom libraries
-    ===========================*/
-    function addLibraryPlugin(lib) {
-        lib.fn.swiper = function (params) {
-            var firstInstance;
-            lib(this).each(function () {
-                var s = new Swiper(this, params);
-                if (!firstInstance) firstInstance = s;
-            });
-            return firstInstance;
-        };
-    }
-    
-    if (domLib) {
-        if (!('transitionEnd' in domLib.fn)) {
-            domLib.fn.transitionEnd = function (callback) {
-                var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
-                    i, j, dom = this;
-                function fireCallBack(e) {
-                    /*jshint validthis:true */
-                    if (e.target !== this) return;
-                    callback.call(this, e);
-                    for (i = 0; i < events.length; i++) {
-                        dom.off(events[i], fireCallBack);
-                    }
-                }
-                if (callback) {
-                    for (i = 0; i < events.length; i++) {
-                        dom.on(events[i], fireCallBack);
-                    }
-                }
-                return this;
-            };
-        }
-        if (!('transform' in domLib.fn)) {
-            domLib.fn.transform = function (transform) {
-                for (var i = 0; i < this.length; i++) {
-                    var elStyle = this[i].style;
-                    elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
-                }
-                return this;
-            };
-        }
-        if (!('transition' in domLib.fn)) {
-            domLib.fn.transition = function (duration) {
-                if (typeof duration !== 'string') {
-                    duration = duration + 'ms';
-                }
-                for (var i = 0; i < this.length; i++) {
-                    var elStyle = this[i].style;
-                    elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
-                }
-                return this;
-            };
-        }
-        if (!('outerWidth' in domLib.fn)) {
-            domLib.fn.outerWidth = function (includeMargins) {
-                if (this.length > 0) {
-                    if (includeMargins)
-                        return this[0].offsetWidth + parseFloat(this.css('margin-right')) + parseFloat(this.css('margin-left'));
-                    else
-                        return this[0].offsetWidth;
-                }
-                else return null;
-            };
-        }
-    }
-    
-
-    window.Swiper = Swiper;
-})();
-
-/*===========================
-Swiper AMD Export
-===========================*/
-if (true)
-{
-    module.exports = window.Swiper;
-}
-else if (typeof define === 'function' && define.amd) {
-    define([], function () {
-        'use strict';
-        return window.Swiper;
-    });
-}
-
-//# sourceMappingURL=maps/swiper.js.map
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Vue-awesome-swiper
- * @author Surmon.me
- */
-
-var Swiper = __webpack_require__(52)
-var SwiperComponent = __webpack_require__(54)
-var SlideComponent = __webpack_require__(57)
-SwiperComponent = SwiperComponent.default || SwiperComponent
-SlideComponent = SlideComponent.default || SlideComponent
-if (typeof window !== 'undefined') {
-	window.Swiper = Swiper
-}
-
-var swiper = {
-  swiperSlide: SlideComponent,
-  swiper: SwiperComponent,
-  swiperPlugins: Swiper.prototype.plugins,
-  install: function(Vue) {
-    Vue.component(SwiperComponent.name, SwiperComponent)
-    Vue.component(SlideComponent.name, SlideComponent)
-  }
-}
-
-module.exports = swiper
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(55),
-  /* template */
-  __webpack_require__(56),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] swiper.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-11ee8862", Component.options)
-  } else {
-    hotAPI.reload("data-v-11ee8862", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var browser = typeof window !== 'undefined';
-if (browser) window.Swiper = __webpack_require__(52);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'swiper',
-  props: {
-    options: {
-      type: Object,
-      default: function _default() {
-        return {
-          autoplay: 3500
-        };
-      }
-    },
-    notNextTick: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    }
-  },
-  data: function data() {
-    return {
-      defaultSwiperClasses: {
-        wrapperClass: 'swiper-wrapper'
-      }
-    };
-  },
-  ready: function ready() {
-    if (!this.swiper && browser) {
-      this.swiper = new Swiper(this.$el, this.options);
-    }
-  },
-  mounted: function mounted() {
-    var self = this;
-    var mount = function () {
-      if (!self.swiper && browser) {
-        delete self.options.notNextTick;
-        var setClassName = false;
-        for (var className in self.defaultSwiperClasses) {
-          if (self.defaultSwiperClasses.hasOwnProperty(className)) {
-            if (self.options[className]) {
-              setClassName = true;
-              self.defaultSwiperClasses[className] = self.options[className];
-            }
-          }
-        }
-        var mountInstance = function mountInstance() {
-          self.swiper = new Swiper(self.$el, self.options);
-        };
-        setClassName ? self.$nextTick(mountInstance) : mountInstance();
-      }
-    }(this.options.notNextTick || this.notNextTick) ? mount() : this.$nextTick(mount);
-  },
-  updated: function updated() {
-    if (this.swiper) {
-      this.swiper.update();
-    }
-  },
-  beforeDestroy: function beforeDestroy() {
-    if (this.swiper) {
-      this.swiper.destroy();
-      delete this.swiper;
-    }
-  }
-});
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "swiper-container"
-  }, [_vm._t("parallax-bg"), _vm._v(" "), _c('div', {
-    class: _vm.defaultSwiperClasses.wrapperClass
-  }, [_vm._t("default")], 2), _vm._v(" "), _vm._t("pagination"), _vm._v(" "), _vm._t("button-prev"), _vm._v(" "), _vm._t("button-next"), _vm._v(" "), _vm._t("scrollbar")], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-11ee8862", module.exports)
-  }
-}
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(58),
-  /* template */
-  __webpack_require__(59),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-11583f2a", Component.options)
-  } else {
-    hotAPI.reload("data-v-11583f2a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'swiper-slide',
-  data: function data() {
-    return {
-      slideClass: 'swiper-slide'
-    };
-  },
-  ready: function ready() {
-    this.update();
-  },
-  mounted: function mounted() {
-    this.update();
-    if (this.$parent.options.slideClass) {
-      this.slideClass = this.$parent.options.slideClass;
-    }
-  },
-  updated: function updated() {
-    this.update();
-  },
-  attached: function attached() {
-    this.update();
-  },
-  methods: {
-    update: function update() {
-      if (this.$parent && this.$parent.swiper && this.$parent.swiper.update) {
-        this.$parent.swiper.update(true);
-        if (this.$parent.options.loop) {
-          this.$parent.swiper.reLoop();
-        }
-      }
-    }
-  }
-});
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    class: _vm.slideClass
-  }, [_vm._t("default")], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-11583f2a", module.exports)
-  }
-}
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(85)
-}
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(63),
-  /* template */
-  __webpack_require__(87),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-20007245",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\kawhi-project\\laravel-vue\\resources\\assets\\js\\components\\middle\\middle.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] middle.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-20007245", Component.options)
-  } else {
-    hotAPI.reload("data-v-20007245", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 59 */,
+/* 60 */,
 /* 61 */,
 /* 62 */,
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 63 */,
+/* 64 */,
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__slide_slide__);
-//
-//
-//
-//
-//
-//
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(66)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(68),
+  /* template */
+  __webpack_require__(69),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-2f9dcc42",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\right\\right.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] right.vue: functional components are not supported with templates, they should use render functions.")}
 
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2f9dcc42", Component.options)
+  } else {
+    hotAPI.reload("data-v-2f9dcc42", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
 
+module.exports = Component.exports
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        vslide: __WEBPACK_IMPORTED_MODULE_0__slide_slide___default.a
-    }
-});
 
 /***/ }),
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(68);
+var content = __webpack_require__(67);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(1)("15e7066b", content, false);
+var update = __webpack_require__(2)("0b0d4ca4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7de66b45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7de66b45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f9dcc42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./right.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2f9dcc42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./right.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -21664,487 +22201,69 @@ if(false) {
 }
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.header[data-v-7de66b45] {\n  width: 100%;\n}\n.header .header-wrap[data-v-7de66b45] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;\n    width: 100%;\n    height: 4.375em;\n    line-height: 4.375em;\n    background-color: rgba(183, 191, 197, 0.6);\n    color: #00030d;\n}\n.header .header-wrap .header-nav[data-v-7de66b45] {\n      height: 4.375em;\n      line-height: 4.375em;\n}\n.header .header-wrap .header-nav .header-link[data-v-7de66b45] {\n        display: inline-block;\n        width: auto;\n        height: 3.75em;\n        color: #00030d;\n        font-size: 1.875em;\n}\n.header .header-wrap .header-nav .motto[data-v-7de66b45] {\n        margin-left: 3.75em;\n        font-size: 0.88em;\n}\n@media (min-width: 1024px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1100px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1920px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 75em;\n      margin: 0 auto;\n}\n}\n", ""]);
+exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 10.746em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      padding: .3875em;\n      width: 11em;\n      height: 1.5625em;\n      margin: 0;\n      font-size: .75em;\n      font-weight: 200;\n      text-indent: .25em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n      vertical-align: top;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      width: 2.3em;\n      height: 2.1em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.48em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n", ""]);
 
 // exports
 
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('header', {
-    staticClass: "header"
-  }, [_c('div', {
-    staticClass: "header-wrap"
-  }, [_c('nav', {
-    staticClass: "header-nav"
-  }, [_c('router-link', {
-    staticClass: "header-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_vm._v("kawhi.me")]), _vm._v(" "), _c('span', {
-    staticClass: "motto"
-  }, [_vm._v("\" I Can do all things \"")])], 1)])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7de66b45", module.exports)
-  }
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(71);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("7070775d", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ad9f8a6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./nav.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ad9f8a6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./nav.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.nav .nav-wrap[data-v-6ad9f8a6] {\n  height: auto;\n  background-color: rgba(183, 191, 197, 0.6);\n  position: fixed;\n  top: 5em;\n}\n.nav .nav-wrap .nav-item[data-v-6ad9f8a6] {\n    line-height: 40px;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6] {\n      font-size: 0.94em;\n      color: #fff;\n      display: block;\n      padding: 0 0 0 1.25em;\n      -webkit-transition: color .15s linear, background-color .15s linear;\n      -moz-transition: color .15s linear, background-color .15s linear;\n      -ms-transition: color .15s linear, background-color .15s linear;\n      -o-transition: color .15s linear, background-color .15s linear;\n      transition: color .15s linear, background-color .15s linear;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6]:hover {\n      color: #00030d;\n}\n@media (min-width: 1024px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 0;\n}\n}\n@media (min-width: 1100px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 0;\n}\n}\n@media (min-width: 1920px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 8.75em;\n    left: 22.48em;\n}\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('nav', {
-    staticClass: "nav"
-  }, [_c('div', {
-    staticClass: "nav-wrap"
-  }, [_c('div', {
-    staticClass: "nav-item"
-  }, [_c('router-link', {
-    staticClass: "nav-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('i', {
-    staticClass: "lnr lnr-home"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "nav-text"
-  }, [_vm._v("HOME")])])], 1), _vm._v(" "), _c('div', {
-    staticClass: "nav-item"
-  }, [_c('router-link', {
-    staticClass: "nav-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('i', {
-    staticClass: "lnr lnr-book"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "nav-text"
-  }, [_vm._v("BLOG")])])], 1), _vm._v(" "), _c('div', {
-    staticClass: "nav-item"
-  }, [_c('router-link', {
-    staticClass: "nav-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('i', {
-    staticClass: "lnr lnr-code"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "nav-text"
-  }, [_vm._v("PROJECT")])])], 1), _vm._v(" "), _c('div', {
-    staticClass: "nav-item"
-  }, [_c('router-link', {
-    staticClass: "nav-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('i', {
-    staticClass: "lnr lnr-magic-wand"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "nav-text"
-  }, [_vm._v("THINK")])])], 1), _vm._v(" "), _c('div', {
-    staticClass: "nav-item"
-  }, [_c('router-link', {
-    staticClass: "nav-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('i', {
-    staticClass: "lnr lnr-user"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "nav-text"
-  }, [_vm._v("ABOUT")])])], 1)])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6ad9f8a6", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(74);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("0614debb", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4f67934c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./background.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4f67934c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./background.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(31) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "bg-canvas"
+    staticClass: "right"
   }, [_c('div', {
-    staticClass: "bg-img"
-  }), _vm._v(" "), _c('div', {
+    staticClass: "search-box"
+  }, [_c('input', {
+    staticClass: "search-text",
     attrs: {
-      "id": "bg",
-      "color": _vm.color,
-      "particleOpacity": _vm.particleOpacity,
-      "linesColor": _vm.linesColor,
-      "particlesNumber": _vm.particlesNumber,
-      "shapeType": _vm.shapeType,
-      "particleSize": _vm.particleSize,
-      "linesWidth": _vm.linesWidth,
-      "lineLinked": _vm.lineLinked,
-      "lineOpacity": _vm.lineOpacity,
-      "linesDistance": _vm.linesDistance,
-      "moveSpeed": _vm.moveSpeed,
-      "hoverEffect": _vm.hoverEffect,
-      "hoverMode": _vm.hoverMode,
-      "clickEffect": _vm.clickEffect,
-      "clickMode": _vm.clickMode
+      "type": "text",
+      "placeholder": "Search your want..."
     }
-  })])
-},staticRenderFns: []}
+  }), _c('button', {
+    staticClass: "search-submit"
+  }, [_c('i', {
+    staticClass: "lnr lnr-magnifier"
+  })])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4f67934c", module.exports)
-  }
-}
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(77);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("6e12fdc3", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fe76a376\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./main.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fe76a376\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./main.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('main', {
-    staticClass: "main"
-  }, [_c('vnav'), _vm._v(" "), _c('middle')], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-fe76a376", module.exports)
-  }
-}
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(80);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("029e98de", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0b61cd2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./app.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0b61cd2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./app.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "kawhi"
-  }, [_c('particle'), _vm._v(" "), _c('vheader'), _vm._v(" "), _c('vmain')], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-d0b61cd2", module.exports)
-  }
-}
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(83);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("38626d36", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a8c8849\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./slide.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a8c8849\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./slide.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.slide-wrap .slide-item[data-v-1a8c8849] {\n  width: 100%;\n  height: 300px;\n  position: relative;\n  overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n    position: absolute;\n    right: 17px;\n    top: 12px;\n    z-index: 2;\n    padding: 7px 10px;\n    display: block;\n    background: rgba(183, 191, 197, 0.25);\n    color: #00030d;\n    font-size: 15px;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n    width: 100%;\n    transform: rotate(0) scale(1);\n    transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n    transition: transform 1s;\n    transform: rotate(2deg) scale(1.1);\n}\n.slide-wrap .swiper-pagination .swiper-pagination-bullet-active[data-v-1a8c8849] {\n  background: #00030d !important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('swiper', {
-    staticClass: "slide-wrap",
-    attrs: {
-      "options": _vm.swiperOption
-    }
-  }, [_vm._l((_vm.swiperSlides), function(slide, index) {
-    return _c('swiper-slide', {
-      key: "index",
-      staticClass: "slide-item"
-    }, [_c('router-link', {
-      staticClass: "slide-link",
-      attrs: {
-        "to": "/"
-      }
-    }, [_c('span', {
-      staticClass: "slide-title"
-    }, [_vm._v(_vm._s(slide.title))]), _vm._v(" "), _c('img', {
-      staticClass: "slide-thumb",
-      attrs: {
-        "src": slide.thumb
-      }
-    })])], 1)
-  }), _vm._v(" "), _c('div', {
-    staticClass: "swiper-pagination",
-    slot: "pagination"
-  })], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1a8c8849", module.exports)
-  }
-}
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(86);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("9418235c", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-20007245\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./middle.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-20007245\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./middle.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.middle[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "middle"
-  }, [_c('vslide')], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-20007245", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2f9dcc42", module.exports)
   }
 }
 

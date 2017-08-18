@@ -53,14 +53,22 @@
                     font-size: 0.94em
                     color: #fff
                     display: block;
-                    padding: 0 0 0 1.25em;
+                    padding: 0 0 0 .6875em;
                     -webkit-transition: color .15s linear, background-color .15s linear;
                     -moz-transition: color .15s linear, background-color .15s linear;
                     -ms-transition: color .15s linear, background-color .15s linear;
                     -o-transition: color .15s linear, background-color .15s linear;
                     transition: color .15s linear, background-color .15s linear;
+                    .lrn
+                        font-size: .875em
+                        vertical-align: top
+                    .nav-text
+                        font-size: .875em
+                        margin-left: .375em
+                        vertical-align: top
                 .nav-link:hover
                     color: #00030d
+                    font-weight: 700
         @media (min-width: 1024px)
             .nav-wrap
                 width: 6.875em
@@ -68,7 +76,7 @@
         @media (min-width: 1100px)
             .nav-wrap
                 width: 6.875em
-                left: 0
+                left: 12.28em
         @media (min-width: 1920px)
             .nav-wrap
                 width: 8.75em
