@@ -1,7 +1,6 @@
 <template>
     <swiper class="slide-wrap" :options="swiperOption">
         <swiper-slide class="slide-item" v-for="(slide,index) in swiperSlides" key="index">
-            <!--I'm Slide {{ slide }}-->
             <router-link class="slide-link" to="/">
                 <span class="slide-title">{{ slide.title }}</span>
                 <img class="slide-thumb" :src="slide.thumb">
@@ -68,7 +67,9 @@
                     transform: rotate(0) scale(1)
                     transition: transform 1s
                 img.slide-thumb:hover
-                    transition: transform 1s;
-                    transform: rotate(2deg) scale(1.1);
-
+                    transition: transform 1s
+                    transform: rotate(2deg) scale(1.1)
+        .swiper-pagnation
+            span.swiper-pagination-bullet.swiper-pagination-bullet-active
+                background: #00030d
 </style>
