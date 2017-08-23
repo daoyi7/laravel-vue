@@ -5836,7 +5836,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(24),
   /* template */
-  __webpack_require__(62),
+  __webpack_require__(67),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -5844,7 +5844,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -5872,7 +5872,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-module.exports = __webpack_require__(63);
+module.exports = __webpack_require__(68);
 
 
 /***/ }),
@@ -19107,7 +19107,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] swiper.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19252,7 +19252,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19422,7 +19422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header_header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header_header__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_main__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__back_background___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__back_background__);
 //
 //
@@ -19466,7 +19466,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\header\\header.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\header\\header.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19586,7 +19586,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(33),
   /* template */
-  __webpack_require__(54),
+  __webpack_require__(59),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -19594,7 +19594,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\main\\main.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\main\\main.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19652,7 +19652,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n  margin-top: .25em;\n}\n@media (min-width: 1100px) {\n.main[data-v-fe76a376] {\n    width: 60em;\n}\n}\n@media (min-width: 1920px) {\n.main[data-v-fe76a376] {\n    width: 75em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n}\n@media (min-width: 1100px) {\n.main[data-v-fe76a376] {\n    width: 60em;\n}\n}\n@media (min-width: 1920px) {\n.main[data-v-fe76a376] {\n    width: 75em;\n}\n}\n", ""]);
 
 // exports
 
@@ -19667,7 +19667,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_nav___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__nav_nav__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__middle_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__middle_middle__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__right_right__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__right_right__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__right_right___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__right_right__);
 //
 //
@@ -19711,7 +19711,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\nav\\nav.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\nav\\nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19903,7 +19903,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(42),
   /* template */
-  __webpack_require__(48),
+  __webpack_require__(53),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -19911,7 +19911,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\middle\\middle.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\middle\\middle.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] middle.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19969,7 +19969,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.middle[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n.middle .notice-wrap[data-v-20007245] {\n    position: relative;\n    width: 100%;\n    height: 2.5em;\n    overflow: hidden;\n}\n.middle .notice-wrap .notice-icon[data-v-20007245] {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 2.2em;\n      text-align: center;\n      height: 100%;\n      line-height: 2.625em;\n      background: #fff;\n      color: #000;\n}\n.middle .notice-wrap .notice-container[data-v-20007245] {\n      position: absolute;\n      left: 2.2em;\n      top: 0;\n      width: 36.8125em;\n      height: 100%;\n}\n@media (min-width: 1100px) {\n.middle[data-v-20007245] {\n    width: 39.3em;\n    margin: 0 0 0 8.5em;\n}\n}\n@media (min-width: 1920px) {\n.middle[data-v-20007245] {\n    width: 42.5em;\n    margin: 0 0 0 12.5em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.middle[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n@media (min-width: 1100px) {\n.middle[data-v-20007245] {\n    width: 39.3em;\n    margin: 0 0 0 8.5em;\n}\n}\n@media (min-width: 1920px) {\n.middle[data-v-20007245] {\n    width: 50.7em;\n    margin: 0 0 0 10em;\n}\n}\n", ""]);
 
 // exports
 
@@ -19982,6 +19982,8 @@ exports.push([module.i, "\n.middle[data-v-20007245] {\n  float: left;\n  width: 
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__slide_slide___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__slide_slide__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slide_notice__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slide_notice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__slide_notice__);
 //
 //
 //
@@ -19989,43 +19991,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'carrousel',
     components: {
-        vslide: __WEBPACK_IMPORTED_MODULE_0__slide_slide___default.a
-    },
-    data: function data() {
-        return {
-            swiperOption: {
-                autoplay: 3500,
-                direction: 'verticle',
-                setWrapperSize: true,
-                mousewheelControl: false,
-                observeParents: true,
-                autoplayDisableOnInteraction: false
-            }
-        };
+        vslide: __WEBPACK_IMPORTED_MODULE_0__slide_slide___default.a,
+        notice: __WEBPACK_IMPORTED_MODULE_1__slide_notice___default.a
     }
 });
 
@@ -20050,7 +20023,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\slide\\slide.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\slide\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20108,7 +20081,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.slide-wrap .slide-item[data-v-1a8c8849] {\n  width: 100%;\n  height: 18.75em;\n  position: relative;\n  overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n    position: absolute;\n    right: 1.0625em;\n    top: 0.75em;\n    z-index: 2;\n    padding: 0.4375em 0.625em;\n    display: block;\n    background: rgba(183, 191, 197, 0.25);\n    color: #fff;\n    font-size: 0.9375em;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n    width: 100%;\n    transform: rotate(0) scale(1);\n    transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n    transition: transform 1s;\n    transform: rotate(2deg) scale(1.1);\n}\n.slide-wrap .swiper-pagnation span.swiper-pagination-bullet.swiper-pagination-bullet-active[data-v-1a8c8849] {\n  background: #00030d;\n}\n", ""]);
+exports.push([module.i, "\n.slide-wrap[data-v-1a8c8849] {\n  margin-bottom: 1em;\n}\n.slide-wrap .slide-item[data-v-1a8c8849] {\n    width: 100%;\n    height: 18.75em;\n    position: relative;\n    overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n      position: absolute;\n      right: 1.0625em;\n      top: 0.75em;\n      z-index: 2;\n      padding: 0.4375em 0.625em;\n      display: block;\n      background: rgba(183, 191, 197, 0.25);\n      color: #fff;\n      font-size: 0.9375em;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n      width: 100%;\n      transform: rotate(0) scale(1);\n      transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n      transition: transform 1s;\n      transform: rotate(2deg) scale(1.1);\n}\n.slide-wrap .swiper-pagnation span.swiper-pagination-bullet.swiper-pagination-bullet-active[data-v-1a8c8849] {\n    background: #00030d;\n}\n@media (min-width: 1100px) {\n.slide-item[data-v-1a8c8849] {\n    height: 18.75em;\n}\n}\n@media (min-width: 1920px) {\n.slide-item[data-v-1a8c8849] {\n    height: 21.75em;\n}\n}\n", ""]);
 
 // exports
 
@@ -20137,7 +20110,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             swiperOption: {
-                autoplay: 3500,
+                // autoplay: 3500,
                 setWrapperSize: true,
                 pagination: '.swiper-pagination',
                 paginationClickable: true,
@@ -20203,42 +20176,95 @@ if (false) {
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(51),
+  /* template */
+  __webpack_require__(75),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\slide\\notice.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] notice.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a5e95620", Component.options)
+  } else {
+    hotAPI.reload("data-v-a5e95620", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        direction: 'vertical'
+      },
+      notices: [{
+        title: 'This is NO.1'
+      }, {
+        title: 'TEST PAGES LOL'
+      }]
+    };
+  }
+});
+
+/***/ }),
+/* 52 */,
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "middle"
-  }, [_c('vslide'), _vm._v(" "), _c('div', {
-    staticClass: "notice-wrap"
-  }, [_vm._m(0), _vm._v(" "), _c('swiper', {
-    staticClass: "notice-container",
-    attrs: {
-      "options": _vm.swiperOption
-    }
-  }, [_c('swiper-slide', {
-    staticClass: "notice-item"
-  }, [_c('router-link', {
-    staticClass: "notice-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('span', {
-    staticClass: "slide-title"
-  }, [_vm._v("111")])])], 1), _vm._v(" "), _c('swiper-slide', {
-    staticClass: "notice-item"
-  }, [_c('router-link', {
-    staticClass: "notice-link",
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('span', {
-    staticClass: "slide-title"
-  }, [_vm._v("111")])])], 1)], 1)], 1)], 1)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "notice-icon"
-  }, [_c('span', [_c('i', {
-    staticClass: "lnr lnr-volume-medium"
-  })])])
-}]}
+  }, [_c('vslide'), _vm._v(" "), _c('notice')], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -20248,19 +20274,19 @@ if (false) {
 }
 
 /***/ }),
-/* 49 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(50)
+  __webpack_require__(55)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(52),
+  __webpack_require__(57),
   /* template */
-  __webpack_require__(53),
+  __webpack_require__(58),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20268,7 +20294,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\right\\right.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\right\\right.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] right.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20292,13 +20318,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 50 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(51);
+var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20318,7 +20344,7 @@ if(false) {
 }
 
 /***/ }),
-/* 51 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -20326,13 +20352,13 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 10.746em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      padding: .3875em;\n      width: 11em;\n      height: 1.5625em;\n      margin: 0;\n      font-size: .75em;\n      font-weight: 200;\n      text-indent: .25em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n      vertical-align: top;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      width: 2.3em;\n      height: 2.1em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.48em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: .75em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.2em;\n      text-indent: .5em;\n      font-size: .875em;\n}\n.right .hot-reads .hot-all .lnr-menu[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: .875em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 10.25em;\n      height: 2.2em;\n      line-height: 2.2em;\n      margin-left: .5em;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        width: 1.3em;\n        height: 1.25em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.25em;\n        vertical-align: middle;\n        font-size: .875em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42] {\n        width: 9.7em;\n        color: #00030d;\n        font-size: .875em;\n        vertical-align: middle;\n        text-indent: .625em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
+exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 13em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      padding: .3875em;\n      width: 11em;\n      height: 1.5625em;\n      margin: 0;\n      font-size: .75em;\n      font-weight: 200;\n      text-indent: .25em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n      vertical-align: top;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      width: 2.3em;\n      height: 2.1em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.48em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: .75em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.2em;\n      text-indent: .5em;\n      font-size: .875em;\n}\n.right .hot-reads .hot-all .lnr-menu[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: .875em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 12.5em;\n      height: 2.2em;\n      line-height: 2.2em;\n      margin-left: .5em;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        width: 1.3em;\n        height: 1.25em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.25em;\n        vertical-align: middle;\n        font-size: .875em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42] {\n        width: 12.65em;\n        color: #00030d;\n        font-size: .875em;\n        vertical-align: middle;\n        text-indent: .625em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 52 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20402,7 +20428,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 53 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20455,7 +20481,7 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20472,19 +20498,19 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(56)
+  __webpack_require__(61)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(59),
+  __webpack_require__(64),
   /* template */
-  __webpack_require__(61),
+  __webpack_require__(66),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20492,7 +20518,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\back\\background.vue"
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\back\\background.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] background.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20516,13 +20542,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 56 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(57);
+var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20542,7 +20568,7 @@ if(false) {
 }
 
 /***/ }),
-/* 57 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -20550,19 +20576,19 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(58) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
+exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(63) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 58 */
+/* 63 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/bg5.png?295d82f7760fee713eed6d670ea220a5";
+module.exports = "/images/bground.jpg?1eff793636e64e34cb8dd920ed0e59dc";
 
 /***/ }),
-/* 59 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20660,7 +20686,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         // import particle.js only on client-side
-        __webpack_require__(60);
+        __webpack_require__(65);
         this.$nextTick(function () {
             _this.initParticleJS(_this.color, _this.particleOpacity, _this.particlesNumber, _this.shapeType, _this.particleSize, _this.linesColor, _this.linesWidth, _this.lineLinked, _this.lineOpacity, _this.linesDistance, _this.moveSpeed, _this.hoverEffect, _this.hoverMode, _this.clickEffect, _this.clickMode);
         });
@@ -20787,7 +20813,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 60 */
+/* 65 */
 /***/ (function(module, exports) {
 
 /* -----------------------------------------------
@@ -22333,7 +22359,7 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
 };
 
 /***/ }),
-/* 61 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22371,7 +22397,7 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22388,10 +22414,56 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 68 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "notice-wrap"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "norice-container"
+  }, [_c('swiper', {
+    attrs: {
+      "options": _vm.swiperOption
+    }
+  }, _vm._l((_vm.notices), function(notice, index) {
+    return _c('swiper-slide', {
+      key: "index"
+    }, [_c('router-link', {
+      staticClass: "notice-link",
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('span', {
+      staticClass: "notice-title"
+    }, [_vm._v(_vm._s(notice.title))])])], 1)
+  }))], 1)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "notice-icon"
+  }, [_c('i', {
+    staticClass: "lnr lnr-volume-medium"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-a5e95620", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

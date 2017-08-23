@@ -253,7 +253,7 @@
             width: 100%
             height: 100%
             opacity: .2
-            background-image: url("./bg5.png")
+            background-image: url("./bground.jpg")
             background-size: cover
         #bg
             position: fixed

@@ -16,7 +16,7 @@
         data() {
             return {
                 swiperOption: {
-                    autoplay: 3500,
+                    // autoplay: 3500,
                     setWrapperSize: true,
                     pagination: '.swiper-pagination',
                     paginationClickable: true,
@@ -46,6 +46,7 @@
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .slide-wrap
+        margin-bottom: 1em
         .slide-item
             width: 100%
             height: 18.75em
@@ -72,4 +73,12 @@
         .swiper-pagnation
             span.swiper-pagination-bullet.swiper-pagination-bullet-active
                 background: #00030d
+
+
+    @media (min-width: 1100px)
+        .slide-item
+            height: 18.75em
+    @media (min-width: 1920px)
+        .slide-item
+            height: 21.75em
 </style>

@@ -29,7 +29,10 @@
         display: block
         width: 75em
         margin: 0 auto
-        margin-top: .25em
+        // margin-top: .25em
+
+
+        
     @media (min-width: 1100px)
         .main
             width: 60em

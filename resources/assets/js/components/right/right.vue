@@ -78,7 +78,7 @@
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .right
-        width: 10.746em
+        width: 13em
         float: right
         .search-box
             width: 100%
@@ -132,7 +132,7 @@
                     vertical-align: top
             ul
                 .hot-list
-                    width: 10.25em
+                    width: 12.5em
                     height: 2.2em
                     line-height: 2.2em
                     margin-left: .5em
@@ -148,7 +148,7 @@
                         font-size: .875em
                         font-style: italic
                     .hot-title
-                        width: 9.7em
+                        width: 12.65em
                         color: #00030d
                         font-size: .875em
                         vertical-align: middle
