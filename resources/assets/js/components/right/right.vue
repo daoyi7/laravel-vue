@@ -84,7 +84,9 @@
             width: 100%
             height: auto
             overflow: hidden
+            display: flex
             .search-text
+                flex: 1
                 padding: .3875em
                 width: 11em
                 height: 1.5625em
@@ -96,11 +98,12 @@
                 background: #fff
                 color: rgb(162, 168, 173)
                 transition: background .5s linear
-                vertical-align: top
+                // vertical-align: top
             .search-text:hover, .search-text:active, .search-text:focus
                 outline: none
                 background: #d1d4d6
             .search-submit
+                flex: 0 0 2.3em
                 width: 2.3em
                 height: 2.1em
                 padding: 0

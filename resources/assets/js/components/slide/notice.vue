@@ -1,7 +1,7 @@
 <template>
   <div class="notice">
     <div class="icon">
-      <i class="lnr lnr-volume-medium"></i>
+      <i class="icon iconfont icon-gonggao"></i>
     </div>
     <swiper class="slide-wrap" :options="swiperOption">
         <swiper-slide class="slide-item" v-for="(notice,index) in notices" key="index">
@@ -47,9 +47,12 @@
     line-height: 2.5em
     .icon
       flex: 0 0 2em
+      width: 2em
+      height: 100%
       text-align: center
-      i.lnr
-        font-size: .9em
+      line-height: 2.74em
+      i.icon
+        font-size: 1em
     .slide-wrap
       flex: 1
       .slide-item
