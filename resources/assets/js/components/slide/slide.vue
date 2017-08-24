@@ -10,13 +10,13 @@
     </swiper>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     export default {
         name: 'carrousel',
         data() {
             return {
                 swiperOption: {
-                    // autoplay: 3500,
+                    autoplay: 3500,
                     setWrapperSize: true,
                     pagination: '.swiper-pagination',
                     paginationClickable: true,
