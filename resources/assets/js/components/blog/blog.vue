@@ -1,10 +1,10 @@
 <template>
   <div class="blog-wrap">
     <div class="blog-item">
-      <div class="blog-module">
+      <div class="blog-module" v-for="(blog, index) in blogs" key="index">
         <div class="thumb">
           <router-link to="/">
-            <img src="../../../images/bg.png">
+            <img :src="blog.thumb">
           </router-link>
         </div>
         <div class="main">
@@ -13,7 +13,7 @@
           </h4>
           <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
           <div class="list">
-            <p class="list-icon" :class="blog.class"  v-for="(blog, index) in blogs" key="index">
+            <p class="list-icon" :class="blog.class" v-for="">
               <i :class="blog.icon"></i>
               <span>{{ blog.text }}</span>
             </p>
@@ -31,31 +31,36 @@
       return {
         blogs: [
           {
+            thumb: "../../../images/bg.png",
             class: "time",
             icon: "icon iconfont icon-clock2",
             text: "2小时前"
           },
           {
+            thumb: "../../../images/bg1.png",
             class: "view",
             icon: "icon iconfont icon-view",
             text: "80"
           },
           {
+            thumb: "../../../images/bg2.png",
             class: "comments",
             icon: "icon iconfont icon-iconcomments",
             text: "80"
           },
           {
+            thumb: "../../../images/bg3.png",
             class: "like",
             icon: "icon iconfont icon-like1",
             text: "6"
           },
           {
+            thumb: "../../../images/bg4.png",
             class: "tag",
             icon: "icon iconfont icon-tag",
             text: "think"
           },
-        ]
+        ],
       }
     }
   }
@@ -84,6 +89,7 @@
         width: 100%
         background: #fff
         padding: .5em 0em
+        margin-bottom: .5em
         display: flex
         transition: background $trans
         -moz-transition: background $trans

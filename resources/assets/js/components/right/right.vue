@@ -77,6 +77,8 @@
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
+    $trans: .5s linear
+
     .right
         width: 13em
         float: right
@@ -134,6 +136,9 @@
                     font-size: .875em
                     vertical-align: top
             ul
+                .hot-list:hover
+                  .hot-title::before
+                    width: 100%
                 .hot-list
                     width: 12.5em
                     height: 2.2em
@@ -161,6 +166,17 @@
                         text-overflow: ellipsis
                         white-space: nowrap
                         overflow: hidden
+                    .hot-title::before
+                        content: ""
+                        position: absolute
+                        top: 1.9em
+                        width: 0
+                        height: 1px
+                        background: #00030d
+                        transition: width $trans
+                        -moz-transition: width $trans
+                        -webkit-transition: width $trans
+                        -o-transition: width $trans
                 .hot-list:last-child .hot-num
                     text-align: left
 

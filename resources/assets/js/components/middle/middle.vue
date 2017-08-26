@@ -29,13 +29,4 @@
         position: relative
         overflow: hidden
 
-
-    @media (min-width: 1100px)
-        .content
-            width: 39.3em
-            margin: 0 0 0 8.5em
-    @media (min-width: 1920px)
-        .content
-            width: 50.7em
-            margin: 0 0 0 10em
 </style>

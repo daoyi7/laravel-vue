@@ -30,6 +30,8 @@
             background-color: rgba(183, 191, 197, 0.6)
             color: #00030d
             .header-nav
+                width: 75em
+                margin: 0 auto
                 height: $height
                 line-height: $height
                 .header-link
@@ -41,16 +43,5 @@
                 .motto
                     margin-left: 3.75em
                     font-size: 0.88em
-        @media (min-width: 1024px)
-            .header-nav
-                width: 60em
-                margin: 0 auto
-        @media (min-width: 1100px)
-            .header-nav
-                width: 60em
-                margin: 0 auto
-        @media (min-width: 1920px)
-            .header-nav
-                width: 75em
-                margin: 0 auto
+                    
 </style>

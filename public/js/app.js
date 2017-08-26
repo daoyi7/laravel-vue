@@ -19524,7 +19524,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.header[data-v-7de66b45] {\n  width: 100%;\n}\n.header .header-wrap[data-v-7de66b45] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;\n    width: 100%;\n    height: 4.375em;\n    line-height: 4.375em;\n    background-color: rgba(183, 191, 197, 0.6);\n    color: #00030d;\n}\n.header .header-wrap .header-nav[data-v-7de66b45] {\n      height: 4.375em;\n      line-height: 4.375em;\n}\n.header .header-wrap .header-nav .header-link[data-v-7de66b45] {\n        display: inline-block;\n        width: auto;\n        height: 100%;\n        color: #00030d;\n        font-size: 1.875em;\n}\n.header .header-wrap .header-nav .motto[data-v-7de66b45] {\n        margin-left: 3.75em;\n        font-size: 0.88em;\n}\n@media (min-width: 1024px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1100px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 60em;\n      margin: 0 auto;\n}\n}\n@media (min-width: 1920px) {\n.header .header-nav[data-v-7de66b45] {\n      width: 75em;\n      margin: 0 auto;\n}\n}\n", ""]);
+exports.push([module.i, "\n.header[data-v-7de66b45] {\n  width: 100%;\n}\n.header .header-wrap[data-v-7de66b45] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;\n    width: 100%;\n    height: 4.375em;\n    line-height: 4.375em;\n    background-color: rgba(183, 191, 197, 0.6);\n    color: #00030d;\n}\n.header .header-wrap .header-nav[data-v-7de66b45] {\n      width: 75em;\n      margin: 0 auto;\n      height: 4.375em;\n      line-height: 4.375em;\n}\n.header .header-wrap .header-nav .header-link[data-v-7de66b45] {\n        display: inline-block;\n        width: auto;\n        height: 100%;\n        color: #00030d;\n        font-size: 1.875em;\n}\n.header .header-wrap .header-nav .motto[data-v-7de66b45] {\n        margin-left: 3.75em;\n        font-size: 0.88em;\n}\n", ""]);
 
 // exports
 
@@ -19652,7 +19652,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n}\n@media (min-width: 1100px) {\n.main[data-v-fe76a376] {\n    width: 60em;\n}\n}\n@media (min-width: 1920px) {\n.main[data-v-fe76a376] {\n    width: 75em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.main[data-v-fe76a376] {\n  position: relative;\n  top: 5em;\n  display: block;\n  width: 75em;\n  margin: 0 auto;\n}\n", ""]);
 
 // exports
 
@@ -19769,7 +19769,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.nav .nav-wrap[data-v-6ad9f8a6] {\n  height: auto;\n  background-color: rgba(183, 191, 197, 0.6);\n  position: fixed;\n  top: 5em;\n}\n.nav .nav-wrap .nav-item[data-v-6ad9f8a6] {\n    line-height: 2.5em;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6] {\n      font-size: 0.94em;\n      color: #fff;\n      display: block;\n      padding: 0 0 0 .6875em;\n      -webkit-transition: color .15s linear, background-color .15s linear;\n      -moz-transition: color .15s linear, background-color .15s linear;\n      -ms-transition: color .15s linear, background-color .15s linear;\n      -o-transition: color .15s linear, background-color .15s linear;\n      transition: color .15s linear, background-color .15s linear;\n}\n.nav .nav-wrap .nav-item .nav-link .icon[data-v-6ad9f8a6] {\n        font-size: 1em;\n        vertical-align: middle;\n}\n.nav .nav-wrap .nav-item .nav-link .nav-text[data-v-6ad9f8a6] {\n        font-size: .875em;\n        margin-left: .375em;\n        vertical-align: middle;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6]:hover {\n      color: #00030d;\n      font-weight: 700;\n}\n@media (min-width: 1024px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 0;\n}\n}\n@media (min-width: 1100px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 6.875em;\n    left: 12.28em;\n}\n}\n@media (min-width: 1920px) {\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 8.75em;\n    left: 22.48em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.nav[data-v-6ad9f8a6] {\n  position: fixed;\n  top: 5em;\n  left: 22.48em;\n  width: 8.75em;\n}\n.nav .nav-wrap[data-v-6ad9f8a6] {\n    width: 100%;\n    height: auto;\n    background-color: rgba(183, 191, 197, 0.6);\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.nav .nav-wrap .nav-item[data-v-6ad9f8a6] {\n      line-height: 2.5em;\n}\n.nav .nav-wrap .nav-item .nav-link[data-v-6ad9f8a6] {\n        font-size: 0.94em;\n        color: #fff;\n        display: block;\n        padding: 0 0 0 .6875em;\n        -webkit-transition: color .15s linear, background-color .15s linear;\n        -moz-transition: color .15s linear, background-color .15s linear;\n        -ms-transition: color .15s linear, background-color .15s linear;\n        -o-transition: color .15s linear, background-color .15s linear;\n        transition: color .15s linear, background-color .15s linear;\n}\n.nav .nav-wrap .nav-item .nav-link .icon[data-v-6ad9f8a6] {\n          font-size: 1em;\n          vertical-align: middle;\n}\n.nav .nav-wrap .nav-item .nav-link .nav-text[data-v-6ad9f8a6] {\n          font-size: .875em;\n          margin-left: .375em;\n          vertical-align: middle;\n}\n.nav .nav-wrap .nav-item .nav-link .nav-link[data-v-6ad9f8a6]:hover {\n          color: #00030d;\n          font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -19930,7 +19930,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.content[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n@media (min-width: 1100px) {\n.content[data-v-20007245] {\n    width: 39.3em;\n    margin: 0 0 0 8.5em;\n}\n}\n@media (min-width: 1920px) {\n.content[data-v-20007245] {\n    width: 50.7em;\n    margin: 0 0 0 10em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.content[data-v-20007245] {\n  float: left;\n  width: 42.5em;\n  margin: 0 0 0 12.5em;\n  position: relative;\n  overflow: hidden;\n}\n", ""]);
 
 // exports
 
@@ -20047,7 +20047,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.slide-wrap[data-v-1a8c8849] {\n  margin-bottom: 1em;\n}\n.slide-wrap .slide-item[data-v-1a8c8849] {\n    width: 100%;\n    height: 18.75em;\n    position: relative;\n    overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n      position: absolute;\n      right: 1.0625em;\n      top: 0.75em;\n      z-index: 2;\n      padding: 0.4375em 0.625em;\n      display: block;\n      background: rgba(183, 191, 197, 0.25);\n      color: #fff;\n      font-size: 0.9375em;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n      width: 100%;\n      transform: rotate(0) scale(1);\n      transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n      transition: transform 1s;\n      transform: rotate(2deg) scale(1.1);\n}\n.slide-wrap .swiper-pagnation span.swiper-pagination-bullet.swiper-pagination-bullet-active[data-v-1a8c8849] {\n    background: #00030d;\n}\n@media (min-width: 1100px) {\n.slide-item[data-v-1a8c8849] {\n    height: 18.75em;\n}\n}\n@media (min-width: 1920px) {\n.slide-item[data-v-1a8c8849] {\n    height: 21.75em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.slide-wrap[data-v-1a8c8849] {\n  margin-bottom: 1em;\n}\n.slide-wrap .slide-item[data-v-1a8c8849] {\n    width: 100%;\n    height: 18.75em;\n    position: relative;\n    overflow: hidden;\n}\n.slide-wrap .slide-item .slide-link span.slide-title[data-v-1a8c8849] {\n      position: absolute;\n      right: 1.0625em;\n      top: 0.75em;\n      z-index: 2;\n      padding: 0.4375em 0.625em;\n      display: block;\n      background: rgba(183, 191, 197, 0.25);\n      color: #fff;\n      font-size: 0.9375em;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849] {\n      width: 100%;\n      transform: rotate(0) scale(1);\n      transition: transform 1s;\n}\n.slide-wrap .slide-item .slide-link img.slide-thumb[data-v-1a8c8849]:hover {\n      transition: transform 1s;\n      transform: rotate(2deg) scale(1.1);\n}\n.slide-wrap .swiper-pagnation span.swiper-pagination-bullet.swiper-pagination-bullet-active[data-v-1a8c8849] {\n    background: #00030d;\n}\n", ""]);
 
 // exports
 
@@ -20399,7 +20399,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 13em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    display: flex;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      flex: 1;\n      padding: .3875em;\n      width: 11em;\n      height: 1.5625em;\n      margin: 0;\n      font-size: .75em;\n      font-weight: 200;\n      text-indent: .25em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      flex: 0 0 2.3em;\n      width: 2.3em;\n      height: 2.1em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.48em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: .75em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.2em;\n      text-indent: .5em;\n      font-size: .875em;\n}\n.right .hot-reads .hot-all .lnr-menu[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: .875em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 12.5em;\n      height: 2.2em;\n      line-height: 2.2em;\n      margin-left: .5em;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        width: 1.3em;\n        height: 1.25em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.25em;\n        vertical-align: middle;\n        font-size: .875em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42] {\n        width: 12.65em;\n        color: #00030d;\n        font-size: .875em;\n        vertical-align: middle;\n        text-indent: .625em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
+exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 13em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    display: flex;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      flex: 1;\n      padding: .3875em;\n      width: 11em;\n      height: 1.5625em;\n      margin: 0;\n      font-size: .75em;\n      font-weight: 200;\n      text-indent: .25em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      flex: 0 0 2.3em;\n      width: 2.3em;\n      height: 2.1em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.48em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: .75em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.2em;\n      text-indent: .5em;\n      font-size: .875em;\n}\n.right .hot-reads .hot-all .lnr-menu[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: .875em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list:hover .hot-title[data-v-2f9dcc42]::before {\n      width: 100%;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 12.5em;\n      height: 2.2em;\n      line-height: 2.2em;\n      margin-left: .5em;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        width: 1.3em;\n        height: 1.25em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.25em;\n        vertical-align: middle;\n        font-size: .875em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42] {\n        width: 12.65em;\n        color: #00030d;\n        font-size: .875em;\n        vertical-align: middle;\n        text-indent: .625em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42]::before {\n        content: \"\";\n        position: absolute;\n        top: 1.9em;\n        width: 0;\n        height: 1px;\n        background: #00030d;\n        transition: width 0.5s linear;\n        -moz-transition: width 0.5s linear;\n        -webkit-transition: width 0.5s linear;\n        -o-transition: width 0.5s linear;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
 
 // exports
 
@@ -20623,18 +20623,13 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(63) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
+exports.push([module.i, "\n.bg-canvas .bg-img[data-v-4f67934c] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: .2;\n  background-image: url(" + __webpack_require__(82) + ");\n  background-size: cover;\n}\n.bg-canvas #bg[data-v-4f67934c] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 63 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/bground.jpg?1eff793636e64e34cb8dd920ed0e59dc";
-
-/***/ }),
+/* 63 */,
 /* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -22551,7 +22546,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.blog-wrap[data-v-3e31a7e5] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-3e31a7e5] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-3e31a7e5] {\n        transform: translateX(-0.625em);\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .5em 0em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-3e31a7e5] {\n        flex: 0 0 11.75em;\n        width: 11.75em;\n        height: 7.5em;\n        margin-right: 1em;\n        padding-left: .4em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-3e31a7e5] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-3e31a7e5] {\n            min-width: 100%;\n            max-width: calc(100% + 15px);\n            width: calc(100% + 15px);\n            min-height: 130px;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-3e31a7e5] {\n        flex: 1;\n        padding-right: 1em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5]:hover {\n          transform: translateX(0.4em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-3e31a7e5]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5] {\n          line-height: 1.56em;\n          padding-bottom: .625em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform .5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5] {\n            position: relative;\n            font-size: .875em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.2em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-3e31a7e5] {\n          height: 3.98em;\n          font-size: .8em;\n          line-height: 1.7em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-3e31a7e5] {\n          display: flex;\n          line-height: 1.56em;\n          padding-top: .625em;\n          font-size: .875em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-3e31a7e5] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-3e31a7e5] {\n              vertical-align: middle;\n              margin-right: .3em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-3e31a7e5] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-3e31a7e5] {\n            cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-3e31a7e5] {\n            font-weight: 700;\n}\n", ""]);
+exports.push([module.i, "\n.blog-wrap[data-v-3e31a7e5] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-3e31a7e5] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-3e31a7e5] {\n        transform: translateX(-0.625em);\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .5em 0em;\n      margin-bottom: .5em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-3e31a7e5] {\n        flex: 0 0 11.75em;\n        width: 11.75em;\n        height: 7.5em;\n        margin-right: 1em;\n        padding-left: .4em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-3e31a7e5] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-3e31a7e5] {\n            min-width: 100%;\n            max-width: calc(100% + 15px);\n            width: calc(100% + 15px);\n            min-height: 130px;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-3e31a7e5] {\n        flex: 1;\n        padding-right: 1em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5]:hover {\n          transform: translateX(0.4em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-3e31a7e5]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5] {\n          line-height: 1.56em;\n          padding-bottom: .625em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform .5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5] {\n            position: relative;\n            font-size: .875em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.2em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-3e31a7e5] {\n          height: 3.98em;\n          font-size: .8em;\n          line-height: 1.7em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-3e31a7e5] {\n          display: flex;\n          line-height: 1.56em;\n          padding-top: .625em;\n          font-size: .875em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-3e31a7e5] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-3e31a7e5] {\n              vertical-align: middle;\n              margin-right: .3em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-3e31a7e5] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-3e31a7e5] {\n            cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-3e31a7e5] {\n            font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -22594,22 +22589,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       blogs: [{
+        thumb: "../../../images/bg.png",
         class: "time",
         icon: "icon iconfont icon-clock2",
         text: "2小时前"
       }, {
+        thumb: "../../../images/bg1.png",
         class: "view",
         icon: "icon iconfont icon-view",
         text: "80"
       }, {
+        thumb: "../../../images/bg2.png",
         class: "comments",
         icon: "icon iconfont icon-iconcomments",
         text: "80"
       }, {
+        thumb: "../../../images/bg3.png",
         class: "like",
         icon: "icon iconfont icon-like1",
         text: "6"
       }, {
+        thumb: "../../../images/bg4.png",
         class: "tag",
         icon: "icon iconfont icon-tag",
         text: "think"
@@ -22627,39 +22627,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "blog-wrap"
   }, [_c('div', {
     staticClass: "blog-item"
-  }, [_c('div', {
-    staticClass: "blog-module"
-  }, [_c('div', {
-    staticClass: "thumb"
-  }, [_c('router-link', {
-    attrs: {
-      "to": "/"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": __webpack_require__(81)
-    }
-  })])], 1), _vm._v(" "), _c('div', {
-    staticClass: "main"
-  }, [_c('h4', {
-    staticClass: "title"
-  }, [_c('router-link', {
-    attrs: {
-      "to": "/"
-    }
-  }, [_vm._v("一篇测试的文章")])], 1), _vm._v(" "), _c('p', {
-    staticClass: "info"
-  }, [_vm._v("这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info")]), _vm._v(" "), _c('div', {
-    staticClass: "list"
   }, _vm._l((_vm.blogs), function(blog, index) {
-    return _c('p', {
+    return _c('div', {
       key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": blog.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_vm._v("一篇测试的文章")])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v("这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info")]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, [_c('p', {
       staticClass: "list-icon",
       class: blog.class
     }, [_c('i', {
       class: blog.icon
-    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.text))])])
-  }))])])])])
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.text))])])])])])
+  }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -22671,10 +22671,11 @@ if (false) {
 
 /***/ }),
 /* 80 */,
-/* 81 */
+/* 81 */,
+/* 82 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/bg.png?72b703af46257747452dd7971f82a655";
+module.exports = "/images/bground.jpg?1eff793636e64e34cb8dd920ed0e59dc";
 
 /***/ })
 /******/ ]);

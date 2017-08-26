@@ -74,11 +74,4 @@
             span.swiper-pagination-bullet.swiper-pagination-bullet-active
                 background: #00030d
 
-
-    @media (min-width: 1100px)
-        .slide-item
-            height: 18.75em
-    @media (min-width: 1920px)
-        .slide-item
-            height: 21.75em
 </style>
