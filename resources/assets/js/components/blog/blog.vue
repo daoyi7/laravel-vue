@@ -13,9 +13,9 @@
           </h4>
           <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
           <div class="list">
-            <p class="list-icon" :class="blog.class" v-for="">
-              <i :class="blog.icon"></i>
-              <span>{{ blog.text }}</span>
+            <p class="list-icon" :class="blog.class" v-for="(icon, index) in icons" key="index">
+              <i :class="icon.icn"></i>
+              <span>{{ icon.text }}</span>
             </p>
           </div>
         </div>
@@ -33,34 +33,50 @@
           {
             thumb: "../../../images/bg.png",
             class: "time",
-            icon: "icon iconfont icon-clock2",
-            text: "2小时前"
           },
           {
             thumb: "../../../images/bg1.png",
             class: "view",
             icon: "icon iconfont icon-view",
-            text: "80"
           },
           {
             thumb: "../../../images/bg2.png",
             class: "comments",
             icon: "icon iconfont icon-iconcomments",
-            text: "80"
           },
           {
             thumb: "../../../images/bg3.png",
             class: "like",
             icon: "icon iconfont icon-like1",
-            text: "6"
           },
           {
             thumb: "../../../images/bg4.png",
             class: "tag",
             icon: "icon iconfont icon-tag",
-            text: "think"
           },
         ],
+        icons: [
+          {
+            icn: "icon iconfont icon-clock2",
+            text: "2小时前"
+          },
+          {
+            icn: "icon iconfont icon-view",
+            text: "80"
+          },
+          {
+            icn: "icon iconfont icon-iconcomments",
+            text: "20"
+          },
+          {
+            icn: "icon iconfont icon-like1",
+            text: "6"
+          },
+          {
+            icn: "icon iconfont icon-tag",
+            text: "think"
+          },
+        ]
       }
     }
   }
