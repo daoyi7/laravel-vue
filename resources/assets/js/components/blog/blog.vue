@@ -9,7 +9,7 @@
         </div>
         <div class="main">
           <h4 class="title">
-            <router-link to="/">一篇测试的文章</router-link>
+            <router-link to="/detail">一篇测试的文章</router-link>
           </h4>
           <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
           <div class="list">
@@ -91,7 +91,7 @@
     width: 100%
     height: auto
     overflow: hidden
-    margin-top: 1.6em
+    margin-top: 1em
     .blog-item
       width: 100%
       .blog-module:hover

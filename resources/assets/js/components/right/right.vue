@@ -92,7 +92,7 @@ export default {
                 font-weight: 200
                 text-indent: .4em
                 border: none
-                background: #fff
+                background: rgba(255, 255, 255, 0.4)
                 color: rgb(162, 168, 173)
                 transition: background .5s linear
             .search-text:hover, .search-text:active, .search-text:focus
@@ -107,7 +107,7 @@ export default {
                 text-align: center
                 line-height: 2.2em
                 border: none
-                background: #b7bfc5
+                background: rgba(183, 191, 197, 0.4)
                 cursor: pointer
                 transition: background .15s linear
             .search-submit:focus, .search-submit:active, .search-submit:hover
@@ -117,7 +117,7 @@ export default {
             width: 100%
             height: auto
             overflow: hidden
-            background-color: #fff
+            background-color: rgba(255, 255, 255, 0.4)
             margin-top: 1em
             .hot-all
                 line-height: 2.5em

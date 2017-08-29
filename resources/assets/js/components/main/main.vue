@@ -1,12 +1,12 @@
 <template>
-    <main class="main">
-        <vnav></vnav>
-        <!-- <middle></middle> -->
-        <transition name="fade">
-            <router-view></router-view>
-        </transition>
-        <right></right>
-    </main>
+<main class="main">
+    <vnav></vnav>
+    <!-- <middle></middle> -->
+    <right></right>
+    <transition name="fade">
+        <router-view></router-view>
+    </transition>
+</main>
 </template>
 
 <script type="text/ecmascript-6">
@@ -21,7 +21,6 @@
             right,
         }
     }
-
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
@@ -32,5 +31,9 @@
         display: block
         width: 98.6em
         margin: 0 auto
+        .fade-enter-active, .fade-leave-active
+            transition: opacity .5s linear
+        .fade-enter, .fade-leave-to
+            opacity: 0
 
 </style>

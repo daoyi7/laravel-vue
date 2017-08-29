@@ -1,47 +1,50 @@
 <template>
-    <nav class="nav">
-        <div class="nav-wrap">
-            <div class="nav-item" v-for="(nav,index) in navs" key="index">
-                <router-link class="nav-link" to="/">
-                    <i :class="nav.icon"></i>
-                    <span class="nav-text">{{ nav.name }}</span>
-                </router-link>
-            </div>
+<nav class="nav">
+    <div class="nav-wrap">
+        <div class="nav-item" v-for="(nav,index) in navs" key="index">
+            <router-link class="nav-link" :to="nav.url">
+                <i :class="nav.icon"></i>
+                <span class="nav-text">{{ nav.name }}</span>
+            </router-link>
         </div>
-    </nav>
+    </div>
+</nav>
 </template>
 
 <script type="text/ecmascript-6">
-
-  export default {
+export default {
     data() {
-      return {
-        navs: [
-          {
-            icon: "icon iconfont icon-home",
-            name: "HOME"
-          },
-          {
-            icon: "icon iconfont icon-article",
-            name: "BLOG"
-          },
-          {
-            icon: "icon iconfont icon-project",
-            name: "PROJECT"
-          },
-          {
-            icon: "icon iconfont icon-bangzhu-copy",
-            name: "THINK"
-          },
-          {
-            icon: "icon iconfont icon-me",
-            name: "ABOUT"
-          },
-        ]
-      }
+        return {
+            navs: [
+                {
+                    url: "/",
+                    icon: "icon iconfont icon-home",
+                    name: "HOME"
+                },
+                {
+                    url: "/blog",
+                    icon: "icon iconfont icon-article",
+                    name: "BLOG"
+                },
+                {
+                    url: "/project",
+                    icon: "icon iconfont icon-project",
+                    name: "PROJECT"
+                },
+                {
+                    url: "/think",
+                    icon: "icon iconfont icon-bangzhu-copy",
+                    name: "THINK"
+                },
+                {
+                    url: "about",
+                    icon: "icon iconfont icon-me",
+                    name: "ABOUT"
+                },
+            ]
+        }
     }
-  }
-
+}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
