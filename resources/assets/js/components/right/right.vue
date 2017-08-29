@@ -13,7 +13,9 @@
         <ul>
             <li class="hot-list" v-for="(hot,index) in hots" key="index">
                 <span class="hot-num">{{ hot.num }}</span>
-                <router-link class="hot-title" to="/">{{ hot.title }}</router-link>
+                <div class="hot-title">
+                    <router-link to="/">{{ hot.title }}</router-link>
+                </div>
             </li>
         </ul>
     </div>
@@ -132,8 +134,9 @@ export default {
                     vertical-align: top
             ul
                 .hot-list:hover
-                  .hot-title::before
-                    width: 100%
+                  .hot-title
+                      a::before
+                          width: 100%
                 .hot-list
                     width: 17.2em
                     height: 2.5em
@@ -153,28 +156,29 @@ export default {
                         font-size: 1.4em
                         font-style: italic
                     .hot-title
-                        flex: 1
-                        // width: 20em
-                        color: #00030d
-                        font-size: 1.4em
-                        vertical-align: middle
-                        text-indent: .7em
-                        position: relative
-                        display: inline-block
-                        text-overflow: ellipsis
-                        white-space: nowrap
-                        overflow: hidden
-                    .hot-title::before
-                        content: ""
-                        position: absolute
-                        top: 1.7em
-                        width: 0
-                        height: 1px
-                        background: #d5d5d5
-                        transition: width $trans
-                        -moz-transition: width $trans
-                        -webkit-transition: width $trans
-                        -o-transition: width $trans
+                        a
+                            flex: 1
+                            // width: 20em
+                            color: #00030d
+                            font-size: 1.4em
+                            vertical-align: middle
+                            text-indent: .7em
+                            position: relative
+                            display: inline-block
+                            text-overflow: ellipsis
+                            white-space: nowrap
+                            overflow: hidden
+                        a::before
+                            content: ""
+                            position: absolute
+                            top: 1.7em
+                            width: 0
+                            height: 1px
+                            background: #b7bfc5
+                            transition: width $trans
+                            -moz-transition: width $trans
+                            -webkit-transition: width $trans
+                            -o-transition: width $trans
                 .hot-list:last-child .hot-num
                     text-align: left
 

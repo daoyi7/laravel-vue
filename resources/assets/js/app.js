@@ -7,7 +7,7 @@
 
 require('swiper/dist/css/swiper.css')
 
-window.Vue = require('vue');
+window.Vue = require('vue')
 
 import VueRouter from 'vue-router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -15,11 +15,16 @@ Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 
 import Home from './components/app'
+import Detail from './components/detail'
 
 const routes = [
     {
         path: '/',
         component: Home
+    },
+    {
+        path: '/detail',
+        component: Detail
     },
 ]
 

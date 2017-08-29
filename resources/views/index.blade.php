@@ -12,7 +12,8 @@
     </head>
     <body>
         <div id="app">
-            <app></app>
+            <!-- <app></app> -->
+            <router-view></router-view>
         </div>
 
         <script src="/js/app.js"></script>

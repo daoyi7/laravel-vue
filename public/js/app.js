@@ -5872,7 +5872,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-module.exports = __webpack_require__(73);
+module.exports = __webpack_require__(78);
 
 
 /***/ }),
@@ -5886,6 +5886,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_app__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_detail__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -5904,9 +5906,13 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default.a);
 
 
 
+
 var routes = [{
     path: '/',
     component: __WEBPACK_IMPORTED_MODULE_2__components_app___default.a
+}, {
+    path: '/detail',
+    component: __WEBPACK_IMPORTED_MODULE_3__components_detail___default.a
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -20614,7 +20620,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 18em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    display: flex;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      flex: 1;\n      padding: .1em;\n      width: 17.6em;\n      height: 2.2em;\n      margin: 0;\n      font-size: .8em;\n      font-weight: 200;\n      text-indent: .4em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      flex: 0 0 2.4em;\n      width: 2.4em;\n      height: 2.2em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.2em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: 1em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.5em;\n      text-indent: .8em;\n      font-size: 1.4em;\n}\n.right .hot-reads .hot-all .icon[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: 1.1em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list:hover .hot-title[data-v-2f9dcc42]::before {\n      width: 100%;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 17.2em;\n      height: 2.5em;\n      line-height: 2.5em;\n      margin-left: .8em;\n      display: flex;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        flex: 0 0 1.5em;\n        width: 1.5em;\n        height: 1.5em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.5em;\n        margin-top: 0.28em;\n        font-size: 1.4em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42] {\n        flex: 1;\n        color: #00030d;\n        font-size: 1.4em;\n        vertical-align: middle;\n        text-indent: .7em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list .hot-title[data-v-2f9dcc42]::before {\n        content: \"\";\n        position: absolute;\n        top: 1.7em;\n        width: 0;\n        height: 1px;\n        background: #d5d5d5;\n        transition: width 0.5s linear;\n        -moz-transition: width 0.5s linear;\n        -webkit-transition: width 0.5s linear;\n        -o-transition: width 0.5s linear;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
+exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 18em;\n  float: right;\n}\n.right .search-box[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    display: flex;\n}\n.right .search-box .search-text[data-v-2f9dcc42] {\n      flex: 1;\n      padding: .1em;\n      width: 17.6em;\n      height: 2.2em;\n      margin: 0;\n      font-size: .8em;\n      font-weight: 200;\n      text-indent: .4em;\n      border: none;\n      background: #fff;\n      color: #a2a8ad;\n      transition: background .5s linear;\n}\n.right .search-box .search-text[data-v-2f9dcc42]:hover, .right .search-box .search-text[data-v-2f9dcc42]:active, .right .search-box .search-text[data-v-2f9dcc42]:focus {\n      outline: none;\n      background: #d1d4d6;\n}\n.right .search-box .search-submit[data-v-2f9dcc42] {\n      flex: 0 0 2.4em;\n      width: 2.4em;\n      height: 2.2em;\n      padding: 0;\n      margin: 0;\n      text-align: center;\n      line-height: 2.2em;\n      border: none;\n      background: #b7bfc5;\n      cursor: pointer;\n      transition: background .15s linear;\n      vertical-align: top;\n}\n.right .search-box .search-submit[data-v-2f9dcc42]:focus, .right .search-box .search-submit[data-v-2f9dcc42]:active, .right .search-box .search-submit[data-v-2f9dcc42]:hover {\n      outline: none;\n      background: #a2a8ad;\n}\n.right .hot-reads[data-v-2f9dcc42] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    background-color: #fff;\n    margin-top: 1em;\n}\n.right .hot-reads .hot-all[data-v-2f9dcc42] {\n      line-height: 2.5em;\n      text-indent: .8em;\n      font-size: 1.4em;\n}\n.right .hot-reads .hot-all .icon[data-v-2f9dcc42] {\n        vertical-align: top;\n}\n.right .hot-reads .hot-all .hot-all-text[data-v-2f9dcc42] {\n        font-size: 1.1em;\n        vertical-align: top;\n}\n.right .hot-reads ul .hot-list:hover .hot-title a[data-v-2f9dcc42]::before {\n      width: 100%;\n}\n.right .hot-reads ul .hot-list[data-v-2f9dcc42] {\n      width: 17.2em;\n      height: 2.5em;\n      line-height: 2.5em;\n      margin-left: .8em;\n      display: flex;\n}\n.right .hot-reads ul .hot-list .hot-num[data-v-2f9dcc42] {\n        flex: 0 0 1.5em;\n        width: 1.5em;\n        height: 1.5em;\n        background: #b7bfc5;\n        color: #fff;\n        display: inline-block;\n        text-align: center;\n        line-height: 1.5em;\n        margin-top: 0.28em;\n        font-size: 1.4em;\n        font-style: italic;\n}\n.right .hot-reads ul .hot-list .hot-title a[data-v-2f9dcc42] {\n        flex: 1;\n        color: #00030d;\n        font-size: 1.4em;\n        vertical-align: middle;\n        text-indent: .7em;\n        position: relative;\n        display: inline-block;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        overflow: hidden;\n}\n.right .hot-reads ul .hot-list .hot-title a[data-v-2f9dcc42]::before {\n        content: \"\";\n        position: absolute;\n        top: 1.7em;\n        width: 0;\n        height: 1px;\n        background: #b7bfc5;\n        transition: width 0.5s linear;\n        -moz-transition: width 0.5s linear;\n        -webkit-transition: width 0.5s linear;\n        -o-transition: width 0.5s linear;\n}\n.right .hot-reads ul .hot-list:last-child .hot-num[data-v-2f9dcc42] {\n      text-align: left;\n}\n", ""]);
 
 // exports
 
@@ -20625,6 +20631,8 @@ exports.push([module.i, "\n.right[data-v-2f9dcc42] {\n  width: 18em;\n  float: r
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -20701,12 +20709,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "hot-list"
     }, [_c('span', {
       staticClass: "hot-num"
-    }, [_vm._v(_vm._s(hot.num))]), _vm._v(" "), _c('router-link', {
-      staticClass: "hot-title",
+    }, [_vm._v(_vm._s(hot.num))]), _vm._v(" "), _c('div', {
+      staticClass: "hot-title"
+    }, [_c('router-link', {
       attrs: {
         "to": "/"
       }
-    }, [_vm._v(_vm._s(hot.title))])], 1)
+    }, [_vm._v(_vm._s(hot.title))])], 1)])
   }))])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
@@ -22674,6 +22683,122 @@ if (false) {
 
 /***/ }),
 /* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(74)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(76),
+  /* template */
+  __webpack_require__(77),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-d791cf6a",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\detail.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] detail.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d791cf6a", Component.options)
+  } else {
+    hotAPI.reload("data-v-d791cf6a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(75);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("5a251c9d", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d791cf6a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./detail.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d791cf6a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./detail.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "detail"
+  }, [_vm._v("\n    I am Detail\n")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d791cf6a", module.exports)
+  }
+}
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
