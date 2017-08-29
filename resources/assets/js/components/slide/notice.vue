@@ -39,24 +39,28 @@
 
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
-  .notice
-    width: 100%
-    height: 2.5em
-    display: flex
-    background-color: #fff
-    line-height: 2.5em
-    .icon
-      flex: 0 0 2em
-      width: 2em
-      height: 100%
-      text-align: center
-      line-height: 2.74em
-      i.icon
-        font-size: 1em
-    .slide-wrap
-      flex: 1
-      .slide-item
-        .slide-link
-          color: #00030d
-          font-size: .9em
+
+    $height: 2.5em
+
+    .notice
+        width: 100%
+        height: $height
+        display: flex
+        background-color: #fff
+        line-height: $height
+        .icon
+            flex: 0 0 3.2em
+            width: 3.2em
+            height: 100%
+            text-align: center
+            line-height: $height
+            i.icon
+                font-size: 1.3em
+        .slide-wrap
+            flex: 1
+            .slide-item
+                .slide-link
+                    color: #00030d
+                    font-size: 1.4em
+
 </style>

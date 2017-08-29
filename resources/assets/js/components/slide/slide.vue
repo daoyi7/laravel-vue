@@ -49,20 +49,20 @@
         margin-bottom: 1em
         .slide-item
             width: 100%
-            height: 18.75em
+            height: 25em
             position: relative
             overflow: hidden
             .slide-link
                 span.slide-title
                     position: absolute
-                    right: 1.0625em
-                    top: 0.75em
+                    right: 1.7em
+                    top: 1.2em
                     z-index: 2
-                    padding: 0.4375em 0.625em
+                    padding: .4em .7em
                     display: block
                     background: rgba(183, 191, 197, 0.25)
                     color: #fff
-                    font-size: 0.9375em
+                    font-size: 1.4em
                 img.slide-thumb
                     width: 100%
                     transform: rotate(0) scale(1)

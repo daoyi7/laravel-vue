@@ -91,7 +91,7 @@
     width: 100%
     height: auto
     overflow: hidden
-    margin-top: 1em
+    margin-top: 1.6em
     .blog-item
       width: 100%
       .blog-module:hover
@@ -99,24 +99,24 @@
         .thumb
           a
             img
-              transform: translateX(-.625em)
+              transform: translateX(-1em)
       .blog-module
         position: relative
         width: 100%
         background: #fff
-        padding: .5em 0em
-        margin-bottom: .5em
+        padding: .4em 0em
+        margin-bottom: 1em
         display: flex
         transition: background $trans
         -moz-transition: background $trans
         -webkit-transition: background $trans
         -o-transition: background $trans
         .thumb
-          flex: 0 0 11.75em
-          width: 11.75em
-          height: 7.5em
+          flex: 0 0 17em
+          width: 17em
+          height: 12em
           margin-right: 1em
-          padding-left: .4em
+          padding-left: 0.5em
           a
             width: 100%
             height: 100%
@@ -124,9 +124,9 @@
             overflow: hidden
             img
               min-width: 100%
-              max-width: calc(100% + 15px)
-              width: calc(100% + 15px)
-              min-height: 130px
+              max-width: calc(100% + 1.5em)
+              width: calc(100% + 1.5em)
+              min-height: 13em
               height: auto
               transform: translateX(0)
               transition: transform $trans
@@ -135,28 +135,28 @@
               -o-transition: transform $trans
         .main
           flex: 1
-          padding-right: 1em
+          padding-right: 1.6em
           .title:hover
-            transform: translateX(.4em)
+            transform: translateX(.7em)
             a::before
               width: 100%
           .title
-            line-height: 1.56em
-            padding-bottom: .625em
+            line-height: 2em
+            padding-bottom: .5em
             font-weight: 700
             transform: translateX(0)
             transition: transform $trans
-            -moz-transition: transform .5s linear
+            -moz-transition: transform $trans
             -webkit-transition: transform $trans
             -o-transition: transform $trans
             a
               position: relative
-              font-size: .875em
+              font-size: 1.4em
               color: #00030d
             a::before
               content: ""
               position: absolute
-              top: 1.2em
+              top: 1.3em
               width: 0
               height: 1px
               background: #00030d
@@ -165,20 +165,20 @@
               -webkit-transition: width $trans
               -o-transition: width $trans
           .info
-            height: 3.98em
-            font-size: .8em
-            line-height: 1.7em
+            height: 5.5em
+            font-size: 1.3em
+            line-height: 1.8em
             color: #1d1d1d
           .list
             display: flex
-            line-height: 1.56em
-            padding-top: .625em
-            font-size: .875em
+            line-height: 2em
+            padding-top: .5em
+            font-size: 1.4em
             .list-icon
               flex: 1
               i
                 vertical-align: middle
-                margin-right: .3em
+                margin-right: .2em
               span
                 vertical-align: middle
             .list-icon.like

@@ -1,5 +1,5 @@
 /* v2.0 | 20110126
-  http://meyerweb.com/eric/tools/css/reset/ 
+  http://meyerweb.com/eric/tools/css/reset/
   License: none (public domain)
 */
 html, body, div, span, applet, object, iframe,
@@ -11,8 +11,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -24,7 +24,7 @@ time, mark, audio, video {
 	font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -33,7 +33,7 @@ body {
 	font-size:1em;
 }
 html {
-	font-size: 100%;
+	font-size: 62.5%;
 }
 ol, ul {
 	list-style: none;

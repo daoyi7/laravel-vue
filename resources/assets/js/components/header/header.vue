@@ -15,7 +15,7 @@
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
-    $height: 4.375em
+    $height: 5em
 
     .header
         width: 100%
@@ -30,7 +30,7 @@
             background-color: rgba(183, 191, 197, 0.6)
             color: #00030d
             .header-nav
-                width: 75em
+                width: 98.6em
                 margin: 0 auto
                 height: $height
                 line-height: $height
@@ -39,9 +39,9 @@
                     width: auto
                     height: 100%
                     color: #00030d
-                    font-size: 1.875em
+                    font-size: 3em
                 .motto
-                    margin-left: 3.75em
-                    font-size: 0.88em
-                    
+                    margin-left: 4.3em
+                    font-size: 1.4em
+
 </style>

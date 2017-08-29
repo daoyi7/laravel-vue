@@ -25,9 +25,9 @@
 
     .main
         position: relative
-        top: 5em
+        top: 7em
         display: block
-        width: 75em
+        width: 98.6em
         margin: 0 auto
 
 </style>

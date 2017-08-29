@@ -248,6 +248,12 @@
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     .bg-canvas
+        position: fixed
+        width: 100%
+        height: 100%
+        top: 0
+        left: 0
+        z-index: -1
         .bg-img
             position: absolute
             width: 100%
@@ -255,11 +261,4 @@
             opacity: .2
             background-image: url("../../../images/bground.jpg")
             background-size: cover
-        #bg
-            position: fixed
-            width: 100%
-            height: 100%
-            top: 0
-            left: 0
-            z-index: -1
 </style>

@@ -48,9 +48,9 @@
 
     .nav
       position: fixed
-      top: 5em
-      left: 22.48em
-      width: 8.75em
+      top: 7em
+      left: 30em
+      width: 11.7em
       .nav-wrap
         width: 100%
         height: auto
@@ -59,23 +59,25 @@
         top: 0
         left: 0
         .nav-item
-          line-height: 2.5em
+          line-height: 3.3em
+          .nav-link:hover
+            color: #00030d
           .nav-link
-            font-size: 0.94em
+            font-size: 1em
             color: #fff
             display: block
-            padding: 0 0 0 .6875em
-            -webkit-transition: color .15s linear, background-color .15s linear
-            -moz-transition: color .15s linear, background-color .15s linear
-            -ms-transition: color .15s linear, background-color .15s linear
-            -o-transition: color .15s linear, background-color .15s linear
-            transition: color .15s linear, background-color .15s linear
+            padding: 0 0 0 1.8em
+            -webkit-transition: color .15s linear
+            -moz-transition: color .15s linear
+            -ms-transition: color .15s linear
+            -o-transition: color .15s linear
+            transition: color .15s linear
             .icon
-              font-size: 1em
-              vertical-align: middle
+              font-size: 1.4em
+              vertical-align: top
             .nav-text
-              font-size: .875em
-              margin-left: .375em
+              font-size: 1.4em
+              margin-left: 0.7em
               vertical-align: middle
             .nav-link:hover
               color: #00030d

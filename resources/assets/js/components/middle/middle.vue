@@ -24,8 +24,8 @@
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
     .content
         float: left
-        width: 42.5em
-        margin: 0 0 0 12.5em
+        width: 66.4em
+        margin: 0 0 0 13em
         position: relative
         overflow: hidden
 
