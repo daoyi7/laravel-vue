@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="./css/reset.css">
         <link rel="stylesheet" href="./css/icon.css">
 
-        <title>Home|kawhi.me</title>
+        <title>Home | kawhi.me</title>
     </head>
     <body>
         <div id="app">

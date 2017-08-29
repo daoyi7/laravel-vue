@@ -13,9 +13,7 @@
         <ul>
             <li class="hot-list" v-for="(hot,index) in hots" key="index">
                 <span class="hot-num">{{ hot.num }}</span>
-                <div class="hot-title">
-                    <router-link to="/">{{ hot.title }}</router-link>
-                </div>
+                <router-link class="hot-title" to="/">{{ hot.title }}</router-link>
             </li>
         </ul>
     </div>
@@ -97,7 +95,6 @@ export default {
                 background: #fff
                 color: rgb(162, 168, 173)
                 transition: background .5s linear
-                // vertical-align: top
             .search-text:hover, .search-text:active, .search-text:focus
                 outline: none
                 background: #d1d4d6
@@ -113,7 +110,6 @@ export default {
                 background: #b7bfc5
                 cursor: pointer
                 transition: background .15s linear
-                vertical-align: top
             .search-submit:focus, .search-submit:active, .search-submit:hover
                 outline: none
                 background: #a2a8ad
@@ -133,14 +129,14 @@ export default {
                     font-size: 1.1em
                     vertical-align: top
             ul
+                padding-bottom: .5em
                 .hot-list:hover
-                  .hot-title
-                      a::before
-                          width: 100%
+                    .hot-num
+                        background: #00030d
                 .hot-list
                     width: 17.2em
-                    height: 2.5em
-                    line-height: 2.5em
+                    height: 3em
+                    line-height: 3em
                     margin-left: .8em
                     display: flex
                     .hot-num
@@ -152,33 +148,24 @@ export default {
                         display: inline-block
                         text-align: center
                         line-height: 1.5em
-                        margin-top: 0.28em
+                        margin-top: 0.5em
                         font-size: 1.4em
                         font-style: italic
+                        transition: background $trans
+                        -moz-transition: background $trans
+                        -webkit-transition: background $trans
+                        -o-transition: background $trans
                     .hot-title
-                        a
-                            flex: 1
-                            // width: 20em
-                            color: #00030d
-                            font-size: 1.4em
-                            vertical-align: middle
-                            text-indent: .7em
-                            position: relative
-                            display: inline-block
-                            text-overflow: ellipsis
-                            white-space: nowrap
-                            overflow: hidden
-                        a::before
-                            content: ""
-                            position: absolute
-                            top: 1.7em
-                            width: 0
-                            height: 1px
-                            background: #b7bfc5
-                            transition: width $trans
-                            -moz-transition: width $trans
-                            -webkit-transition: width $trans
-                            -o-transition: width $trans
+                        flex: 1
+                        color: #00030d
+                        font-size: 1.4em
+                        vertical-align: middle
+                        text-indent: .7em
+                        position: relative
+                        display: inline-block
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                        overflow: hidden
                 .hot-list:last-child .hot-num
                     text-align: left
 

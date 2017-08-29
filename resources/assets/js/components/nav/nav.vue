@@ -49,7 +49,6 @@
     .nav
       position: fixed
       top: 7em
-      left: 30em
       width: 11.7em
       .nav-wrap
         width: 100%
