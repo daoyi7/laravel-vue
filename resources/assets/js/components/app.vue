@@ -6,7 +6,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import vheader from './header/header'
     import vmain from './main/main'
     import particle from './back/background'
@@ -16,7 +16,7 @@
             vheader,
             vmain,
             particle,
-        }
+        },
     }
 </script>
 

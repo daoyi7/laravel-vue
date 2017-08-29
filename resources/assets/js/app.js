@@ -16,11 +16,12 @@ Vue.use(VueAwesomeSwiper)
 
 import Home from './components/app'
 import Detail from './components/detail'
+import Middle from './components/middle/middle'
 
 const routes = [
     {
         path: '/',
-        component: Home
+        component: Middle
     },
     {
         path: '/detail',

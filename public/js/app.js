@@ -5888,6 +5888,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_app__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_detail__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_middle_middle__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_middle_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_middle_middle__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -5907,9 +5909,10 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default.a);
 
 
 
+
 var routes = [{
     path: '/',
-    component: __WEBPACK_IMPORTED_MODULE_2__components_app___default.a
+    component: __WEBPACK_IMPORTED_MODULE_4__components_middle_middle___default.a
 }, {
     path: '/detail',
     component: __WEBPACK_IMPORTED_MODULE_3__components_detail___default.a
@@ -19683,6 +19686,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -20752,7 +20758,11 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('main', {
     staticClass: "main"
-  }, [_c('vnav'), _vm._v(" "), _c('middle'), _vm._v(" "), _c('right')], 1)
+  }, [_c('vnav'), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('router-view')], 1), _vm._v(" "), _c('right')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -22784,7 +22794,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "detail"
-  }, [_vm._v("\n    I am Detail\n")])
+  }, [_vm._v("\n    details\n")])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
