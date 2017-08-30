@@ -114,7 +114,7 @@
         .thumb
           flex: 0 0 17em
           width: 17em
-          height: 12em
+          height: 11em
           margin-right: 1em
           padding-left: 0.5em
           a

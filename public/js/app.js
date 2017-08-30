@@ -20398,7 +20398,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.blog-wrap[data-v-3e31a7e5] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-3e31a7e5] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-3e31a7e5] {\n        transform: translateX(-1em);\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .4em 0em;\n      margin-bottom: 1em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-3e31a7e5] {\n        flex: 0 0 17em;\n        width: 17em;\n        height: 12em;\n        margin-right: 1em;\n        padding-left: 0.5em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-3e31a7e5] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-3e31a7e5] {\n            min-width: 100%;\n            max-width: calc(100% + 1.5em);\n            width: calc(100% + 1.5em);\n            min-height: 13em;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-3e31a7e5] {\n        flex: 1;\n        padding-right: 1.6em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5]:hover {\n          transform: translateX(0.7em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-3e31a7e5]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5] {\n          line-height: 2em;\n          padding-bottom: .5em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5] {\n            position: relative;\n            font-size: 1.4em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.3em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-3e31a7e5] {\n          height: 5.5em;\n          font-size: 1.3em;\n          line-height: 1.8em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-3e31a7e5] {\n          display: flex;\n          line-height: 2em;\n          padding-top: .5em;\n          font-size: 1.4em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-3e31a7e5] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-3e31a7e5] {\n              vertical-align: middle;\n              margin-right: .2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-3e31a7e5] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-3e31a7e5] {\n            cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-3e31a7e5] {\n            font-weight: 700;\n}\n", ""]);
+exports.push([module.i, "\n.blog-wrap[data-v-3e31a7e5] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-3e31a7e5] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-3e31a7e5] {\n        transform: translateX(-1em);\n}\n.blog-wrap .blog-item .blog-module[data-v-3e31a7e5] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .4em 0em;\n      margin-bottom: 1em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-3e31a7e5] {\n        flex: 0 0 17em;\n        width: 17em;\n        height: 11em;\n        margin-right: 1em;\n        padding-left: 0.5em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-3e31a7e5] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-3e31a7e5] {\n            min-width: 100%;\n            max-width: calc(100% + 1.5em);\n            width: calc(100% + 1.5em);\n            min-height: 13em;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-3e31a7e5] {\n        flex: 1;\n        padding-right: 1.6em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5]:hover {\n          transform: translateX(0.7em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-3e31a7e5]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-3e31a7e5] {\n          line-height: 2em;\n          padding-bottom: .5em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5] {\n            position: relative;\n            font-size: 1.4em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-3e31a7e5]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.3em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-3e31a7e5] {\n          height: 5.5em;\n          font-size: 1.3em;\n          line-height: 1.8em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-3e31a7e5] {\n          display: flex;\n          line-height: 2em;\n          padding-top: .5em;\n          font-size: 1.4em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-3e31a7e5] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-3e31a7e5] {\n              vertical-align: middle;\n              margin-right: .2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-3e31a7e5] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-3e31a7e5] {\n            cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-3e31a7e5] {\n            font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -22786,6 +22786,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__content_content___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__content_content__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentMore_contentMore__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contentMore_contentMore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__contentMore_contentMore__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comment_comment__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comment_comment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__comment_comment__);
 //
 //
 //
@@ -22793,13 +22795,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         vcontent: __WEBPACK_IMPORTED_MODULE_0__content_content___default.a,
-        more: __WEBPACK_IMPORTED_MODULE_1__contentMore_contentMore___default.a
+        more: __WEBPACK_IMPORTED_MODULE_1__contentMore_contentMore___default.a,
+        comment: __WEBPACK_IMPORTED_MODULE_2__comment_comment___default.a
     }
 });
 
@@ -22810,7 +22816,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "detail"
-  }, [_c('vcontent'), _vm._v(" "), _c('more')], 1)
+  }, [_c('vcontent'), _vm._v(" "), _c('more'), _vm._v(" "), _c('comment')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -22912,6 +22918,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -22951,7 +22959,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.content[data-v-54c34659] {\n  padding: .4em .5em;\n}\n.content .title[data-v-54c34659] {\n    width: 100%;\n    line-height: 2.5em;\n    font-size: 1.8em;\n    font-weight: 700;\n    text-align: center;\n    padding-bottom: 1.6em;\n}\n.content .main[data-v-54c34659] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n.content .main p[data-v-54c34659] {\n      line-height: 2.8em;\n}\n", ""]);
+exports.push([module.i, "\n.content[data-v-54c34659] {\n  padding: .4em 1.5em;\n  background: rgba(236, 238, 239, 0.7);\n  margin-bottom: 1.5em;\n}\n.content .title[data-v-54c34659] {\n    width: 100%;\n    line-height: 2.5em;\n    font-size: 1.8em;\n    font-weight: 700;\n    text-align: center;\n    padding-bottom: 1.6em;\n}\n.content .main[data-v-54c34659] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n    font-size: 1.4em;\n}\n.content .main p[data-v-54c34659] {\n      line-height: 2em;\n}\n", ""]);
 
 // exports
 
@@ -22969,7 +22977,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "title"
   }, [_c('span', [_vm._v("This Is A Test Blog")])]), _vm._v(" "), _c('div', {
     staticClass: "main"
-  }, [_vm._v("\n        Enter/Leave & List Transitions\n\n        Overview\n\n        Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to:\n        automatically apply classes for CSS transitions and animations\n        integrate 3rd-party CSS animation libraries, such as Animate.css\n        use JavaScript to directly manipulate the DOM during transition hooks\n        integrate 3rd-party JavaScript animation libraries, such as Velocity.js\n        On this page, we’ll only cover entering, leaving, and list transitions, but you can see the next section for managing state transitions.\n        Transitioning Single Elements/Components\n\n        Vue provides a transition wrapper component, allowing you to add entering/leaving transitions for any element or component in the following contexts:\n        Conditional rendering (using v-if)\n        Conditional display (using v-show)\n        Dynamic components\n        Component root nodes\n        This is what a very simple example looks like in action:\n    ")])])
+  }, [_c('p', [_vm._v("\n            Enter/Leave & List Transitions\n\n            Overview\n\n            Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to:\n            automatically apply classes for CSS transitions and animations\n            integrate 3rd-party CSS animation libraries, such as Animate.css\n            use JavaScript to directly manipulate the DOM during transition hooks\n            integrate 3rd-party JavaScript animation libraries, such as Velocity.js\n            On this page, we’ll only cover entering, leaving, and list transitions, but you can see the next section for managing state transitions.\n            Transitioning Single Elements/Components\n\n            Vue provides a transition wrapper component, allowing you to add entering/leaving transitions for any element or component in the following contexts:\n            Conditional rendering (using v-if)\n            Conditional display (using v-show)\n            Dynamic components\n            Component root nodes\n            This is what a very simple example looks like in action:\n        ")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -23058,7 +23066,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "\n.more[data-v-5f7cccc3] {\n  padding: .4em 1.5em;\n  margin-bottom: 1.5em;\n  background: rgba(236, 238, 239, 0.7);\n  overflow: hidden;\n  font-size: 1.4em;\n  line-height: 2.2em;\n}\n.more span[data-v-5f7cccc3] {\n    margin-right: .8em;\n}\n.more span[data-v-5f7cccc3]:last-child {\n    margin-right: 0;\n}\n", ""]);
 
 // exports
 
@@ -23104,6 +23112,292 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-5f7cccc3", module.exports)
   }
 }
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(99)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(101),
+  /* template */
+  __webpack_require__(102),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-6dafae25",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "D:\\project\\laravel-vue\\resources\\assets\\js\\components\\comment\\comment.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] comment.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6dafae25", Component.options)
+  } else {
+    hotAPI.reload("data-v-6dafae25", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(100);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("2d96f7ce", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6dafae25\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./comment.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6dafae25\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./comment.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.comment[data-v-6dafae25] {\n  padding: .4em 1.5em;\n  background: rgba(236, 238, 239, 0.7);\n  overflow: hidden;\n}\n.comment .head[data-v-6dafae25] {\n    padding: 1em 0;\n    border-bottom: .1em dashed #c9cfd4;\n}\n.comment .head .type span[data-v-6dafae25] {\n      padding: .6em 1em;\n      background-color: #d6d6d7;\n      display: inline-block;\n      margin-right: .8em;\n      font-size: 1.2em;\n}\n.comment .head .type span i[data-v-6dafae25] {\n        vertical-align: middle;\n        margin-right: .2em;\n}\n.comment .head .type span[data-v-6dafae25]:last-child {\n      margin-right: 0;\n}\n.comment .wrap[data-v-6dafae25] {\n    width: 100%;\n    height: auto;\n    margin: .8em 0;\n    border-bottom: .1em dashed #c9cfd4;\n}\n.comment .wrap .item[data-v-6dafae25] {\n      margin: 1.5em 0;\n      margin-left: 3em;\n      padding: .8em 0;\n      height: auto;\n      min-height: 10em;\n      position: relative;\n      background-color: rgba(208, 209, 210, 0.84);\n}\n.comment .wrap .item .avatar[data-v-6dafae25] {\n        position: absolute;\n        top: 50%;\n        left: -3.3em;\n        margin-top: -3.3em;\n        padding: 0;\n        width: 6em;\n        height: 6em;\n        display: inline-block;\n        border: 0.3em solid rgba(183, 191, 197, 0.69);\n        overflow: hidden;\n        box-shadow: 0 0 1em rgba(183, 191, 197, 0.69);\n}\n.comment .wrap .item .avatar img[data-v-6dafae25] {\n          width: 100%;\n          height: 100%;\n}\n.comment .wrap .item .info[data-v-6dafae25] {\n        height: auto;\n        margin-left: 3em;\n        line-height: 1.8em;\n        font-size: 1.4em;\n        color: #00030d;\n}\n.comment .wrap .item .info span[data-v-6dafae25] {\n          margin-right: .8em;\n}\n.comment .wrap .item .info span idea[data-v-6dafae25] {\n            font-size: 1.4em;\n            margin-right: .2em;\n}\n.comment .wrap .item .info span.name[data-v-6dafae25] {\n          color: #00030d;\n          font-weight: 700;\n}\n.comment .wrap .item .info span.floor[data-v-6dafae25] {\n          float: right;\n}\n.comment .wrap .item .main[data-v-6dafae25] {\n        height: auto;\n        margin-left: 3em;\n        line-height: 2.5em;\n        font-size: 1.4em;\n        color: #00030d;\n}\n.comment .wrap .item .main .text .text-apply span[data-v-6dafae25] {\n          font-size: .9em;\n}\n.comment .wrap .item .main .text .text-apply .apply-floor[data-v-6dafae25], .comment .wrap .item .main .text .text-apply .apply-name[data-v-6dafae25] {\n          font-weight: 700;\n          margin-left: .3em;\n          cursor: pointer;\n          color: #00030d;\n          text-decoration: none;\n}\n.comment .wrap .item .main .text .text-apply a[data-v-6dafae25]:hover {\n          text-decoration: underline;\n}\n.comment .wrap .item .main .text .apply[data-v-6dafae25] {\n          padding-right: .8em;\n          width: 100%;\n          height: auto;\n          font-size: .9em;\n          line-height: 2em;\n          word-wrap: break-word;\n          word-break: break-all;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "comment"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "wrap"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "main"
+  }, [_c('div', {
+    staticClass: "text"
+  }, [_c('div', {
+    staticClass: "text-apply"
+  }, [_c('span', [_vm._v("回复")]), _vm._v(" "), _c('router-link', {
+    staticClass: "apply-floor",
+    attrs: {
+      "to": ""
+    }
+  }, [_vm._v("#1")]), _vm._v(" "), _c('router-link', {
+    staticClass: "apply-name",
+    attrs: {
+      "to": ""
+    }
+  }, [_vm._v("@kawhi:")])], 1), _vm._v(" "), _vm._m(3)])]), _vm._v(" "), _c('div', {
+    staticClass: "more"
+  })])]), _vm._v(" "), _vm._m(4)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "head"
+  }, [_c('div', {
+    staticClass: "type"
+  }, [_c('span', {
+    staticClass: "comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-comment"
+  }), _vm._v("\n                0条评论\n            ")]), _vm._v(" "), _c('span', {
+    staticClass: "likes"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-like1"
+  }), _vm._v("\n                6人点赞\n            ")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "avatar"
+  }, [_c('img', {
+    attrs: {
+      "src": __webpack_require__(103)
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "info"
+  }, [_c('span', {
+    staticClass: "name"
+  }, [_vm._v("kawhi")]), _vm._v(" "), _c('span', {
+    staticClass: "system"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-win"
+  }), _vm._v("\n                    windows\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "explore"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-chrome"
+  }), _vm._v("\n                    chrome\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "address"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-address"
+  }), _vm._v("\n                    china\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "floor"
+  }, [_vm._v("#1")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "apply"
+  }, [_c('div', [_vm._v("\n                            你这篇文章写得真是太好了\n                        ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "submit"
+  }, [_c('div', {
+    staticClass: "submit-form"
+  }, [_c('div', {
+    staticClass: "apply-info"
+  }, [_c('input', {
+    staticClass: "applyname",
+    attrs: {
+      "placeholder": "name *",
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('input', {
+    staticClass: "applyemail",
+    attrs: {
+      "placeholder": "email *",
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('input', {
+    staticClass: "applyskill",
+    attrs: {
+      "placeholder": "java C++ javascript php",
+      "type": "text"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "apply-to"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "apply-content"
+  })])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6dafae25", module.exports)
+  }
+}
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/avatar.jpg?9a8ed1d181fd9a44288431d64d7a7b1c";
 
 /***/ })
 /******/ ]);

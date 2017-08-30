@@ -12,4 +12,15 @@
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
+    .more
+        padding: .4em 1.5em
+        margin-bottom: 1.5em
+        background: rgba(236, 238, 239, 0.7)
+        overflow: hidden
+        font-size: 1.4em
+        line-height: 2.2em
+        span
+            margin-right: .8em
+        span:last-child
+            margin-right: 0
 </style>
