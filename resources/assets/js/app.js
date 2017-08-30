@@ -14,18 +14,38 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 
-import Home from './components/app'
+// import Home from './components/app'
 import Detail from './components/detail'
-import Middle from './components/middle/middle'
+import Home from './components/middle'
+import Blog from './components/blog'
+import Project from './components/project'
+import Think from './components/think'
+import About from './components/about'
 
 const routes = [
     {
         path: '/',
-        component: Middle
+        component: Home
     },
     {
         path: '/detail',
         component: Detail
+    },
+    {
+        path: '/blog',
+        component: Blog
+    },
+    {
+        path: '/project',
+        component: Project
+    },
+    {
+        path: '/think',
+        component: Think
+    },
+    {
+        path: '/about',
+        component: About
     },
 ]
 

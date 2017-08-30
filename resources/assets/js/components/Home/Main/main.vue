@@ -10,14 +10,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import vnav from '../nav/nav'
-    import middle from '../middle/middle'
-    import right from '../right/right'
+    import vnav from './nav'
+    import right from './right'
 
     export default {
         components: {
             vnav,
-            middle,
             right,
         }
     }
@@ -32,7 +30,7 @@
         width: 98.6em
         margin: 0 auto
         .fade-enter-active, .fade-leave-active
-            transition: opacity .5s linear
+            transition: opacity .5s
         .fade-enter, .fade-leave-to
             opacity: 0
 

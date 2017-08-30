@@ -53,6 +53,7 @@
             </div>
         </div>
         <div class="submit">
+            <img class="default-avatar" src="../../../images/avatar.jpg">
             <div class="submit-form">
                 <div class="apply-info">
                     <input class="applyname" placeholder="name *" type="text">
@@ -60,7 +61,9 @@
                     <input class="applyskill" placeholder="java C++ javascript php" type="text">
                 </div>
                 <div class="apply-to">
+                    <div class="apply">
 
+                    </div>
                 </div>
                 <div class="apply-content">
 
@@ -166,5 +169,46 @@
                             line-height: 2em
                             word-wrap: break-word
                             word-break: break-all
+        .submit
+            position: relative
+            margin: 1.5em 0
+            padding: .8em 0
+            height: auto
+            min-height: 10em
+            .default-avatar
+                position: absolute
+                top: .4em
+                left: 0
+                padding: 0
+                overflow: hidden
+                width: 5em
+                height: 5em
+                display: inline-block
+                border: 3px solid rgba(183, 191, 197, 0.69)
+                box-shadow: 0 0 1em rgba(183, 191, 197, 0.69)
+            .submit-form
+                height: auto
+                margin-left: 6em
+                font-size: 1.2em
+                color: #00030d
+                .apply-info
+                    width: 100%
+                    display: flex
+                    justify-content: space-between
+                    input
+                        flex: 0 0 5em
+                        height: 1.4em
+                        padding: .3em
+                        background: #d6d6d7
+                        border: none
+                        // margin: 0 0 0 1em
+                        vertical-align: top
+                        font-weight: 200
+                        text-indent: .4em
+                        font-size: 1.2em
+                        color: #00030d
+                    input:active,input:hover,input:focus
+                        outline: none
+
 
 </style>

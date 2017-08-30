@@ -1,21 +1,21 @@
 <template>
     <div class="kawhi">
-        <particle></particle>
+        <background></background>
         <vheader></vheader>
         <vmain></vmain>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import vheader from './header/header'
-    import vmain from './main/main'
-    import particle from './back/background'
+    import vheader from './Home/Main/header'
+    import vmain from './Home//Main/main'
+    import background from './background'
 
     export default {
         components: {
             vheader,
             vmain,
-            particle,
+            background,
         },
     }
 </script>

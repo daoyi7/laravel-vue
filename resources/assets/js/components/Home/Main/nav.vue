@@ -68,7 +68,7 @@ export default {
             font-size: 1em
             color: #fff
             display: block
-            padding: 0 0 0 1.8em
+            padding: 0 0 0 1.3em
             -webkit-transition: color .15s linear
             -moz-transition: color .15s linear
             -ms-transition: color .15s linear
@@ -76,10 +76,10 @@ export default {
             transition: color .15s linear
             .icon
               font-size: 1.4em
-              vertical-align: top
+              vertical-align: middle
             .nav-text
               font-size: 1.4em
-              margin-left: 0.7em
+              margin-left: 0.4em
               vertical-align: middle
             .nav-link:hover
               color: #00030d

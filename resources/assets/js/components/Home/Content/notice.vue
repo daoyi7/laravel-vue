@@ -40,7 +40,7 @@
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
-    $height: 2.5em
+    $height: 3em
 
     .notice
         width: 100%
@@ -53,7 +53,8 @@
             width: 3.2em
             height: 100%
             text-align: center
-            line-height: $height
+            vertical-align: middle
+            // line-height: $height
             i.icon
                 font-size: 1.3em
         .slide-wrap

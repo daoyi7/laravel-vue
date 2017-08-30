@@ -7,10 +7,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import vcontent from "./content/content"
-    import more from "./contentMore/contentMore"
-    import comment from "./comment/comment"
-    
+    import vcontent from "./Detail/content"
+    import more from "./Detail/contentMore"
+    import comment from "./Detail/comment"
+
     export default {
         components: {
             vcontent,

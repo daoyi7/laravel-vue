@@ -13,7 +13,7 @@
         <ul>
             <li class="hot-list" v-for="(hot,index) in hots" key="index">
                 <span class="hot-num">{{ hot.num }}</span>
-                <router-link class="hot-title" to="/">{{ hot.title }}</router-link>
+                <router-link class="hot-title" to="/detail">{{ hot.title }}</router-link>
             </li>
         </ul>
     </div>
@@ -87,8 +87,9 @@ export default {
                 padding: .1em
                 width: 17.6em
                 height: 2.2em
+                line-height: 2.2em
                 margin: 0
-                font-size: .8em
+                font-size: 1.2em
                 font-weight: 200
                 text-indent: .4em
                 border: none
@@ -158,7 +159,7 @@ export default {
                     .hot-title
                         flex: 1
                         color: #00030d
-                        font-size: 1.4em
+                        font-size: 1.3em
                         vertical-align: middle
                         text-indent: .7em
                         position: relative

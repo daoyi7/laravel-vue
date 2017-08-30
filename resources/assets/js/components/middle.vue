@@ -8,9 +8,9 @@
 
 <script type="text/ecmascript-6">
 
-    import vslide from '../slide/slide'
-    import notice from '../slide/notice'
-    import blog from '../blog/blog'
+    import vslide from './Home/Content/slide'
+    import notice from './Home/Content/notice'
+    import blog from './Home/Content/blog'
     export default {
         components: {
             vslide,

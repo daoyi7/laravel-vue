@@ -165,20 +165,21 @@
               -webkit-transition: width $trans
               -o-transition: width $trans
           .info
-            height: 5.5em
+            height: 5em
             font-size: 1.3em
             line-height: 1.8em
             color: #1d1d1d
           .list
             display: flex
-            line-height: 2em
-            padding-top: .5em
-            font-size: 1.4em
+            line-height: 1.4em
+            padding-top: .2em
+            font-size: 1.2em
             .list-icon
               flex: 1
               i
                 vertical-align: middle
                 margin-right: .2em
+                font-size: 1.2em
               span
                 vertical-align: middle
             .list-icon.like
