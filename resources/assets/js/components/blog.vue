@@ -1,89 +1,140 @@
 <template>
-<div class="blog">
-    <div class="head">
-        <p class="head-icon"><i class="icon iconfont icon-read"></i></p>
-        <p class="slogan">The true test of a man's character is what he does when no one is watching</p>
-    </div>
-    <div class="blog-module" v-for="(blog, index) in blogs" key="index">
-        <div class="thumb">
-            <router-link to="/">
-                <img :src="blog.thumb">
-            </router-link>
+    <div class="blog">
+        <div class="head">
+            <p class="head-icon"><i class="icon iconfont icon-read"></i></p>
+            <p class="slogan" v-text="slogan"></p>
         </div>
-        <div class="main">
-            <h4 class="title">
-          <router-link to="/detail">一篇测试的文章</router-link>
-        </h4>
-            <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
-            <div class="list">
-                <p class="list-icon" :class="blog.class" v-for="(icon, index) in icons" key="index">
-                    <i :class="icon.icn"></i>
-                    <span>{{ icon.text }}</span>
-                </p>
+        <div class="blog-module" v-for="(blog, index) in blogs" key="index">
+            <div class="thumb">
+                <router-link to="/">
+                    <img :src="blog.thumb">
+                </router-link>
+            </div>
+            <div class="main">
+                <h4 class="title">
+              <router-link to="/detail">一篇测试的文章</router-link>
+            </h4>
+                <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
+                <div class="list">
+                    <p class="list-icon" :class="blog.class" v-for="(icon, index) in icons" key="index">
+                        <i :class="icon.icn"></i>
+                        <span>{{ icon.text }}</span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-    data() {
-        return {
-            blogs: [{
-                    thumb: "../../../images/bg.png",
-                    class: "time",
-                },
-                {
-                    thumb: "../../../images/bg1.png",
-                    class: "view",
-                    icon: "icon iconfont icon-view",
-                },
-                {
-                    thumb: "../../../images/bg2.png",
-                    class: "comments",
-                    icon: "icon iconfont icon-iconcomments",
-                },
-                {
-                    thumb: "../../../images/bg3.png",
-                    class: "like",
-                    icon: "icon iconfont icon-like1",
-                },
-                {
-                    thumb: "../../../images/bg4.png",
-                    class: "tag",
-                    icon: "icon iconfont icon-tag",
-                },
-            ],
-            icons: [{
-                    icn: "icon iconfont icon-clock2",
-                    text: "2小时前"
-                },
-                {
-                    icn: "icon iconfont icon-view",
-                    text: "80"
-                },
-                {
-                    icn: "icon iconfont icon-iconcomments",
-                    text: "20"
-                },
-                {
-                    icn: "icon iconfont icon-like1",
-                    text: "6"
-                },
-                {
-                    icn: "icon iconfont icon-tag",
-                    text: "think"
-                },
-            ]
+    export default {
+        data() {
+            return {
+                slogan: "",
+                blogs: [{
+                        thumb: "../../../images/bg.png",
+                        class: "time",
+                    },
+                    {
+                        thumb: "../../../images/bg1.png",
+                        class: "view",
+                        icon: "icon iconfont icon-view",
+                    },
+                    {
+                        thumb: "../../../images/bg2.png",
+                        class: "comments",
+                        icon: "icon iconfont icon-iconcomments",
+                    },
+                    {
+                        thumb: "../../../images/bg3.png",
+                        class: "like",
+                        icon: "icon iconfont icon-like1",
+                    },
+                    {
+                        thumb: "../../../images/bg4.png",
+                        class: "tag",
+                        icon: "icon iconfont icon-tag",
+                    },
+                ],
+                icons: [{
+                        icn: "icon iconfont icon-clock2",
+                        text: "2小时前"
+                    },
+                    {
+                        icn: "icon iconfont icon-view",
+                        text: "80"
+                    },
+                    {
+                        icn: "icon iconfont icon-iconcomments",
+                        text: "20"
+                    },
+                    {
+                        icn: "icon iconfont icon-like1",
+                        text: "6"
+                    },
+                    {
+                        icn: "icon iconfont icon-tag",
+                        text: "think"
+                    },
+                ]
+            }
+        },
+        mounted(){
+            this.init()
+        },
+        methods:{
+            init(){
+                let str = "The true test of a man's character is what he does when no one is watching.",
+                    _this = this,
+                    timer = null;
+
+                function typing() {
+                    let i = - 1,
+
+                    timer = setInterval(() => {
+                        i = i + 1
+
+                        _this.slogan = _this.slogan + str[i]
+
+                        if (i > str.length - 2) {
+                            clearInterval(timer)
+                            deleting()
+                        }
+                    },500)
+                }
+
+                function deleting() {
+                    let wstr = str.split(""),
+                        j = wstr.length;
+
+                    timer = setInterval(function() {
+                        j = j - 1
+                        wstr = wstr.slice(0, j)
+                        _this.slogan = wstr.join("")
+
+                        if (j <= 0) {
+                            clearInterval(timer)
+                            typing()
+                        }
+                    }, 500)
+
+                }
+
+                typing()
+            }
         }
     }
-}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
 
     $trans: .5s linear
+
+    @keyframes blink
+        from
+            opacity: 1
+        to
+            opacity: 0
 
     .blog
         float: left
@@ -116,6 +167,16 @@ export default {
                 text-align: center
                 font-size: 1.7em
                 padding: .4em 0
+            .slogan::after
+                content: ""
+                background-color: #00030d
+                width: .06em
+                height: 1em
+                vertical-align: -.2em
+                margin-left: .2em
+                display: inline-block
+                animation: blink .4s infinite alternate
+                -webkit-animation: blink .4s infinite alternate
         .blog-module:hover
           background: rgba(255, 255, 255, 0.7)
           .thumb
