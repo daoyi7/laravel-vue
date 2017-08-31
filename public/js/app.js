@@ -20824,7 +20824,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.blog[data-v-1ae1a0c8] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n", ""]);
+exports.push([module.i, "\n.blog[data-v-1ae1a0c8] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n.blog .head[data-v-1ae1a0c8] {\n    position: relative;\n    width: 100%;\n    height: 25em;\n    background: rgba(236, 238, 239, 0.7);\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    margin-bottom: 1em;\n}\n.blog .head .head-icon[data-v-1ae1a0c8] {\n      width: 100%;\n      height: auto;\n      display: flex;\n      justify-content: center;\n}\n.blog .head .head-icon i[data-v-1ae1a0c8] {\n        font-size: 15em;\n}\n.blog .head .slogan[data-v-1ae1a0c8] {\n      position: absolute;\n      left: 0;\n      bottom: .4em;\n      width: 100%;\n      height: auto;\n      text-align: center;\n      font-size: 1.7em;\n      padding: .4em 0;\n}\n.blog .blog-module[data-v-1ae1a0c8]:hover {\n    background: rgba(255, 255, 255, 0.7);\n}\n.blog .blog-module:hover .thumb a img[data-v-1ae1a0c8] {\n      transform: translateX(-1em);\n}\n.blog .blog-module[data-v-1ae1a0c8] {\n    position: relative;\n    width: 100%;\n    background: rgba(236, 238, 239, 0.7);\n    padding: .4em 0em;\n    margin-bottom: 1em;\n    display: flex;\n    transition: background 0.5s linear;\n    -moz-transition: background 0.5s linear;\n    -webkit-transition: background 0.5s linear;\n    -o-transition: background 0.5s linear;\n}\n.blog .blog-module .thumb[data-v-1ae1a0c8] {\n      flex: 0 0 17em;\n      width: 17em;\n      height: 11em;\n      margin-right: 1em;\n      padding-left: 0.5em;\n}\n.blog .blog-module .thumb a[data-v-1ae1a0c8] {\n        width: 100%;\n        height: 100%;\n        display: block;\n        overflow: hidden;\n}\n.blog .blog-module .thumb a img[data-v-1ae1a0c8] {\n          min-width: 100%;\n          max-width: calc(100% + 1.5em);\n          width: calc(100% + 1.5em);\n          min-height: 13em;\n          height: auto;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog .blog-module .main[data-v-1ae1a0c8] {\n      flex: 1;\n      padding-right: 1.6em;\n}\n.blog .blog-module .main .title[data-v-1ae1a0c8]:hover {\n        transform: translateX(0.7em);\n}\n.blog .blog-module .main .title:hover a[data-v-1ae1a0c8]::before {\n          width: 100%;\n}\n.blog .blog-module .main .title[data-v-1ae1a0c8] {\n        line-height: 2em;\n        padding-bottom: .5em;\n        font-weight: 700;\n        transform: translateX(0);\n        transition: transform 0.5s linear;\n        -moz-transition: transform 0.5s linear;\n        -webkit-transition: transform 0.5s linear;\n        -o-transition: transform 0.5s linear;\n}\n.blog .blog-module .main .title a[data-v-1ae1a0c8] {\n          position: relative;\n          font-size: 1.4em;\n          color: #00030d;\n}\n.blog .blog-module .main .title a[data-v-1ae1a0c8]::before {\n          content: \"\";\n          position: absolute;\n          top: 1.3em;\n          width: 0;\n          height: 1px;\n          background: #00030d;\n          transition: width 0.5s linear;\n          -moz-transition: width 0.5s linear;\n          -webkit-transition: width 0.5s linear;\n          -o-transition: width 0.5s linear;\n}\n.blog .blog-module .main .info[data-v-1ae1a0c8] {\n        height: 5em;\n        font-size: 1.3em;\n        line-height: 1.8em;\n        color: #1d1d1d;\n}\n.blog .blog-module .main .list[data-v-1ae1a0c8] {\n        display: flex;\n        line-height: 1.4em;\n        padding-top: .2em;\n        font-size: 1.2em;\n}\n.blog .blog-module .main .list .list-icon[data-v-1ae1a0c8] {\n          flex: 1;\n}\n.blog .blog-module .main .list .list-icon i[data-v-1ae1a0c8] {\n            vertical-align: middle;\n            margin-right: .2em;\n            font-size: 1.2em;\n}\n.blog .blog-module .main .list .list-icon span[data-v-1ae1a0c8] {\n            vertical-align: middle;\n}\n.blog .blog-module .main .list .list-icon.like[data-v-1ae1a0c8] {\n          cursor: pointer;\n}\n.blog .blog-module .main .list .list-icon.tag i[data-v-1ae1a0c8] {\n          font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -20841,8 +20841,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            blogs: [{
+                thumb: "../../../images/bg.png",
+                class: "time"
+            }, {
+                thumb: "../../../images/bg1.png",
+                class: "view",
+                icon: "icon iconfont icon-view"
+            }, {
+                thumb: "../../../images/bg2.png",
+                class: "comments",
+                icon: "icon iconfont icon-iconcomments"
+            }, {
+                thumb: "../../../images/bg3.png",
+                class: "like",
+                icon: "icon iconfont icon-like1"
+            }, {
+                thumb: "../../../images/bg4.png",
+                class: "tag",
+                icon: "icon iconfont icon-tag"
+            }],
+            icons: [{
+                icn: "icon iconfont icon-clock2",
+                text: "2小时前"
+            }, {
+                icn: "icon iconfont icon-view",
+                text: "80"
+            }, {
+                icn: "icon iconfont icon-iconcomments",
+                text: "20"
+            }, {
+                icn: "icon iconfont icon-like1",
+                text: "6"
+            }, {
+                icn: "icon iconfont icon-tag",
+                text: "think"
+            }]
+        };
+    }
+});
 
 /***/ }),
 /* 66 */
@@ -20851,8 +20914,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "blog"
-  }, [_vm._v("\n    i am blog\n")])
-},staticRenderFns: []}
+  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.blogs), function(blog, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": blog.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v("一篇测试的文章")])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v("这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info")]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, _vm._l((_vm.icons), function(icon, index) {
+      return _c('p', {
+        key: "index",
+        staticClass: "list-icon",
+        class: blog.class
+      }, [_c('i', {
+        class: icon.icn
+      }), _vm._v(" "), _c('span', [_vm._v(_vm._s(icon.text))])])
+    }))])])
+  })], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "head"
+  }, [_c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })]), _vm._v(" "), _c('p', {
+    staticClass: "slogan"
+  }, [_vm._v("The true test of a man's character is what he does when no one is watching")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -23711,7 +23819,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.think[data-v-032d6730] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n", ""]);
+exports.push([module.i, "\n.think[data-v-032d6730] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n.think .head[data-v-032d6730] {\n    position: relative;\n    width: 100%;\n    height: 25em;\n    background: rgba(236, 238, 239, 0.7);\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    margin-bottom: 1em;\n}\n.think .head .head-icon[data-v-032d6730] {\n      width: 100%;\n      height: auto;\n      display: flex;\n      justify-content: center;\n}\n.think .head .head-icon i[data-v-032d6730] {\n        font-size: 15em;\n}\n.think .head .slogan[data-v-032d6730] {\n      position: absolute;\n      left: 0;\n      bottom: .4em;\n      width: 100%;\n      height: auto;\n      text-align: center;\n      font-size: 1.7em;\n      padding: .4em 0;\n}\n.think .blog-module[data-v-032d6730]:hover {\n    background: rgba(255, 255, 255, 0.7);\n}\n.think .blog-module:hover .thumb a img[data-v-032d6730] {\n      transform: translateX(-1em);\n}\n.think .blog-module[data-v-032d6730] {\n    position: relative;\n    width: 100%;\n    background: rgba(236, 238, 239, 0.7);\n    padding: .4em 0em;\n    margin-bottom: 1em;\n    display: flex;\n    transition: background 0.5s linear;\n    -moz-transition: background 0.5s linear;\n    -webkit-transition: background 0.5s linear;\n    -o-transition: background 0.5s linear;\n}\n.think .blog-module .thumb[data-v-032d6730] {\n      flex: 0 0 17em;\n      width: 17em;\n      height: 11em;\n      margin-right: 1em;\n      padding-left: 0.5em;\n}\n.think .blog-module .thumb a[data-v-032d6730] {\n        width: 100%;\n        height: 100%;\n        display: block;\n        overflow: hidden;\n}\n.think .blog-module .thumb a img[data-v-032d6730] {\n          min-width: 100%;\n          max-width: calc(100% + 1.5em);\n          width: calc(100% + 1.5em);\n          min-height: 13em;\n          height: auto;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.think .blog-module .main[data-v-032d6730] {\n      flex: 1;\n      padding-right: 1.6em;\n}\n.think .blog-module .main .title[data-v-032d6730]:hover {\n        transform: translateX(0.7em);\n}\n.think .blog-module .main .title:hover a[data-v-032d6730]::before {\n          width: 100%;\n}\n.think .blog-module .main .title[data-v-032d6730] {\n        line-height: 2em;\n        padding-bottom: .5em;\n        font-weight: 700;\n        transform: translateX(0);\n        transition: transform 0.5s linear;\n        -moz-transition: transform 0.5s linear;\n        -webkit-transition: transform 0.5s linear;\n        -o-transition: transform 0.5s linear;\n}\n.think .blog-module .main .title a[data-v-032d6730] {\n          position: relative;\n          font-size: 1.4em;\n          color: #00030d;\n}\n.think .blog-module .main .title a[data-v-032d6730]::before {\n          content: \"\";\n          position: absolute;\n          top: 1.3em;\n          width: 0;\n          height: 1px;\n          background: #00030d;\n          transition: width 0.5s linear;\n          -moz-transition: width 0.5s linear;\n          -webkit-transition: width 0.5s linear;\n          -o-transition: width 0.5s linear;\n}\n.think .blog-module .main .info[data-v-032d6730] {\n        height: 5em;\n        font-size: 1.3em;\n        line-height: 1.8em;\n        color: #1d1d1d;\n}\n.think .blog-module .main .list[data-v-032d6730] {\n        display: flex;\n        line-height: 1.4em;\n        padding-top: .2em;\n        font-size: 1.2em;\n}\n.think .blog-module .main .list .list-icon[data-v-032d6730] {\n          flex: 1;\n}\n.think .blog-module .main .list .list-icon i[data-v-032d6730] {\n            vertical-align: middle;\n            margin-right: .2em;\n            font-size: 1.2em;\n}\n.think .blog-module .main .list .list-icon span[data-v-032d6730] {\n            vertical-align: middle;\n}\n.think .blog-module .main .list .list-icon.like[data-v-032d6730] {\n          cursor: pointer;\n}\n.think .blog-module .main .list .list-icon.tag i[data-v-032d6730] {\n          font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -23728,8 +23836,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            thinks: [{
+                thumb: "../../../images/bg.png",
+                class: "time"
+            }, {
+                thumb: "../../../images/bg1.png",
+                class: "view",
+                icon: "icon iconfont icon-view"
+            }, {
+                thumb: "../../../images/bg2.png",
+                class: "comments",
+                icon: "icon iconfont icon-iconcomments"
+            }, {
+                thumb: "../../../images/bg3.png",
+                class: "like",
+                icon: "icon iconfont icon-like1"
+            }, {
+                thumb: "../../../images/bg4.png",
+                class: "tag",
+                icon: "icon iconfont icon-tag"
+            }],
+            icons: [{
+                icn: "icon iconfont icon-clock2",
+                text: "2小时前"
+            }, {
+                icn: "icon iconfont icon-view",
+                text: "80"
+            }, {
+                icn: "icon iconfont icon-iconcomments",
+                text: "20"
+            }, {
+                icn: "icon iconfont icon-like1",
+                text: "6"
+            }, {
+                icn: "icon iconfont icon-tag",
+                text: "think"
+            }]
+        };
+    }
+});
 
 /***/ }),
 /* 112 */
@@ -23738,8 +23909,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "think"
-  }, [_vm._v("\n    i am think\n")])
-},staticRenderFns: []}
+  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.thinks), function(think, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": think.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v("一篇测试的文章")])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v("这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info")]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, _vm._l((_vm.icons), function(icon, index) {
+      return _c('p', {
+        key: "index",
+        staticClass: "list-icon",
+        class: think.class
+      }, [_c('i', {
+        class: icon.icn
+      }), _vm._v(" "), _c('span', [_vm._v(_vm._s(icon.text))])])
+    }))])])
+  })], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "head"
+  }, [_c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })]), _vm._v(" "), _c('p', {
+    staticClass: "slogan"
+  }, [_vm._v("Trust The Process")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
