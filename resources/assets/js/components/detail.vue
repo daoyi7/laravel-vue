@@ -12,10 +12,23 @@
     import comment from "./Detail/comment"
 
     export default {
+        data() {
+            return {
+                page: 'Detail',
+            }
+        },
         components: {
             vcontent,
             more,
             comment,
+        },
+        mounted() {
+            init()
+        },
+        methods: {
+            init() {
+                document.title = this.page + ' | kawhi.me'
+            }
         }
     }
 </script>

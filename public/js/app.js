@@ -5846,10 +5846,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_detail__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_detail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_detail__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_middle__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_middle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_middle__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_middle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_middle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_detail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_detail__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_blog__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_blog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_blog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_project__ = __webpack_require__(67);
@@ -5884,10 +5884,10 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default.a);
 
 var routes = [{
     path: '/',
-    component: __WEBPACK_IMPORTED_MODULE_3__components_middle___default.a
+    component: __WEBPACK_IMPORTED_MODULE_2__components_middle___default.a
 }, {
     path: '/detail',
-    component: __WEBPACK_IMPORTED_MODULE_2__components_detail___default.a
+    component: __WEBPACK_IMPORTED_MODULE_3__components_detail___default.a
 }, {
     path: '/blog',
     component: __WEBPACK_IMPORTED_MODULE_4__components_blog___default.a
@@ -19475,10 +19475,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            page: 'Detail'
+        };
+    },
+
     components: {
         vcontent: __WEBPACK_IMPORTED_MODULE_0__Detail_content___default.a,
         more: __WEBPACK_IMPORTED_MODULE_1__Detail_contentMore___default.a,
         comment: __WEBPACK_IMPORTED_MODULE_2__Detail_comment___default.a
+    },
+    mounted: function mounted() {
+        init();
+    },
+
+    methods: {
+        init: function init() {
+            document.title = this.page + ' | kawhi.me';
+        }
     }
 });
 
@@ -20170,11 +20185,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            page: 'Home'
+        };
+    },
+
     components: {
         vslide: __WEBPACK_IMPORTED_MODULE_0__Home_Content_slide___default.a,
         notice: __WEBPACK_IMPORTED_MODULE_1__Home_Content_notice___default.a,
         blog: __WEBPACK_IMPORTED_MODULE_2__Home_Content_blog___default.a
+    },
+    mounted: function mounted() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            document.title = this.page + ' | kawhi.me';
+        }
     }
 });
 
@@ -20867,6 +20898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            page: 'Blog',
             slogan: "",
             blogs: [{
                 thumb: "../../../images/bg.png",
@@ -20912,6 +20944,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         init: function init() {
+            document.title = this.page + ' | kawhi.me';
             var str = "The true test of a man's character is what he does when no one is watching.",
                 _this = this,
                 timer = null;
@@ -20925,9 +20958,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     if (i > str.length - 2) {
                         clearInterval(timer);
-                        deleting();
+                        setTimeout(deleting, 2000);
                     }
-                }, 500);
+                }, 100);
             }
 
             function deleting() {
@@ -20941,9 +20974,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     if (j <= 0) {
                         clearInterval(timer);
-                        typing();
+                        setTimeout(typing, 200);
                     }
-                }, 500);
+                }, 100);
             }
 
             typing();
@@ -21254,6 +21287,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            page: 'Think',
             slogan: "",
             thinks: [{
                 thumb: "../../../images/bg.png",
@@ -21299,6 +21333,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         init: function init() {
+            document.title = this.page + ' | kawhi.me';
             var str = "Trust the process.",
                 _this = this,
                 timer = null;
@@ -21312,9 +21347,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     if (i > str.length - 2) {
                         clearInterval(timer);
-                        deleting();
+                        setTimeout(deleting, 2000);
                     }
-                }, 500);
+                }, 100);
             }
 
             function deleting() {
@@ -21328,9 +21363,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     if (j <= 0) {
                         clearInterval(timer);
-                        typing();
+                        setTimeout(typing, 200);
                     }
-                }, 500);
+                }, 100);
             }
 
             typing();
@@ -21482,7 +21517,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.about[data-v-5037b4fa] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n", ""]);
+exports.push([module.i, "\n@keyframes blink-data-v-5037b4fa {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n}\n}\n.about[data-v-5037b4fa] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n}\n.about .head[data-v-5037b4fa] {\n    position: relative;\n    width: 100%;\n    height: 25em;\n    background: rgba(236, 238, 239, 0.7);\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    margin-bottom: 1em;\n}\n.about .head .head-icon[data-v-5037b4fa] {\n      width: 100%;\n      height: auto;\n      display: flex;\n      justify-content: center;\n}\n.about .head .head-icon i[data-v-5037b4fa] {\n        font-size: 15em;\n}\n.about .head .slogan[data-v-5037b4fa] {\n      position: absolute;\n      left: 0;\n      bottom: .4em;\n      width: 100%;\n      height: auto;\n      text-align: center;\n      font-size: 1.7em;\n      padding: .4em 0;\n}\n.about .head .slogan[data-v-5037b4fa]::after {\n      content: \"\";\n      background-color: #00030d;\n      width: .06em;\n      height: 1em;\n      vertical-align: -.2em;\n      margin-left: .2em;\n      display: inline-block;\n      animation: blink-data-v-5037b4fa .4s infinite alternate;\n      -webkit-animation: blink-data-v-5037b4fa .4s infinite alternate;\n}\n.about .resume[data-v-5037b4fa] {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n.about .resume .name h2[data-v-5037b4fa] {\n      line-height: 2em;\n      text-align: center;\n      font-size: 2.5em;\n}\n.about .resume .name h2 span[data-v-5037b4fa] {\n        font-size: .7em;\n}\n.about .resume .contact[data-v-5037b4fa] {\n      padding-left: 4em;\n      margin-bottom: 1.5em;\n}\n.about .resume .contact .item[data-v-5037b4fa] {\n        line-height: 2.5em;\n        font-size: 1.6em;\n}\n.about .resume .contact .item p[data-v-5037b4fa]::before {\n          content: '';\n          display: inline-block;\n          vertical-align: -.38em;\n          width: .2em;\n          height: 1.4em;\n          background-color: #b7bfc5;\n          margin-right: 1em;\n}\n.about .resume .experience[data-v-5037b4fa] {\n      padding-left: 4em;\n      margin-bottom: 1.5em;\n}\n.about .resume .skill[data-v-5037b4fa] {\n      padding-left: 4em;\n      margin-bottom: 1.5em;\n}\n", ""]);
 
 // exports
 
@@ -21499,8 +21534,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            page: 'About',
+            slogan: '',
+            name: '张深涵',
+            job: '前端',
+            pay: '12k',
+            ename: 'kawhi',
+            phone: '+86 13871959550',
+            email: 'Codingwell@gmail.com',
+            wechat: 'daoyi7'
+        };
+    },
+    mounted: function mounted() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            document.title = this.page + ' | kawhi.me';
+            var str = "Talk is cheap,show me the code.",
+                _this = this,
+                timer = null;
+
+            function typing() {
+                var i = -1,
+                    timer = setInterval(function () {
+                    i = i + 1;
+
+                    _this.slogan = _this.slogan + str[i];
+
+                    if (i > str.length - 2) {
+                        clearInterval(timer);
+                        setTimeout(deleting, 2000);
+                    }
+                }, 100);
+            }
+
+            function deleting() {
+                var wstr = str.split(""),
+                    j = wstr.length;
+
+                timer = setInterval(function () {
+                    j = j - 1;
+                    wstr = wstr.slice(0, j);
+                    _this.slogan = wstr.join("");
+
+                    if (j <= 0) {
+                        clearInterval(timer);
+                        setTimeout(typing, 200);
+                    }
+                }, 100);
+            }
+
+            typing();
+        }
+    }
+});
 
 /***/ }),
 /* 81 */
@@ -21509,8 +21629,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "about"
-  }, [_vm._v("\n    i am about\n")])
-},staticRenderFns: []}
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_vm._m(0), _vm._v(" "), _c('p', {
+    staticClass: "slogan",
+    domProps: {
+      "textContent": _vm._s(_vm.slogan)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "resume"
+  }, [_c('div', {
+    staticClass: "name"
+  }, [_c('h2', [_vm._v("\n                " + _vm._s(_vm.name) + "\n                "), _c('span', [_vm._v(_vm._s(_vm.ename))])])]), _vm._v(" "), _c('div', {
+    staticClass: "contact"
+  }, [_c('div', {
+    staticClass: "item  tel"
+  }, [_c('p', [_vm._v(_vm._s(_vm.phone))])]), _vm._v(" "), _c('div', {
+    staticClass: "item email"
+  }, [_c('p', [_vm._v(_vm._s(_vm.email))])]), _vm._v(" "), _c('div', {
+    staticClass: "item wechat"
+  }, [_c('p', [_vm._v(_vm._s(_vm.wechat))])]), _vm._v(" "), _c('div', {
+    staticClass: "item  job"
+  }, [_c('p', [_vm._v(_vm._s(_vm.job))])]), _vm._v(" "), _c('div', {
+    staticClass: "item  pay"
+  }, [_c('p', [_vm._v(_vm._s(_vm.pay))])])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "experience"
+  }, [_c('h2', [_vm._v("工作经历")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "skill"
+  }, [_c('h2', [_vm._v("技能")]), _vm._v(" "), _c('ul', [_c('li')])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

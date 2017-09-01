@@ -30,6 +30,7 @@
     export default {
         data() {
             return {
+                page: 'Blog',
                 slogan: "",
                 blogs: [{
                         thumb: "../../../images/bg.png",
@@ -84,6 +85,7 @@
         },
         methods:{
             init(){
+                document.title = this.page + ' | kawhi.me'
                 let str = "The true test of a man's character is what he does when no one is watching.",
                     _this = this,
                     timer = null;
@@ -98,9 +100,9 @@
 
                         if (i > str.length - 2) {
                             clearInterval(timer)
-                            deleting()
+                            setTimeout(deleting,2000)
                         }
-                    },500)
+                    },100)
                 }
 
                 function deleting() {
@@ -114,9 +116,9 @@
 
                         if (j <= 0) {
                             clearInterval(timer)
-                            typing()
+                            setTimeout(typing,200)
                         }
-                    }, 500)
+                    }, 100)
 
                 }
 

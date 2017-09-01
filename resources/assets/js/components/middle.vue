@@ -11,12 +11,26 @@
     import vslide from './Home/Content/slide'
     import notice from './Home/Content/notice'
     import blog from './Home/Content/blog'
+
     export default {
+        data() {
+            return {
+                page: 'Home',
+            }
+        },
         components: {
             vslide,
             notice,
             blog,
         },
+        mounted(){
+            this.init()
+        },
+        methods:{
+            init() {
+                document.title = this.page + ' | kawhi.me'
+            }
+        }
     }
 
 </script>
