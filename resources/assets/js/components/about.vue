@@ -197,6 +197,7 @@
         .resume
             width: 100%
             height: auto
+            background: rgba(236, 238, 239, 0.3)
             overflow: hidden
             .name
                 h2
