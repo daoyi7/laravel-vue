@@ -1,7 +1,6 @@
 <template>
 <main class="main">
     <vnav></vnav>
-    <!-- <middle></middle> -->
     <right></right>
     <transition name="fade">
         <router-view></router-view>

@@ -16,7 +16,6 @@ Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueResource)
 
-// import Home from './components/app'
 import Home from './components/middle'
 import Detail from './components/detail'
 import Blog from './components/blog'

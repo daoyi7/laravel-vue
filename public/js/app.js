@@ -5877,7 +5877,6 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_awesome_swiper___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_resource__["a" /* default */]);
 
-// import Home from './components/app'
 
 
 
@@ -22714,7 +22713,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.project[data-v-3778a78f] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 14em;\n  position: relative;\n  overflow: hidden;\n  display: flex;\n  flex-wrap: wrap;\n}\n.project .item[data-v-3778a78f]:hover {\n    background: rgba(255, 255, 255, 0.3);\n}\n.project .item:hover .thumb img[data-v-3778a78f] {\n      transform: scale(1.5);\n}\n.project .item[data-v-3778a78f]:last-child {\n    margin-right: 0;\n}\n.project .item[data-v-3778a78f] {\n    margin: 0 .4em .8em 0;\n    background: rgba(255, 255, 255, 0.7);\n    flex: 0 0 16em;\n    width: 16em;\n    transition: background 0.5s linear;\n}\n.project .item .thumb[data-v-3778a78f] {\n      width: 100%;\n      height: 10em;\n      overflow: hidden;\n      text-align: center;\n      line-height: 12.5em;\n}\n.project .item .thumb i[data-v-3778a78f] {\n        font-size: 5em;\n        color: #5d5c5c;\n}\n.project .item .content[data-v-3778a78f] {\n      padding: .4em 1em 1.2em 1em;\n}\n.project .item .content .title[data-v-3778a78f] {\n        line-height: 2em;\n        text-align: center;\n        font-size: 1.5em;\n        color: #00030d;\n        font-weight: 700;\n        white-space: nowrap;\n        margin-bottom: .4em;\n}\n.project .item .content .description[data-v-3778a78f] {\n        margin-bottom: 1rem;\n        text-align: left;\n        line-height: 2em;\n        text-indent: 1.6em;\n        font-size: 1.1em;\n        height: 4em;\n        -o-text-overflow: ellipsis;\n        text-overflow: ellipsis;\n        display: -webkit-box;\n        overflow: hidden;\n        -webkit-line-clamp: 2;\n        -webkit-box-orient: vertical;\n}\n.project .item .content .info[data-v-3778a78f] {\n        display: flex;\n        padding-top: 1em;\n        border-top: 1px solid #b7bfc5;\n}\n.project .item .content .info span[data-v-3778a78f] {\n          flex: 1;\n          text-align: center;\n          font-size: 1.4em;\n}\n", ""]);
+exports.push([module.i, "\n.project[data-v-3778a78f] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 14em;\n  position: relative;\n  overflow: hidden;\n  display: flex;\n  flex-wrap: wrap;\n}\n.project .item[data-v-3778a78f]:hover {\n    background: rgba(255, 255, 255, 0.3);\n}\n.project .item:hover .thumb img[data-v-3778a78f] {\n      transform: scale(1.5);\n}\n.project .item[data-v-3778a78f]:last-child {\n    margin-right: 0;\n}\n.project .item[data-v-3778a78f] {\n    margin: 0 .4em .8em 0;\n    background: rgba(255, 255, 255, 0.7);\n    flex: 0 0 16em;\n    width: 16em;\n    transition: background 0.5s linear;\n}\n.project .item .thumb[data-v-3778a78f] {\n      width: 100%;\n      height: 10em;\n      overflow: hidden;\n      text-align: center;\n      line-height: 12.5em;\n}\n.project .item .thumb i[data-v-3778a78f] {\n        font-size: 5em;\n        color: #5d5c5c;\n}\n.project .item .content[data-v-3778a78f] {\n      padding: .4em 1em 1.2em 1em;\n}\n.project .item .content .title[data-v-3778a78f] {\n        line-height: 2em;\n        text-align: center;\n        font-size: 1.5em;\n        color: #00030d;\n        font-weight: 700;\n        white-space: nowrap;\n        margin-bottom: .4em;\n}\n.project .item .content .description[data-v-3778a78f] {\n        margin-bottom: 1rem;\n        text-align: left;\n        color: #00030d;\n        line-height: 2em;\n        text-indent: 1.6em;\n        font-size: 1.1em;\n        height: 4em;\n        -o-text-overflow: ellipsis;\n        text-overflow: ellipsis;\n        display: -webkit-box;\n        overflow: hidden;\n        -webkit-line-clamp: 2;\n        -webkit-box-orient: vertical;\n}\n.project .item .content .info[data-v-3778a78f] {\n        display: flex;\n        padding-top: 1em;\n        border-top: 1px solid #b7bfc5;\n        color: #00030d;\n}\n.project .item .content .info span[data-v-3778a78f] {\n          flex: 1;\n          text-align: center;\n          font-size: 1.4em;\n}\n", ""]);
 
 // exports
 
@@ -22774,14 +22773,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('div', {
       key: "index",
       staticClass: "item"
-    }, [_c('router-link', {
+    }, [_c('a', {
       attrs: {
-        "to": repo.html_url
+        "href": repo.html_url
       }
     }, [_c('div', {
       staticClass: "thumb"
     }, [_c('i', {
-      staticClass: "icon iconfont icon-repositories"
+      staticClass: "icon iconfont",
+      class: ['icon-' + repo.language]
     })]), _vm._v(" "), _c('div', {
       staticClass: "content"
     }, [_c('h3', {
@@ -22798,7 +22798,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "fork"
     }, [_c('i', {
       staticClass: "icon iconfont icon-fork"
-    }), _vm._v(_vm._s(repo.forks_count))])])])])], 1)
+    }), _vm._v(_vm._s(repo.forks_count))])])])])])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -23719,7 +23719,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__nav__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__right__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__right___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__right__);
-//
 //
 //
 //

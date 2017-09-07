@@ -1,9 +1,9 @@
 <template>
     <div class="project">
         <div class="item" v-for="(repo, index) in repos" key="index">
-            <router-link :to="repo.html_url">
+            <a :href="repo.html_url">
                 <div class="thumb">
-                    <i class="icon iconfont icon-repositories"></i>
+                    <i class="icon iconfont" :class="['icon-' + repo.language]"></i>
                 </div>
                 <div class="content">
                     <h3 class="title">{{ repo.name }}</h3>
@@ -13,7 +13,7 @@
                         <span class="fork"><i class="icon iconfont icon-fork"></i>{{ repo.forks_count }}</span>
                     </div>
                 </div>
-            </router-link>
+            </a>
         </div>
     </div>
 </template>
@@ -82,6 +82,7 @@
                 .description
                     margin-bottom: 1rem
                     text-align: left
+                    color: #00030d
                     line-height: 2em
                     text-indent: 1.6em
                     font-size: 1.1em
@@ -96,6 +97,7 @@
                     display: flex
                     padding-top: 1em
                     border-top: 1px solid #b7bfc5
+                    color: #00030d
                     span
                         flex: 1
                         text-align: center
