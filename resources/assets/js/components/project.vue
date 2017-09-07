@@ -1,17 +1,19 @@
 <template>
     <div class="project">
-        <div class="item" v-for="(content, index) in contents" key="index">
-            <div class="thumb">
-                <img :src="content.thumb">
-            </div>
-            <div class="content">
-                <h3 class="title">{{ content.title }}</h3>
-                <p class="description">{{ content.description }}</p>
-                <div class="info">
-                    <span class="star"><i></i>{{ content.star }}</span>
-                    <span class="fork"><i></i>{{ content.fork }}</span>
+        <div class="item" v-for="(repo, index) in repos" key="index">
+            <router-link :to="repo.html_url">
+                <div class="thumb">
+                    <i class="icon iconfont icon-repositories"></i>
                 </div>
-            </div>
+                <div class="content">
+                    <h3 class="title">{{ repo.name }}</h3>
+                    <p class="description">{{ repo.description }}</p>
+                    <div class="info">
+                        <span class="star"><i class="icon iconfont icon-star-full"></i>{{ repo.stargazers_count }}</span>
+                        <span class="fork"><i class="icon iconfont icon-fork"></i>{{ repo.forks_count }}</span>
+                    </div>
+                </div>
+            </router-link>
         </div>
     </div>
 </template>
@@ -20,45 +22,16 @@
     export default {
         data() {
             return {
-                contents: [
-                    {
-                        thumb: '../../images/bg1.png',
-                        title: 'typing.js',
-                        description: 'typing.js by kawhi',
-                        star: '7',
-                        fork: '20',
-                    },
-                    {
-                        thumb: '../../images/bg1.png',
-                        title: 'laravel-vue',
-                        description: 'Codingwell',
-                        star: '50',
-                        fork: '5',
-                    },
-                    {
-                        thumb: '../../images/bg1.png',
-                        title: 'Canvas-work',
-                        description: 'All canvas demo',
-                        star: '10',
-                        fork: '7',
-                    },
-                    {
-                        thumb: '../../images/bg1.png',
-                        title: 'Express-start',
-                        description: 'All canvas demo',
-                        star: '6',
-                        fork: '5',
-                    },
-                    {
-                        thumb: '../../images/bg1.png',
-                        title: 'Express-start',
-                        description: 'Want Use Express With Vue',
-                        star: '6',
-                        fork: '5',
-                    },
-                ],
+                repos: {},
             }
-        }
+        },
+        created() {
+            this.$http.get('https://api.github.com/users/daoyi7/repos').then(response => {
+                this.repos = response.body;
+            },response => {
+                // console.log(132)
+            });
+        },
     }
 </script>
 
@@ -69,12 +42,11 @@
     .project
         float: left
         width: 66.4em
-        margin: 0 0 0 13em
+        margin: 0 0 0 14em
         position: relative
         overflow: hidden
         display: flex
         flex-wrap: wrap
-        justify-content: space-between
         .item:hover
             background: rgba(255, 255, 255, 0.3)
             .thumb
@@ -90,29 +62,36 @@
             transition: background $trans
             .thumb
                 width: 100%
-                height: auto
+                height: 10em
                 overflow: hidden
-                img
-                    min-width: 100%
-                    max-width: calc(150% + 1.5em)
-                    width: calc(150% + 1.5em)
-                    min-height: 15em
-                    height: auto
-                    transform: scale(1)
-                    transition: transform $trans
+                text-align: center
+                line-height: 12.5em
+                i
+                    font-size: 5em
+                    color: #5d5c5c
             .content
                 padding: .4em 1em 1.2em 1em
                 .title
                     line-height: 2em
                     text-align: center
-                    font-size: 1.6em
+                    font-size: 1.5em
                     color: #00030d
                     font-weight: 700
+                    white-space: nowrap
+                    margin-bottom: .4em
                 .description
-                    font-size: 1.4em
-                    text-indent: .5em
-                    line-height: 1.4em
-                    margin-bottom: 1.5em
+                    margin-bottom: 1rem
+                    text-align: left
+                    line-height: 2em
+                    text-indent: 1.6em
+                    font-size: 1.1em
+                    height: 4em
+                    -o-text-overflow: ellipsis
+                    text-overflow: ellipsis
+                    display: -webkit-box
+                    overflow: hidden
+                    -webkit-line-clamp: 2
+                    -webkit-box-orient: vertical
                 .info
                     display: flex
                     padding-top: 1em

@@ -11,8 +11,10 @@ window.Vue = require('vue')
 
 import VueRouter from 'vue-router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import VueResource from 'vue-resource'
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
+Vue.use(VueResource)
 
 // import Home from './components/app'
 import Home from './components/middle'
