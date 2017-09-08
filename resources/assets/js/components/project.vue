@@ -42,7 +42,7 @@
     .project
         float: left
         width: 66.4em
-        margin: 0 0 0 14em
+        margin: 0 0 0 13em
         position: relative
         overflow: hidden
         display: flex
@@ -57,8 +57,8 @@
         .item
             margin: 0 .4em .8em 0
             background: rgba(255, 255, 255, 0.7)
-            flex: 0 0 16em
-            width: 16em
+            flex: 0 0 16.2em
+            width: 16.2em
             transition: background $trans
             .thumb
                 width: 100%

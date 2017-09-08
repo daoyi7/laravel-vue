@@ -26,7 +26,8 @@
     "particle-api-js": "^6.5.0",
     "particle.js": "^1.0.7",
     "vue-particles": "^1.0.9",
-    "vue-awesome-swiper": "^2.6.2"
+    "vue-awesome-swiper": "^2.6.2",
+    "vue-axios": "^2.0.2"
   },
   "dependencies": {
     "vue-markdown": "^2.2.4"

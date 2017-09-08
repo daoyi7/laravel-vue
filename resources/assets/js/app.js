@@ -12,6 +12,10 @@ window.Vue = require('vue')
 import VueRouter from 'vue-router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueResource from 'vue-resource'
+import axios from "axios"
+
+Vue.prototype.$http = axios
+
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueResource)
@@ -22,6 +26,7 @@ import Blog from './components/blog'
 import Project from './components/project'
 import Think from './components/think'
 import About from './components/about'
+import Test from './components/passport/Clients'
 
 const routes = [
     {
@@ -48,6 +53,10 @@ const routes = [
         path: '/about',
         component: About
     },
+    {
+        path: '/tt',
+        component: Test
+    },
 ]
 
 const router = new VueRouter({
@@ -61,6 +70,11 @@ const router = new VueRouter({
  */
 
 Vue.component('app', require('./components/app.vue'));
+
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
 
 const app = new Vue({
     el: '#app',
