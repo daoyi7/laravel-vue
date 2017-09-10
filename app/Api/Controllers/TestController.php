@@ -13,7 +13,7 @@ class TestController extends Controller
     //
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::all()->toJson();
 
         return $blogs;
     }
