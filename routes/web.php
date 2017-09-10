@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('index');
 });
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {
+    $api->get('test', 'App\Api\Controllers\TestController@index');
+    $api->post('auth', 'App\Api\Controllers\TestController@authenticate');
+    $api->get('auth', 'App\Api\Controllers\TestController@user');
+});
