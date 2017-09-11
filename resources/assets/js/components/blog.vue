@@ -12,13 +12,29 @@
             </div>
             <div class="main">
                 <h4 class="title">
-              <router-link to="/detail">一篇测试的文章</router-link>
+              <router-link to="/detail">{{ blog.title }}</router-link>
             </h4>
-                <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
+                <p class="info">{{ blog.intro }}</p>
                 <div class="list">
-                    <p class="list-icon" :class="blog.class" v-for="(icon, index) in icons" key="index">
-                        <i :class="icon.icn"></i>
-                        <span>{{ icon.text }}</span>
+                    <p  class="list-icon time">
+                        <i class="icon iconfont icon-clock2"></i>
+                        <span>{{ blog.published_at | tranTime }}</span>
+                    </p>
+                    <p  class="list-icon view">
+                        <i class="icon iconfont icon-view"></i>
+                        <span>{{ blog.view_counts }}</span>
+                    </p>
+                    <p  class="list-icon comments">
+                        <i class="icon iconfont icon-iconcomments"></i>
+                        <span>5</span>
+                    </p>
+                    <p  class="list-icon like">
+                        <i class="icon iconfont icon-like1"></i>
+                        <span>{{ blog.like_counts }}</span>
+                    </p>
+                    <p  class="list-icon tag">
+                        <i class="icon iconfont icon-tag"></i>
+                        <span>think</span>
                     </p>
                 </div>
             </div>
@@ -32,31 +48,7 @@
             return {
                 page: 'Blog',
                 slogan: "",
-                blogs: [{
-                        thumb: "../../../images/bg.png",
-                        class: "time",
-                    },
-                    {
-                        thumb: "../../../images/bg1.png",
-                        class: "view",
-                        icon: "icon iconfont icon-view",
-                    },
-                    {
-                        thumb: "../../../images/bg2.png",
-                        class: "comments",
-                        icon: "icon iconfont icon-iconcomments",
-                    },
-                    {
-                        thumb: "../../../images/bg3.png",
-                        class: "like",
-                        icon: "icon iconfont icon-like1",
-                    },
-                    {
-                        thumb: "../../../images/bg4.png",
-                        class: "tag",
-                        icon: "icon iconfont icon-tag",
-                    },
-                ],
+                blogs: {},
                 icons: [{
                         icn: "icon iconfont icon-clock2",
                         text: "2小时前"
@@ -80,8 +72,20 @@
                 ]
             }
         },
+        created() {
+            this.$http.get('http://localhost:8000/api/test').then(response => {
+                this.blogs = response.body;
+            })
+        },
         mounted(){
             this.init()
+        },
+        filters: {
+            tranTime: function (value) {
+                value = Vue.prototype.$moment(value).fromNow()
+
+                return value
+            }
         },
         methods:{
             init(){
@@ -123,7 +127,7 @@
                 }
 
                 typing()
-            }
+            },
         }
     }
 </script>

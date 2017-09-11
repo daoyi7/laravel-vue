@@ -13,8 +13,10 @@ import VueRouter from 'vue-router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueResource from 'vue-resource'
 import axios from "axios"
+import moment from "moment"
 
 Vue.prototype.$http = axios
+Vue.prototype.$moment = moment
 
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)

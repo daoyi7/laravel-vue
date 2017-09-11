@@ -27,7 +27,8 @@
     "particle.js": "^1.0.7",
     "vue-particles": "^1.0.9",
     "vue-awesome-swiper": "^2.6.2",
-    "vue-axios": "^2.0.2"
+    "vue-axios": "^2.0.2",
+    "moment": "^2.18.1"
   },
   "dependencies": {
     "vue-markdown": "^2.2.4"

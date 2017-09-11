@@ -28,9 +28,7 @@
         created() {
             this.$http.get('https://api.github.com/users/daoyi7/repos').then(response => {
                 this.repos = response.body;
-            },response => {
-                // console.log(132)
-            });
+            })
         },
     }
 </script>
