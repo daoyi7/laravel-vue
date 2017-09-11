@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -30,8 +29,7 @@ import Think from './components/think'
 import About from './components/about'
 import Test from './components/passport/Clients'
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         component: Home
     },

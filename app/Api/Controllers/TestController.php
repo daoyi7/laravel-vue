@@ -13,7 +13,7 @@ class TestController extends Controller
     //
     public function index()
     {
-        $blogs = Blog::all()->toJson();
+        $blogs = Blog::where('is_hide', false)->get();
 
         return $blogs;
     }

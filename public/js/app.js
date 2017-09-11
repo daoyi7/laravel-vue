@@ -6587,7 +6587,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_about__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_passport_Clients__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_passport_Clients___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_passport_Clients__);
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
