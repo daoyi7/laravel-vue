@@ -6585,8 +6585,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_think___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_think__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_about__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_passport_Clients__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_passport_Clients___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_passport_Clients__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_edit__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_edit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_edit__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -6637,8 +6637,8 @@ var routes = [{
     path: '/about',
     component: __WEBPACK_IMPORTED_MODULE_10__components_about___default.a
 }, {
-    path: '/tt',
-    component: __WEBPACK_IMPORTED_MODULE_11__components_passport_Clients___default.a
+    path: '/edit',
+    component: __WEBPACK_IMPORTED_MODULE_11__components_edit___default.a
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -44435,6 +44435,163 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 272;
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(278)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(276),
+  /* template */
+  __webpack_require__(280),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-797afa04",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\edit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] edit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-797afa04", Component.options)
+  } else {
+    hotAPI.reload("data-v-797afa04", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 274 */,
+/* 275 */,
+/* 276 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 277 */,
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(279);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("2b02d2b6", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-797afa04\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./edit.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-797afa04\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./edit.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.edit[data-v-797afa04] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n  background: rgba(236, 238, 239, 0.7);\n}\n.edit .edit-form[data-v-797afa04] {\n    padding: 1em 1.5em 2.5em 1.5em;\n}\n.edit .edit-form .edit-item[data-v-797afa04] {\n      margin-bottom: 1.5em;\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04] {\n        padding: .5em .3em;\n        width: 100%;\n        height: 1.5em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04]:hover, .edit .edit-form .edit-item input.title[data-v-797afa04]:active, .edit .edit-form .edit-item input.title[data-v-797afa04]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04] {\n        padding: .5em .3em;\n        width: 100%;\n        height: 6em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04]:hover, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:active, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:focus {\n          outline: none;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "edit"
+  }, [_c('form', {
+    staticClass: "edit-form",
+    attrs: {
+      "action": "/",
+      "method": "post"
+    }
+  }, [_c('div', {
+    staticClass: "edit-item title"
+  }, [_c('input', {
+    staticClass: "title",
+    attrs: {
+      "type": "text",
+      "name": "",
+      "value": "",
+      "placeholder": "Blog Title *"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item intro"
+  }, [_c('textarea', {
+    staticClass: "intro",
+    attrs: {
+      "name": "name",
+      "placeholder": "description"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item more"
+  })])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-797afa04", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

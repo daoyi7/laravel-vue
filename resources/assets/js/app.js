@@ -27,7 +27,7 @@ import Blog from './components/blog'
 import Project from './components/project'
 import Think from './components/think'
 import About from './components/about'
-import Test from './components/passport/Clients'
+import Edit from './components/edit'
 
 const routes = [{
         path: '/',
@@ -54,8 +54,8 @@ const routes = [{
         component: About
     },
     {
-        path: '/tt',
-        component: Test
+        path: '/edit',
+        component: Edit
     },
 ]
 
