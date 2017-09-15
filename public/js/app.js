@@ -41987,7 +41987,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n.bg-canvas[data-v-77cbdda8] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n.bg-canvas .bg-img[data-v-77cbdda8] {\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    opacity: .2;\n    background-image: url(" + __webpack_require__(261) + ");\n    background-size: cover;\n}\n", ""]);
+exports.push([module.i, "\n.bg-canvas[data-v-77cbdda8] {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: -1;\n}\n.bg-canvas .bg-img[data-v-77cbdda8] {\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    opacity: .2;\n    background-image: url(" + __webpack_require__(261) + ");\n    background-size: cover;\n}\n.bg-canvas #bg[data-v-77cbdda8] {\n    width: 100%;\n    height: 100%;\n}\n", ""]);
 
 // exports
 
