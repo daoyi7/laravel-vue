@@ -22,6 +22,7 @@
     export default {
         data() {
             return {
+                page: 'Project',
                 repos: {},
             }
         },
@@ -29,6 +30,14 @@
             this.$http.get('https://api.github.com/users/daoyi7/repos').then(response => {
                 this.repos = response.body;
             })
+        },
+        methods: {
+            init() {
+                document.title = this.page + ' | kawhi.me'
+            }
+        },
+        mounted(){
+            this.init()
         },
     }
 </script>

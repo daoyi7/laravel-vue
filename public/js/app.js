@@ -40364,6 +40364,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            page: 'Project',
             repos: {}
         };
     },
@@ -40373,6 +40374,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$http.get('https://api.github.com/users/daoyi7/repos').then(function (response) {
             _this.repos = response.body;
         });
+    },
+
+    methods: {
+        init: function init() {
+            document.title = this.page + ' | kawhi.me';
+        }
+    },
+    mounted: function mounted() {
+        this.init();
     }
 });
 
