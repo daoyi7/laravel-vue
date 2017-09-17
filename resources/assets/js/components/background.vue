@@ -259,7 +259,7 @@
             width: 100%
             height: 100%
             opacity: .2
-            background-image: url("../../images/bground.jpg")
+            background-image: url("/images/bground.jpg")
             background-size: cover
         #bg
             width: 100%

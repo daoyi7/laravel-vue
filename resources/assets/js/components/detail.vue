@@ -23,7 +23,7 @@
             comment,
         },
         mounted() {
-            init()
+            this.init()
         },
         methods: {
             init() {

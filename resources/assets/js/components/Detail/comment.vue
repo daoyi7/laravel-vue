@@ -15,7 +15,7 @@
         <div class="wrap">
             <div class="item">
                 <div class="avatar">
-                    <img src="../../../images/avatar.jpg">
+                    <img src="/images/avatar.jpg">
                 </div>
                 <div class="info">
                     <span class="name">kawhi</span>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="submit">
-            <img class="default-avatar" src="../../../images/avatar.jpg">
+            <img class="default-avatar" src="/images/avatar.jpg">
             <div class="submit-form">
                 <div class="apply-info">
                     <input class="applyname" placeholder="name *" type="text">
