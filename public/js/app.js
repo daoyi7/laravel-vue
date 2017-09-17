@@ -39464,7 +39464,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         comment: __WEBPACK_IMPORTED_MODULE_2__Detail_comment___default.a
     },
     mounted: function mounted() {
-        this.init();
+        thisinit();
     },
 
     methods: {
