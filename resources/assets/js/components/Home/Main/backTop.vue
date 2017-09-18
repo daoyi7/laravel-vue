@@ -14,9 +14,11 @@
         <div class="rico github">
             <i class="icon iconfont icon-github"></i>
         </div>
-        <div class="rico rollback" v-show="visible" @click="topClick">
-            <i class="icon iconfont icon-back-to-top"></i>
-        </div>
+        <transition name="fade">
+            <div class="rico rollback" v-show="visible" @click="topClick">
+                <i class="icon iconfont icon-back-to-top"></i>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -79,6 +81,10 @@
         width: 3em
         height: auto
         background: #fff
+        .fade-enter-active, .fade-leave-active
+            transition: opacity .5s
+        .fade-enter, .fade-leave-to
+            opacity: 0
         .rico
             position: relative
             width: 100%

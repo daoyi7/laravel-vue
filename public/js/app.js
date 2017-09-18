@@ -39121,49 +39121,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      blogs: [{
-        thumb: "../../../images/bg.png",
-        class: "time"
-      }, {
-        thumb: "../../../images/bg1.png",
-        class: "view",
-        icon: "icon iconfont icon-view"
-      }, {
-        thumb: "../../../images/bg2.png",
-        class: "comments",
-        icon: "icon iconfont icon-iconcomments"
-      }, {
-        thumb: "../../../images/bg3.png",
-        class: "like",
-        icon: "icon iconfont icon-like1"
-      }, {
-        thumb: "../../../images/bg4.png",
-        class: "tag",
-        icon: "icon iconfont icon-tag"
-      }],
-      icons: [{
-        icn: "icon iconfont icon-clock2",
-        text: "2小时前"
-      }, {
-        icn: "icon iconfont icon-view",
-        text: "80"
-      }, {
-        icn: "icon iconfont icon-iconcomments",
-        text: "20"
-      }, {
-        icn: "icon iconfont icon-like1",
-        text: "6"
-      }, {
-        icn: "icon iconfont icon-tag",
-        text: "think"
-      }]
-    };
-  }
+    data: function data() {
+        return {
+            blogs: {},
+            icons: [{
+                icn: "icon iconfont icon-clock2",
+                text: "2小时前"
+            }, {
+                icn: "icon iconfont icon-view",
+                text: "80"
+            }, {
+                icn: "icon iconfont icon-iconcomments",
+                text: "20"
+            }, {
+                icn: "icon iconfont icon-like1",
+                text: "6"
+            }, {
+                icn: "icon iconfont icon-tag",
+                text: "think"
+            }]
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        this.$http.get('http://localhost:8000/api/test').then(function (response) {
+            _this.blogs = response.body;
+        });
+    },
+
+    filters: {
+        tranTime: function tranTime(value) {
+            value = Vue.prototype.$moment(value).fromNow();
+
+            return value;
+        }
+    }
 });
 
 /***/ }),
@@ -39197,21 +39208,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "to": "/detail"
       }
-    }, [_vm._v("一篇测试的文章")])], 1), _vm._v(" "), _c('p', {
+    }, [_vm._v(_vm._s(blog.title))])], 1), _vm._v(" "), _c('p', {
       staticClass: "info"
-    }, [_vm._v("这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info")]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(blog.intro))]), _vm._v(" "), _c('div', {
       staticClass: "list"
-    }, _vm._l((_vm.icons), function(icon, index) {
-      return _c('p', {
-        key: "index",
-        staticClass: "list-icon",
-        class: blog.class
-      }, [_c('i', {
-        class: icon.icn
-      }), _vm._v(" "), _c('span', [_vm._v(_vm._s(icon.text))])])
-    }))])])
+    }, [_c('p', {
+      staticClass: "list-icon time"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-clock2"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("tranTime")(blog.published_at)))])]), _vm._v(" "), _c('p', {
+      staticClass: "list-icon view"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-view"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.view_counts))])]), _vm._v(" "), _vm._m(0, true), _vm._v(" "), _c('p', {
+      staticClass: "list-icon like"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-like1"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.like_counts))])]), _vm._v(" "), _vm._m(1, true)])])])
   }))])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-iconcomments"
+  }), _vm._v(" "), _c('span', [_vm._v("5")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon tag"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-tag"
+  }), _vm._v(" "), _c('span', [_vm._v("think")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -40112,8 +40139,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.$http.get('http://localhost:8000/api/test').then(function (response) {
             _this2.blogs = response.body;
-
-            console.log(response.body.is_hide);
         });
     },
     mounted: function mounted() {
@@ -41971,7 +41996,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n@keyframes iconmove-data-v-c6d47984 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-c6d47984] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .rico[data-v-c6d47984] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-c6d47984] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-c6d47984] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-c6d47984] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-c6d47984]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-c6d47984]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-c6d47984]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984]:hover {\n        animation: iconmove-data-v-c6d47984 1s infinite;\n}\n.backTop .rico img[data-v-c6d47984] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
+exports.push([module.i, "\n@keyframes iconmove-data-v-c6d47984 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-c6d47984] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-c6d47984], .backTop .fade-leave-active[data-v-c6d47984] {\n    transition: opacity .5s;\n}\n.backTop .fade-enter[data-v-c6d47984], .backTop .fade-leave-to[data-v-c6d47984] {\n    opacity: 0;\n}\n.backTop .rico[data-v-c6d47984] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-c6d47984] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-c6d47984] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-c6d47984] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-c6d47984]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-c6d47984]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-c6d47984]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984]:hover {\n        animation: iconmove-data-v-c6d47984 1s infinite;\n}\n.backTop .rico img[data-v-c6d47984] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
 
 // exports
 
@@ -41982,6 +42007,8 @@ exports.push([module.i, "\n@keyframes iconmove-data-v-c6d47984 {\n0% {\n    tran
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -42055,7 +42082,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/"
     }
-  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -42068,7 +42099,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "icon iconfont icon-back-to-top"
-  })])])
+  })])])], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "rico qq"
