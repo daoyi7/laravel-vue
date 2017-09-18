@@ -49,9 +49,7 @@ export default {
     },
     created() {
         this.$http.get('http://localhost:8000/api/test').then(response => {
-            this.blogs = response.body.blogs
-
-            // console.log(response.body.blogs)
+            this.blogs = response.body.blogs;
         })
     },
     filters: {

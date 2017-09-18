@@ -12,13 +12,29 @@
         </div>
         <div class="main">
             <h4 class="title">
-          <router-link to="/detail">一篇测试的文章</router-link>
+          <router-link to="/detail">{{ think.title }}</router-link>
         </h4>
-            <p class="info">这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info这里是一个info</p>
+            <p class="info">{{ think.intro }}</p>
             <div class="list">
-                <p class="list-icon" :class="think.class" v-for="(icon, index) in icons" key="index">
-                    <i :class="icon.icn"></i>
-                    <span>{{ icon.text }}</span>
+                <p class="list-icon time">
+                    <i class="icon iconfont icon-clock2"></i>
+                    <span>{{ think.published_at | tranTime }}</span>
+                </p>
+                <p class="list-icon view">
+                    <i class="icon iconfont icon-view"></i>
+                    <span>{{ think.view_counts }}</span>
+                </p>
+                <p class="list-icon comments">
+                    <i class="icon iconfont icon-iconcomments"></i>
+                    <span>5</span>
+                </p>
+                <p class="list-icon like">
+                    <i class="icon iconfont icon-like1"></i>
+                    <span>{{ think.like_counts }}</span>
+                </p>
+                <p class="list-icon tag">
+                    <i class="icon iconfont icon-tag"></i>
+                    <span>think</span>
                 </p>
             </div>
         </div>
@@ -32,31 +48,7 @@
             return {
                 page: 'Think',
                 slogan: "",
-                thinks: [{
-                        thumb: "../../../images/bg.png",
-                        class: "time",
-                    },
-                    {
-                        thumb: "../../../images/bg1.png",
-                        class: "view",
-                        icon: "icon iconfont icon-view",
-                    },
-                    {
-                        thumb: "../../../images/bg2.png",
-                        class: "comments",
-                        icon: "icon iconfont icon-iconcomments",
-                    },
-                    {
-                        thumb: "../../../images/bg3.png",
-                        class: "like",
-                        icon: "icon iconfont icon-like1",
-                    },
-                    {
-                        thumb: "../../../images/bg4.png",
-                        class: "tag",
-                        icon: "icon iconfont icon-tag",
-                    },
-                ],
+                thinks: {},
                 icons: [{
                         icn: "icon iconfont icon-clock2",
                         text: "2小时前"
@@ -80,10 +72,10 @@
                 ]
             }
         },
-        mounted(){
+        mounted () {
             this.init()
         },
-        methods:{
+        methods: {
             init(){
                 document.title = this.page + ' | kawhi.me'
                 let str = "Trust the process.",
@@ -124,7 +116,19 @@
 
                 typing()
             }
-        }
+        },
+        created() {
+            this.$http.get('http://localhost:8000/api/test').then(response => {
+                this.thinks = response.body.blogs;
+            })
+        },
+        filters: {
+            tranTime: function(value) {
+                value = Vue.prototype.$moment(value).fromNow()
+
+                return value
+            }
+        },
     }
 </script>
 
@@ -267,10 +271,13 @@
                   font-size: 1.2em
                 span
                   vertical-align: middle
-              .list-icon.like
-                cursor: pointer
-              .list-icon.tag
-                i
-                  font-weight: 700
+                &.time
+                  flex: 0 0 10em
+                  width: 10em
+                &.like
+                  cursor: pointer
+                &.tag
+                  i
+                      font-weight: 700
 
 </style>
