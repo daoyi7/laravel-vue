@@ -13,23 +13,23 @@
                 </h4>
                 <p class="info">{{ blog.intro }}</p>
                 <div class="list">
-                    <p  class="list-icon time">
+                    <p class="list-icon time">
                         <i class="icon iconfont icon-clock2"></i>
                         <span>{{ blog.published_at | tranTime }}</span>
                     </p>
-                    <p  class="list-icon view">
+                    <p class="list-icon view">
                         <i class="icon iconfont icon-view"></i>
                         <span>{{ blog.view_counts }}</span>
                     </p>
-                    <p  class="list-icon comments">
+                    <p class="list-icon comments">
                         <i class="icon iconfont icon-iconcomments"></i>
                         <span>5</span>
                     </p>
-                    <p  class="list-icon like">
+                    <p class="list-icon like">
                         <i class="icon iconfont icon-like1"></i>
                         <span>{{ blog.like_counts }}</span>
                     </p>
-                    <p  class="list-icon tag">
+                    <p class="list-icon tag">
                         <i class="icon iconfont icon-tag"></i>
                         <span>think</span>
                     </p>
@@ -44,37 +44,18 @@
 export default {
     data() {
         return {
-            blogs: {},
-            icons: [{
-                    icn: "icon iconfont icon-clock2",
-                    text: "2小时前"
-                },
-                {
-                    icn: "icon iconfont icon-view",
-                    text: "80"
-                },
-                {
-                    icn: "icon iconfont icon-iconcomments",
-                    text: "20"
-                },
-                {
-                    icn: "icon iconfont icon-like1",
-                    text: "6"
-                },
-                {
-                    icn: "icon iconfont icon-tag",
-                    text: "think"
-                },
-            ]
+            blogs: {}
         }
     },
     created() {
         this.$http.get('http://localhost:8000/api/test').then(response => {
-            this.blogs = response.body;
+            this.blogs = response.body.blogs
+
+            // console.log(response.body.blogs)
         })
     },
     filters: {
-        tranTime: function (value) {
+        tranTime: function(value) {
             value = Vue.prototype.$moment(value).fromNow()
 
             return value
@@ -182,10 +163,13 @@ export default {
                 font-size: 1.2em
               span
                 vertical-align: middle
-            .list-icon.like
-              cursor: pointer
-            .list-icon.tag
-              i
-                font-weight: 700
+              &.time
+                flex: 0 0 10em
+                width: 10em
+              &.like
+                cursor: pointer
+              &.tag
+                i
+                    font-weight: 700
 
 </style>

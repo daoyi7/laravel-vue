@@ -7,13 +7,19 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Blog;
+use Carbon\Carbon;
 
 class TestController extends Controller
 {
     //
     public function index()
     {
-        $blogs = Blog::all()->toJson();
+        $conditions = [
+            ['published_at','<=',Carbon::now()],
+            ['is_hide', '=>', false]
+        ];
+
+        $blogs = Blog::where($conditions)->latest()->get();
 
         return $blogs;
     }

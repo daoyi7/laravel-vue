@@ -48,33 +48,12 @@
             return {
                 page: 'Blog',
                 slogan: "",
-                blogs: {},
-                icons: [{
-                        icn: "icon iconfont icon-clock2",
-                        text: "2小时前"
-                    },
-                    {
-                        icn: "icon iconfont icon-view",
-                        text: "80"
-                    },
-                    {
-                        icn: "icon iconfont icon-iconcomments",
-                        text: "20"
-                    },
-                    {
-                        icn: "icon iconfont icon-like1",
-                        text: "6"
-                    },
-                    {
-                        icn: "icon iconfont icon-tag",
-                        text: "think"
-                    },
-                ]
+                blogs: {}
             }
         },
         created() {
             this.$http.get('http://localhost:8000/api/test').then(response => {
-                this.blogs = response.body;
+                this.blogs = response.body.blogs
             })
         },
         mounted(){

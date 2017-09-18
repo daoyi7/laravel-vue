@@ -39084,7 +39084,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n.blog-wrap[data-v-b9977bc4] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-b9977bc4] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-b9977bc4]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-b9977bc4] {\n        transform: translateX(-1em);\n}\n.blog-wrap .blog-item .blog-module[data-v-b9977bc4] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .4em 0em;\n      margin-bottom: 1em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-b9977bc4] {\n        flex: 0 0 17em;\n        width: 17em;\n        height: 11em;\n        margin-right: 1em;\n        padding-left: 0.5em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-b9977bc4] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-b9977bc4] {\n            min-width: 100%;\n            max-width: calc(100% + 1.5em);\n            width: calc(100% + 1.5em);\n            min-height: 13em;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-b9977bc4] {\n        flex: 1;\n        padding-right: 1.6em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-b9977bc4]:hover {\n          transform: translateX(0.7em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-b9977bc4]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-b9977bc4] {\n          line-height: 2em;\n          padding-bottom: .5em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-b9977bc4] {\n            position: relative;\n            font-size: 1.4em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-b9977bc4]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.3em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-b9977bc4] {\n          height: 5em;\n          font-size: 1.3em;\n          line-height: 1.8em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-b9977bc4] {\n          display: flex;\n          line-height: 1.4em;\n          padding-top: .2em;\n          font-size: 1.2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-b9977bc4] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-b9977bc4] {\n              vertical-align: middle;\n              margin-right: .2em;\n              font-size: 1.2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-b9977bc4] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-b9977bc4] {\n            cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-b9977bc4] {\n            font-weight: 700;\n}\n", ""]);
+exports.push([module.i, "\n.blog-wrap[data-v-b9977bc4] {\n  width: 100%;\n  height: auto;\n  overflow: hidden;\n  margin-top: 1em;\n}\n.blog-wrap .blog-item[data-v-b9977bc4] {\n    width: 100%;\n}\n.blog-wrap .blog-item .blog-module[data-v-b9977bc4]:hover {\n      background: rgba(255, 255, 255, 0.6);\n}\n.blog-wrap .blog-item .blog-module:hover .thumb a img[data-v-b9977bc4] {\n        transform: translateX(-1em);\n}\n.blog-wrap .blog-item .blog-module[data-v-b9977bc4] {\n      position: relative;\n      width: 100%;\n      background: #fff;\n      padding: .4em 0em;\n      margin-bottom: 1em;\n      display: flex;\n      transition: background 0.5s linear;\n      -moz-transition: background 0.5s linear;\n      -webkit-transition: background 0.5s linear;\n      -o-transition: background 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .thumb[data-v-b9977bc4] {\n        flex: 0 0 17em;\n        width: 17em;\n        height: 11em;\n        margin-right: 1em;\n        padding-left: 0.5em;\n}\n.blog-wrap .blog-item .blog-module .thumb a[data-v-b9977bc4] {\n          width: 100%;\n          height: 100%;\n          display: block;\n          overflow: hidden;\n}\n.blog-wrap .blog-item .blog-module .thumb a img[data-v-b9977bc4] {\n            min-width: 100%;\n            max-width: calc(100% + 1.5em);\n            width: calc(100% + 1.5em);\n            min-height: 13em;\n            height: auto;\n            transform: translateX(0);\n            transition: transform 0.5s linear;\n            -moz-transition: transform 0.5s linear;\n            -webkit-transition: transform 0.5s linear;\n            -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main[data-v-b9977bc4] {\n        flex: 1;\n        padding-right: 1.6em;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-b9977bc4]:hover {\n          transform: translateX(0.7em);\n}\n.blog-wrap .blog-item .blog-module .main .title:hover a[data-v-b9977bc4]::before {\n            width: 100%;\n}\n.blog-wrap .blog-item .blog-module .main .title[data-v-b9977bc4] {\n          line-height: 2em;\n          padding-bottom: .5em;\n          font-weight: 700;\n          transform: translateX(0);\n          transition: transform 0.5s linear;\n          -moz-transition: transform 0.5s linear;\n          -webkit-transition: transform 0.5s linear;\n          -o-transition: transform 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-b9977bc4] {\n            position: relative;\n            font-size: 1.4em;\n            color: #00030d;\n}\n.blog-wrap .blog-item .blog-module .main .title a[data-v-b9977bc4]::before {\n            content: \"\";\n            position: absolute;\n            top: 1.3em;\n            width: 0;\n            height: 1px;\n            background: #00030d;\n            transition: width 0.5s linear;\n            -moz-transition: width 0.5s linear;\n            -webkit-transition: width 0.5s linear;\n            -o-transition: width 0.5s linear;\n}\n.blog-wrap .blog-item .blog-module .main .info[data-v-b9977bc4] {\n          height: 5em;\n          font-size: 1.3em;\n          line-height: 1.8em;\n          color: #1d1d1d;\n}\n.blog-wrap .blog-item .blog-module .main .list[data-v-b9977bc4] {\n          display: flex;\n          line-height: 1.4em;\n          padding-top: .2em;\n          font-size: 1.2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon[data-v-b9977bc4] {\n            flex: 1;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon i[data-v-b9977bc4] {\n              vertical-align: middle;\n              margin-right: .2em;\n              font-size: 1.2em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon span[data-v-b9977bc4] {\n              vertical-align: middle;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.time[data-v-b9977bc4] {\n              flex: 0 0 10em;\n              width: 10em;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.like[data-v-b9977bc4] {\n              cursor: pointer;\n}\n.blog-wrap .blog-item .blog-module .main .list .list-icon.tag i[data-v-b9977bc4] {\n              font-weight: 700;\n}\n", ""]);
 
 // exports
 
@@ -39141,30 +39141,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            blogs: {},
-            icons: [{
-                icn: "icon iconfont icon-clock2",
-                text: "2小时前"
-            }, {
-                icn: "icon iconfont icon-view",
-                text: "80"
-            }, {
-                icn: "icon iconfont icon-iconcomments",
-                text: "20"
-            }, {
-                icn: "icon iconfont icon-like1",
-                text: "6"
-            }, {
-                icn: "icon iconfont icon-tag",
-                text: "think"
-            }]
+            blogs: {}
         };
     },
     created: function created() {
         var _this = this;
 
         this.$http.get('http://localhost:8000/api/test').then(function (response) {
-            _this.blogs = response.body;
+            _this.blogs = response.body.blogs;
+
+            // console.log(response.body.blogs)
         });
     },
 
@@ -40115,30 +40101,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             page: 'Blog',
             slogan: "",
-            blogs: {},
-            icons: [{
-                icn: "icon iconfont icon-clock2",
-                text: "2小时前"
-            }, {
-                icn: "icon iconfont icon-view",
-                text: "80"
-            }, {
-                icn: "icon iconfont icon-iconcomments",
-                text: "20"
-            }, {
-                icn: "icon iconfont icon-like1",
-                text: "6"
-            }, {
-                icn: "icon iconfont icon-tag",
-                text: "think"
-            }]
+            blogs: {}
         };
     },
     created: function created() {
         var _this2 = this;
 
         this.$http.get('http://localhost:8000/api/test').then(function (response) {
-            _this2.blogs = response.body;
+            _this2.blogs = response.body.blogs;
         });
     },
     mounted: function mounted() {
