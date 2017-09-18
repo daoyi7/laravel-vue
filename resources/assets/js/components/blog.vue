@@ -75,6 +75,8 @@
         created() {
             this.$http.get('http://localhost:8000/api/test').then(response => {
                 this.blogs = response.body;
+
+                console.log(response.body.is_hide)
             })
         },
         mounted(){

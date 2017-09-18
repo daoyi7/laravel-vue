@@ -14,7 +14,7 @@
         <div class="rico github">
             <i class="icon iconfont icon-github"></i>
         </div>
-        <div class="rico rollback" @click="topClick">
+        <div class="rico rollback" v-show="visible" @click="topClick">
             <i class="icon iconfont icon-back-to-top"></i>
         </div>
     </div>
@@ -22,14 +22,33 @@
 
 <script type="text/ecmascript-6">
     export default {
+        data () {
+            return {
+                visible: false
+            }
+        },
+        props: {
+            visibleOffset: {
+                type: [String, Number],
+                default: 400
+            }
+        },
+        created () {
+            let catchScroll = () => {
+                this.visible = (window.pageYOffset > parseInt(this.visibleOffset))
+            }
+            window.smoothscroll = () => {
+                let currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+                if (currentScroll > 0) {
+                    window.requestAnimationFrame(window.smoothscroll)
+                    window.scrollTo(0, currentScroll - (currentScroll / 5))
+                }
+            }
+            window.onscroll = catchScroll
+        },
         methods: {
-            topClick: function () {
-                let m = 0
-                setTimeout( () => {
-                    m = m + 1
-
-                    console.log(m)
-                }, 2000)
+            topClick () {
+                window.smoothscroll()
             }
         }
     }
