@@ -3,6 +3,7 @@
         <background></background>
         <vheader></vheader>
         <vmain></vmain>
+        <top></top>
     </div>
 </template>
 
@@ -10,12 +11,14 @@
     import vheader from './Home/Main/header'
     import vmain from './Home//Main/main'
     import background from './background'
+    import top from './backTop'
 
     export default {
         components: {
             vheader,
             vmain,
             background,
+            top,
         },
     }
 </script>

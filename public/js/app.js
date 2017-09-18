@@ -41271,6 +41271,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Home_Main_main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Home_Main_main__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__background__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__background___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__background__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backTop__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backTop___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__backTop__);
 //
 //
 //
@@ -41279,6 +41281,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 
@@ -41288,7 +41292,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {
         vheader: __WEBPACK_IMPORTED_MODULE_0__Home_Main_header___default.a,
         vmain: __WEBPACK_IMPORTED_MODULE_1__Home_Main_main___default.a,
-        background: __WEBPACK_IMPORTED_MODULE_2__background___default.a
+        background: __WEBPACK_IMPORTED_MODULE_2__background___default.a,
+        top: __WEBPACK_IMPORTED_MODULE_3__backTop___default.a
     }
 });
 
@@ -41518,8 +41523,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__nav__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__right__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__right___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__right__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backTop__ = __webpack_require__(256);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backTop___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__backTop__);
 //
 //
 //
@@ -41530,8 +41533,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-
 
 
 
@@ -41539,8 +41540,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         vnav: __WEBPACK_IMPORTED_MODULE_0__nav___default.a,
-        right: __WEBPACK_IMPORTED_MODULE_1__right___default.a,
-        top: __WEBPACK_IMPORTED_MODULE_2__backTop___default.a
+        right: __WEBPACK_IMPORTED_MODULE_1__right___default.a
     }
 });
 
@@ -41914,223 +41914,18 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(257)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(259),
-  /* template */
-  __webpack_require__(260),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-c6d47984",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\backTop.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] backTop.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c6d47984", Component.options)
-  } else {
-    hotAPI.reload("data-v-c6d47984", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 257 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(258);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("3327a7a0", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c6d47984\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c6d47984\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 258 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n@keyframes iconmove-data-v-c6d47984 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-c6d47984] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-c6d47984], .backTop .fade-leave-active[data-v-c6d47984] {\n    transition: opacity .5s;\n}\n.backTop .fade-enter[data-v-c6d47984], .backTop .fade-leave-to[data-v-c6d47984] {\n    opacity: 0;\n}\n.backTop .rico[data-v-c6d47984] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-c6d47984] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-c6d47984] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-c6d47984] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-c6d47984]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-c6d47984]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-c6d47984]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-c6d47984]:hover {\n        animation: iconmove-data-v-c6d47984 1s infinite;\n}\n.backTop .rico img[data-v-c6d47984] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 259 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            visible: false
-        };
-    },
-
-    props: {
-        visibleOffset: {
-            type: [String, Number],
-            default: 400
-        }
-    },
-    created: function created() {
-        var _this = this;
-
-        var catchScroll = function catchScroll() {
-            _this.visible = window.pageYOffset > parseInt(_this.visibleOffset);
-        };
-        window.smoothscroll = function () {
-            var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            if (currentScroll > 0) {
-                window.requestAnimationFrame(window.smoothscroll);
-                window.scrollTo(0, currentScroll - currentScroll / 5);
-            }
-        };
-        window.onscroll = catchScroll;
-    },
-
-    methods: {
-        topClick: function topClick() {
-            window.smoothscroll();
-        }
-    }
-});
-
-/***/ }),
-/* 260 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "backTop"
-  }, [_c('div', {
-    staticClass: "rico write"
-  }, [_c('router-link', {
-    staticClass: "icon iconfont icon-write",
-    attrs: {
-      "to": "/"
-    }
-  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.visible),
-      expression: "visible"
-    }],
-    staticClass: "rico rollback",
-    on: {
-      "click": _vm.topClick
-    }
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-back-to-top"
-  })])])], 1)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico qq"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-qq"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico wechat"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-wechat"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico github"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-github"
-  })])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-c6d47984", module.exports)
-  }
-}
-
-/***/ }),
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
 /* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('main', {
     staticClass: "main"
-  }, [_c('vnav'), _vm._v(" "), _c('right'), _vm._v(" "), _c('top'), _vm._v(" "), _c('transition', {
+  }, [_c('vnav'), _vm._v(" "), _c('right'), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "fade"
     }
@@ -44044,7 +43839,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "kawhi"
-  }, [_c('background'), _vm._v(" "), _c('vheader'), _vm._v(" "), _c('vmain')], 1)
+  }, [_c('background'), _vm._v(" "), _c('vheader'), _vm._v(" "), _c('vmain'), _vm._v(" "), _c('top')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -44823,6 +44618,222 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(282)
+}
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(284),
+  /* template */
+  __webpack_require__(285),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-408b9e38",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\laravel-vue\\resources\\assets\\js\\components\\backTop.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] backTop.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-408b9e38", Component.options)
+  } else {
+    hotAPI.reload("data-v-408b9e38", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(283);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("0f7a6d3a", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n@keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-408b9e38] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-408b9e38], .backTop .fade-leave-active[data-v-408b9e38] {\n    transition: opacity .5s;\n}\n.backTop .fade-enter[data-v-408b9e38], .backTop .fade-leave-to[data-v-408b9e38] {\n    opacity: 0;\n}\n.backTop .rico[data-v-408b9e38] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-408b9e38] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-408b9e38] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-408b9e38] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-408b9e38]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-408b9e38]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-408b9e38]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38]:hover {\n        animation: iconmove-data-v-408b9e38 1s infinite;\n}\n.backTop .rico img[data-v-408b9e38] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            visible: false
+        };
+    },
+
+    props: {
+        visibleOffset: {
+            type: [String, Number],
+            default: 400
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        var catchScroll = function catchScroll() {
+            _this.visible = window.pageYOffset > parseInt(_this.visibleOffset);
+        };
+        window.smoothscroll = function () {
+            var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            if (currentScroll > 0) {
+                window.requestAnimationFrame(window.smoothscroll);
+                window.scrollTo(0, currentScroll - currentScroll / 5);
+            }
+        };
+        window.onscroll = catchScroll;
+    },
+
+    methods: {
+        topClick: function topClick() {
+            window.smoothscroll();
+        }
+    }
+});
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "backTop"
+  }, [_c('div', {
+    staticClass: "rico write"
+  }, [_c('router-link', {
+    staticClass: "icon iconfont icon-write",
+    attrs: {
+      "to": "/"
+    }
+  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.visible),
+      expression: "visible"
+    }],
+    staticClass: "rico rollback",
+    on: {
+      "click": _vm.topClick
+    }
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-back-to-top"
+  })])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico qq"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-qq"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico wechat"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-wechat"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico github"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-github"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-408b9e38", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
