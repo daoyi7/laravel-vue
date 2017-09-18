@@ -2,6 +2,7 @@
 <main class="main">
     <vnav></vnav>
     <right></right>
+    <top></top>
     <transition name="fade">
         <router-view></router-view>
     </transition>
@@ -11,11 +12,13 @@
 <script type="text/ecmascript-6">
     import vnav from './nav'
     import right from './right'
+    import top from './backTop'
 
     export default {
         components: {
             vnav,
             right,
+            top,
         }
     }
 </script>
