@@ -22161,7 +22161,26 @@ Vue.component('passport-clients', __webpack_require__(269));
 
 var app = new Vue({
     el: '#app',
-    router: router
+    router: router,
+    mounted: function mounted() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            document.addEventListener('visibilitychange', function () {
+                var isHidden = document.hidden;
+                var _title = document.title;
+                console.log(_title);
+
+                if (isHidden) {
+                    document.title = '离开了';
+                } else {
+                    document.title = _title;
+                }
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -41402,24 +41421,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         vmain: __WEBPACK_IMPORTED_MODULE_1__Home_Main_main___default.a,
         background: __WEBPACK_IMPORTED_MODULE_2__background___default.a,
         top: __WEBPACK_IMPORTED_MODULE_3__backTop___default.a
-    },
-    mounted: function mounted() {
-        this.init();
-    },
-
-    methods: {
-        init: function init() {
-            document.addEventListener('visibilitychange', function () {
-                var isHidden = document.hidden;
-                var _title = document.title;
-
-                if (isHidden) {
-                    document.title = '离开了';
-                } else {
-                    document.title = _title;
-                }
-            });
-        }
     }
 });
 

@@ -82,5 +82,23 @@ Vue.component(
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    mounted() {
+        this.init()
+    },
+    methods: {
+        init() {
+            document.addEventListener('visibilitychange', function() {
+                let isHidden = document.hidden
+                let _title = document.title
+                console.log(_title)
+
+                if (isHidden) {
+                    document.title = '离开了'
+                } else {
+                    document.title = _title
+                }
+            });
+        }
+    }
 });

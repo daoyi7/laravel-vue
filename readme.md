@@ -1,6 +1,6 @@
 ## **CodingWell**
 
-1. favico.ico
+1. ~~favico.ico~~
 2. ~~页面title~~,监控用户离开状态
 3. 撰写文章、文章分类
 4. 修改、编辑文章
@@ -15,7 +15,7 @@
 13. 文章分类列表
 14. 评论（暂缓）
 15. lazy-load
-16. back-top
+16. ~~back-top~~
 17. 移动端 v-if
 18. safari页面icon
 19. 分享页面icon
