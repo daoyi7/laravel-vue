@@ -75,12 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dingo/api.git",
-                "reference": "2b45b20f12030c1df60959e314e77e027b88ce7b"
+                "reference": "79c79e2d00abcad97e040b0f11d5285bf4488bf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/dingo/api/2b45b20f12030c1df60959e314e77e027b88ce7b.zip",
-                "reference": "2b45b20f12030c1df60959e314e77e027b88ce7b",
+                "url": "https://files.phpcomposer.com/files/dingo/api/79c79e2d00abcad97e040b0f11d5285bf4488bf8.zip",
+                "reference": "79c79e2d00abcad97e040b0f11d5285bf4488bf8",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "laravel",
                 "restful"
             ],
-            "time": "2017-09-18T03:50:05+00:00"
+            "time": "2017-09-18T21:45:51+00:00"
         },
         {
             "name": "dingo/blueprint",
