@@ -22056,7 +22056,7 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(128);
-module.exports = __webpack_require__(269);
+module.exports = __webpack_require__(274);
 
 
 /***/ }),
@@ -22157,7 +22157,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
 
 Vue.component('app', __webpack_require__(233));
 
-Vue.component('passport-clients', __webpack_require__(264));
+Vue.component('passport-clients', __webpack_require__(269));
 
 var app = new Vue({
     el: '#app',
@@ -35469,7 +35469,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] swiper.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -35614,7 +35614,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38649,7 +38649,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\middle.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\middle.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] middle.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38815,7 +38815,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\slide.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38988,7 +38988,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\notice.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\notice.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] notice.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39153,7 +39153,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\blog.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\blog.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] blog.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39396,7 +39396,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\detail.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\detail.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] detail.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39528,7 +39528,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\content.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\content.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] content.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39674,7 +39674,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\contentMore.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\contentMore.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] contentMore.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39800,7 +39800,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\comment.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\comment.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] comment.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40107,7 +40107,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\blog.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\blog.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] blog.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40391,7 +40391,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\project.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\project.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] project.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40574,7 +40574,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\think.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\think.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] think.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40875,7 +40875,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\about.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\about.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] about.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41169,7 +41169,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\edit.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\edit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41315,7 +41315,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(236),
   /* template */
-  __webpack_require__(263),
+  __webpack_require__(268),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -41323,7 +41323,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41398,7 +41398,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Home_Main_main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Home_Main_main__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__background__ = __webpack_require__(257);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__background___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__background__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backTop__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backTop__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backTop___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__backTop__);
 //
 //
@@ -41445,7 +41445,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\header.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\header.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41577,7 +41577,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\main.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\main.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41692,7 +41692,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\nav.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41857,7 +41857,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\right.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\right.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] right.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42082,7 +42082,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\background.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\background.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] background.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -43958,6 +43958,216 @@ if (false) {
 /* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(264)
+}
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(266),
+  /* template */
+  __webpack_require__(267),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-408b9e38",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\backTop.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] backTop.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-408b9e38", Component.options)
+  } else {
+    hotAPI.reload("data-v-408b9e38", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(265);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("0f7a6d3a", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n@keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-408b9e38] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-408b9e38], .backTop .fade-leave-active[data-v-408b9e38] {\n    transition: opacity .5s linear;\n}\n.backTop .fade-enter[data-v-408b9e38], .backTop .fade-leave-to[data-v-408b9e38] {\n    opacity: 0;\n}\n.backTop .rico[data-v-408b9e38] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-408b9e38] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-408b9e38] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-408b9e38] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-408b9e38]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-408b9e38]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-408b9e38]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38]:hover {\n        animation: iconmove-data-v-408b9e38 1s infinite;\n}\n.backTop .rico img[data-v-408b9e38] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            visible: false
+        };
+    },
+
+    props: {
+        visibleOffset: {
+            type: [String, Number],
+            default: 400
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        var catchScroll = function catchScroll() {
+            _this.visible = window.pageYOffset > parseInt(_this.visibleOffset);
+        };
+        window.smoothscroll = function () {
+            var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            if (currentScroll > 0) {
+                window.requestAnimationFrame(window.smoothscroll);
+                window.scrollTo(0, currentScroll - currentScroll / 5);
+            }
+        };
+        window.onscroll = catchScroll;
+    },
+
+    methods: {
+        topClick: function topClick() {
+            window.smoothscroll();
+        }
+    }
+});
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "backTop"
+  }, [_c('div', {
+    staticClass: "rico write"
+  }, [_c('router-link', {
+    staticClass: "icon iconfont icon-write",
+    attrs: {
+      "to": "/"
+    }
+  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.visible),
+      expression: "visible"
+    }],
+    staticClass: "rico rollback",
+    on: {
+      "click": _vm.topClick
+    }
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-back-to-top"
+  })])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico qq"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-qq"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico wechat"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-wechat"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico github"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-github"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-408b9e38", module.exports)
+  }
+}
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "kawhi"
@@ -43972,19 +44182,19 @@ if (false) {
 }
 
 /***/ }),
-/* 264 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(265)
+  __webpack_require__(270)
 }
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(267),
+  __webpack_require__(272),
   /* template */
-  __webpack_require__(268),
+  __webpack_require__(273),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -43992,7 +44202,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "E:\\project\\laravel-vue\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -44016,13 +44226,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 265 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(266);
+var content = __webpack_require__(271);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -44042,7 +44252,7 @@ if(false) {
 }
 
 /***/ }),
-/* 266 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -44056,7 +44266,7 @@ exports.push([module.i, "\n.action-link[data-v-73346565] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 267 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44424,7 +44634,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 268 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -44736,226 +44946,10 @@ if (false) {
 }
 
 /***/ }),
-/* 269 */
+/* 274 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(277)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(279),
-  /* template */
-  __webpack_require__(280),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-408b9e38",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\backTop.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] backTop.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-408b9e38", Component.options)
-  } else {
-    hotAPI.reload("data-v-408b9e38", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(278);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("0f7a6d3a", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-408b9e38\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./backTop.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 278 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n@keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-408b9e38] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-408b9e38], .backTop .fade-leave-active[data-v-408b9e38] {\n    transition: opacity .5s linear;\n}\n.backTop .fade-enter[data-v-408b9e38], .backTop .fade-leave-to[data-v-408b9e38] {\n    opacity: 0;\n}\n.backTop .rico[data-v-408b9e38] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-408b9e38] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-408b9e38] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-408b9e38] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-408b9e38]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-408b9e38]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-408b9e38]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38]:hover {\n        animation: iconmove-data-v-408b9e38 1s infinite;\n}\n.backTop .rico img[data-v-408b9e38] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 279 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            visible: false
-        };
-    },
-
-    props: {
-        visibleOffset: {
-            type: [String, Number],
-            default: 400
-        }
-    },
-    created: function created() {
-        var _this = this;
-
-        var catchScroll = function catchScroll() {
-            _this.visible = window.pageYOffset > parseInt(_this.visibleOffset);
-        };
-        window.smoothscroll = function () {
-            var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            if (currentScroll > 0) {
-                window.requestAnimationFrame(window.smoothscroll);
-                window.scrollTo(0, currentScroll - currentScroll / 5);
-            }
-        };
-        window.onscroll = catchScroll;
-    },
-
-    methods: {
-        topClick: function topClick() {
-            window.smoothscroll();
-        }
-    }
-});
-
-/***/ }),
-/* 280 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "backTop"
-  }, [_c('div', {
-    staticClass: "rico write"
-  }, [_c('router-link', {
-    staticClass: "icon iconfont icon-write",
-    attrs: {
-      "to": "/"
-    }
-  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.visible),
-      expression: "visible"
-    }],
-    staticClass: "rico rollback",
-    on: {
-      "click": _vm.topClick
-    }
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-back-to-top"
-  })])])], 1)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico qq"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-qq"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico wechat"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-wechat"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "rico github"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-github"
-  })])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-408b9e38", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
