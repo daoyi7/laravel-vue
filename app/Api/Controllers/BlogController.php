@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Blog;
 use Carbon\Carbon;
 
-class TestController extends Controller
+class BlogController extends Controller
 {
     //
     public function index()

@@ -1,7 +1,7 @@
 <template>
     <div class="backTop">
         <div class="rico write">
-            <router-link to="/" class="icon iconfont icon-write"></router-link>
+            <router-link to="/edit" class="icon iconfont icon-write"></router-link>
         </div>
         <div class="rico qq">
             <i class="icon iconfont icon-qq"></i>
@@ -12,7 +12,7 @@
             <!-- <img src="../../../..//images/wechat.jpg"> -->
         </div>
         <div class="rico github">
-            <i class="icon iconfont icon-github"></i>
+            <a href="https://github.com/daoyi7" target="_blank" class="icon iconfont icon-github"></a>
         </div>
         <transition name="fade">
             <div class="rico rollback" v-show="visible" @click="topClick">

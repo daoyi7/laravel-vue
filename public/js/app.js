@@ -22161,26 +22161,25 @@ Vue.component('passport-clients', __webpack_require__(269));
 
 var app = new Vue({
     el: '#app',
-    router: router,
-    mounted: function mounted() {
-        this.init();
-    },
-
-    methods: {
-        init: function init() {
-            document.addEventListener('visibilitychange', function () {
-                var isHidden = document.hidden;
-                var _title = document.title;
-                console.log(_title);
-
-                if (isHidden) {
-                    document.title = '离开了';
-                } else {
-                    document.title = _title;
-                }
-            });
-        }
-    }
+    router: router
+    // mounted() {
+    //     this.init()
+    // },
+    // methods: {
+    //     init() {
+    //         document.addEventListener('visibilitychange', function() {
+    //             let isHidden = document.hidden
+    //             let _title = document.title
+    //             console.log(_title)
+    //
+    //             if (isHidden) {
+    //                 document.title = '离开了'
+    //             } else {
+    //                 document.title = _title
+    //             }
+    //         });
+    //     }
+    // }
 });
 
 /***/ }),
@@ -39274,7 +39273,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        this.$http.get('http://localhost:8000/api/test').then(function (response) {
+        this.$http.get('http://localhost:8000/api/blog').then(function (response) {
             _this.blogs = response.body.blogs;
         });
     },
@@ -40232,7 +40231,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this2 = this;
 
-        this.$http.get('http://localhost:8000/api/test').then(function (response) {
+        this.$http.get('http://localhost:8000/api/blog').then(function (response) {
             _this2.blogs = response.body.blogs;
         });
     },
@@ -40759,7 +40758,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this2 = this;
 
-        this.$http.get('http://localhost:8000/api/test').then(function (response) {
+        this.$http.get('http://localhost:8000/api/blog').then(function (response) {
             _this2.thinks = response.body.blogs;
         });
     },
@@ -41255,45 +41254,112 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            test: {
+                title: '',
+                intro: ''
+            }
+        };
+    },
+
+    methods: {
+        submit: function submit(event) {
+            event.preventDefault();
+            var formData = JSON.stringify(this.test);
+
+            console.log(formData);
+
+            var config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+
+            this.$http.post('/api/test', formData, config).then(function (res) {
+                if (res.status === 2000) {
+                    /*这里做处理*/
+                }
+            });
+        }
+    }
+});
 
 /***/ }),
 /* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "edit"
   }, [_c('form', {
     staticClass: "edit-form",
     attrs: {
-      "action": "/",
+      "enctype": "multipart/form-data",
       "method": "post"
     }
   }, [_c('div', {
     staticClass: "edit-item title"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.title),
+      expression: "test.title"
+    }],
     staticClass: "title",
     attrs: {
       "type": "text",
-      "name": "",
       "value": "",
       "placeholder": "Blog Title *"
+    },
+    domProps: {
+      "value": (_vm.test.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.title = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "edit-item intro"
   }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.intro),
+      expression: "test.intro"
+    }],
     staticClass: "intro",
     attrs: {
-      "name": "name",
+      "value": "",
       "placeholder": "description"
+    },
+    domProps: {
+      "value": (_vm.test.intro)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.intro = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "edit-item more"
-  })])])
-}]}
+    staticClass: "edit-item submit"
+  }, [_c('button', {
+    attrs: {
+      "type": "button",
+      "name": "submit"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submit($event)
+      }
+    }
+  }, [_vm._v("Submit")])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -44117,7 +44183,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     staticClass: "icon iconfont icon-write",
     attrs: {
-      "to": "/"
+      "to": "/edit"
     }
   })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
     attrs: {
@@ -44152,8 +44218,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "rico github"
-  }, [_c('i', {
-    staticClass: "icon iconfont icon-github"
+  }, [_c('a', {
+    staticClass: "icon iconfont icon-github",
+    attrs: {
+      "href": "https://github.com/daoyi7",
+      "target": "_blank"
+    }
   })])
 }]}
 module.exports.render._withStripped = true

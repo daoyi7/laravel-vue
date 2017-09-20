@@ -1,22 +1,51 @@
 <template>
     <div class="edit">
-        <form class="edit-form" action="/" method="post">
+        <form class="edit-form" enctype="multipart/form-data" method="post">
             <div class="edit-item title">
-                <input class="title" type="text" name="" value="" placeholder="Blog Title *">
+                <input class="title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
             </div>
             <div class="edit-item intro">
-                <textarea class="intro" name="name" placeholder="description"></textarea>
+                <textarea class="intro" v-model="test.intro" value="" placeholder="description"></textarea>
             </div>
-            <div class="edit-item more">
-                
+            <div class="edit-item submit">
+                <button type="button" name="submit" @click="submit($event)">Submit</button>
             </div>
         </form>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-}
+    export default {
+        data() {
+            return {
+                test: {
+                    title: '',
+                    intro: ''
+                }
+            }
+        },
+        methods: {
+            submit: function (event) {
+                event.preventDefault()
+                let formData = JSON.stringify(this.test)
+
+                console.log(formData)
+
+                let config = {
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                }
+
+                this.$http.post('/api/test', formData, config)
+                    .then(function (res) {
+                        if (res.status === 2000) {
+                            /*这里做处理*/
+                        }
+                    })
+            }
+        }
+    }
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
