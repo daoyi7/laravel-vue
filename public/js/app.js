@@ -35456,25 +35456,19 @@ module.exports = swiper
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(138)
-/* template */
-var __vue_template__ = __webpack_require__(139)
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(138),
+  /* template */
+  __webpack_require__(139),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "node_modules\\vue-awesome-swiper\\src\\swiper.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\swiper.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] swiper.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -35587,37 +35581,14 @@ if (browser) window.Swiper = __webpack_require__(6);
 /* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "swiper-container" },
-    [
-      _vm._t("parallax-bg"),
-      _vm._v(" "),
-      _c(
-        "div",
-        { class: _vm.defaultSwiperClasses.wrapperClass },
-        [_vm._t("default")],
-        2
-      ),
-      _vm._v(" "),
-      _vm._t("pagination"),
-      _vm._v(" "),
-      _vm._t("button-prev"),
-      _vm._v(" "),
-      _vm._t("button-next"),
-      _vm._v(" "),
-      _vm._t("scrollbar")
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "swiper-container"
+  }, [_vm._t("parallax-bg"), _vm._v(" "), _c('div', {
+    class: _vm.defaultSwiperClasses.wrapperClass
+  }, [_vm._t("default")], 2), _vm._v(" "), _vm._t("pagination"), _vm._v(" "), _vm._t("button-prev"), _vm._v(" "), _vm._t("button-next"), _vm._v(" "), _vm._t("scrollbar")], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -35630,25 +35601,19 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(141)
-/* template */
-var __vue_template__ = __webpack_require__(142)
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(141),
+  /* template */
+  __webpack_require__(142),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "node_modules\\vue-awesome-swiper\\src\\slide.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\node_modules\\vue-awesome-swiper\\src\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -35722,15 +35687,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.slideClass }, [_vm._t("default")], 2)
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    class: _vm.slideClass
+  }, [_vm._t("default")], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -38674,25 +38636,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(168)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(171)
-/* template */
-var __vue_template__ = __webpack_require__(187)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-bd8cd0e2"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(171),
+  /* template */
+  __webpack_require__(187),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-bd8cd0e2",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\middle.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\middle.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] middle.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38846,25 +38802,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(173)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(175)
-/* template */
-var __vue_template__ = __webpack_require__(176)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-5c41cb65"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(175),
+  /* template */
+  __webpack_require__(176),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-5c41cb65",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Content\\slide.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\slide.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] slide.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38977,50 +38927,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "swiper",
-    { staticClass: "slide-wrap", attrs: { options: _vm.swiperOption } },
-    [
-      _vm._l(_vm.swiperSlides, function(slide, index) {
-        return _c(
-          "swiper-slide",
-          { key: "index", staticClass: "slide-item" },
-          [
-            _c(
-              "router-link",
-              { staticClass: "slide-link", attrs: { to: "/" } },
-              [
-                _c("span", { staticClass: "slide-title" }, [
-                  _vm._v(_vm._s(slide.title))
-                ]),
-                _vm._v(" "),
-                _c("img", {
-                  staticClass: "slide-thumb",
-                  attrs: { src: slide.thumb }
-                })
-              ]
-            )
-          ],
-          1
-        )
-      }),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "swiper-pagination",
-        attrs: { slot: "pagination" },
-        slot: "pagination"
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('swiper', {
+    staticClass: "slide-wrap",
+    attrs: {
+      "options": _vm.swiperOption
+    }
+  }, [_vm._l((_vm.swiperSlides), function(slide, index) {
+    return _c('swiper-slide', {
+      key: "index",
+      staticClass: "slide-item"
+    }, [_c('router-link', {
+      staticClass: "slide-link",
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('span', {
+      staticClass: "slide-title"
+    }, [_vm._v(_vm._s(slide.title))]), _vm._v(" "), _c('img', {
+      staticClass: "slide-thumb",
+      attrs: {
+        "src": slide.thumb
+      }
+    })])], 1)
+  }), _vm._v(" "), _c('div', {
+    staticClass: "swiper-pagination",
+    attrs: {
+      "slot": "pagination"
+    },
+    slot: "pagination"
+  })], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39037,25 +38975,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(178)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(180)
-/* template */
-var __vue_template__ = __webpack_require__(181)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-bc031558"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(180),
+  /* template */
+  __webpack_require__(181),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-bc031558",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Content\\notice.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\notice.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] notice.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39163,54 +39095,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "notice" },
-    [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "swiper",
-        { staticClass: "slide-wrap", attrs: { options: _vm.swiperOption } },
-        _vm._l(_vm.notices, function(notice, index) {
-          return _c(
-            "swiper-slide",
-            { key: "index", staticClass: "slide-item" },
-            [
-              _c(
-                "router-link",
-                { staticClass: "slide-link", attrs: { to: "/" } },
-                [
-                  _c("span", { staticClass: "slide-title" }, [
-                    _vm._v(_vm._s(notice.title))
-                  ])
-                ]
-              )
-            ],
-            1
-          )
-        })
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "icon" }, [
-      _c("i", { staticClass: "icon iconfont icon-gonggao" })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "notice"
+  }, [_vm._m(0), _vm._v(" "), _c('swiper', {
+    staticClass: "slide-wrap",
+    attrs: {
+      "options": _vm.swiperOption
+    }
+  }, _vm._l((_vm.notices), function(notice, index) {
+    return _c('swiper-slide', {
+      key: "index",
+      staticClass: "slide-item"
+    }, [_c('router-link', {
+      staticClass: "slide-link",
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('span', {
+      staticClass: "slide-title"
+    }, [_vm._v(_vm._s(notice.title))])])], 1)
+  }))], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-gonggao"
+  })])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39227,25 +39140,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(183)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(185)
-/* template */
-var __vue_template__ = __webpack_require__(186)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-b9977bc4"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(185),
+  /* template */
+  __webpack_require__(186),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-b9977bc4",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Content\\blog.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Content\\blog.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] blog.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39384,96 +39291,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "blog-wrap" }, [
-    _c(
-      "div",
-      { staticClass: "blog-item" },
-      _vm._l(_vm.blogs, function(blog, index) {
-        return _c("div", { key: "index", staticClass: "blog-module" }, [
-          _c(
-            "div",
-            { staticClass: "thumb" },
-            [
-              _c("router-link", { attrs: { to: "/" } }, [
-                _c("img", { attrs: { src: blog.thumb } })
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "main" }, [
-            _c(
-              "h4",
-              { staticClass: "title" },
-              [
-                _c("router-link", { attrs: { to: "/detail" } }, [
-                  _vm._v(_vm._s(blog.title))
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "info" }, [_vm._v(_vm._s(blog.intro))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "list" }, [
-              _c("p", { staticClass: "list-icon time" }, [
-                _c("i", { staticClass: "icon iconfont icon-clock2" }),
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(_vm._s(_vm._f("tranTime")(blog.published_at)))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon view" }, [
-                _c("i", { staticClass: "icon iconfont icon-view" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(blog.view_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(0, true),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon like" }, [
-                _c("i", { staticClass: "icon iconfont icon-like1" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(blog.like_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(1, true)
-            ])
-          ])
-        ])
-      })
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon comments" }, [
-      _c("i", { staticClass: "icon iconfont icon-iconcomments" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("5")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon tag" }, [
-      _c("i", { staticClass: "icon iconfont icon-tag" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("think")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "blog-wrap"
+  }, [_c('div', {
+    staticClass: "blog-item"
+  }, _vm._l((_vm.blogs), function(blog, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": blog.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v(_vm._s(blog.title))])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v(_vm._s(blog.intro))]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, [_c('p', {
+      staticClass: "list-icon time"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-clock2"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("tranTime")(blog.published_at)))])]), _vm._v(" "), _c('p', {
+      staticClass: "list-icon view"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-view"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.view_counts))])]), _vm._v(" "), _vm._m(0, true), _vm._v(" "), _c('p', {
+      staticClass: "list-icon like"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-like1"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.like_counts))])]), _vm._v(" "), _vm._m(1, true)])])])
+  }))])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-iconcomments"
+  }), _vm._v(" "), _c('span', [_vm._v("5")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon tag"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-tag"
+  }), _vm._v(" "), _c('span', [_vm._v("think")])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39485,20 +39361,12 @@ if (false) {
 /* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "content" },
-    [_c("vslide"), _vm._v(" "), _c("notice"), _vm._v(" "), _c("blog")],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "content"
+  }, [_c('vslide'), _vm._v(" "), _c('notice'), _vm._v(" "), _c('blog')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39515,25 +39383,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(189)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(191)
-/* template */
-var __vue_template__ = __webpack_require__(207)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-d791cf6a"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(191),
+  /* template */
+  __webpack_require__(207),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-d791cf6a",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\detail.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\detail.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] detail.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39653,25 +39515,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(193)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(195)
-/* template */
-var __vue_template__ = __webpack_require__(196)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-4039c456"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(195),
+  /* template */
+  __webpack_require__(196),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-4039c456",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Detail\\content.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\content.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] content.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39777,34 +39633,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "content" }, [
-      _c("h2", { staticClass: "title" }, [
-        _c("span", [_vm._v("This Is A Test Blog")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "main" }, [
-        _c("p", [
-          _vm._v(
-            "\n            Enter/Leave & List Transitions\n\n            Overview\n\n            Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to:\n            automatically apply classes for CSS transitions and animations\n            integrate 3rd-party CSS animation libraries, such as Animate.css\n            use JavaScript to directly manipulate the DOM during transition hooks\n            integrate 3rd-party JavaScript animation libraries, such as Velocity.js\n            On this page, we’ll only cover entering, leaving, and list transitions, but you can see the next section for managing state transitions.\n            Transitioning Single Elements/Components\n\n            Vue provides a transition wrapper component, allowing you to add entering/leaving transitions for any element or component in the following contexts:\n            Conditional rendering (using v-if)\n            Conditional display (using v-show)\n            Dynamic components\n            Component root nodes\n            This is what a very simple example looks like in action:\n        "
-          )
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "content"
+  }, [_c('h2', {
+    staticClass: "title"
+  }, [_c('span', [_vm._v("This Is A Test Blog")])]), _vm._v(" "), _c('div', {
+    staticClass: "main"
+  }, [_c('p', [_vm._v("\n            Enter/Leave & List Transitions\n\n            Overview\n\n            Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to:\n            automatically apply classes for CSS transitions and animations\n            integrate 3rd-party CSS animation libraries, such as Animate.css\n            use JavaScript to directly manipulate the DOM during transition hooks\n            integrate 3rd-party JavaScript animation libraries, such as Velocity.js\n            On this page, we’ll only cover entering, leaving, and list transitions, but you can see the next section for managing state transitions.\n            Transitioning Single Elements/Components\n\n            Vue provides a transition wrapper component, allowing you to add entering/leaving transitions for any element or component in the following contexts:\n            Conditional rendering (using v-if)\n            Conditional display (using v-show)\n            Dynamic components\n            Component root nodes\n            This is what a very simple example looks like in action:\n        ")])])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39821,25 +39661,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(198)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(200)
-/* template */
-var __vue_template__ = __webpack_require__(201)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-1091b76c"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(200),
+  /* template */
+  __webpack_require__(201),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-1091b76c",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Detail\\contentMore.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\contentMore.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] contentMore.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39923,30 +39757,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "more" }, [
-      _c("span", { staticClass: "published" }, [
-        _vm._v("This article published by kawhi")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "update" }, [_vm._v("2017-08-24 16:06:50")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "tag" }, [_vm._v("Blog")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "more"
+  }, [_c('span', {
+    staticClass: "published"
+  }, [_vm._v("This article published by kawhi")]), _vm._v(" "), _c('span', {
+    staticClass: "update"
+  }, [_vm._v("2017-08-24 16:06:50")]), _vm._v(" "), _c('span', {
+    staticClass: "tag"
+  }, [_vm._v("Blog")])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -39963,25 +39787,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(203)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(205)
-/* template */
-var __vue_template__ = __webpack_require__(206)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-747674bb"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(205),
+  /* template */
+  __webpack_require__(206),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-747674bb",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Detail\\comment.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Detail\\comment.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] comment.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40132,156 +39950,117 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "comment" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "wrap" }, [
-      _c("div", { staticClass: "item" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _c("div", { staticClass: "main" }, [
-          _c("div", { staticClass: "text" }, [
-            _c(
-              "div",
-              { staticClass: "text-apply" },
-              [
-                _c("span", [_vm._v("回复")]),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  { staticClass: "apply-floor", attrs: { to: "" } },
-                  [_vm._v("#1")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  { staticClass: "apply-name", attrs: { to: "" } },
-                  [_vm._v("@kawhi:")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _vm._m(3)
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "more" })
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(4)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "head" }, [
-      _c("div", { staticClass: "type" }, [
-        _c("span", { staticClass: "comments" }, [
-          _c("i", { staticClass: "icon iconfont icon-comment" }),
-          _vm._v("\n                0条评论\n            ")
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "likes" }, [
-          _c("i", { staticClass: "icon iconfont icon-like1" }),
-          _vm._v("\n                6人点赞\n            ")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "avatar" }, [
-      _c("img", { attrs: { src: "/images/avatar.jpg" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "info" }, [
-      _c("span", { staticClass: "name" }, [_vm._v("kawhi")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "system" }, [
-        _c("i", { staticClass: "icon iconfont icon-win" }),
-        _vm._v("\n                    windows\n                ")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "explore" }, [
-        _c("i", { staticClass: "icon iconfont icon-chrome" }),
-        _vm._v("\n                    chrome\n                ")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "address" }, [
-        _c("i", { staticClass: "icon iconfont icon-address" }),
-        _vm._v("\n                    china\n                ")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "floor" }, [_vm._v("#1")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "apply" }, [
-      _c("div", [
-        _vm._v(
-          "\n                            你这篇文章写得真是太好了\n                        "
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "submit" }, [
-      _c("img", {
-        staticClass: "default-avatar",
-        attrs: { src: "/images/avatar.jpg" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "submit-form" }, [
-        _c("div", { staticClass: "apply-info" }, [
-          _c("input", {
-            staticClass: "applyname",
-            attrs: { placeholder: "name *", type: "text" }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "applyemail",
-            attrs: { placeholder: "email *", type: "text" }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "applyskill",
-            attrs: { placeholder: "java C++ javascript php", type: "text" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "apply-to" }, [
-          _c("div", { staticClass: "apply" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "apply-content" })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "comment"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "wrap"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "main"
+  }, [_c('div', {
+    staticClass: "text"
+  }, [_c('div', {
+    staticClass: "text-apply"
+  }, [_c('span', [_vm._v("回复")]), _vm._v(" "), _c('router-link', {
+    staticClass: "apply-floor",
+    attrs: {
+      "to": ""
+    }
+  }, [_vm._v("#1")]), _vm._v(" "), _c('router-link', {
+    staticClass: "apply-name",
+    attrs: {
+      "to": ""
+    }
+  }, [_vm._v("@kawhi:")])], 1), _vm._v(" "), _vm._m(3)])]), _vm._v(" "), _c('div', {
+    staticClass: "more"
+  })])]), _vm._v(" "), _vm._m(4)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "head"
+  }, [_c('div', {
+    staticClass: "type"
+  }, [_c('span', {
+    staticClass: "comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-comment"
+  }), _vm._v("\n                0条评论\n            ")]), _vm._v(" "), _c('span', {
+    staticClass: "likes"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-like1"
+  }), _vm._v("\n                6人点赞\n            ")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "avatar"
+  }, [_c('img', {
+    attrs: {
+      "src": "/images/avatar.jpg"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "info"
+  }, [_c('span', {
+    staticClass: "name"
+  }, [_vm._v("kawhi")]), _vm._v(" "), _c('span', {
+    staticClass: "system"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-win"
+  }), _vm._v("\n                    windows\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "explore"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-chrome"
+  }), _vm._v("\n                    chrome\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "address"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-address"
+  }), _vm._v("\n                    china\n                ")]), _vm._v(" "), _c('span', {
+    staticClass: "floor"
+  }, [_vm._v("#1")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "apply"
+  }, [_c('div', [_vm._v("\n                            你这篇文章写得真是太好了\n                        ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "submit"
+  }, [_c('img', {
+    staticClass: "default-avatar",
+    attrs: {
+      "src": "/images/avatar.jpg"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "submit-form"
+  }, [_c('div', {
+    staticClass: "apply-info"
+  }, [_c('input', {
+    staticClass: "applyname",
+    attrs: {
+      "placeholder": "name *",
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('input', {
+    staticClass: "applyemail",
+    attrs: {
+      "placeholder": "email *",
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('input', {
+    staticClass: "applyskill",
+    attrs: {
+      "placeholder": "java C++ javascript php",
+      "type": "text"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "apply-to"
+  }, [_c('div', {
+    staticClass: "apply"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "apply-content"
+  })])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -40293,20 +40072,12 @@ if (false) {
 /* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "detail" },
-    [_c("vcontent"), _vm._v(" "), _c("more"), _vm._v(" "), _c("comment")],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "detail"
+  }, [_c('vcontent'), _vm._v(" "), _c('more'), _vm._v(" "), _c('comment')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -40323,25 +40094,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(209)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(211)
-/* template */
-var __vue_template__ = __webpack_require__(212)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-1ae1a0c8"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(211),
+  /* template */
+  __webpack_require__(212),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-1ae1a0c8",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\blog.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\blog.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] blog.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40527,114 +40292,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "blog" },
-    [
-      _c("div", { staticClass: "head" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("p", {
-          staticClass: "slogan",
-          domProps: { textContent: _vm._s(_vm.slogan) }
-        })
-      ]),
-      _vm._v(" "),
-      _vm._l(_vm.blogs, function(blog, index) {
-        return _c("div", { key: "index", staticClass: "blog-module" }, [
-          _c(
-            "div",
-            { staticClass: "thumb" },
-            [
-              _c("router-link", { attrs: { to: "/" } }, [
-                _c("img", { attrs: { src: blog.thumb } })
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "main" }, [
-            _c(
-              "h4",
-              { staticClass: "title" },
-              [
-                _c("router-link", { attrs: { to: "/detail" } }, [
-                  _vm._v(_vm._s(blog.title))
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "info" }, [_vm._v(_vm._s(blog.intro))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "list" }, [
-              _c("p", { staticClass: "list-icon time" }, [
-                _c("i", { staticClass: "icon iconfont icon-clock2" }),
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(_vm._s(_vm._f("tranTime")(blog.published_at)))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon view" }, [
-                _c("i", { staticClass: "icon iconfont icon-view" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(blog.view_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(1, true),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon like" }, [
-                _c("i", { staticClass: "icon iconfont icon-like1" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(blog.like_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(2, true)
-            ])
-          ])
-        ])
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "head-icon" }, [
-      _c("i", { staticClass: "icon iconfont icon-read" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon comments" }, [
-      _c("i", { staticClass: "icon iconfont icon-iconcomments" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("5")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon tag" }, [
-      _c("i", { staticClass: "icon iconfont icon-tag" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("think")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "blog"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_vm._m(0), _vm._v(" "), _c('p', {
+    staticClass: "slogan",
+    domProps: {
+      "textContent": _vm._s(_vm.slogan)
+    }
+  })]), _vm._v(" "), _vm._l((_vm.blogs), function(blog, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": blog.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v(_vm._s(blog.title))])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v(_vm._s(blog.intro))]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, [_c('p', {
+      staticClass: "list-icon time"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-clock2"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("tranTime")(blog.published_at)))])]), _vm._v(" "), _c('p', {
+      staticClass: "list-icon view"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-view"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.view_counts))])]), _vm._v(" "), _vm._m(1, true), _vm._v(" "), _c('p', {
+      staticClass: "list-icon like"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-like1"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(blog.like_counts))])]), _vm._v(" "), _vm._m(2, true)])])])
+  })], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-iconcomments"
+  }), _vm._v(" "), _c('span', [_vm._v("5")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon tag"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-tag"
+  }), _vm._v(" "), _c('span', [_vm._v("think")])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -40651,25 +40378,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(214)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(216)
-/* template */
-var __vue_template__ = __webpack_require__(217)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-3778a78f"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(216),
+  /* template */
+  __webpack_require__(217),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-3778a78f",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\project.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\project.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] project.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40788,50 +40509,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "project" },
-    _vm._l(_vm.repos, function(repo, index) {
-      return _c("div", { key: "index", staticClass: "item" }, [
-        _c("a", { attrs: { href: repo.html_url } }, [
-          _c("div", { staticClass: "thumb" }, [
-            _c("i", {
-              staticClass: "icon iconfont",
-              class: ["icon-" + repo.language]
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "content" }, [
-            _c("h3", { staticClass: "title" }, [_vm._v(_vm._s(repo.name))]),
-            _vm._v(" "),
-            _c("p", { staticClass: "description" }, [
-              _vm._v(_vm._s(repo.description))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "info" }, [
-              _c("span", { staticClass: "star" }, [
-                _c("i", { staticClass: "icon iconfont icon-star-full" }),
-                _vm._v(_vm._s(repo.stargazers_count))
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "fork" }, [
-                _c("i", { staticClass: "icon iconfont icon-fork" }),
-                _vm._v(_vm._s(repo.forks_count))
-              ])
-            ])
-          ])
-        ])
-      ])
-    })
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "project"
+  }, _vm._l((_vm.repos), function(repo, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "item"
+    }, [_c('a', {
+      attrs: {
+        "href": repo.html_url
+      }
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('i', {
+      staticClass: "icon iconfont",
+      class: ['icon-' + repo.language]
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "content"
+    }, [_c('h3', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(repo.name))]), _vm._v(" "), _c('p', {
+      staticClass: "description"
+    }, [_vm._v(_vm._s(repo.description))]), _vm._v(" "), _c('div', {
+      staticClass: "info"
+    }, [_c('span', {
+      staticClass: "star"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-star-full"
+    }), _vm._v(_vm._s(repo.stargazers_count))]), _vm._v(" "), _c('span', {
+      staticClass: "fork"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-fork"
+    }), _vm._v(_vm._s(repo.forks_count))])])])])])
+  }))
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -40848,25 +40561,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(219)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(221)
-/* template */
-var __vue_template__ = __webpack_require__(222)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-032d6730"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(221),
+  /* template */
+  __webpack_require__(222),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-032d6730",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\think.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\think.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] think.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41069,114 +40776,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "think" },
-    [
-      _c("div", { staticClass: "head" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("p", {
-          staticClass: "slogan",
-          domProps: { textContent: _vm._s(_vm.slogan) }
-        })
-      ]),
-      _vm._v(" "),
-      _vm._l(_vm.thinks, function(think, index) {
-        return _c("div", { key: "index", staticClass: "blog-module" }, [
-          _c(
-            "div",
-            { staticClass: "thumb" },
-            [
-              _c("router-link", { attrs: { to: "/" } }, [
-                _c("img", { attrs: { src: think.thumb } })
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "main" }, [
-            _c(
-              "h4",
-              { staticClass: "title" },
-              [
-                _c("router-link", { attrs: { to: "/detail" } }, [
-                  _vm._v(_vm._s(think.title))
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "info" }, [_vm._v(_vm._s(think.intro))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "list" }, [
-              _c("p", { staticClass: "list-icon time" }, [
-                _c("i", { staticClass: "icon iconfont icon-clock2" }),
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(_vm._s(_vm._f("tranTime")(think.published_at)))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon view" }, [
-                _c("i", { staticClass: "icon iconfont icon-view" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(think.view_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(1, true),
-              _vm._v(" "),
-              _c("p", { staticClass: "list-icon like" }, [
-                _c("i", { staticClass: "icon iconfont icon-like1" }),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(think.like_counts))])
-              ]),
-              _vm._v(" "),
-              _vm._m(2, true)
-            ])
-          ])
-        ])
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "head-icon" }, [
-      _c("i", { staticClass: "icon iconfont icon-read" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon comments" }, [
-      _c("i", { staticClass: "icon iconfont icon-iconcomments" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("5")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "list-icon tag" }, [
-      _c("i", { staticClass: "icon iconfont icon-tag" }),
-      _vm._v(" "),
-      _c("span", [_vm._v("think")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "think"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_vm._m(0), _vm._v(" "), _c('p', {
+    staticClass: "slogan",
+    domProps: {
+      "textContent": _vm._s(_vm.slogan)
+    }
+  })]), _vm._v(" "), _vm._l((_vm.thinks), function(think, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "blog-module"
+    }, [_c('div', {
+      staticClass: "thumb"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": think.thumb
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "main"
+    }, [_c('h4', {
+      staticClass: "title"
+    }, [_c('router-link', {
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v(_vm._s(think.title))])], 1), _vm._v(" "), _c('p', {
+      staticClass: "info"
+    }, [_vm._v(_vm._s(think.intro))]), _vm._v(" "), _c('div', {
+      staticClass: "list"
+    }, [_c('p', {
+      staticClass: "list-icon time"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-clock2"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("tranTime")(think.published_at)))])]), _vm._v(" "), _c('p', {
+      staticClass: "list-icon view"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-view"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(think.view_counts))])]), _vm._v(" "), _vm._m(1, true), _vm._v(" "), _c('p', {
+      staticClass: "list-icon like"
+    }, [_c('i', {
+      staticClass: "icon iconfont icon-like1"
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s(think.like_counts))])]), _vm._v(" "), _vm._m(2, true)])])])
+  })], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon comments"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-iconcomments"
+  }), _vm._v(" "), _c('span', [_vm._v("5")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "list-icon tag"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-tag"
+  }), _vm._v(" "), _c('span', [_vm._v("think")])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -41193,25 +40862,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(224)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(226)
-/* template */
-var __vue_template__ = __webpack_require__(227)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-5037b4fa"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(226),
+  /* template */
+  __webpack_require__(227),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-5037b4fa",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\about.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\about.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] about.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41418,119 +41081,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "about" }, [
-    _c("div", { staticClass: "head" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("p", {
-        staticClass: "slogan",
-        domProps: { textContent: _vm._s(_vm.slogan) }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "resume" }, [
-      _c("div", { staticClass: "name" }, [
-        _c("h2", [
-          _vm._v(
-            "\n                " + _vm._s(_vm.name) + "\n                "
-          ),
-          _c("span", [_vm._v(_vm._s(_vm.ename))])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "contact" }, [
-        _c("div", { staticClass: "item  tel" }, [
-          _c("p", [_vm._v(_vm._s(_vm.phone))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "item email" }, [
-          _c("p", [_vm._v(_vm._s(_vm.email))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "item wechat" }, [
-          _c("p", [_vm._v(_vm._s(_vm.wechat))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "item  job" }, [
-          _c("p", [_vm._v(_vm._s(_vm.job))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "item  pay" }, [
-          _c("p", [_vm._v(_vm._s(_vm.pay))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "item  pay" }, [
-          _c(
-            "p",
-            [
-              _c(
-                "router-link",
-                { attrs: { to: "https://github.com/daoyi7" } },
-                [_vm._v(_vm._s(_vm.github))]
-              )
-            ],
-            1
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "experience" }, [
-        _c("h2", [_vm._v("工作经历")]),
-        _vm._v(" "),
-        _c(
-          "ul",
-          _vm._l(_vm.exps, function(exp, index) {
-            return _c("li", { key: "index" }, [
-              _c("section", { staticClass: "exp" }, [
-                _c("h4", [
-                  _vm._v(_vm._s(exp.co)),
-                  _c("span", { staticClass: "time" }, [
-                    _vm._v(_vm._s(exp.time))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("article", { staticClass: "exp_content" }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(exp.content) +
-                      "\n                        "
-                  )
-                ])
-              ])
-            ])
-          })
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "skill" }, [
-        _c("h2", [_vm._v("技能")]),
-        _vm._v(" "),
-        _c(
-          "ul",
-          _vm._l(_vm.skills, function(skill, index) {
-            return _c("li", { key: "index" }, [_vm._v(_vm._s(skill.item))])
-          })
-        )
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "head-icon" }, [
-      _c("i", { staticClass: "icon iconfont icon-read" })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "about"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_vm._m(0), _vm._v(" "), _c('p', {
+    staticClass: "slogan",
+    domProps: {
+      "textContent": _vm._s(_vm.slogan)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "resume"
+  }, [_c('div', {
+    staticClass: "name"
+  }, [_c('h2', [_vm._v("\n                " + _vm._s(_vm.name) + "\n                "), _c('span', [_vm._v(_vm._s(_vm.ename))])])]), _vm._v(" "), _c('div', {
+    staticClass: "contact"
+  }, [_c('div', {
+    staticClass: "item  tel"
+  }, [_c('p', [_vm._v(_vm._s(_vm.phone))])]), _vm._v(" "), _c('div', {
+    staticClass: "item email"
+  }, [_c('p', [_vm._v(_vm._s(_vm.email))])]), _vm._v(" "), _c('div', {
+    staticClass: "item wechat"
+  }, [_c('p', [_vm._v(_vm._s(_vm.wechat))])]), _vm._v(" "), _c('div', {
+    staticClass: "item  job"
+  }, [_c('p', [_vm._v(_vm._s(_vm.job))])]), _vm._v(" "), _c('div', {
+    staticClass: "item  pay"
+  }, [_c('p', [_vm._v(_vm._s(_vm.pay))])]), _vm._v(" "), _c('div', {
+    staticClass: "item  pay"
+  }, [_c('p', [_c('router-link', {
+    attrs: {
+      "to": "https://github.com/daoyi7"
+    }
+  }, [_vm._v(_vm._s(_vm.github))])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "experience"
+  }, [_c('h2', [_vm._v("工作经历")]), _vm._v(" "), _c('ul', _vm._l((_vm.exps), function(exp, index) {
+    return _c('li', {
+      key: "index"
+    }, [_c('section', {
+      staticClass: "exp"
+    }, [_c('h4', [_vm._v(_vm._s(exp.co)), _c('span', {
+      staticClass: "time"
+    }, [_vm._v(_vm._s(exp.time))])]), _vm._v(" "), _c('article', {
+      staticClass: "exp_content"
+    }, [_vm._v("\n                            " + _vm._s(exp.content) + "\n                        ")])])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "skill"
+  }, [_c('h2', [_vm._v("技能")]), _vm._v(" "), _c('ul', _vm._l((_vm.skills), function(skill, index) {
+    return _c('li', {
+      key: "index"
+    }, [_vm._v(_vm._s(skill.item))])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "head-icon"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-read"
+  })])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -41547,25 +41156,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(229)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(231)
-/* template */
-var __vue_template__ = __webpack_require__(232)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-797afa04"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(231),
+  /* template */
+  __webpack_require__(232),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-797afa04",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\edit.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\edit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41650,13 +41253,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             test: {
                 title: '',
-                intro: ''
+                intro: '',
+                content: '',
+                like_counts: '',
+                view_counts: '',
+                is_hide: false,
+                published_at: ''
             }
         };
     },
@@ -41668,15 +41288,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             };
 
             this.$http.post('/api/blog', formData, config).then(function (res) {
-                if (res.status === 2000) {
-                    /*这里做处理*/
-                    console.log(res);
-                }
+                /**写你的操作函数**/
+                // console.log(res)
+            }).catch(function (error) {
+                throw new Error(error.response.data.error);
             });
         }
     }
@@ -41686,87 +41306,171 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "edit" }, [
-    _c(
-      "form",
-      {
-        staticClass: "edit-form",
-        attrs: { enctype: "multipart/form-data", method: "post" }
-      },
-      [
-        _c("div", { staticClass: "edit-item title" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.test.title,
-                expression: "test.title"
-              }
-            ],
-            staticClass: "title",
-            attrs: { type: "text", value: "", placeholder: "Blog Title *" },
-            domProps: { value: _vm.test.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.test.title = $event.target.value
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "edit-item intro" }, [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.test.intro,
-                expression: "test.intro"
-              }
-            ],
-            staticClass: "intro",
-            attrs: { value: "", placeholder: "description" },
-            domProps: { value: _vm.test.intro },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.test.intro = $event.target.value
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "edit-item submit" }, [
-          _c(
-            "button",
-            {
-              attrs: { type: "button", name: "submit" },
-              on: {
-                click: function($event) {
-                  _vm.submit($event)
-                }
-              }
-            },
-            [_vm._v("Submit")]
-          )
-        ])
-      ]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "edit"
+  }, [_c('form', {
+    staticClass: "edit-form",
+    attrs: {
+      "method": "post"
+    }
+  }, [_c('div', {
+    staticClass: "edit-item title"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.title),
+      expression: "test.title"
+    }],
+    staticClass: "input_title",
+    attrs: {
+      "type": "text",
+      "value": "",
+      "placeholder": "Blog Title *"
+    },
+    domProps: {
+      "value": (_vm.test.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.title = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item intro"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.intro),
+      expression: "test.intro"
+    }],
+    staticClass: "input_intro",
+    attrs: {
+      "value": "",
+      "placeholder": "description"
+    },
+    domProps: {
+      "value": (_vm.test.intro)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.intro = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item content"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.content),
+      expression: "test.content"
+    }],
+    staticClass: "input_content",
+    attrs: {
+      "value": "",
+      "placeholder": "Content"
+    },
+    domProps: {
+      "value": (_vm.test.content)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.content = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item like_counts"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.like_counts),
+      expression: "test.like_counts"
+    }],
+    staticClass: "input_like_counts",
+    attrs: {
+      "type": "text",
+      "value": "",
+      "placeholder": "like_counts"
+    },
+    domProps: {
+      "value": (_vm.test.like_counts)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.like_counts = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item view_counts"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.view_counts),
+      expression: "test.view_counts"
+    }],
+    staticClass: "input_view_counts",
+    attrs: {
+      "type": "text",
+      "value": "",
+      "placeholder": "view_counts"
+    },
+    domProps: {
+      "value": (_vm.test.view_counts)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.view_counts = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item published_at"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.test.published_at),
+      expression: "test.published_at"
+    }],
+    staticClass: "input_published_at",
+    attrs: {
+      "type": "date",
+      "value": "",
+      "placeholder": "published_at"
+    },
+    domProps: {
+      "value": (_vm.test.published_at)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.test.published_at = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "edit-item submit"
+  }, [_c('button', {
+    attrs: {
+      "type": "button",
+      "name": "submit"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submit($event)
+      }
+    }
+  }, [_vm._v("Submit")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -41783,25 +41487,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(234)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(236)
-/* template */
-var __vue_template__ = __webpack_require__(268)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-d0b61cd2"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(236),
+  /* template */
+  __webpack_require__(268),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-d0b61cd2",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\app.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\app.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41911,25 +41609,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(238)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(240)
-/* template */
-var __vue_template__ = __webpack_require__(241)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-5e761eed"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(240),
+  /* template */
+  __webpack_require__(241),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-5e761eed",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Main\\header.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\header.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42016,34 +41708,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("header", { staticClass: "header" }, [
-    _c("div", { staticClass: "header-wrap" }, [
-      _c(
-        "nav",
-        { staticClass: "header-nav" },
-        [
-          _c(
-            "router-link",
-            { staticClass: "header-link", attrs: { to: "/" } },
-            [_vm._v("kawhi.me")]
-          ),
-          _vm._v(" "),
-          _c("span", { staticClass: "motto" }, [
-            _vm._v('" I Can do all things "')
-          ])
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('header', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "header-wrap"
+  }, [_c('nav', {
+    staticClass: "header-nav"
+  }, [_c('router-link', {
+    staticClass: "header-link",
+    attrs: {
+      "to": "/"
+    }
+  }, [_vm._v("kawhi.me")]), _vm._v(" "), _c('span', {
+    staticClass: "motto"
+  }, [_vm._v("\" I Can do all things \"")])], 1)])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -42060,25 +41741,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(243)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(245)
-/* template */
-var __vue_template__ = __webpack_require__(256)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-20703e19"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(245),
+  /* template */
+  __webpack_require__(256),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-20703e19",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Main\\main.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\main.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42181,25 +41856,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(247)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(249)
-/* template */
-var __vue_template__ = __webpack_require__(250)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-380ec21a"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(249),
+  /* template */
+  __webpack_require__(250),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-380ec21a",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Main\\nav.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42314,40 +41983,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("nav", { staticClass: "nav" }, [
-    _c(
-      "div",
-      { staticClass: "nav-wrap" },
-      _vm._l(_vm.navs, function(nav, index) {
-        return _c(
-          "div",
-          { key: "index", staticClass: "nav-item" },
-          [
-            _c(
-              "router-link",
-              { staticClass: "nav-link", attrs: { to: nav.url } },
-              [
-                _c("i", { class: nav.icon }),
-                _vm._v(" "),
-                _c("span", { staticClass: "nav-text" }, [
-                  _vm._v(_vm._s(nav.name))
-                ])
-              ]
-            )
-          ],
-          1
-        )
-      })
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('nav', {
+    staticClass: "nav"
+  }, [_c('div', {
+    staticClass: "nav-wrap"
+  }, _vm._l((_vm.navs), function(nav, index) {
+    return _c('div', {
+      key: "index",
+      staticClass: "nav-item"
+    }, [_c('router-link', {
+      staticClass: "nav-link",
+      attrs: {
+        "to": nav.url
+      }
+    }, [_c('i', {
+      class: nav.icon
+    }), _vm._v(" "), _c('span', {
+      staticClass: "nav-text"
+    }, [_vm._v(_vm._s(nav.name))])])], 1)
+  }))])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -42364,25 +42021,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(252)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(254)
-/* template */
-var __vue_template__ = __webpack_require__(255)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-bcb17528"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(254),
+  /* template */
+  __webpack_require__(255),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-bcb17528",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\Home\\Main\\right.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Home\\Main\\right.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] right.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42516,66 +42167,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "right" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "hot-reads" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "ul",
-        _vm._l(_vm.hots, function(hot, index) {
-          return _c(
-            "li",
-            { key: "index", staticClass: "hot-list" },
-            [
-              _c("span", { staticClass: "hot-num" }, [_vm._v(_vm._s(hot.num))]),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                { staticClass: "hot-title", attrs: { to: "/detail" } },
-                [_vm._v(_vm._s(hot.title))]
-              )
-            ],
-            1
-          )
-        })
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "search-box" }, [
-      _c("input", {
-        staticClass: "search-text",
-        attrs: { type: "text", placeholder: "Search your want..." }
-      }),
-      _c("button", { staticClass: "search-submit" }, [
-        _c("i", { staticClass: "icon iconfont icon-icon19" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h2", { staticClass: "hot-all" }, [
-      _c("i", { staticClass: "icon iconfont icon-list1" }),
-      _vm._v(" "),
-      _c("span", { staticClass: "hot-all-text" }, [_vm._v("热门文章")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "right"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "hot-reads"
+  }, [_vm._m(1), _vm._v(" "), _c('ul', _vm._l((_vm.hots), function(hot, index) {
+    return _c('li', {
+      key: "index",
+      staticClass: "hot-list"
+    }, [_c('span', {
+      staticClass: "hot-num"
+    }, [_vm._v(_vm._s(hot.num))]), _vm._v(" "), _c('router-link', {
+      staticClass: "hot-title",
+      attrs: {
+        "to": "/detail"
+      }
+    }, [_vm._v(_vm._s(hot.title))])], 1)
+  }))])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "search-box"
+  }, [_c('input', {
+    staticClass: "search-text",
+    attrs: {
+      "type": "text",
+      "placeholder": "Search your want..."
+    }
+  }), _c('button', {
+    staticClass: "search-submit"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-icon19"
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('h2', {
+    staticClass: "hot-all"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-list1"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "hot-all-text"
+  }, [_vm._v("热门文章")])])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -42587,26 +42220,16 @@ if (false) {
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "main",
-    { staticClass: "main" },
-    [
-      _c("vnav"),
-      _vm._v(" "),
-      _c("right"),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [_c("router-view")], 1)
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('main', {
+    staticClass: "main"
+  }, [_c('vnav'), _vm._v(" "), _c('right'), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('router-view')], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -42623,25 +42246,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(258)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(260)
-/* template */
-var __vue_template__ = __webpack_require__(262)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-77cbdda8"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(260),
+  /* template */
+  __webpack_require__(262),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-77cbdda8",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\background.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\background.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] background.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -44479,38 +44096,33 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
 /* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "bg-canvas" }, [
-    _c("div", { staticClass: "bg-img" }),
-    _vm._v(" "),
-    _c("div", {
-      attrs: {
-        id: "bg",
-        color: _vm.color,
-        particleOpacity: _vm.particleOpacity,
-        linesColor: _vm.linesColor,
-        particlesNumber: _vm.particlesNumber,
-        shapeType: _vm.shapeType,
-        particleSize: _vm.particleSize,
-        linesWidth: _vm.linesWidth,
-        lineLinked: _vm.lineLinked,
-        lineOpacity: _vm.lineOpacity,
-        linesDistance: _vm.linesDistance,
-        moveSpeed: _vm.moveSpeed,
-        hoverEffect: _vm.hoverEffect,
-        hoverMode: _vm.hoverMode,
-        clickEffect: _vm.clickEffect,
-        clickMode: _vm.clickMode
-      }
-    })
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "bg-canvas"
+  }, [_c('div', {
+    staticClass: "bg-img"
+  }), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "bg",
+      "color": _vm.color,
+      "particleOpacity": _vm.particleOpacity,
+      "linesColor": _vm.linesColor,
+      "particlesNumber": _vm.particlesNumber,
+      "shapeType": _vm.shapeType,
+      "particleSize": _vm.particleSize,
+      "linesWidth": _vm.linesWidth,
+      "lineLinked": _vm.lineLinked,
+      "lineOpacity": _vm.lineOpacity,
+      "linesDistance": _vm.linesDistance,
+      "moveSpeed": _vm.moveSpeed,
+      "hoverEffect": _vm.hoverEffect,
+      "hoverMode": _vm.hoverMode,
+      "clickEffect": _vm.clickEffect,
+      "clickMode": _vm.clickMode
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -44527,25 +44139,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(264)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(266)
-/* template */
-var __vue_template__ = __webpack_require__(267)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-408b9e38"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(266),
+  /* template */
+  __webpack_require__(267),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-408b9e38",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\backTop.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\backTop.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] backTop.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -44603,7 +44209,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n@keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-408b9e38] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-408b9e38], .backTop .fade-leave-active[data-v-408b9e38] {\n    transition: opacity .5s linear;\n}\n.backTop .fade-enter[data-v-408b9e38], .backTop .fade-leave-to[data-v-408b9e38] {\n    opacity: 0;\n}\n.backTop .rico[data-v-408b9e38] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-408b9e38] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-408b9e38] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-408b9e38] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-408b9e38]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-408b9e38]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-408b9e38]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38]:hover {\n        animation: iconmove-data-v-408b9e38 1s infinite;\n}\n.backTop .rico img[data-v-408b9e38] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
+exports.push([module.i, "\n@keyframes iconmove-data-v-408b9e38 {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n@-webkit-keyframes iconmove {\n0% {\n    transform: translateY(0.15em);\n}\n50% {\n    transform: translateY(-0.15em);\n}\n100% {\n    transform: translateY(0.15em);\n}\n}\n.backTop[data-v-408b9e38] {\n  position: fixed;\n  bottom: 5em;\n  right: 2em;\n  width: 3em;\n  height: auto;\n  background: #fff;\n}\n.backTop .fade-enter-active[data-v-408b9e38], .backTop .fade-leave-active[data-v-408b9e38] {\n    transition: opacity .5s linear;\n}\n.backTop .fade-enter[data-v-408b9e38], .backTop .fade-leave-to[data-v-408b9e38] {\n    opacity: 0;\n}\n.backTop .rico[data-v-408b9e38] {\n    position: relative;\n    width: 100%;\n    height: 3em;\n    text-align: center;\n    line-height: 3em;\n    border-bottom: 1px solid #eee;\n}\n.backTop .rico:hover img[data-v-408b9e38] {\n      visibility: visible;\n}\n.backTop .rico .icon[data-v-408b9e38] {\n      color: #8e8e8e;\n      cursor: pointer;\n      display: inline-block;\n      transform: translateY(0);\n}\n.backTop .rico .icon.icon-write[data-v-408b9e38] {\n        font-size: 1.3em;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38] {\n        font-size: 2.2em;\n        color: #6b6b6b;\n}\n.backTop .rico .icon.icon-qq[data-v-408b9e38]:hover {\n        color: #0086f1;\n}\n.backTop .rico .icon.icon-wechat[data-v-408b9e38]:hover {\n        color: #2ba245;\n}\n.backTop .rico .icon.icon-github[data-v-408b9e38]:hover {\n        color: #00030d;\n}\n.backTop .rico .icon.icon-back-to-top[data-v-408b9e38]:hover {\n        animation: iconmove-data-v-408b9e38 1s infinite;\n}\n.backTop .rico img[data-v-408b9e38] {\n      width: 200%;\n      height: 200%;\n}\n", ""]);
 
 // exports
 
@@ -44679,85 +44285,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "backTop" },
-    [
-      _c(
-        "div",
-        { staticClass: "rico write" },
-        [
-          _c("router-link", {
-            staticClass: "icon iconfont icon-write",
-            attrs: { to: "/edit" }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _vm._m(2),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.visible,
-                expression: "visible"
-              }
-            ],
-            staticClass: "rico rollback",
-            on: { click: _vm.topClick }
-          },
-          [_c("i", { staticClass: "icon iconfont icon-back-to-top" })]
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "rico qq" }, [
-      _c("i", { staticClass: "icon iconfont icon-qq" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "rico wechat" }, [
-      _c("i", { staticClass: "icon iconfont icon-wechat" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "rico github" }, [
-      _c("a", {
-        staticClass: "icon iconfont icon-github",
-        attrs: { href: "https://github.com/daoyi7", target: "_blank" }
-      })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "backTop"
+  }, [_c('div', {
+    staticClass: "rico write"
+  }, [_c('router-link', {
+    staticClass: "icon iconfont icon-write",
+    attrs: {
+      "to": "/edit"
+    }
+  })], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.visible),
+      expression: "visible"
+    }],
+    staticClass: "rico rollback",
+    on: {
+      "click": _vm.topClick
+    }
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-back-to-top"
+  })])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico qq"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-qq"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico wechat"
+  }, [_c('i', {
+    staticClass: "icon iconfont icon-wechat"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "rico github"
+  }, [_c('a', {
+    staticClass: "icon iconfont icon-github",
+    attrs: {
+      "href": "https://github.com/daoyi7",
+      "target": "_blank"
+    }
+  })])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -44769,28 +44348,12 @@ if (false) {
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "kawhi" },
-    [
-      _c("background"),
-      _vm._v(" "),
-      _c("vheader"),
-      _vm._v(" "),
-      _c("vmain"),
-      _vm._v(" "),
-      _c("top")
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "kawhi"
+  }, [_c('background'), _vm._v(" "), _c('vheader'), _vm._v(" "), _c('vmain'), _vm._v(" "), _c('top')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -44807,25 +44370,19 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(270)
 }
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(272)
-/* template */
-var __vue_template__ = __webpack_require__(273)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-73346565"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(272),
+  /* template */
+  __webpack_require__(273),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-73346565",
+  /* moduleIdentifier (server only) */
+  null
 )
-Component.options.__file = "resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -45260,530 +44817,307 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "panel panel-default" }, [
-      _c("div", { staticClass: "panel-heading" }, [
-        _c(
-          "div",
-          {
-            staticStyle: {
-              display: "flex",
-              "justify-content": "space-between",
-              "align-items": "center"
-            }
-          },
-          [
-            _c("span", [
-              _vm._v("\n                    OAuth Clients\n                ")
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "action-link",
-                on: { click: _vm.showCreateClientForm }
-              },
-              [
-                _vm._v(
-                  "\n                    Create New Client\n                "
-                )
-              ]
-            )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
-        _vm.clients.length === 0
-          ? _c("p", { staticClass: "m-b-none" }, [
-              _vm._v(
-                "\n                You have not created any OAuth clients.\n            "
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.clients.length > 0
-          ? _c("table", { staticClass: "table table-borderless m-b-none" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.clients, function(client) {
-                  return _c("tr", [
-                    _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(client.id) +
-                          "\n                        "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(client.name) +
-                          "\n                        "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-                      _c("code", [_vm._v(_vm._s(client.secret))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "action-link",
-                          on: {
-                            click: function($event) {
-                              _vm.edit(client)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                Edit\n                            "
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "action-link text-danger",
-                          on: {
-                            click: function($event) {
-                              _vm.destroy(client)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                Delete\n                            "
-                          )
-                        ]
-                      )
-                    ])
-                  ])
-                })
-              )
-            ])
-          : _vm._e()
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: { id: "modal-create-client", tabindex: "-1", role: "dialog" }
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('div', {
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between",
+      "align-items": "center"
+    }
+  }, [_c('span', [_vm._v("\n                    OAuth Clients\n                ")]), _vm._v(" "), _c('a', {
+    staticClass: "action-link",
+    on: {
+      "click": _vm.showCreateClientForm
+    }
+  }, [_vm._v("\n                    Create New Client\n                ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [(_vm.clients.length === 0) ? _c('p', {
+    staticClass: "m-b-none"
+  }, [_vm._v("\n                You have not created any OAuth clients.\n            ")]) : _vm._e(), _vm._v(" "), (_vm.clients.length > 0) ? _c('table', {
+    staticClass: "table table-borderless m-b-none"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.clients), function(client) {
+    return _c('tr', [_c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                            " + _vm._s(client.id) + "\n                        ")]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                            " + _vm._s(client.name) + "\n                        ")]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_c('code', [_vm._v(_vm._s(client.secret))])]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_c('a', {
+      staticClass: "action-link",
+      on: {
+        "click": function($event) {
+          _vm.edit(client)
+        }
+      }
+    }, [_vm._v("\n                                Edit\n                            ")])]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_c('a', {
+      staticClass: "action-link text-danger",
+      on: {
+        "click": function($event) {
+          _vm.destroy(client)
+        }
+      }
+    }, [_vm._v("\n                                Delete\n                            ")])])])
+  }))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": "modal-create-client",
+      "tabindex": "-1",
+      "role": "dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.createForm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_vm._m(2), _vm._v(" "), _c('br'), _vm._v(" "), _c('ul', _vm._l((_vm.createForm.errors), function(error) {
+    return _c('li', [_vm._v("\n                                " + _vm._s(error) + "\n                            ")])
+  }))]) : _vm._e(), _vm._v(" "), _c('form', {
+    staticClass: "form-horizontal",
+    attrs: {
+      "role": "form"
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-3 control-label"
+  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.createForm.name),
+      expression: "createForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "create-client-name",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.createForm.name)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.store($event)
       },
-      [
-        _c("div", { staticClass: "modal-dialog" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _vm.createForm.errors.length > 0
-                ? _c("div", { staticClass: "alert alert-danger" }, [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      _vm._l(_vm.createForm.errors, function(error) {
-                        return _c("li", [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(error) +
-                              "\n                            "
-                          )
-                        ])
-                      })
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "form",
-                { staticClass: "form-horizontal", attrs: { role: "form" } },
-                [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "col-md-3 control-label" }, [
-                      _vm._v("Name")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-7" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.createForm.name,
-                            expression: "createForm.name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { id: "create-client-name", type: "text" },
-                        domProps: { value: _vm.createForm.name },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k($event.keyCode, "enter", 13)
-                            ) {
-                              return null
-                            }
-                            _vm.store($event)
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.createForm.name = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "help-block" }, [
-                        _vm._v(
-                          "\n                                    Something your users will recognize and trust.\n                                "
-                        )
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "col-md-3 control-label" }, [
-                      _vm._v("Redirect URL")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-7" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.createForm.redirect,
-                            expression: "createForm.redirect"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text", name: "redirect" },
-                        domProps: { value: _vm.createForm.redirect },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k($event.keyCode, "enter", 13)
-                            ) {
-                              return null
-                            }
-                            _vm.store($event)
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.createForm.redirect = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "help-block" }, [
-                        _vm._v(
-                          "\n                                    Your application's authorization callback URL.\n                                "
-                        )
-                      ])
-                    ])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default",
-                  attrs: { type: "button", "data-dismiss": "modal" }
-                },
-                [_vm._v("Close")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: { click: _vm.store }
-                },
-                [
-                  _vm._v(
-                    "\n                        Create\n                    "
-                  )
-                ]
-              )
-            ])
-          ])
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: { id: "modal-edit-client", tabindex: "-1", role: "dialog" }
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.createForm.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("\n                                    Something your users will recognize and trust.\n                                ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-3 control-label"
+  }, [_vm._v("Redirect URL")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.createForm.redirect),
+      expression: "createForm.redirect"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "redirect"
+    },
+    domProps: {
+      "value": (_vm.createForm.redirect)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.store($event)
       },
-      [
-        _c("div", { staticClass: "modal-dialog" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _vm.editForm.errors.length > 0
-                ? _c("div", { staticClass: "alert alert-danger" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      _vm._l(_vm.editForm.errors, function(error) {
-                        return _c("li", [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(error) +
-                              "\n                            "
-                          )
-                        ])
-                      })
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "form",
-                { staticClass: "form-horizontal", attrs: { role: "form" } },
-                [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "col-md-3 control-label" }, [
-                      _vm._v("Name")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-7" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.editForm.name,
-                            expression: "editForm.name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { id: "edit-client-name", type: "text" },
-                        domProps: { value: _vm.editForm.name },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k($event.keyCode, "enter", 13)
-                            ) {
-                              return null
-                            }
-                            _vm.update($event)
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.editForm.name = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "help-block" }, [
-                        _vm._v(
-                          "\n                                    Something your users will recognize and trust.\n                                "
-                        )
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "col-md-3 control-label" }, [
-                      _vm._v("Redirect URL")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-7" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.editForm.redirect,
-                            expression: "editForm.redirect"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text", name: "redirect" },
-                        domProps: { value: _vm.editForm.redirect },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k($event.keyCode, "enter", 13)
-                            ) {
-                              return null
-                            }
-                            _vm.update($event)
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.editForm.redirect = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "help-block" }, [
-                        _vm._v(
-                          "\n                                    Your application's authorization callback URL.\n                                "
-                        )
-                      ])
-                    ])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default",
-                  attrs: { type: "button", "data-dismiss": "modal" }
-                },
-                [_vm._v("Close")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: { click: _vm.update }
-                },
-                [
-                  _vm._v(
-                    "\n                        Save Changes\n                    "
-                  )
-                ]
-              )
-            ])
-          ])
-        ])
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Client ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Secret")]),
-        _vm._v(" "),
-        _c("th"),
-        _vm._v(" "),
-        _c("th")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button ",
-            "data-dismiss": "modal",
-            "aria-hidden": "true"
-          }
-        },
-        [_vm._v("×")]
-      ),
-      _vm._v(" "),
-      _c("h4", { staticClass: "modal-title" }, [
-        _vm._v("\n                        Create Client\n                    ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _c("strong", [_vm._v("Whoops!")]),
-      _vm._v(" Something went wrong!")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button ",
-            "data-dismiss": "modal",
-            "aria-hidden": "true"
-          }
-        },
-        [_vm._v("×")]
-      ),
-      _vm._v(" "),
-      _c("h4", { staticClass: "modal-title" }, [
-        _vm._v("\n                        Edit Client\n                    ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _c("strong", [_vm._v("Whoops!")]),
-      _vm._v(" Something went wrong!")
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.createForm.redirect = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("\n                                    Your application's authorization callback URL.\n                                ")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.store
+    }
+  }, [_vm._v("\n                        Create\n                    ")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": "modal-edit-client",
+      "tabindex": "-1",
+      "role": "dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(3), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.editForm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_vm._m(4), _vm._v(" "), _c('br'), _vm._v(" "), _c('ul', _vm._l((_vm.editForm.errors), function(error) {
+    return _c('li', [_vm._v("\n                                " + _vm._s(error) + "\n                            ")])
+  }))]) : _vm._e(), _vm._v(" "), _c('form', {
+    staticClass: "form-horizontal",
+    attrs: {
+      "role": "form"
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-3 control-label"
+  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editForm.name),
+      expression: "editForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "edit-client-name",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.editForm.name)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.update($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editForm.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("\n                                    Something your users will recognize and trust.\n                                ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-md-3 control-label"
+  }, [_vm._v("Redirect URL")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editForm.redirect),
+      expression: "editForm.redirect"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "redirect"
+    },
+    domProps: {
+      "value": (_vm.editForm.redirect)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.update($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editForm.redirect = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("\n                                    Your application's authorization callback URL.\n                                ")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.update
+    }
+  }, [_vm._v("\n                        Save Changes\n                    ")])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Client ID")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Secret")]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button ",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("\n                        Create Client\n                    ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_c('strong', [_vm._v("Whoops!")]), _vm._v(" Something went wrong!")])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button ",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("\n                        Edit Client\n                    ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_c('strong', [_vm._v("Whoops!")]), _vm._v(" Something went wrong!")])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {

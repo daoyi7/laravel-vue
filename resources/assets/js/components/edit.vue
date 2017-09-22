@@ -1,11 +1,23 @@
 <template>
     <div class="edit">
-        <form class="edit-form" enctype="multipart/form-data" method="post">
+        <form class="edit-form" method="post">
             <div class="edit-item title">
-                <input class="title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
+                <input class="input_title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
             </div>
             <div class="edit-item intro">
-                <textarea class="intro" v-model="test.intro" value="" placeholder="description"></textarea>
+                <textarea class="input_intro" v-model="test.intro" value="" placeholder="description"></textarea>
+            </div>
+            <div class="edit-item content">
+                <textarea class="input_content" v-model="test.content" value="" placeholder="Content"></textarea>
+            </div>
+            <div class="edit-item like_counts">
+                <input class="input_like_counts" type="text" v-model="test.like_counts" value="" placeholder="like_counts">
+            </div>
+            <div class="edit-item view_counts">
+                <input class="input_view_counts"  type="text" v-model="test.view_counts" value="" placeholder="view_counts">
+            </div>
+            <div class="edit-item published_at">
+                <input class="input_published_at"  type="date" v-model="test.published_at" value="" placeholder="published_at">
             </div>
             <div class="edit-item submit">
                 <button type="button" name="submit" @click="submit($event)">Submit</button>
@@ -20,7 +32,12 @@
             return {
                 test: {
                     title: '',
-                    intro: ''
+                    intro: '',
+                    content: '',
+                    like_counts: '',
+                    view_counts: '',
+                    is_hide: false,
+                    published_at: ''
                 }
             }
         },
@@ -31,16 +48,17 @@
 
                 let config = {
                     headers: {
-                    'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'application/json'
                     }
                 }
 
                 this.$http.post('/api/blog', formData, config)
-                    .then(function (res) {
-                        if (res.status === 2000) {
-                            /*这里做处理*/
-                            console.log(res)
-                        }
+                    .then((res) => {
+                        /**写你的操作函数**/
+                        // console.log(res)
+                    })
+                    .catch((error) => {
+                        throw new Error(error.response.data.error)
                     })
             }
         }
