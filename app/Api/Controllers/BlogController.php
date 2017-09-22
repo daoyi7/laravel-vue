@@ -24,6 +24,11 @@ class BlogController extends Controller
         return $blogs;
     }
 
+    public function edit (Request $request)
+    {
+        return $request;
+    }
+
     public function authenticate(Request $request)
     {
         // grab credentials from the request

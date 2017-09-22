@@ -29,18 +29,17 @@
                 event.preventDefault()
                 let formData = JSON.stringify(this.test)
 
-                console.log(formData)
-
                 let config = {
                     headers: {
                     'Content-Type': 'multipart/form-data'
                     }
                 }
 
-                this.$http.post('/api/test', formData, config)
+                this.$http.post('/api/blog', formData, config)
                     .then(function (res) {
                         if (res.status === 2000) {
                             /*这里做处理*/
+                            console.log(res)
                         }
                     })
             }

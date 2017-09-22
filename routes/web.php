@@ -19,6 +19,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
     $api->get('blog', 'App\Api\Controllers\BlogController@index');
-    $api->post('auth', 'App\Api\Controllers\TestController@authenticate');
-    $api->get('auth', 'App\Api\Controllers\TestController@user');
+    $api->post('blog', 'App\Api\Controllers\BlogController@edit');
+    $api->post('auth', 'App\Api\Controllers\BlogController@authenticate');
+    $api->get('auth', 'App\Api\Controllers\BlogController@user');
 });

@@ -41666,17 +41666,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             event.preventDefault();
             var formData = JSON.stringify(this.test);
 
-            console.log(formData);
-
             var config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             };
 
-            this.$http.post('/api/test', formData, config).then(function (res) {
+            this.$http.post('/api/blog', formData, config).then(function (res) {
                 if (res.status === 2000) {
                     /*这里做处理*/
+                    console.log(res);
                 }
             });
         }
