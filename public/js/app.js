@@ -41623,7 +41623,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n.edit[data-v-797afa04] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n  background: rgba(236, 238, 239, 0.7);\n}\n.edit .edit-form[data-v-797afa04] {\n    padding: 1em 1.5em 2.5em 1.5em;\n}\n.edit .edit-form .edit-item[data-v-797afa04] {\n      margin-bottom: 1.5em;\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04] {\n        padding: .5em .3em;\n        width: 100%;\n        height: 1.5em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04]:hover, .edit .edit-form .edit-item input.title[data-v-797afa04]:active, .edit .edit-form .edit-item input.title[data-v-797afa04]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04] {\n        padding: .5em .3em;\n        width: 100%;\n        height: 6em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04]:hover, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:active, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:focus {\n          outline: none;\n}\n", ""]);
+exports.push([module.i, "\n.edit[data-v-797afa04] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n  background: rgba(236, 238, 239, 0.7);\n}\n.edit .edit-form[data-v-797afa04] {\n    padding: 1em 1.5em 2.5em 1.5em;\n}\n.edit .edit-form .edit-item[data-v-797afa04] {\n      margin-bottom: 1.5em;\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04] {\n        padding: .5em 0;\n        width: 100%;\n        height: 1.5em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item input.title[data-v-797afa04]:hover, .edit .edit-form .edit-item input.title[data-v-797afa04]:active, .edit .edit-form .edit-item input.title[data-v-797afa04]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04] {\n        padding: .5em 0;\n        width: 100%;\n        height: 6em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item textarea.intro[data-v-797afa04]:hover, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:active, .edit .edit-form .edit-item textarea.intro[data-v-797afa04]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item textarea.content[data-v-797afa04] {\n        padding: .5em 0;\n        width: 100%;\n        height: 25em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n        outline: none;\n}\n.edit .edit-form .edit-item.more[data-v-797afa04] {\n        display: flex;\n        justify-content: space-between;\n}\n.edit .edit-form .edit-item.more .more-item[data-v-797afa04] {\n          vertical-align: middle;\n}\n.edit .edit-form .edit-item.more .more-item.thumbs[data-v-797afa04] {\n            flex: 0 0 16em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.thumbs input.thumbs[data-v-797afa04] {\n              padding: 0;\n              margin: 0;\n              border: none;\n              width: 100%;\n              height: 100%;\n              text-align: center;\n              line-height: 2.5em;\n              color: #00030d;\n              font-size: 1.8em;\n              background: rgba(183, 191, 197, 0.4);\n}\n.edit .edit-form .edit-item.more .more-item.published_at[data-v-797afa04] {\n            flex: 0 0 22em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.published_at input.published_at[data-v-797afa04] {\n              padding: 0;\n              margin: 0;\n              border: none;\n              width: 100%;\n              height: 100%;\n              text-align: center;\n              line-height: 2.5em;\n              color: #00030d;\n              font-size: 1.8em;\n              background: rgba(183, 191, 197, 0.4);\n}\n.edit .edit-form .edit-item.more .more-item.submit[data-v-797afa04] {\n            flex: 0 0 5.2em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-797afa04] {\n              padding: 0;\n              margin: 0;\n              border: none;\n              width: 100%;\n              height: 100%;\n              text-align: center;\n              line-height: 2.5em;\n              color: #00030d;\n              font-size: 1.1em;\n              background: rgba(183, 191, 197, 0.4);\n              cursor: pointer;\n              transition: background .5s linear;\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-797afa04]:hover {\n                background: #d6d6d7;\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-797afa04]:hover, .edit .edit-form .edit-item.more .more-item.submit button[data-v-797afa04]:active, .edit .edit-form .edit-item.more .more-item.submit button[data-v-797afa04]:focus {\n                outline: none;\n}\n", ""]);
 
 // exports
 
@@ -41662,6 +41662,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -41670,8 +41672,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: '',
                 intro: '',
                 content: '',
-                like_counts: '',
-                view_counts: '',
+                like_counts: '0',
+                view_counts: '0',
                 is_hide: false,
                 published_at: ''
             }
@@ -41719,7 +41721,7 @@ var render = function() {
               expression: "test.title"
             }
           ],
-          staticClass: "input_title",
+          staticClass: "title",
           attrs: { type: "text", value: "", placeholder: "Blog Title *" },
           domProps: { value: _vm.test.title },
           on: {
@@ -41743,7 +41745,7 @@ var render = function() {
               expression: "test.intro"
             }
           ],
-          staticClass: "input_intro",
+          staticClass: "intro",
           attrs: { value: "", placeholder: "description" },
           domProps: { value: _vm.test.intro },
           on: {
@@ -41767,7 +41769,7 @@ var render = function() {
               expression: "test.content"
             }
           ],
-          staticClass: "input_content",
+          staticClass: "content",
           attrs: { value: "", placeholder: "Content" },
           domProps: { value: _vm.test.content },
           on: {
@@ -41781,96 +41783,102 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "edit-item like_counts" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.test.like_counts,
-              expression: "test.like_counts"
-            }
-          ],
-          staticClass: "input_like_counts",
-          attrs: { type: "text", value: "", placeholder: "like_counts" },
-          domProps: { value: _vm.test.like_counts },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      _c("div", { staticClass: "edit-item more" }, [
+        _c("div", { staticClass: "more-item is_hide" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.test.is_hide,
+                expression: "test.is_hide"
               }
-              _vm.test.like_counts = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "edit-item view_counts" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.test.view_counts,
-              expression: "test.view_counts"
-            }
-          ],
-          staticClass: "input_view_counts",
-          attrs: { type: "text", value: "", placeholder: "view_counts" },
-          domProps: { value: _vm.test.view_counts },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.test.view_counts = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "edit-item published_at" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.test.published_at,
-              expression: "test.published_at"
-            }
-          ],
-          staticClass: "input_published_at",
-          attrs: { type: "date", value: "", placeholder: "published_at" },
-          domProps: { value: _vm.test.published_at },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.test.published_at = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "edit-item submit" }, [
-        _c(
-          "button",
-          {
-            attrs: { type: "button", name: "submit" },
+            ],
+            staticClass: "is_hide",
+            attrs: { type: "checkbox", value: "" },
+            domProps: {
+              checked: Array.isArray(_vm.test.is_hide)
+                ? _vm._i(_vm.test.is_hide, "") > -1
+                : _vm.test.is_hide
+            },
             on: {
-              click: function($event) {
-                _vm.submit($event)
+              __c: function($event) {
+                var $$a = _vm.test.is_hide,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = "",
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.test.is_hide = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.test.is_hide = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.test.is_hide = $$c
+                }
               }
             }
-          },
-          [_vm._v("Submit")]
-        )
+          })
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "more-item published_at" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.test.published_at,
+                expression: "test.published_at"
+              }
+            ],
+            staticClass: "published_at",
+            attrs: { type: "date", value: "", placeholder: "published_at" },
+            domProps: { value: _vm.test.published_at },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.test.published_at = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "more-item submit" }, [
+          _c(
+            "button",
+            {
+              attrs: { type: "button", name: "submit" },
+              on: {
+                click: function($event) {
+                  _vm.submit($event)
+                }
+              }
+            },
+            [_vm._v("Submit")]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "more-item thumbs" }, [
+      _c("input", { staticClass: "thumbs", attrs: { type: "file", value: "" } })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

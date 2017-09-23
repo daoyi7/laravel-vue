@@ -2,25 +2,27 @@
     <div class="edit">
         <form class="edit-form" method="post">
             <div class="edit-item title">
-                <input class="input_title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
+                <input class="title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
             </div>
             <div class="edit-item intro">
-                <textarea class="input_intro" v-model="test.intro" value="" placeholder="description"></textarea>
+                <textarea class="intro" v-model="test.intro" value="" placeholder="description"></textarea>
             </div>
             <div class="edit-item content">
-                <textarea class="input_content" v-model="test.content" value="" placeholder="Content"></textarea>
+                <textarea class="content" v-model="test.content" value="" placeholder="Content"></textarea>
             </div>
-            <div class="edit-item like_counts">
-                <input class="input_like_counts" type="text" v-model="test.like_counts" value="" placeholder="like_counts">
-            </div>
-            <div class="edit-item view_counts">
-                <input class="input_view_counts"  type="text" v-model="test.view_counts" value="" placeholder="view_counts">
-            </div>
-            <div class="edit-item published_at">
-                <input class="input_published_at"  type="date" v-model="test.published_at" value="" placeholder="published_at">
-            </div>
-            <div class="edit-item submit">
-                <button type="button" name="submit" @click="submit($event)">Submit</button>
+            <div class="edit-item more">
+                <div class="more-item is_hide">
+                    <input class="is_hide"  type="checkbox" v-model="test.is_hide" value="">
+                </div>
+                <div class="more-item thumbs">
+                    <input class="thumbs"  type="file" value="">
+                </div>
+                <div class="more-item published_at">
+                    <input class="published_at"  type="date" v-model="test.published_at" value="" placeholder="published_at">
+                </div>
+                <div class="more-item submit">
+                    <button type="button" name="submit" @click="submit($event)">Submit</button>
+                </div>
             </div>
         </form>
     </div>
@@ -34,8 +36,8 @@
                     title: '',
                     intro: '',
                     content: '',
-                    like_counts: '',
-                    view_counts: '',
+                    like_counts: '0',
+                    view_counts: '0',
                     is_hide: false,
                     published_at: ''
                 }
@@ -79,7 +81,7 @@
             .edit-item
                 margin-bottom: 1.5em
                 input.title
-                    padding: .5em .3em
+                    padding: .5em 0
                     width: 100%
                     height: 1.5em
                     border: none
@@ -94,7 +96,7 @@
                     &:hover,&:active,&:focus
                         outline: none
                 textarea.intro
-                    padding: .5em .3em
+                    padding: .5em 0
                     width: 100%
                     height: 6em
                     border: none
@@ -109,6 +111,81 @@
                     font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
                     &:hover,&:active,&:focus
                         outline: none
+                textarea.content
+                    padding: .5em 0
+                    width: 100%
+                    height: 25em
+                    border: none
+                    margin: 0 1em 0 0
+                    vertical-align: top
+                    background: #d6d6d7
+                    font-weight: 200
+                    text-indent: .4em
+                    font-size: 1.3em
+                    color: #00030d
+                    resize: none
+                    font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+                    &:hover,&:active,&:focus
+                    outline: none
+                &.more
+                    display: flex
+                    justify-content: space-between
+                    .more-item
+                        // padding: 1em 1.5em 2.5em 1.5em
+                        vertical-align: middle
+                        &.thumbs
+                            flex: 0 0 16em
+                            width: 5.2em
+                            height: 2.5em
+                            input.thumbs
+                                padding: 0
+                                margin: 0
+                                border: none
+                                width: 100%
+                                height: 100%
+                                text-align: center
+                                line-height: 2.5em
+                                color: #00030d
+                                font-size: 1.8em
+                                background: rgba(183, 191, 197, .4)
+                        &.published_at
+                            flex: 0 0 22em
+                            width: 5.2em
+                            height: 2.5em
+                            input.published_at
+                                padding: 0
+                                margin: 0
+                                border: none
+                                width: 100%
+                                height: 100%
+                                text-align: center
+                                line-height: 2.5em
+                                color: #00030d
+                                font-size: 1.8em
+                                background: rgba(183, 191, 197, .4)
+                        &.submit
+                            flex: 0 0 5.2em
+                            width: 5.2em
+                            height: 2.5em
+                            button
+                                padding: 0
+                                margin: 0
+                                border: none
+                                width: 100%
+                                height: 100%
+                                text-align: center
+                                line-height: 2.5em
+                                color: #00030d
+                                font-size: 1.1em
+                                background: rgba(183, 191, 197, .4)
+                                cursor: pointer
+                                transition: background .5s linear
+                                &:hover
+                                    background: #d6d6d7
+                                &:hover,&:active,&:focus
+                                    outline: none
+
+
 
 
 </style>
