@@ -11,12 +11,15 @@
             <i class="icon iconfont icon-wechat"></i>
             <!-- <img src="../../../..//images/wechat.jpg"> -->
         </div>
+        <div class="rico twitter">
+            <a href="https://twitter.com/WellCoding" target="_blank" class="icon iconfont icon-twitter"></a>
+        </div>
         <div class="rico github">
             <a href="https://github.com/daoyi7" target="_blank" class="icon iconfont icon-github"></a>
         </div>
         <transition name="fade">
             <div class="rico rollback" v-show="visible" @click="topClick">
-                <i class="icon iconfont icon-back-to-top"></i>
+                <i class="icon iconfont icon-top"></i>
             </div>
         </transition>
     </div>
@@ -82,7 +85,7 @@
         height: auto
         background: #fff
         .fade-enter-active, .fade-leave-active
-            transition: opacity .5s linear
+            transition: opacity .25s linear
         .fade-enter, .fade-leave-to
             opacity: 0
         .rico
@@ -103,16 +106,18 @@
                 // transition: transform .2s linear
                 &.icon-write
                     font-size: 1.3em
-                &.icon-back-to-top
-                    font-size: 2.2em
+                &.icon-top
+                    font-size: 2em
                     color: #6b6b6b
                 &.icon-qq:hover
                     color: #0086f1
                 &.icon-wechat:hover
                     color: #2ba245
+                &.icon-twitter:hover
+                    color: #1da1f2
                 &.icon-github:hover
                     color: #00030d
-                &.icon-back-to-top:hover
+                &.icon-top:hover
                     animation: iconmove 1s infinite
             img
                 width: 200%

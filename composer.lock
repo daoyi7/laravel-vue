@@ -71,26 +71,27 @@
         },
         {
             "name": "dingo/api",
-            "version": "v1.0.0-beta8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dingo/api.git",
-                "reference": "46cffad61942caa094dd876155e503b6819c5095"
+                "reference": "438f291e953501a4ec079766a3a937d704402fd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/dingo/api/46cffad61942caa094dd876155e503b6819c5095.zip",
-                "reference": "46cffad61942caa094dd876155e503b6819c5095",
+                "url": "https://files.phpcomposer.com/files/dingo/api/438f291e953501a4ec079766a3a937d704402fd6.zip",
+                "reference": "438f291e953501a4ec079766a3a937d704402fd6",
                 "shasum": ""
             },
             "require": {
-                "dingo/blueprint": "0.2.*",
+                "dingo/blueprint": "^0.2",
                 "illuminate/routing": "^5.1",
                 "illuminate/support": "^5.1",
-                "league/fractal": ">=0.12.0",
-                "php": "^5.5.9 || ^7.0"
+                "league/fractal": "^0.17",
+                "php": "^7.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2",
                 "illuminate/auth": "^5.1",
                 "illuminate/cache": "^5.1",
                 "illuminate/console": "^5.1",
@@ -114,6 +115,15 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Dingo\\Api\\Provider\\LaravelServiceProvider"
+                    ],
+                    "aliases": {
+                        "API": "Dingo\\Api\\Facade\\API",
+                        "Route": "Dingo\\Api\\Facade\\Route"
+                    }
                 }
             },
             "autoload": {
@@ -141,7 +151,7 @@
                 "laravel",
                 "restful"
             ],
-            "time": "2017-02-10T00:56:04+00:00"
+            "time": "2017-09-16T14:28:40+00:00"
         },
         {
             "name": "dingo/blueprint",

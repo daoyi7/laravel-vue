@@ -3,6 +3,7 @@
 namespace App\Api\Controllers;
 
 use Illuminate\Http\Request;
+// use Request;
 use App\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -14,13 +15,9 @@ class BlogController extends Controller
     //
     public function index()
     {
-        $conditions = [
-            ['published_at','<=',Carbon::now()],
-            ['is_hide', '=>', false]
-        ];
+        $blogs = Blog::orderBy('published_at', 'desc')->published()->get();
 
-        $blogs = Blog::where($conditions)->latest()->get();
-
+        // dd($blogs);
         return $blogs;
     }
 
