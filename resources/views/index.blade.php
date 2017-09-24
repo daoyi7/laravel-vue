@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="//at.alicdn.com/t/font_395594_4eepddn34mvuc8fr.css">
+        <link rel="stylesheet" href="//at.alicdn.com/t/font_395594_7tezjklifhlu9pb9.css">
 
         <title>Home | kawhi.me</title>
     </head>

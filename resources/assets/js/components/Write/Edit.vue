@@ -18,12 +18,13 @@
                     <input class="thumbs"  type="file" value="">
                 </div>
                 <div class="more-item published_at">
-                    <datepicker
+                    <datepicker placeholder="格式化时间.." :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
+                    <!-- <datepicker
                         class="published_at"
                         v-model="test.published_at"
                         value="" placeholder="选择时间"
                         :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"
-                    ></datepicker>
+                    ></datepicker> -->
                 </div>
                 <div class="more-item submit">
                     <button type="button" name="submit" @click="submit($event)">Submit</button>
@@ -34,7 +35,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import datepicker from "./DatePicker"
+    import Vue from 'vue'
+
+    import VueBlu from 'vue-blu'
+    import 'vue-blu/dist/css/vue-blu.css'
+
+    Vue.use(VueBlu)
+    // import datepicker from "./DatePicker"
 
     export default {
         data() {
@@ -50,9 +57,9 @@
                 }
             }
         },
-        components: {
-            datepicker
-        },
+        // components: {
+        //     datepicker
+        // },
         methods: {
             submit: function (event) {
                 event.preventDefault()
@@ -162,17 +169,7 @@
                             flex: 0 0 22em
                             width: 5.2em
                             height: 2.5em
-                            input.published_at
-                                padding: 0
-                                margin: 0
-                                border: none
-                                width: 100%
-                                height: 100%
-                                text-align: center
-                                line-height: 2.5em
-                                color: #00030d
-                                font-size: 1.8em
-                                background: rgba(183, 191, 197, .4)
+                            span.datepicker
                         &.submit
                             flex: 0 0 5.2em
                             width: 5.2em

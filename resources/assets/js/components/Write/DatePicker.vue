@@ -6,13 +6,13 @@
                  :placeholder="placeholder"
                  type="text"
                  v-model="interVal" data-input>
-          <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
-          <a class="button" data-clear><i class="fa fa-close"></i></a>
+          <a class="button" data-toggle><i class="icon iconfont icon-calendar"></i></a>
+          <a class="button" data-clear><i class="icon iconfont icon-close"></i></a>
         </span>
     <p class="control has-icon has-icon-right" v-else>
-        <input class="input" :name="name" :value="interVal" :placeholder="placeholder" type="text" v-model="interVal" ref="pickrInput">
-        <i class="fa fa-calendar"></i>
-        <i class="fa fa-times" @click.prevent="handleClear"></i>
+        <input class="input input_click" :name="name" :value="interVal" :placeholder="placeholder" type="text" v-model="interVal" ref="pickrInput">
+        <i class="icon iconfont icon-calendar"></i>
+        <i class="icon iconfont icon-close" @click.prevent="handleClear"></i>
     </p>
     </span>
 </template>
@@ -73,3 +73,18 @@
         },
     }
 </script>
+<style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
+
+    span.datepicker
+        width: 100%
+        height: 100%
+        display: block
+        p.control
+            width: 100%
+            height: 100%
+            display: block
+            input[type="text"]
+                width: 18em
+                height: 20em
+
+</style>
