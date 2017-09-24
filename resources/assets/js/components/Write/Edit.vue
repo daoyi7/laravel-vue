@@ -18,7 +18,12 @@
                     <input class="thumbs"  type="file" value="">
                 </div>
                 <div class="more-item published_at">
-                    <input class="published_at"  type="date" v-model="test.published_at" value="" placeholder="published_at">
+                    <datepicker
+                        class="published_at"
+                        v-model="test.published_at"
+                        value="" placeholder="选择时间"
+                        :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"
+                    ></datepicker>
                 </div>
                 <div class="more-item submit">
                     <button type="button" name="submit" @click="submit($event)">Submit</button>
@@ -29,6 +34,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import datepicker from "./DatePicker"
+
     export default {
         data() {
             return {
@@ -42,6 +49,9 @@
                     published_at: ''
                 }
             }
+        },
+        components: {
+            datepicker
         },
         methods: {
             submit: function (event) {

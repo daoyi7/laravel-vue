@@ -27,7 +27,7 @@ import Blog from './components/blog'
 import Project from './components/project'
 import Think from './components/think'
 import About from './components/about'
-import Edit from './components/edit'
+import Edit from './components/Write/Edit'
 
 const routes = [{
         path: '/',
