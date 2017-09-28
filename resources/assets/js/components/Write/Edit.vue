@@ -35,13 +35,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Vue from 'vue'
-
-    import VueBlu from 'vue-blu'
-    import 'vue-blu/dist/css/vue-blu.css'
-
-    Vue.use(VueBlu)
-    // import datepicker from "./DatePicker"
+    // import Vue from 'vue'
+    //
+    // import VueBlu from 'vue-blu'
+    // import 'vue-blu/dist/css/vue-blu.css'
+    //
+    // Vue.use(VueBlu)
+    import datepicker from "./DatePicker"
 
     export default {
         data() {
@@ -57,9 +57,9 @@
                 }
             }
         },
-        // components: {
-        //     datepicker
-        // },
+        components: {
+            datepicker
+        },
         methods: {
             submit: function (event) {
                 event.preventDefault()
