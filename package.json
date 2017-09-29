@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "flatpickr": "^3.0.7",
+    "layui-layer": "^1.0.9",
     "vue-blu": "^0.1.9",
     "vue-markdown": "^2.2.4",
     "vue-waterfall": "^1.0.6"

@@ -11,15 +11,13 @@
         </span>
     <p class="control has-icon has-icon-right" v-else>
         <input class="input input_click" :name="name" :value="interVal" :placeholder="placeholder" type="text" v-model="interVal" ref="pickrInput">
-        <i class="icon iconfont icon-calendar"></i>
-        <i class="icon iconfont icon-close" @click.prevent="handleClear"></i>
+        <i class="icon iconfont icon-close" @click.prevent="handleClear" v-if="hadChoose"></i>
     </p>
     </span>
 </template>
 <script type="text/ecmascript-6">
     import Flatpickr from 'flatpickr';
-    import 'flatpickr/dist/flatpickr.min.css';
-    import { zh } from 'flatpickr/dist/l10n/zh'; // eslint-disable-line
+    import 'flatpickr/dist/flatpickr.css';
 
     export default {
         props: {
@@ -37,6 +35,7 @@
             return {
                 interVal: this.value,
                 flatPickr: null,
+                hadChoose: false
             };
         },
         computed: {
@@ -59,11 +58,15 @@
             interVal(val) {
                 this.interVal = val;
                 this.$emit('input', this.interVal);
+
+                this.hadChoose = true
             },
         },
         mounted() {
             const pickrEl = this.$refs.pickrInput;
             this.flatPickr = new Flatpickr(pickrEl, this.options);
+
+            // if(this.)
         },
         beforeDestroy() {
             if (this.flatPickr) {
@@ -80,11 +83,17 @@
         height: 100%
         display: block
         p.control
-            width: 100%
-            height: 100%
-            display: block
-            input[type="text"]
-                width: 18em
-                height: 20em
+            position: relative
+            width: auto
+            height: auto
+            display: inline-block
+            i
+                position: absolute
+                right: 0
+                top: 50%
+                margin-top: -.5em
+                color: #00030d
+                font-weight: 100
+                font-size: 1.4em
 
 </style>

@@ -18,7 +18,7 @@
                     <input class="thumbs"  type="file" value="">
                 </div>
                 <div class="more-item published_at">
-                    <datepicker placeholder="格式化时间.." :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
+                    <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
                     <!-- <datepicker
                         class="published_at"
                         v-model="test.published_at"
