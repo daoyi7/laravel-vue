@@ -41226,17 +41226,9 @@ if(false) {
 
 /***/ }),
 /* 230 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.edit[data-v-90646618] {\n  float: left;\n  width: 66.4em;\n  margin: 0 0 0 13em;\n  position: relative;\n  overflow: hidden;\n  background: rgba(236, 238, 239, 0.7);\n}\n.edit .edit-form[data-v-90646618] {\n    padding: 1em 1.5em 2.5em 1.5em;\n}\n.edit .edit-form .edit-item[data-v-90646618] {\n      margin-bottom: 1.5em;\n}\n.edit .edit-form .edit-item input.title[data-v-90646618] {\n        padding: .5em 0;\n        width: 100%;\n        height: 1.5em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item input.title[data-v-90646618]:hover, .edit .edit-form .edit-item input.title[data-v-90646618]:active, .edit .edit-form .edit-item input.title[data-v-90646618]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item .thumbs[data-v-90646618] {\n        width: 100%;\n        height: 15em;\n}\n.edit .edit-form .edit-item textarea.intro1[data-v-90646618] {\n        padding: .5em 0;\n        width: 100%;\n        height: 6em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n}\n.edit .edit-form .edit-item textarea.intro1[data-v-90646618]:hover, .edit .edit-form .edit-item textarea.intro1[data-v-90646618]:active, .edit .edit-form .edit-item textarea.intro1[data-v-90646618]:focus {\n          outline: none;\n}\n.edit .edit-form .edit-item textarea.content[data-v-90646618] {\n        padding: .5em 0;\n        width: 100%;\n        height: 25em;\n        border: none;\n        margin: 0 1em 0 0;\n        vertical-align: top;\n        background: #d6d6d7;\n        font-weight: 200;\n        text-indent: .4em;\n        font-size: 1.3em;\n        color: #00030d;\n        resize: none;\n        font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n        outline: none;\n}\n.edit .edit-form .edit-item.more[data-v-90646618] {\n        display: flex;\n        justify-content: space-between;\n}\n.edit .edit-form .edit-item.more .more-item[data-v-90646618] {\n          vertical-align: middle;\n}\n.edit .edit-form .edit-item.more .more-item.thumbs[data-v-90646618] {\n            position: relative;\n            flex: 0 0 16em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.thumbs input.thumbs[data-v-90646618] {\n              position: absolute;\n              left: -99999999em;\n}\n.edit .edit-form .edit-item.more .more-item.thumbs label[data-v-90646618] {\n              position: absolute;\n              top: 0;\n              left: 0;\n              right: 0;\n              bottom: 0;\n}\n.edit .edit-form .edit-item.more .more-item.published_at[data-v-90646618] {\n            flex: 0 0 22em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.submit[data-v-90646618] {\n            flex: 0 0 5.2em;\n            width: 5.2em;\n            height: 2.5em;\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-90646618] {\n              padding: 0;\n              margin: 0;\n              border: none;\n              width: 100%;\n              height: 100%;\n              text-align: center;\n              line-height: 2.5em;\n              color: #00030d;\n              font-size: 1.1em;\n              background-color: rgba(183, 191, 197, 0.7);\n              transition: background-color .5s linear;\n              cursor: pointer;\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-90646618]:hover {\n                background-color: rgba(183, 191, 197, 0.3);\n}\n.edit .edit-form .edit-item.more .more-item.submit button[data-v-90646618]:hover, .edit .edit-form .edit-item.more .more-item.submit button[data-v-90646618]:active, .edit .edit-form .edit-item.more .more-item.submit button[data-v-90646618]:focus {\n                outline: none;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed: \r\n                            flex: 0 0 22em\r\n                                             ^\r\n      Invalid CSS after \"...ckground-color:\": expected expression (e.g. 1px, bold), was \"##d6d6d7;\"\r\n      in D:\\Project\\laravel-vue\\resources\\assets\\js\\components\\Write\\Edit.vue (line 154, column 47)");
 
 /***/ }),
 /* 231 */
@@ -41444,8 +41436,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "more-item is_hide"
   }, [_c('b-switch', {
     attrs: {
-      "type": "primary",
-      "on-change": _vm.onChange
+      "type": "kawhi",
+      "on-change": _vm.onChange,
+      "size": "small"
     }
   })], 1), _vm._v(" "), _c('div', {
     staticClass: "more-item published_at"

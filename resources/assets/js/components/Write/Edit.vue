@@ -15,7 +15,7 @@
         </div>
         <div class="edit-item more">
             <div class="more-item is_hide">
-                <b-switch type="primary" :on-change="onChange"></b-switch>
+                <b-switch type="kawhi" :on-change="onChange" size="small"></b-switch>
             </div>
             <div class="more-item published_at">
                 <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
@@ -29,56 +29,55 @@
 </template>
 
 <script type="text/ecmascript-6">
-import VueImgInputer from "vue-img-inputer"
+    import VueImgInputer from "vue-img-inputer"
 
-
-export default {
-    data() {
-        return {
-            val1: true,
-            upBlog: {
-                title: '',
-                desc: '',
-                content: '',
-                like_counts: '0',
-                view_counts: '0',
-                is_hide: false,
-                published_at: '',
-                thumb: ''
-            }
-        }
-    },
-    components: {
-        VueImgInputer
-    },
-    methods: {
-        onChange(val) {
-            const content = val ? '开启' : '关闭';
-            this.$notify.info({
-                content
-            });
-        },
-        submit: function(event) {
-            event.preventDefault()
-            let formData = JSON.stringify(this.upBlog)
-
-            let config = {
-                headers: {
-                    'Content-Type': 'application/json'
+    export default {
+        data() {
+            return {
+                val1: true,
+                upBlog: {
+                    title: '',
+                    desc: '',
+                    content: '',
+                    like_counts: '0',
+                    view_counts: '0',
+                    is_hide: false,
+                    published_at: '',
+                    thumb: ''
                 }
             }
-
-            this.$http.post('/api/blog', formData, config)
-                .then((res) => {
-                    /**写你的操作函数**/
-                    // console.log(res)
-                })
-                .catch((error) => {
-                    throw new Error(error.response.data.error)
-                })
         },
+        components: {
+            VueImgInputer
+        },
+        methods: {
+            onChange(val) {
+                const content = val ? '开启' : '关闭';
+                this.$notify.info({
+                    content
+                });
+            },
+            submit: function(event) {
+                event.preventDefault()
+                let formData = JSON.stringify(this.upBlog)
+
+                let config = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                this.$http.post('/api/blog', formData, config)
+                    .then((res) => {
+                        /**写你的操作函数**/
+                        // console.log(res)
+                    })
+                    .catch((error) => {
+                        throw new Error(error.response.data.error)
+                    })
+            },
+        }
     }
-}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
@@ -150,20 +149,11 @@ export default {
                     .more-item
                         // padding: 1em 1.5em 2.5em 1.5em
                         vertical-align: middle
-                        &.thumbs
-                            position: relative
-                            flex: 0 0 16em
-                            width: 5.2em
-                            height: 2.5em
-                            input.thumbs
-                                position: absolute
-                                left: -99999999em
-                            label
-                                position: absolute
-                                top: 0
-                                left: 0
-                                right: 0
-                                bottom: 0
+                        &.is_hide
+                            .switchery.is-kawhi.on
+                                background-color: ##d6d6d7
+                                border-color: ##d6d6d7
+                                box-shadow: inset 0 0 0 12px #6cc788
                         &.published_at
                             flex: 0 0 22em
                             width: 5.2em
