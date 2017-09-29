@@ -13,6 +13,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueResource from 'vue-resource'
 import axios from "axios"
 import moment from "moment"
+import VueBlu from 'vue-blu'
+import 'vue-blu/dist/css/vue-blu.min.css'
 
 
 Vue.prototype.$http = axios
@@ -21,6 +23,7 @@ Vue.prototype.$moment = moment
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueResource)
+Vue.use(VueBlu)
 
 import Home from './components/middle'
 import Detail from './components/detail'

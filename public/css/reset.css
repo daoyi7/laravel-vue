@@ -33,7 +33,7 @@ body {
 	font-size:1em;
 }
 html {
-	font-size: 62.5%;
+	font-size: 62.5% !important;
 }
 ol, ul {
 	list-style: none;

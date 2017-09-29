@@ -2,7 +2,7 @@
 <div class="edit">
     <form class="edit-form" method="post">
         <div class="edit-item thumbs">
-            <VueImgInputer class="thumbs" v-model="upBlog.intro" theme="light" size="large"></VueImgInputer>
+            <VueImgInputer class="thumbs" v-model="upBlog.desc" theme="material" size="large"></VueImgInputer>
         </div>
         <div class="edit-item title">
             <input class="title" type="text" v-model="upBlog.title" value="" placeholder="Blog Title *">
@@ -15,7 +15,7 @@
         </div>
         <div class="edit-item more">
             <div class="more-item is_hide">
-                <input class="is_hide" type="checkbox" v-model="upBlog.is_hide" value="">
+                <b-switch type="primary" :on-change="onChange"></b-switch>
             </div>
             <div class="more-item published_at">
                 <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
@@ -29,51 +29,56 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import datepicker from "./DatePicker"
-    import VueImgInputer from "vue-img-inputer"
+import VueImgInputer from "vue-img-inputer"
 
 
-    export default {
-        data() {
-            return {
-                upBlog: {
-                    title: '',
-                    intro: '',
-                    content: '',
-                    like_counts: '0',
-                    view_counts: '0',
-                    is_hide: false,
-                    published_at: '',
-                    thumb: ''
+export default {
+    data() {
+        return {
+            val1: true,
+            upBlog: {
+                title: '',
+                desc: '',
+                content: '',
+                like_counts: '0',
+                view_counts: '0',
+                is_hide: false,
+                published_at: '',
+                thumb: ''
+            }
+        }
+    },
+    components: {
+        VueImgInputer
+    },
+    methods: {
+        onChange(val) {
+            const content = val ? '开启' : '关闭';
+            this.$notify.info({
+                content
+            });
+        },
+        submit: function(event) {
+            event.preventDefault()
+            let formData = JSON.stringify(this.upBlog)
+
+            let config = {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             }
-        },
-        components: {
-            datepicker,
-            VueImgInputer
-        },
-        methods: {
-            submit: function(event) {
-                event.preventDefault()
-                let formData = JSON.stringify(this.upBlog)
 
-                let config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-
-                this.$http.post('/api/blog', formData, config)
-                    .then((res) => {
-                        /**写你的操作函数**/
-                        // console.log(res)
-                    })
-                    .catch((error) => {
-                        throw new Error(error.response.data.error)
-                    })
-            },
-        }
+            this.$http.post('/api/blog', formData, config)
+                .then((res) => {
+                    /**写你的操作函数**/
+                    // console.log(res)
+                })
+                .catch((error) => {
+                    throw new Error(error.response.data.error)
+                })
+        },
     }
+}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
