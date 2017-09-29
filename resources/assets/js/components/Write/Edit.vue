@@ -1,69 +1,61 @@
 <template>
-    <div class="edit">
-        <form class="edit-form" method="post">
-            <div class="edit-item title">
-                <input class="title" type="text" v-model="test.title" value="" placeholder="Blog Title *">
+<div class="edit">
+    <form class="edit-form" method="post">
+        <div class="edit-item thumbs">
+            <VueImgInputer class="thumbs" v-model="upBlog.intro" theme="light" size="large"></VueImgInputer>
+        </div>
+        <div class="edit-item title">
+            <input class="title" type="text" v-model="upBlog.title" value="" placeholder="Blog Title *">
+        </div>
+        <div class="edit-item intro">
+            <textarea class="intro1" v-model="upBlog.intro" value="" placeholder="description"></textarea>
+        </div>
+        <div class="edit-item content">
+            <textarea class="content" v-model="upBlog.content" value="" placeholder="Content"></textarea>
+        </div>
+        <div class="edit-item more">
+            <div class="more-item is_hide">
+                <input class="is_hide" type="checkbox" v-model="upBlog.is_hide" value="">
             </div>
-            <div class="edit-item intro">
-                <textarea class="intro" v-model="test.intro" value="" placeholder="description"></textarea>
+            <div class="more-item published_at">
+                <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
             </div>
-            <div class="edit-item content">
-                <textarea class="content" v-model="test.content" value="" placeholder="Content"></textarea>
+            <div class="more-item submit">
+                <button type="button" name="submit" @click="submit($event)">Submit</button>
             </div>
-            <div class="edit-item more">
-                <div class="more-item is_hide">
-                    <input class="is_hide"  type="checkbox" v-model="test.is_hide" value="">
-                </div>
-                <div class="more-item thumbs">
-                    <input class="thumbs"  type="file" value="">
-                </div>
-                <div class="more-item published_at">
-                    <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
-                    <!-- <datepicker
-                        class="published_at"
-                        v-model="test.published_at"
-                        value="" placeholder="选择时间"
-                        :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"
-                    ></datepicker> -->
-                </div>
-                <div class="more-item submit">
-                    <button type="button" name="submit" @click="submit($event)">Submit</button>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
-    // import Vue from 'vue'
-    //
-    // import VueBlu from 'vue-blu'
-    // import 'vue-blu/dist/css/vue-blu.css'
-    //
-    // Vue.use(VueBlu)
     import datepicker from "./DatePicker"
+    import VueImgInputer from "vue-img-inputer"
+
 
     export default {
         data() {
             return {
-                test: {
+                upBlog: {
                     title: '',
                     intro: '',
                     content: '',
                     like_counts: '0',
                     view_counts: '0',
                     is_hide: false,
-                    published_at: ''
+                    published_at: '',
+                    thumb: ''
                 }
             }
         },
         components: {
-            datepicker
+            datepicker,
+            VueImgInputer
         },
         methods: {
-            submit: function (event) {
+            submit: function(event) {
                 event.preventDefault()
-                let formData = JSON.stringify(this.test)
+                let formData = JSON.stringify(this.upBlog)
 
                 let config = {
                     headers: {
@@ -79,7 +71,7 @@
                     .catch((error) => {
                         throw new Error(error.response.data.error)
                     })
-            }
+            },
         }
     }
 </script>
@@ -112,7 +104,10 @@
                     font-family: CenturyGothic, -apple-system, Raleway, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
                     &:hover,&:active,&:focus
                         outline: none
-                textarea.intro
+                .thumbs
+                    width: 100%
+                    height: 15em
+                textarea.intro1
                     padding: .5em 0
                     width: 100%
                     height: 6em
@@ -151,25 +146,23 @@
                         // padding: 1em 1.5em 2.5em 1.5em
                         vertical-align: middle
                         &.thumbs
+                            position: relative
                             flex: 0 0 16em
                             width: 5.2em
                             height: 2.5em
                             input.thumbs
-                                padding: 0
-                                margin: 0
-                                border: none
-                                width: 100%
-                                height: 100%
-                                text-align: center
-                                line-height: 2.5em
-                                color: #00030d
-                                font-size: 1.8em
-                                background: rgba(183, 191, 197, .4)
+                                position: absolute
+                                left: -99999999em
+                            label
+                                position: absolute
+                                top: 0
+                                left: 0
+                                right: 0
+                                bottom: 0
                         &.published_at
                             flex: 0 0 22em
                             width: 5.2em
                             height: 2.5em
-                            span.datepicker
                         &.submit
                             flex: 0 0 5.2em
                             width: 5.2em
@@ -184,15 +177,12 @@
                                 line-height: 2.5em
                                 color: #00030d
                                 font-size: 1.1em
-                                background: rgba(183, 191, 197, .4)
+                                background-color: rgba(183, 191, 197, .7)
+                                transition: background-color .5s linear
                                 cursor: pointer
-                                transition: background .5s linear
                                 &:hover
-                                    background: #d6d6d7
+                                    background-color: rgba(183, 191, 197, .3)
                                 &:hover,&:active,&:focus
                                     outline: none
-
-
-
 
 </style>

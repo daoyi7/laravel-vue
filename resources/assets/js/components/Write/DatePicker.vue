@@ -11,7 +11,6 @@
         </span>
     <p class="control has-icon has-icon-right" v-else>
         <input class="input input_click" :name="name" :value="interVal" :placeholder="placeholder" type="text" v-model="interVal" ref="pickrInput">
-        <i class="icon iconfont icon-close" @click.prevent="handleClear" v-if="hadChoose"></i>
     </p>
     </span>
 </template>
@@ -35,7 +34,6 @@
             return {
                 interVal: this.value,
                 flatPickr: null,
-                hadChoose: false
             };
         },
         computed: {
@@ -50,23 +48,20 @@
             changeVal() {
                 this.$emit('input', this.interVal);
             },
-            handleClear() {
-                this.flatPickr && this.flatPickr.clear();
-            },
         },
         watch: {
             interVal(val) {
                 this.interVal = val;
                 this.$emit('input', this.interVal);
-
-                this.hadChoose = true
             },
         },
         mounted() {
             const pickrEl = this.$refs.pickrInput;
             this.flatPickr = new Flatpickr(pickrEl, this.options);
 
-            // if(this.)
+            if(this.interVal) {
+                this.hadChoose = true
+            }
         },
         beforeDestroy() {
             if (this.flatPickr) {
@@ -87,13 +82,5 @@
             width: auto
             height: auto
             display: inline-block
-            i
-                position: absolute
-                right: 0
-                top: 50%
-                margin-top: -.5em
-                color: #00030d
-                font-weight: 100
-                font-size: 1.4em
 
 </style>

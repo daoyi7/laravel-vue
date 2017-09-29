@@ -14,6 +14,7 @@ import VueResource from 'vue-resource'
 import axios from "axios"
 import moment from "moment"
 
+
 Vue.prototype.$http = axios
 Vue.prototype.$moment = moment
 
