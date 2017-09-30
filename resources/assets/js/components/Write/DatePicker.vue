@@ -15,21 +15,10 @@
     </span>
 </template>
 <script type="text/ecmascript-6">
-    import Flatpickr from 'flatpickr';
-    import 'flatpickr/dist/flatpickr.css';
+    import Flatpickr from 'flatpickr'
+    import 'flatpickr/dist/flatpickr.css'
 
     export default {
-        props: {
-            options: {
-                type: Object,
-                default () {},
-            },
-            name: String,
-            placeholder: String,
-            val: String,
-            value: {},
-            // class: String,
-        },
         data() {
             return {
                 interVal: this.value,

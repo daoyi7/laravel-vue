@@ -15,9 +15,8 @@
 export default {
     data() {
         return {
-            navs: [
-                {
-                    url: "/",
+            navs: [{
+                    url: "/Home",
                     icon: "icon iconfont icon-home",
                     name: "HOME"
                 },
@@ -74,6 +73,8 @@ export default {
             -ms-transition: color .15s linear
             -o-transition: color .15s linear
             transition: color .15s linear
+            &.active
+                color: #00030d
             .icon
               font-size: 1.4em
               vertical-align: middle

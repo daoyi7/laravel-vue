@@ -151,8 +151,8 @@
                         vertical-align: middle
                         &.is_hide
                             .switchery.is-kawhi.on
-                                background-color: ##d6d6d7
-                                border-color: ##d6d6d7
+                                background-color: #d6d6d7
+                                border-color: #d6d6d7
                                 box-shadow: inset 0 0 0 12px #6cc788
                         &.published_at
                             flex: 0 0 22em

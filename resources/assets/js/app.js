@@ -14,7 +14,7 @@ import VueResource from 'vue-resource'
 import axios from "axios"
 import moment from "moment"
 import VueBlu from 'vue-blu'
-import 'vue-blu/dist/css/vue-blu.min.css'
+// import 'vue-blu/dist/css/vue-blu.min.css'
 
 
 Vue.prototype.$http = axios
@@ -35,6 +35,10 @@ import Edit from './components/Write/Edit'
 
 const routes = [{
         path: '/',
+        redirect: '/Home'
+    },
+    {
+        path: '/Home',
         component: Home
     },
     {
@@ -65,6 +69,7 @@ const routes = [{
 
 const router = new VueRouter({
     // mode: 'history',
+    'linkActiveClass': 'active',
     routes,
     scrollBehavior(to, from, savedPosition) {
         return {
