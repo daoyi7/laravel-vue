@@ -16,7 +16,6 @@ import moment from "moment"
 import VueBlu from 'vue-blu'
 // import 'vue-blu/dist/css/vue-blu.min.css'
 
-
 Vue.prototype.$http = axios
 Vue.prototype.$moment = moment
 
