@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             navs: [{
-                    url: "/",
+                    url: "/Home",
                     icon: "icon iconfont icon-home",
                     name: "HOME"
                 },
