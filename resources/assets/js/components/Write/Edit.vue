@@ -18,7 +18,7 @@
                 <b-switch type="kawhi" :on-change="onChange" size="small"></b-switch>
             </div>
             <div class="more-item published_at">
-                <datepicker placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
+                <datepicker v-model="upBlog.published_at" placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
             </div>
             <div class="more-item submit">
                 <button type="button" name="submit" @click="submit($event)">Submit</button>
@@ -29,55 +29,54 @@
 </template>
 
 <script type="text/ecmascript-6">
-import VueImgInputer from "vue-img-inputer"
+    import VueImgInputer from "vue-img-inputer"
 
-export default {
-    data() {
-        return {
-            val1: true,
-            upBlog: {
-                title: '',
-                desc: '',
-                content: '',
-                like_counts: '0',
-                view_counts: '0',
-                is_hide: false,
-                published_at: '',
-                thumb: ''
-            }
-        }
-    },
-    components: {
-        VueImgInputer
-    },
-    methods: {
-        onChange(val) {
-            const content = val ? '开启' : '关闭';
-            this.$notify.info({
-                content
-            });
-        },
-        submit: function(event) {
-            event.preventDefault()
-            let formData = JSON.stringify(this.upBlog)
-
-            let config = {
-                headers: {
-                    'Content-Type': 'application/json'
+    export default {
+        data() {
+            return {
+                val1: true,
+                upBlog: {
+                    title: '',
+                    desc: '',
+                    content: '',
+                    like_counts: '0',
+                    view_counts: '0',
+                    is_hide: false,
+                    published_at: '',
+                    thumb: ''
                 }
             }
-
-            this.$http.post('/api/blog', formData, config)
-                .then((res) => {
-                    /**写你的操作函数**/
-                    // console.log(res)
-                })
-                .catch((error) => {
-                    throw new Error(error.response.data.error)
-                })
         },
+        components: {
+            VueImgInputer
+        },
+        methods: {
+            onChange(val) {
+                const content = val ? '开启' : '关闭';
+                this.$notify.info({
+                    content
+                });
+            },
+            submit: function(event) {
+                event.preventDefault()
+                let formData = JSON.stringify(this.upBlog)
+
+                let config = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                this.$http.post('/api/blog', formData, config)
+                    .then((res) => {
+                        /**写你的操作函数**/
+                    })
+                    .catch((error) => {
+                        throw new Error(error.response.data.error)
+                    })
+            },
+        }
     }
-}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
