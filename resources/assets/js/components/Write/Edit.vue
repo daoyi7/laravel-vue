@@ -153,9 +153,9 @@
                             flex: 0 0 22em
                             width: 5.2em
                             height: 2.5em
-                            .flatpickr-input
-                                cursor: pointer
-                                z-index: 1
+                            datepicker
+                                width: 100%
+                                height: 100%
                         &.submit
                             flex: 0 0 5.2em
                             width: 5.2em
