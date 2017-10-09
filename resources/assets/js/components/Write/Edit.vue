@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         change(status) {
-            this.$Message.info('开关状态：' + status)
+            this.$Message.info('开关状态：' + status + ', 文章隐藏')
         },
         submit: function(event) {
             event.preventDefault()

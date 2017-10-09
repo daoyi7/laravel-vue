@@ -41311,7 +41311,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         change: function change(status) {
-            this.$Message.info('开关状态：' + status);
+            this.$Message.info('开关状态：' + status + ', 文章隐藏');
         },
 
         submit: function submit(event) {
