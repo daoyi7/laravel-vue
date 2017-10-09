@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::any('/upload', 'UploadController@upload');
+
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {

@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "flatpickr": "^3.0.7",
+    "iview": "^2.4.0",
     "layui-layer": "^1.0.9",
     "vue-blu": "^0.1.9",
     "vue-img-inputer": "^1.1.5",

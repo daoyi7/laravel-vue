@@ -2,7 +2,12 @@
 <div class="edit">
     <form class="edit-form" method="post">
         <div class="edit-item thumbs">
-            <VueImgInputer class="thumbs" v-model="upBlog.desc" theme="material" size="large"></VueImgInputer>
+            <Upload multiple type="drag" :format="['jpg','jpeg','png']" action="/api/blog" v-model="upBlog.thumb" name="">
+                <div style="padding: 20px 0">
+                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                    <p>点击或将文件拖拽到这里上传</p>
+                </div>
+            </Upload>
         </div>
         <div class="edit-item title">
             <input class="title" type="text" v-model="upBlog.title" value="" placeholder="Blog Title *">
@@ -15,10 +20,10 @@
         </div>
         <div class="edit-item more">
             <div class="more-item is_hide">
-                <b-switch type="kawhi" :on-change="onChange" size="small"></b-switch>
+                <i-switch v-model="upBlog.is_hide" @on-change="change"></i-switch>
             </div>
             <div class="more-item published_at">
-                <datepicker v-model="upBlog.published_at" placeholder="Choose UpdateTime" :options="{enableTime: true, altInput: true, altFormat: 'F j, Y h:i K'}"></datepicker>
+                <DatePicker type="datetime" placeholder="选择日期和时间" style="width: 200px"></DatePicker>
             </div>
             <div class="more-item submit">
                 <button type="button" name="submit" @click="submit($event)">Submit</button>
@@ -29,54 +34,45 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import VueImgInputer from "vue-img-inputer"
+export default {
+    data() {
+        return {
+            upBlog: {
+                title: '',
+                desc: '',
+                content: '',
+                like_counts: '0',
+                view_counts: '0',
+                is_hide: false,
+                published_at: '',
+                thumbs: '',
+            }
+        }
+    },
+    methods: {
+        change(status) {
+            this.$Message.info('开关状态：' + status)
+        },
+        submit: function(event) {
+            event.preventDefault()
+            let formData = JSON.stringify(this.upBlog)
 
-    export default {
-        data() {
-            return {
-                val1: true,
-                upBlog: {
-                    title: '',
-                    desc: '',
-                    content: '',
-                    like_counts: '0',
-                    view_counts: '0',
-                    is_hide: false,
-                    published_at: '',
-                    thumb: ''
+            let config = {
+                headers: {
+                    'Content-Type': 'multipar/form-data'
                 }
             }
-        },
-        components: {
-            VueImgInputer
-        },
-        methods: {
-            onChange(val) {
-                const content = val ? '开启' : '关闭';
-                this.$notify.info({
-                    content
-                });
-            },
-            submit: function(event) {
-                event.preventDefault()
-                let formData = JSON.stringify(this.upBlog)
 
-                let config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-
-                this.$http.post('/api/blog', formData, config)
-                    .then((res) => {
-                        /**写你的操作函数**/
-                    })
-                    .catch((error) => {
-                        throw new Error(error.response.data.error)
-                    })
-            },
-        }
+            this.$http.post('/api/blog', formData, config)
+                .then((res) => {
+                    /**写你的操作函数**/
+                })
+                .catch((error) => {
+                    throw new Error(error.response.data.error)
+                })
+        },
     }
+}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
@@ -86,7 +82,7 @@
         width: 66.4em
         margin: 0 0 0 13em
         position: relative
-        overflow: hidden
+        // overflow: hidden
         background: rgba(236, 238, 239, 0.7)
         .edit-form
             padding: 1em 1.5em 2.5em 1.5em

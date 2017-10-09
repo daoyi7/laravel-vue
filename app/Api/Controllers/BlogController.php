@@ -23,7 +23,7 @@ class BlogController extends Controller
 
     public function edit (Request $request)
     {
-        $edit = $request->all();
+        $edit = $request->getContent();
         $blog = Blog::create($edit);
     }
 
