@@ -15,9 +15,9 @@ import axios from "axios"
 import moment from "moment"
 // import VueBlu from 'vue-blu'
 // import 'vue-blu/dist/css/vue-blu.min.css'
-// import 'flatpickr/dist/flatpickr.css'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+// import './components/Write/index.less'
 
 Vue.prototype.$http = axios
 Vue.prototype.$moment = moment

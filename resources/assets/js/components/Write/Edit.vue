@@ -76,9 +76,6 @@
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
-    @import '~iview/src/styles/index'
-
-    @font-size-small: 10px
 
     .edit
         float: left
