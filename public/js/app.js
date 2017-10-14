@@ -32675,7 +32675,7 @@ window.Vue = __webpack_require__(7);
 // import 'vue-blu/dist/css/vue-blu.min.css'
 
 
-// import 'components/Write/index.less'
+// import './components/Write/index.less'
 
 Vue.prototype.$http = __WEBPACK_IMPORTED_MODULE_3_axios___default.a;
 Vue.prototype.$moment = __WEBPACK_IMPORTED_MODULE_4_moment___default.a;
