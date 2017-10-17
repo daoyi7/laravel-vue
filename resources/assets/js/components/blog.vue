@@ -56,7 +56,7 @@ export default {
                 method: 'get',
                 url: 'http://47.94.89.18/?json=get_recent_posts',
                 data:{
-                    param:'param'
+                    param:'param/'
                 },
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
