@@ -16,8 +16,8 @@ import moment from "moment"
 // import VueBlu from 'vue-blu'
 // import 'vue-blu/dist/css/vue-blu.min.css'
 // import 'flatpickr/dist/flatpickr.css'
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+// import iView from 'iview'
+// import 'iview/dist/styles/iview.css'
 
 Vue.prototype.$http = axios
 Vue.prototype.$moment = moment
@@ -25,7 +25,7 @@ Vue.prototype.$moment = moment
 Vue.use(VueRouter)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueResource)
-Vue.use(iView)
+// Vue.use(iView)
 
 import Home from './components/middle'
 import Detail from './components/detail'
@@ -33,7 +33,7 @@ import Blog from './components/blog'
 import Project from './components/project'
 import Think from './components/think'
 import About from './components/about'
-import Edit from './components/Write/Edit'
+// import Edit from './components/Write/Edit'
 
 const routes = [{
         path: '/',
@@ -63,10 +63,10 @@ const routes = [{
         path: '/about',
         component: About
     },
-    {
-        path: '/edit',
-        component: Edit
-    },
+    // {
+    //     path: '/edit',
+    //     component: Edit
+    // },
 ]
 
 const router = new VueRouter({
@@ -88,11 +88,6 @@ const router = new VueRouter({
  */
 
 Vue.component('app', require('./components/app.vue'));
-
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue')
-);
 
 const app = new Vue({
     el: '#app',
