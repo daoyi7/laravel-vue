@@ -34,45 +34,45 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-    data() {
-        return {
-            upBlog: {
-                title: '',
-                desc: '',
-                content: '',
-                like_counts: '0',
-                view_counts: '0',
-                is_hide: false,
-                published_at: '',
-                thumbs: '',
-            }
-        }
-    },
-    methods: {
-        change(status) {
-            this.$Message.info('开关状态：' + status + ', 文章隐藏')
-        },
-        submit: function(event) {
-            event.preventDefault()
-            let formData = JSON.stringify(this.upBlog)
-
-            let config = {
-                headers: {
-                    'Content-Type': 'multipar/form-data'
+    export default {
+        data() {
+            return {
+                upBlog: {
+                    title: '',
+                    desc: '',
+                    content: '',
+                    like_counts: '0',
+                    view_counts: '0',
+                    is_hide: false,
+                    published_at: '',
+                    thumbs: '',
                 }
             }
-
-            this.$http.post('/api/blog', formData, config)
-                .then((res) => {
-                    /**写你的操作函数**/
-                })
-                .catch((error) => {
-                    throw new Error(error.response.data.error)
-                })
         },
+        methods: {
+            change(status) {
+                this.$Message.info('开关状态：' + status + ', 文章隐藏')
+            },
+            submit: function(event) {
+                event.preventDefault()
+                let formData = JSON.stringify(this.upBlog)
+
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipar/form-data'
+                    }
+                }
+
+                this.$http.post('/api/blog', formData, config)
+                    .then((res) => {
+                        /**写你的操作函数**/
+                    })
+                    .catch((error) => {
+                        throw new Error(error.response.data.error)
+                    })
+            },
+        }
     }
-}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>
