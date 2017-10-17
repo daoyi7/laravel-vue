@@ -1,80 +1,93 @@
 <template>
-    <div class="blog">
-        <div class="head">
-            <p class="head-icon"><i class="icon iconfont icon-read"></i></p>
-            <p class="slogan" v-text="slogan"></p>
+<div class="blog">
+    <div class="head">
+        <p class="head-icon"><i class="icon iconfont icon-read"></i></p>
+        <p class="slogan" v-text="slogan"></p>
+    </div>
+    <div class="blog-module" v-for="(blog, index) in blogs" key="index">
+        <div class="thumb">
+            <router-link to="/">
+                <img :src="blog.thumb">
+            </router-link>
         </div>
-        <div class="blog-module" v-for="(blog, index) in blogs" key="index">
-            <div class="thumb">
-                <router-link to="/">
-                    <img :src="blog.thumb">
-                </router-link>
-            </div>
-            <div class="main">
-                <h4 class="title">
+        <div class="main">
+            <h4 class="title">
               <router-link to="/detail">{{ blog.title }}</router-link>
             </h4>
-                <p class="info">{{ blog.intro }}</p>
-                <div class="list">
-                    <p  class="list-icon time">
-                        <i class="icon iconfont icon-clock2"></i>
-                        <span>{{ blog.published_at | tranTime }}</span>
-                    </p>
-                    <p  class="list-icon view">
-                        <i class="icon iconfont icon-view"></i>
-                        <span>{{ blog.view_counts }}</span>
-                    </p>
-                    <p  class="list-icon comments">
-                        <i class="icon iconfont icon-iconcomments"></i>
-                        <span>5</span>
-                    </p>
-                    <p  class="list-icon like">
-                        <i class="icon iconfont icon-like1"></i>
-                        <span>{{ blog.like_counts }}</span>
-                    </p>
-                    <p  class="list-icon tag">
-                        <i class="icon iconfont icon-tag"></i>
-                        <span>think</span>
-                    </p>
-                </div>
+            <p class="info">{{ blog.intro }}</p>
+            <div class="list">
+                <p class="list-icon time">
+                    <i class="icon iconfont icon-clock2"></i>
+                    <span>{{ blog.published_at | tranTime }}</span>
+                </p>
+                <p class="list-icon view">
+                    <i class="icon iconfont icon-view"></i>
+                    <span>{{ blog.view_counts }}</span>
+                </p>
+                <p class="list-icon comments">
+                    <i class="icon iconfont icon-iconcomments"></i>
+                    <span>5</span>
+                </p>
+                <p class="list-icon like">
+                    <i class="icon iconfont icon-like1"></i>
+                    <span>{{ blog.like_counts }}</span>
+                </p>
+                <p class="list-icon tag">
+                    <i class="icon iconfont icon-tag"></i>
+                    <span>think</span>
+                </p>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
-    export default {
-        data() {
-            return {
-                page: 'Blog',
-                slogan: "",
-                blogs: {}
-            }
-        },
-        created() {
-            this.$http.get('http://localhost:8000/api/blog').then(response => {
+export default {
+    data() {
+        return {
+            page: 'Blog',
+            slogan: "",
+            blogs: {}
+        }
+    },
+    created() {
+        this.$http({
+                method: 'get',
+                url: 'http://47.94.89.18/?json=get_recent_posts',
+                data:{
+                    param:'param'
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then((response) => {
                 this.blogs = response.body.blogs
             })
-        },
-        mounted(){
-            this.init()
-        },
-        filters: {
-            tranTime: function (value) {
-                value = Vue.prototype.$moment(value).fromNow()
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    mounted() {
+        this.init()
+    },
+    filters: {
+        tranTime: function(value) {
+            value = Vue.prototype.$moment(value).fromNow()
 
-                return value
-            }
-        },
-        methods:{
-            init(){
-                document.title = this.page + ' | kawhi.me'
-                let str = "The true test of a man's character is what he does when no one is watching.",
-                    _this = this,
-                    timer = null;
+            return value
+        }
+    },
+    methods: {
+        init() {
+            document.title = this.page + ' | kawhi.me'
+            let str = "The true test of a man's character is what he does when no one is watching.",
+                _this = this,
+                timer = null;
 
-                function typing() {
-                    let i = - 1,
+            function typing() {
+                let i = -1,
 
                     timer = setInterval(() => {
                         i = i + 1
@@ -83,32 +96,32 @@
 
                         if (i > str.length - 2) {
                             clearInterval(timer)
-                            setTimeout(deleting,2000)
-                        }
-                    },100)
-                }
-
-                function deleting() {
-                    let wstr = str.split(""),
-                        j = wstr.length;
-
-                    timer = setInterval(function() {
-                        j = j - 1
-                        wstr = wstr.slice(0, j)
-                        _this.slogan = wstr.join("")
-
-                        if (j <= 0) {
-                            clearInterval(timer)
-                            setTimeout(typing,200)
+                            setTimeout(deleting, 2000)
                         }
                     }, 100)
+            }
 
-                }
+            function deleting() {
+                let wstr = str.split(""),
+                    j = wstr.length;
 
-                typing()
-            },
-        }
+                timer = setInterval(function() {
+                    j = j - 1
+                    wstr = wstr.slice(0, j)
+                    _this.slogan = wstr.join("")
+
+                    if (j <= 0) {
+                        clearInterval(timer)
+                        setTimeout(typing, 200)
+                    }
+                }, 100)
+
+            }
+
+            typing()
+        },
     }
+}
 </script>
 
 <style type="text/sass" lang="sass" rel="stylesheet/sass" scoped>

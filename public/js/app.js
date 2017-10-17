@@ -40479,8 +40479,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this2 = this;
 
-        this.$http.get('http://localhost:8000/api/blog').then(function (response) {
+        this.$http({
+            method: 'get',
+            url: 'http://47.94.89.18/?json=get_recent_posts',
+            data: {
+                param: 'param'
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(function (response) {
             _this2.blogs = response.body.blogs;
+        }).catch(function (error) {
+            console.log(error);
         });
     },
     mounted: function mounted() {
