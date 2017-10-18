@@ -13,17 +13,6 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueResource from 'vue-resource'
 import axios from "axios"
 import moment from "moment"
-// import VueBlu from 'vue-blu'
-// import 'vue-blu/dist/css/vue-blu.min.css'
-<<<<<<< HEAD
-// import 'flatpickr/dist/flatpickr.css'
-// import iView from 'iview'
-// import 'iview/dist/styles/iview.css'
-=======
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
-// import './components/Write/index.less'
->>>>>>> 890dcc6dfafcc2ecbdb5fa19d1bdd8498c52eeee
 
 Vue.prototype.$http = axios
 Vue.prototype.$moment = moment
