@@ -38948,30 +38948,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'carrousel',
-    data: function data() {
-        return {
-            swiperOption: {
-                autoplay: 3500,
-                setWrapperSize: true,
-                pagination: '.swiper-pagination',
-                paginationClickable: true,
-                mousewheelControl: false,
-                observeParents: true,
-                autoplayDisableOnInteraction: false
-            },
-            swiperSlides: [{
-                thumb: "../../../images/bg.png",
-                title: "bg1"
-            }, {
-                thumb: "../../../images/bg1.png",
-                title: "bg2"
-            }, {
-                thumb: "../../../images/bg2.png",
-                title: "bg3"
-            }]
-        };
-    }
+  name: 'carrousel',
+  data: function data() {
+    return {
+      swiperOption: {
+        autoplay: 3500,
+        setWrapperSize: true,
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        mousewheelControl: false,
+        observeParents: true,
+        autoplayDisableOnInteraction: false
+      },
+      swiperSlides: [{
+        thumb: "../../../images/bg.png",
+        title: "bg1"
+      }, {
+        thumb: "../../../images/bg1.png",
+        title: "bg2"
+      }, {
+        thumb: "../../../images/bg2.png",
+        title: "bg3"
+      }]
+    };
+  }
 });
 
 /***/ }),
